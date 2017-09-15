@@ -1,0 +1,108 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{01FF183D-C41D-4BB5-B325-F4AE3EFC9F72}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="photon\zlib\zlib.cbproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="photon\libpng\libpng.cbproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="photon\tiff-v3.4\tifflib.cbproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\VideoA2\VideoA\VideoAnalytics\jpeg-6b\borland\JPEGLIB.cbproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\VideoA2\VideoA\VideoAnalytics\awpipl2\borland\awpipl2b.cbproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="photon41.cbproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="Demo\PhotonDemo.cbproj">
+            <Dependencies>photon41.cbproj</Dependencies>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="zlib">
+        <MSBuild Projects="photon\zlib\zlib.cbproj"/>
+    </Target>
+    <Target Name="zlib:Clean">
+        <MSBuild Projects="photon\zlib\zlib.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="zlib:Make">
+        <MSBuild Projects="photon\zlib\zlib.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="libpng">
+        <MSBuild Projects="photon\libpng\libpng.cbproj"/>
+    </Target>
+    <Target Name="libpng:Clean">
+        <MSBuild Projects="photon\libpng\libpng.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="libpng:Make">
+        <MSBuild Projects="photon\libpng\libpng.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="tifflib">
+        <MSBuild Projects="photon\tiff-v3.4\tifflib.cbproj"/>
+    </Target>
+    <Target Name="tifflib:Clean">
+        <MSBuild Projects="photon\tiff-v3.4\tifflib.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="tifflib:Make">
+        <MSBuild Projects="photon\tiff-v3.4\tifflib.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="JPEGLIB">
+        <MSBuild Projects="..\VideoA2\VideoA\VideoAnalytics\jpeg-6b\borland\JPEGLIB.cbproj"/>
+    </Target>
+    <Target Name="JPEGLIB:Clean">
+        <MSBuild Projects="..\VideoA2\VideoA\VideoAnalytics\jpeg-6b\borland\JPEGLIB.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="JPEGLIB:Make">
+        <MSBuild Projects="..\VideoA2\VideoA\VideoAnalytics\jpeg-6b\borland\JPEGLIB.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="awpipl2b">
+        <MSBuild Projects="..\VideoA2\VideoA\VideoAnalytics\awpipl2\borland\awpipl2b.cbproj"/>
+    </Target>
+    <Target Name="awpipl2b:Clean">
+        <MSBuild Projects="..\VideoA2\VideoA\VideoAnalytics\awpipl2\borland\awpipl2b.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="awpipl2b:Make">
+        <MSBuild Projects="..\VideoA2\VideoA\VideoAnalytics\awpipl2\borland\awpipl2b.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="photon41">
+        <MSBuild Projects="photon41.cbproj"/>
+    </Target>
+    <Target Name="photon41:Clean">
+        <MSBuild Projects="photon41.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="photon41:Make">
+        <MSBuild Projects="photon41.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="PhotonDemo" DependsOnTargets="photon41">
+        <MSBuild Projects="Demo\PhotonDemo.cbproj"/>
+    </Target>
+    <Target Name="PhotonDemo:Clean" DependsOnTargets="photon41:Clean">
+        <MSBuild Projects="Demo\PhotonDemo.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="PhotonDemo:Make" DependsOnTargets="photon41:Make">
+        <MSBuild Projects="Demo\PhotonDemo.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="zlib;libpng;tifflib;JPEGLIB;awpipl2b;photon41;PhotonDemo"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="zlib:Clean;libpng:Clean;tifflib:Clean;JPEGLIB:Clean;awpipl2b:Clean;photon41:Clean;PhotonDemo:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="zlib:Make;libpng:Make;tifflib:Make;JPEGLIB:Make;awpipl2b:Make;photon41:Make;PhotonDemo:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

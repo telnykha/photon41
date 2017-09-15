@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="949"
+   name=""
+   committed-date="2005-12-20T15:07:46.690579Z"
+   url="svn+ssh://forward/home/svn/projects/F15/THRID_PART/tiff-v3.4/dist"
+   last-author="seal"
+   kind="dir"
+   uuid="bf649743-4ef0-0310-bc2b-bdb5cd6c1ec4"
+   revision="3478"/>
+<entry
+   committed-rev="949"
+   name="newalpha"
+   text-time="2007-04-02T13:54:02.843750Z"
+   committed-date="2005-12-20T15:07:46.690579Z"
+   checksum="24ba279bdc41c3fc369f17b63680a5ef"
+   last-author="seal"
+   kind="file"
+   prop-time="2007-04-02T13:54:02.812500Z"/>
+<entry
+   committed-rev="949"
+   name="newversion"
+   text-time="2007-04-02T13:54:02.843750Z"
+   committed-date="2005-12-20T15:07:46.690579Z"
+   checksum="04f944024a7914ee6d44b7d5c8232849"
+   last-author="seal"
+   kind="file"
+   prop-time="2007-04-02T13:54:02.812500Z"/>
+<entry
+   committed-rev="949"
+   name="tiff.spec"
+   text-time="2007-04-02T13:54:02.843750Z"
+   committed-date="2005-12-20T15:07:46.690579Z"
+   checksum="e5cdf19790a64e3862a0eb74fda6e506"
+   last-author="seal"
+   kind="file"
+   prop-time="2007-04-02T13:54:02.828125Z"/>
+<entry
+   committed-rev="949"
+   name="tiff.alpha"
+   text-time="2007-04-02T13:54:02.843750Z"
+   committed-date="2005-12-20T15:07:46.690579Z"
+   checksum="9cb6328c0f4f13dccdf4936fb4af4efa"
+   last-author="seal"
+   kind="file"
+   prop-time="2007-04-02T13:54:02.828125Z"/>
+<entry
+   committed-rev="949"
+   name="tiff.version"
+   text-time="2007-04-02T13:54:02.859375Z"
+   committed-date="2005-12-20T15:07:46.690579Z"
+   checksum="87de4c9e712e66baf50c108aeda49e64"
+   last-author="seal"
+   kind="file"
+   prop-time="2007-04-02T13:54:02.828125Z"/>
+</wc-entries>
