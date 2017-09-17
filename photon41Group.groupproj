@@ -19,7 +19,7 @@
             <Dependencies/>
         </Projects>
         <Projects Include="photon41.cbproj">
-            <Dependencies/>
+            <Dependencies>photon\zlib\zlib.cbproj;photon\libpng\libpng.cbproj;photon\tiff-v3.4\tifflib.cbproj;..\VideoA2\VideoA\VideoAnalytics\jpeg-6b\borland\JPEGLIB.cbproj;..\VideoA2\VideoA\VideoAnalytics\awpipl2\borland\awpipl2b.cbproj</Dependencies>
         </Projects>
         <Projects Include="Demo\PhotonDemo.cbproj">
             <Dependencies>photon41.cbproj</Dependencies>
@@ -77,13 +77,13 @@
     <Target Name="awpipl2b:Make">
         <MSBuild Projects="..\VideoA2\VideoA\VideoAnalytics\awpipl2\borland\awpipl2b.cbproj" Targets="Make"/>
     </Target>
-    <Target Name="photon41">
+    <Target Name="photon41" DependsOnTargets="zlib;libpng;tifflib;JPEGLIB;awpipl2b">
         <MSBuild Projects="photon41.cbproj"/>
     </Target>
-    <Target Name="photon41:Clean">
+    <Target Name="photon41:Clean" DependsOnTargets="zlib:Clean;libpng:Clean;tifflib:Clean;JPEGLIB:Clean;awpipl2b:Clean">
         <MSBuild Projects="photon41.cbproj" Targets="Clean"/>
     </Target>
-    <Target Name="photon41:Make">
+    <Target Name="photon41:Make" DependsOnTargets="zlib:Make;libpng:Make;tifflib:Make;JPEGLIB:Make;awpipl2b:Make">
         <MSBuild Projects="photon41.cbproj" Targets="Make"/>
     </Target>
     <Target Name="PhotonDemo" DependsOnTargets="photon41">

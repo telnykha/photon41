@@ -364,9 +364,10 @@ protected:
         for vsVideo returns by GetFramesCount?
     */
     int  	     m_FrameCount;
+    /*
 
-    bool m_IsInitialized; // флаг инициализации видео
-    bool m_IsPreview;     // флаг воспроизведения видео
+    */
+
     bool m_IsPaused;      // флаг временной остановки воспроизведения.
 
 
@@ -386,6 +387,7 @@ public:
    __property bool IsPreview = {read = GetIsPreview, write = SetIsPreview};
    __property bool IsPaused  = {read = m_IsPaused,   write = SetIsPaused};
 };
+
 
 
 

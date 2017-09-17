@@ -87,6 +87,7 @@
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <BCC_Defines>_DEBUG;$(BCC_Defines);$(BCC_Defines)</BCC_Defines>
         <Manifest_File>(None)</Manifest_File>
+        <TLIB_PageSize>64</TLIB_PageSize>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_AdditionalSwitches> -N0libtiff\ -M -$O+</DCC_AdditionalSwitches>

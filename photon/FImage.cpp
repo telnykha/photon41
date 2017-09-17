@@ -1438,9 +1438,6 @@ void TPhImage::foo()
 //------------------------------- Video Source ---------------------------------
 TMediaSource::TMediaSource(TFCustomImage* Display)
 {
-   m_IsInitialized = false;
-   m_IsPreview = false;
-   m_IsPaused  = false;
 
    m_FrameCount = 0;
    m_pDisplay = Display;
@@ -1448,12 +1445,12 @@ TMediaSource::TMediaSource(TFCustomImage* Display)
 
 bool __fastcall TMediaSource::GetIsInitialized()
 {
-   return m_IsInitialized;
+       return false;
 }
 
 bool __fastcall TMediaSource::GetIsPreview()
 {
-   return m_IsPreview;
+       return false;
 }
 
 //-------------------------------- Slide Show ----------------------------------
@@ -1486,7 +1483,7 @@ void __fastcall TSlideShow::Initialize(TStrings* Names)
  //       m_pDisplay->TotalFrames =  Names->Count;
  //     }
 
-      m_IsInitialized = true;
+     //m_IsInitialized = true;
 
       DecodeVideoFrame(0, true);
     }
@@ -1499,7 +1496,7 @@ void __fastcall TSlideShow::Uninitialize()
      delete m_FileNames;
      m_FileNames = NULL;
   }
-  m_IsInitialized     = false;
+ // m_IsInitialized     = false;
 }
 
 
@@ -1539,8 +1536,8 @@ bool __fastcall TSlideShow::DecodeVideoFrame(int num, bool update_null_time)
 
 void __fastcall TSlideShow::SetIsPreview(bool Value)
 {
-    m_IsPreview = Value;
-    m_Timer->Enabled = m_IsPreview;
+  //  m_IsPreview = Value;
+   // m_Timer->Enabled = m_IsPreview;
     m_LastVideoFrame = 0;
 }
 
@@ -1607,7 +1604,7 @@ void __fastcall TFFMPEGVideo::Uninitialize()
 
 void __fastcall TFFMPEGVideo::SetIsPreview(bool Value)
 {
-    m_IsPreview = Value;
+ //   m_IsPreview = Value;
 //    m_Timer->Enabled = m_IsPreview;
 }
 void __fastcall TFFMPEGVideo::SetIsPaused(bool Value)

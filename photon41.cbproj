@@ -94,6 +94,9 @@
         <TASM_Debugging>None</TASM_Debugging>
     </PropertyGroup>
     <ItemGroup>
+        <PackageImport Include="photon.bpi">
+            <BuildOrder>10</BuildOrder>
+        </PackageImport>
         <CppCompile Include="photon41.cpp">
             <BuildOrder>0</BuildOrder>
         </CppCompile>
@@ -130,9 +133,6 @@
         </PackageImport>
         <PackageImport Include="vcl.bpi">
             <BuildOrder>5</BuildOrder>
-        </PackageImport>
-        <PackageImport Include="photon.bpi">
-            <BuildOrder>10</BuildOrder>
         </PackageImport>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
