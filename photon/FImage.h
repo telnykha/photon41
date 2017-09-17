@@ -27,7 +27,7 @@ typedef void __fastcall (__closure *TVideoFormatEvent)(System::TObject* Sender, 
 typedef void __fastcall (__closure *TFrameEvent)(System::TObject* Sender, int widht, int height, int bpp, char* data);
 
 typedef enum  {bsFNone, bsFSingle} TFBorderStyle;
-typedef enum  {vsNone, vsImage, vsSlideShow, vsVideo} EMediaSource;
+typedef enum  {vsNone, vsImage, vsSlideShow, vsVideo} EMediaSourceType;
 typedef enum  {ftNone, ftPane,  ftZoomToRect, ftLenz, ftSelRect, ftSelPixel, ftThumbSelect} TFTools;
 
 // forward declarations
@@ -220,6 +220,7 @@ class PACKAGE TPhImage : public TFCustomImage
 __published:
     __property TFBorderStyle     BorderStyle = {read = FBorderStyle, write = SetBorderStyle};
 };
+
 // abstract image tool
 class PACKAGE TImageTool
 {
@@ -346,16 +347,29 @@ public:
 	__property bool IsSelected [int index] = {read = GetSelected};
         virtual AnsiString GetName();
 };
-
+//typedef enum  {vsNone, vsImage, vsSlideShow, vsVideo, vsAudio} EMediaSourceType;
 //abstract media source  interface component
 class TMediaSource
 {
 protected:
+    EMediaSourceType m_media_type;
+    /*
+        duration for vsNone, vsImage = 0,
+        for vsSlideShow     = m_FrameCount*Timer.Interval
+    */
+    double           m_duration;
+    /*
+        FrameCount for vsNone, vsAoudio = 0,
+        for vsImage = 1, for  vsSlideShow = Names.Count,
+        for vsVideo returns by GetFramesCount?
+    */
+    int  	     m_FrameCount;
+
     bool m_IsInitialized; // флаг инициализации видео
     bool m_IsPreview;     // флаг воспроизведения видео
     bool m_IsPaused;      // флаг временной остановки воспроизведения.
 
-    int  m_FrameCount;
+
     TFCustomImage* m_pDisplay;
     virtual bool __fastcall DecodeVideoFrame(int num, bool update_null_time = false) = 0;
     bool __fastcall GetIsPreview();
@@ -370,7 +384,7 @@ public:
     bool __fastcall GetIsInitialized();
 
    __property bool IsPreview = {read = GetIsPreview, write = SetIsPreview};
-   __property bool IsPaused  = {read = m_IsPaused, write = SetIsPaused};
+   __property bool IsPaused  = {read = m_IsPaused,   write = SetIsPaused};
 };
 
 
