@@ -1,8 +1,8 @@
 //---------------------------------------------------------------------------
 #ifndef ImportRasterH
 #define ImportRasterH
-#include "FImage.h"
-#include "DIBImage.h"
+#include "FImage41.h"
+#include "DIBImage41.h"
 //TImageDecoder class----------------------------
 //абстракный базовый класс предназначенный для
 //определения интерфейса объекта расшифровки растровых данных
@@ -51,20 +51,20 @@ private:
     TDIBImage*       FBitmap;  //место, куда будут распаковываться растровые данные
     TImageDecoder*  FDecoder; //декодер растровых данных
     AnsiString      FFileName;//имя файла с растровыми данными
-    TFCustomImage*        FImage;   //
+    TPhCustomImage*        FImage;   //
     void __fastcall SetFileName(AnsiString FileName);
-    void __fastcall SetImage(TFCustomImage* AImage);
+    void __fastcall SetImage(TPhCustomImage* AImage);
     void __fastcall SetBitmap(TDIBImage* ABitmap);
 public:
    __fastcall TImportRaster();
-   __fastcall TImportRaster(TFCustomImage* AImage, const AnsiString& FileName);
+   __fastcall TImportRaster(TPhCustomImage* AImage, const AnsiString& FileName);
    __fastcall ~TImportRaster();
    void __fastcall UpdateUI();
    virtual void __fastcall Execute();
    //properties
    __property TDIBImage*         Bitmap = {read = FBitmap, write = SetBitmap};
    __property AnsiString         FileName = {read = FFileName, write = SetFileName};
-   __property TFCustomImage*     Image = {read = FImage, write = SetImage};
+   __property TPhCustomImage*     Image = {read = FImage, write = SetImage};
 };
 //---------------------------------------------------------------------------
 #endif

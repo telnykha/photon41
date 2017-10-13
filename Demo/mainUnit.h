@@ -7,7 +7,7 @@
 #include <Vcl.Controls.hpp>
 #include <Vcl.StdCtrls.hpp>
 #include <Vcl.Forms.hpp>
-#include "FImage.h"
+#include "FImage41.h"
 #include <Vcl.ComCtrls.hpp>
 #include <Vcl.ExtCtrls.hpp>
 #include <System.Actions.hpp>
@@ -16,6 +16,7 @@
 #include <Vcl.StdActns.hpp>
 #include <Vcl.Dialogs.hpp>
 #include <Vcl.Buttons.hpp>
+#include "PhMediaSource.h"
 //---------------------------------------------------------------------------
 class TmainForm : public TForm
 {
@@ -97,6 +98,7 @@ __published:	// IDE-managed Components
 	TAction *editClearSelectionAction;
 	TMenuItem *N7;
 	TMenuItem *ClearSelection1;
+	TPhMediaSource *PhMediaSource1;
 	void __fastcall fileOpenActionExecute(TObject *Sender);
 	void __fastcall fileSaveActionExecute(TObject *Sender);
 	void __fastcall fileSaveActionUpdate(TObject *Sender);

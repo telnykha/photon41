@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 
-#ifndef DIBImageH
-#define DIBImageH
+#ifndef DIBImage41H
+#define DIBImage41H
 
 #include <Graphics.hpp>
 #include "awpipl.h"

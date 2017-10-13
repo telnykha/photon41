@@ -3,14 +3,10 @@
 #include <vcl.h>
 #include <Clipbrd.hpp>
 #include <math.hpp>
-#include "FImage.h"
-#include "DIBImage.h"
+#include "FImage41.h"
+#include "DIBImage41.h"
 #include "ExportRaster.h"
 #include "ImportRaster.h"
-extern "C"
-{
-	#include "VideoPlayer.h"
-}
 
 #pragma hdrstop
 #pragma package(smart_init)
@@ -31,7 +27,6 @@ extern "C"
     {
       #pragma link "awpipl2b.lib"
       #pragma link "JPEGLIB.lib"
-      #pragma link "VideoPlayer.lib"
       #pragma link "libpng.lib"
       #pragma link "tifflib.lib"
       #pragma link "zlib.lib"
@@ -42,9 +37,9 @@ extern "C"
 // ValidCtrCheck is used to assure that the components created do not have
 // any pure virtual functions.
 //
-static inline void ValidCtrCheck(TFCustomImage *)
+static inline void ValidCtrCheck(TPhCustomImage *)
 {
-    new TFCustomImage(NULL);
+    new TPhCustomImage(NULL);
 }
 //---------------------------------------------------------------------------
 /*
@@ -53,7 +48,7 @@ static inline void ValidCtrCheck(TFCustomImage *)
               устанавливает для внутренних переменныех значения по умолчанию
     Comments:
 */
-__fastcall TFCustomImage::TFCustomImage(TComponent* Owner)
+__fastcall TPhCustomImage::TPhCustomImage(TComponent* Owner)
     : TCustomControl(Owner)
 {
         FBitmap     = new TDIBImage();
@@ -89,14 +84,13 @@ __fastcall TFCustomImage::TFCustomImage(TComponent* Owner)
 
         m_modified = false;
         m_pMediaSource = NULL;
-        createMediaPlayer();
 }
 /* ---------------------------------------------------------------------------
 	Function:  destructor of the  TFCustomImage
 	Purpose:   if we have raster data abs other objects delete them
 	Comments:
 ---------------------------------------------------------------------------*/
-__fastcall TFCustomImage::~TFCustomImage()
+__fastcall TPhCustomImage::~TPhCustomImage()
 {
 	if ( FLocalTool )
 	{
@@ -115,7 +109,7 @@ __fastcall TFCustomImage::~TFCustomImage()
 	изображения. В случае аварии при загрузке нового изображения старое
 	восстанавливается из копии.
 ---------------------------------------------------------------------------*/
-bool  __fastcall TFCustomImage::Init(TStrings* Names)
+bool  __fastcall TPhCustomImage::Init(TStrings* Names)
 {
 
     if (Names == NULL || Names->Count == 0)
@@ -162,7 +156,7 @@ bool  __fastcall TFCustomImage::Init(TStrings* Names)
     Purpose:  Освобождает растровые данные и данные selection
     Comments:
 ---------------------------------------------------------------------------*/
-void __fastcall TFCustomImage::Close()
+void __fastcall TPhCustomImage::Close()
 {
    FScale          = 1;
    FStartPoint.x   = 0;
@@ -176,7 +170,7 @@ void __fastcall TFCustomImage::Close()
    if ( FTool != NULL )
       FTool->Reset();
 }
-void __fastcall     TFCustomImage::Resize(void)
+void __fastcall     TPhCustomImage::Resize(void)
 {
         Paint();
 }
@@ -185,7 +179,7 @@ void __fastcall     TFCustomImage::Resize(void)
     Purpose:  Возвращает масштаб отображаемого изображения
     Comments:
 ---------------------------------------------------------------------------*/
-float __fastcall TFCustomImage::GetScale() const
+float __fastcall TPhCustomImage::GetScale() const
 {
     return RoundTo( FScale*100.0f, -2 );
 }
@@ -199,7 +193,7 @@ float __fastcall TFCustomImage::GetScale() const
               поместилось во внутренней области компонента
     Comments: При этом центр изображения совпадает с центром компонента
 */
-void __fastcall TFCustomImage::BestFit()
+void __fastcall TPhCustomImage::BestFit()
 {
    if (Empty)
       return;
@@ -228,7 +222,7 @@ void __fastcall TFCustomImage::BestFit()
               становится равной ширине клиентской области окна.
     Comments: При этом центр изображения совпадает с центром компонента
 */
-void __fastcall TFCustomImage::FitWidth()
+void __fastcall TPhCustomImage::FitWidth()
 {
     if (Empty)
        return;
@@ -261,7 +255,7 @@ void __fastcall TFCustomImage::FitWidth()
                становится равной высоте клиентской области компонента
     Comments: При этом центр изображения совпадает с центром компонента
 */
-void __fastcall TFCustomImage::FitHeight()
+void __fastcall TPhCustomImage::FitHeight()
 {
    if (Empty)
       return;
@@ -309,7 +303,7 @@ void __fastcall TFCustomImage::FitHeight()
     Purpose:   Устанавливает коэффициент масштабирования в 100%
     Comments:
 */
-void __fastcall TFCustomImage::ActualSize()
+void __fastcall TPhCustomImage::ActualSize()
 {
    if (Empty)
       return;
@@ -328,7 +322,7 @@ void __fastcall TFCustomImage::ActualSize()
                от текущего значения todo:
     Comments:
 */
-void __fastcall TFCustomImage::ZoomIn()
+void __fastcall TPhCustomImage::ZoomIn()
 {
    if ( Empty || FScale > MAX_ZOOM - ZOOM_STEP )
       return;
@@ -383,7 +377,7 @@ void __fastcall TFCustomImage::ZoomIn()
     Purpose:
     Comments:
 */
-void __fastcall TFCustomImage::ZoomOut()
+void __fastcall TPhCustomImage::ZoomOut()
 {
    if (Empty || FScale < MIN_ZOOM + ZOOM_STEP)
       return;
@@ -434,7 +428,7 @@ void __fastcall TFCustomImage::ZoomOut()
     Comments:  todo: определить допустимые пределы изменения переменной
                ZoomFactor
 */
-void __fastcall TFCustomImage::ZoomTo(int in_ZoomFactor)
+void __fastcall TPhCustomImage::ZoomTo(int in_ZoomFactor)
 {
    if (Empty)
       return;
@@ -495,7 +489,7 @@ void __fastcall TFCustomImage::ZoomTo(int in_ZoomFactor)
               клиетской области компонента.
     Comments:
 */
-void __fastcall TFCustomImage::ZoomToRect(const TRect Rect)
+void __fastcall TPhCustomImage::ZoomToRect(const TRect Rect)
 {
    if ( Empty )
       return;
@@ -548,7 +542,7 @@ void __fastcall TFCustomImage::ZoomToRect(const TRect Rect)
     Purpose:   Совмещает центр изображения с центром компонента
     Comments:
 */
-void __fastcall TFCustomImage::MoveToCenter()
+void __fastcall TPhCustomImage::MoveToCenter()
 {
    if (Empty)
       return;
@@ -569,7 +563,7 @@ void __fastcall TFCustomImage::MoveToCenter()
     Comments:   Данная операция применима, если размеры изображения больше
                 размеров клинетской области компонента
 */
-void __fastcall TFCustomImage::MoveToLeftTop()
+void __fastcall TPhCustomImage::MoveToLeftTop()
 {
    if (Empty)
       return;
@@ -590,7 +584,7 @@ void __fastcall TFCustomImage::MoveToLeftTop()
     Comments: Данная операция применима, если размеры изображения больше
               размеров клинетской области компонента
 */
-void __fastcall TFCustomImage::MoveToRightBottom()
+void __fastcall TPhCustomImage::MoveToRightBottom()
 {
    if (Empty)
       return;
@@ -610,7 +604,7 @@ void __fastcall TFCustomImage::MoveToRightBottom()
     Purpose:    Смещает центр изображения на dX,dY
     Comments:
 */
-void __fastcall TFCustomImage::MoveBy(int in_dX, int in_dY)
+void __fastcall TPhCustomImage::MoveBy(int in_dX, int in_dY)
 {
    if (Empty)
       return;
@@ -648,7 +642,7 @@ void __fastcall TFCustomImage::MoveBy(int in_dX, int in_dY)
     Purpose:    Смещает центр изображения в точку (X,Y)
     Comments:
 */
-void __fastcall TFCustomImage::MoveTo(int X, int Y)
+void __fastcall TPhCustomImage::MoveTo(int X, int Y)
 {
    if (Empty)
       return;
@@ -685,7 +679,7 @@ void __fastcall TFCustomImage::MoveTo(int X, int Y)
                 масштабирования.
     Comments:
 */
-int TFCustomImage::GetWidthToDisplay() const
+int TPhCustomImage::GetWidthToDisplay() const
 {
    if ( FBitmap->Width * FScale > Width )
       return Width;
@@ -699,7 +693,7 @@ int TFCustomImage::GetWidthToDisplay() const
                 масштабирования.
     Comments:
 */
-int TFCustomImage::GetHeightToDisplay() const
+int TPhCustomImage::GetHeightToDisplay() const
 {
    if ( FBitmap->Height * FScale > Height )
       return Height;
@@ -713,7 +707,7 @@ int TFCustomImage::GetHeightToDisplay() const
                 представлении, т.е. перевернутую по Y
     Comments:
 */
-TRect __fastcall TFCustomImage::GetInternalVisibleArea()
+TRect __fastcall TPhCustomImage::GetInternalVisibleArea()
 {
     TRect area;
 
@@ -726,7 +720,7 @@ TRect __fastcall TFCustomImage::GetInternalVisibleArea()
     return area;
 }
 
-void   TFCustomImage::DrawSelRect(Graphics::TBitmap *bm)
+void   TPhCustomImage::DrawSelRect(Graphics::TBitmap *bm)
 {
    if (FSelRect.Width() == 0 || FSelRect.Height() == 0)
     return;
@@ -777,7 +771,7 @@ void   TFCustomImage::DrawSelRect(Graphics::TBitmap *bm)
    bm->Canvas->Pen->Mode = mode;
 }
 
-void  __fastcall TFCustomImage::SetSelCols(int num)
+void  __fastcall TPhCustomImage::SetSelCols(int num)
 {
     if (num >= 1 && num <= 16)
     {
@@ -786,7 +780,7 @@ void  __fastcall TFCustomImage::SetSelCols(int num)
     }
 }
 
-void  __fastcall TFCustomImage::SetSelRows(int num)
+void  __fastcall TPhCustomImage::SetSelRows(int num)
 {
     if (num >= 1 && num <= 16)
     {
@@ -795,7 +789,7 @@ void  __fastcall TFCustomImage::SetSelRows(int num)
     }
 }
 
-void __fastcall 	TFCustomImage::ClearSelection()
+void __fastcall 	TPhCustomImage::ClearSelection()
 {
     FSelRect.Left = 0;
     FSelRect.Top = 0;
@@ -804,7 +798,7 @@ void __fastcall 	TFCustomImage::ClearSelection()
     Paint();
 }
 
-bool __fastcall		   TFCustomImage::HasSelection()
+bool __fastcall		   TPhCustomImage::HasSelection()
 {
 	if (FSelRect.Width() == 0 && FSelRect.Height() == 0)
     	return false;
@@ -812,12 +806,12 @@ bool __fastcall		   TFCustomImage::HasSelection()
     	return true;
 }
 
-TRect						TFCustomImage::GetSelRect()
+TRect						TPhCustomImage::GetSelRect()
 {
 	return FSelRect;
 }
 
-void                        TFCustomImage::SetSelRect(TRect r)
+void                        TPhCustomImage::SetSelRect(TRect r)
 {
      FSelRect = r;
      this->Paint();
@@ -829,7 +823,7 @@ void                        TFCustomImage::SetSelRect(TRect r)
 			  в клиентской области компонента
 	Comments:
 */
-void __fastcall TFCustomImage::Paint(void)
+void __fastcall TPhCustomImage::Paint(void)
 {
 	if (FBitmap != NULL)
 	{
@@ -895,7 +889,7 @@ void __fastcall TFCustomImage::Paint(void)
 
 /*  ----------------------------------------------------------
 */
-int __fastcall TFCustomImage::GetImageX(int ScreenX)
+int __fastcall TPhCustomImage::GetImageX(int ScreenX)
 {
    if (FBitmap == NULL)
     return -1;
@@ -924,7 +918,7 @@ int __fastcall TFCustomImage::GetImageX(int ScreenX)
 
 /*  ----------------------------------------------------------
 */
-int __fastcall TFCustomImage::GetImageY( int ScreenY )
+int __fastcall TPhCustomImage::GetImageY( int ScreenY )
 {
    if (FBitmap == NULL)
     return -1;
@@ -954,7 +948,7 @@ int __fastcall TFCustomImage::GetImageY( int ScreenY )
 
 /*  ----------------------------------------------------------
 */
-TRect __fastcall TFCustomImage::GetImageRect(TRect ScreenR)
+TRect __fastcall TPhCustomImage::GetImageRect(TRect ScreenR)
 {
     TRect ImageR = TRect(-1, -1, -1, -1);
 
@@ -968,7 +962,7 @@ TRect __fastcall TFCustomImage::GetImageRect(TRect ScreenR)
 
     return ImageR;
 }
-TPoint   __fastcall         TFCustomImage::GetScreenPoint(int x, int y)
+TPoint   __fastcall         TPhCustomImage::GetScreenPoint(int x, int y)
 {
      TPoint result;
      result.x = 0;
@@ -989,7 +983,7 @@ TPoint   __fastcall         TFCustomImage::GetScreenPoint(int x, int y)
 
     return result;
 }
-TRect	 __fastcall  		TFCustomImage::GetScreenRect(TRect ImageR)
+TRect	 __fastcall  		TPhCustomImage::GetScreenRect(TRect ImageR)
 {
    TRect ScreenR = TRect(-1, -1, -1, -1);
 
@@ -1016,7 +1010,7 @@ TRect	 __fastcall  		TFCustomImage::GetScreenRect(TRect ImageR)
     Purpose:    Вычисляет видимую область изображения
     Comments:
 */
-TRect __fastcall TFCustomImage::GetVisibleArea() const
+TRect __fastcall TPhCustomImage::GetVisibleArea() const
 {
     TRect area;
 
@@ -1039,7 +1033,7 @@ TRect __fastcall TFCustomImage::GetVisibleArea() const
     Purpose:
     Comments:
 ---------------------------------------------------------------------------*/
-void __fastcall TFCustomImage::SetBorderStyle(TFBorderStyle Value)
+void __fastcall TPhCustomImage::SetBorderStyle(TFBorderStyle Value)
 {
   if (FBorderStyle != Value)
   {
@@ -1052,7 +1046,7 @@ void __fastcall TFCustomImage::SetBorderStyle(TFBorderStyle Value)
     Purpose:
     Comments:
 ---------------------------------------------------------------------------*/
-void __fastcall TFCustomImage::CreateParams(Controls::TCreateParams &Params)
+void __fastcall TPhCustomImage::CreateParams(Controls::TCreateParams &Params)
 {
   TCustomControl::CreateParams(Params);
     if (FBorderStyle == bsFSingle)
@@ -1071,7 +1065,7 @@ void __fastcall TFCustomImage::CreateParams(Controls::TCreateParams &Params)
               объект в состояние Loading.
     Comments:
 ---------------------------------------------------------------------------*/
-bool  __fastcall TFCustomImage::LoadFromFile(const char* lpFileName)
+bool  __fastcall TPhCustomImage::LoadFromFile(const char* lpFileName)
 {
       awpImage* tmp = NULL;
       AnsiString strExt = ExtractFileExt(lpFileName);
@@ -1112,7 +1106,7 @@ bool  __fastcall TFCustomImage::LoadFromFile(const char* lpFileName)
     Purpose:  Save image to file.
     Comments: Default save image in JPEG format
 ---------------------------------------------------------------------------*/
-void __fastcall TFCustomImage::SaveToFile(const AnsiString& FileName)
+void __fastcall TPhCustomImage::SaveToFile(const AnsiString& FileName)
 {
         AnsiString strExt = ExtractFileExt(FileName);
         AnsiString strFileName = FileName;
@@ -1151,7 +1145,7 @@ void __fastcall TFCustomImage::SaveToFile(const AnsiString& FileName)
     Purpose:  Импортирует изображение из буфера обмена.
     Comments:
 ---------------------------------------------------------------------------*/
-void __fastcall TFCustomImage::LoadFromClipboard()
+void __fastcall TPhCustomImage::LoadFromClipboard()
 {
    FBitmap->Assign(Clipboard());
    this->m_modified = true;
@@ -1165,7 +1159,7 @@ void __fastcall TFCustomImage::LoadFromClipboard()
     Purpose: Записывает изображение в буфер обмена
     Comments:
 ---------------------------------------------------------------------------*/
-void __fastcall TFCustomImage::SaveToClipBoard()
+void __fastcall TPhCustomImage::SaveToClipBoard()
 {
    if (!Empty)
       Clipboard()->Assign(FBitmap);
@@ -1175,7 +1169,7 @@ void __fastcall TFCustomImage::SaveToClipBoard()
     Purpose:
     Comments:
 ---------------------------------------------------------------------------*/
-bool __fastcall TFCustomImage::GetModified()
+bool __fastcall TPhCustomImage::GetModified()
 {
         return this->m_modified;
 }
@@ -1184,7 +1178,7 @@ bool __fastcall TFCustomImage::GetModified()
     Purpose:    Смещение центра изображения относительно центра компонента.
     Comments:
 ---------------------------------------------------------------------------*/
-TPoint __fastcall TFCustomImage::GetCorner() const
+TPoint __fastcall TPhCustomImage::GetCorner() const
 {
    TPoint C( -1, -1 );
 
@@ -1204,7 +1198,7 @@ TPoint __fastcall TFCustomImage::GetCorner() const
     Purpose:
     Comments:
 ---------------------------------------------------------------------------*/
-bool __fastcall TFCustomImage::GetEmpty() const
+bool __fastcall TPhCustomImage::GetEmpty() const
 {
     try
     {
@@ -1219,7 +1213,7 @@ bool __fastcall TFCustomImage::GetEmpty() const
     }
 }
 
-void __fastcall  TFCustomImage::SetEmpty(bool value)
+void __fastcall  TPhCustomImage::SetEmpty(bool value)
 {
     if (FBitmap != NULL)
     {
@@ -1232,12 +1226,12 @@ void __fastcall  TFCustomImage::SetEmpty(bool value)
     }
 }
 //---------------------------------------------------------------------------
-void __fastcall TFCustomImage::DlgMessage( TWMGetDlgCode &Message )
+void __fastcall TPhCustomImage::DlgMessage( TWMGetDlgCode &Message )
 {
     Message.Result = DLGC_WANTARROWS;
 }
 //---------------------------------------------------------------------------
-void __fastcall TFCustomImage::KeyDown(Word &Key, Classes::TShiftState Shift)
+void __fastcall TPhCustomImage::KeyDown(Word &Key, Classes::TShiftState Shift)
 {
     int step = 3;
     if ( Shift.Contains( ssCtrl ) )
@@ -1292,7 +1286,7 @@ void __fastcall TFCustomImage::KeyDown(Word &Key, Classes::TShiftState Shift)
 }
 
 //---------------------------------------------------------------------------
-bool __fastcall TFCustomImage::DoMouseWheel(System::Classes::TShiftState Shift, int WheelDelta, const System::Types::TPoint &MousePos)
+bool __fastcall TPhCustomImage::DoMouseWheel(System::Classes::TShiftState Shift, int WheelDelta, const System::Types::TPoint &MousePos)
 {
 	if (WheelDelta > 0)
     {
@@ -1304,7 +1298,7 @@ bool __fastcall TFCustomImage::DoMouseWheel(System::Classes::TShiftState Shift, 
     }
     return true;
 }
-bool  __fastcall TFCustomImage::DoMouseWheelUp(TShiftState Shift, const TPoint &MousePos)
+bool  __fastcall TPhCustomImage::DoMouseWheelUp(TShiftState Shift, const TPoint &MousePos)
 {
    ZoomIn();
 
@@ -1313,7 +1307,7 @@ bool  __fastcall TFCustomImage::DoMouseWheelUp(TShiftState Shift, const TPoint &
 }
 //---------------------------------------------------------------------------
 
-bool  __fastcall TFCustomImage::DoMouseWheelDown(TShiftState Shift, const TPoint &MousePos)
+bool  __fastcall TPhCustomImage::DoMouseWheelDown(TShiftState Shift, const TPoint &MousePos)
 {
    ZoomOut();
 
@@ -1321,7 +1315,7 @@ bool  __fastcall TFCustomImage::DoMouseWheelDown(TShiftState Shift, const TPoint
    return true;
 }
 //---------------------------------------------------------------------------
-void __fastcall TFCustomImage::MouseDown(TMouseButton Button,  TShiftState Shift, Integer X, Integer Y)
+void __fastcall TPhCustomImage::MouseDown(TMouseButton Button,  TShiftState Shift, Integer X, Integer Y)
 {
    SetFocus();
    if (FTool != NULL)
@@ -1329,14 +1323,14 @@ void __fastcall TFCustomImage::MouseDown(TMouseButton Button,  TShiftState Shift
    TCustomControl::MouseDown(Button, Shift,X,Y);
 }
 //---------------------------------------------------------------------------
-void __fastcall TFCustomImage::MouseMove( TShiftState Shift, Integer X, Integer Y)
+void __fastcall TPhCustomImage::MouseMove( TShiftState Shift, Integer X, Integer Y)
 {
    if (FTool != NULL)
         FTool->MouseMove(X,Y, Shift);
     TCustomControl::MouseMove(Shift,X,Y);
 }
 //---------------------------------------------------------------------------
-void __fastcall TFCustomImage::MouseUp(TMouseButton Button,  TShiftState Shift, Integer X, Integer Y)
+void __fastcall TPhCustomImage::MouseUp(TMouseButton Button,  TShiftState Shift, Integer X, Integer Y)
 {
    if (FTool != NULL)
         FTool->MouseUp(X,Y, Button);
@@ -1345,7 +1339,7 @@ void __fastcall TFCustomImage::MouseUp(TMouseButton Button,  TShiftState Shift, 
 
 //---------------------------------------------------------------------------
 
-void __fastcall TFCustomImage::SetImageTool(TImageTool* in_Tool)
+void __fastcall TPhCustomImage::SetImageTool(TImageTool* in_Tool)
 {
     if ( FLocalTool )
         delete FTool;
@@ -1357,17 +1351,17 @@ void __fastcall TFCustomImage::SetImageTool(TImageTool* in_Tool)
         in_Tool->FImage = this;
 }
 
-void __fastcall TFCustomImage::SetImage(TGraphic* aBitmap)
+void __fastcall TPhCustomImage::SetImage(TGraphic* aBitmap)
 {
     TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
     dib->Assign(aBitmap);
 }
 
-void __fastcall  TFCustomImage::SetCurrentTool(TFTools Value)
+void __fastcall  TPhCustomImage::SetCurrentTool(TFTools Value)
 {
      if (Value == FCurrentTool)
         return;
-     TFCustomImage* FImage = this;
+     TPhCustomImage* FImage = this;
 
      FCurrentTool = Value;
      if (FTool != NULL)
@@ -1423,7 +1417,7 @@ void __fastcall  TFCustomImage::SetCurrentTool(TFTools Value)
 		FToolChange(this);
 }
 
-int	 __fastcall TFCustomImage::GetSelectedIndex()
+int	 __fastcall TPhCustomImage::GetSelectedIndex()
 {
 	TThumbSelectTool* tool = dynamic_cast<TThumbSelectTool*>(FTool);
 	if (tool != NULL)
@@ -1432,11 +1426,22 @@ int	 __fastcall TFCustomImage::GetSelectedIndex()
 		return -1;
 }
 
+void __fastcall TPhCustomImage::SetMediaSource(TPhMediaSource* source)
+{
+        if (source == NULL)
+                this->m_pMediaSource->SetDisplay(NULL);
+
+        this->m_pMediaSource = source;
+        if (source != NULL)
+	        m_pMediaSource->SetDisplay(this);
+}
+
+
 void TPhImage::foo()
 {}
 
 //------------------------------- Video Source ---------------------------------
-TMediaSource::TMediaSource(TFCustomImage* Display)
+TMediaSource::TMediaSource(TPhCustomImage* Display)
 {
 
    m_FrameCount = 0;
@@ -1444,7 +1449,10 @@ TMediaSource::TMediaSource(TFCustomImage* Display)
    m_media_type = vsNone;
 
 }
-
+TMediaSource::~TMediaSource()
+{
+}
+/*
 bool __fastcall TMediaSource::GetIsInitialized()
 {
        return false;
@@ -1453,10 +1461,10 @@ bool __fastcall TMediaSource::GetIsInitialized()
 bool __fastcall TMediaSource::GetIsPreview()
 {
        return false;
-}
+}*/
 
 //-------------------------------- Slide Show ----------------------------------
-TSlideShow::TSlideShow(TFCustomImage* Display):TMediaSource(Display)
+TSlideShow::TSlideShow(TPhCustomImage* Display):TMediaSource(Display)
 {
   m_FileNames = NULL;
   m_Timer     = new TTimer(NULL);
@@ -1507,7 +1515,7 @@ void __fastcall TSlideShow::TimerEventHandler(TObject *Sender)
    if (m_LastVideoFrame >= m_FileNames->Count)
    {
        m_LastVideoFrame = 0;
-       this->IsPaused = true;
+      // this->IsPaused = true;
       // m_pDisplay->IsPaused = true;
    }
    DecodeVideoFrame(m_LastVideoFrame);
@@ -1546,11 +1554,11 @@ void __fastcall TSlideShow::SetIsPreview(bool Value)
 void __fastcall TSlideShow::SetIsPaused(bool Value)
 {
     m_Timer->Enabled = !Value;
-    m_IsPaused = !m_Timer->Enabled;
+   // m_IsPaused = !m_Timer->Enabled;
 }
 //----------------------------- FFMEG Video ------------------------------------
 
-TFFMPEGVideo::TFFMPEGVideo(TFCustomImage* Display):TMediaSource(Display)
+TFFMPEGVideo::TFFMPEGVideo(TPhCustomImage* Display):TMediaSource(Display)
 {
     m_handler = NULL;
     m_Timer     = new TTimer(NULL);
@@ -1558,7 +1566,7 @@ TFFMPEGVideo::TFFMPEGVideo(TFCustomImage* Display):TMediaSource(Display)
     m_Timer->Interval = 10;
     m_currentFrame  = 0;
     m_Timer->OnTimer =  TimerEventHandler;
-    m_IsPaused = true;
+  //  m_IsPaused = true;
 }
 TFFMPEGVideo::~TFFMPEGVideo()
 {
@@ -1612,7 +1620,7 @@ void __fastcall TFFMPEGVideo::SetIsPreview(bool Value)
 void __fastcall TFFMPEGVideo::SetIsPaused(bool Value)
 {
 //    m_Timer->Enabled = !Value;
-    m_IsPaused = !m_Timer->Enabled;
+   // m_IsPaused = !m_Timer->Enabled;
 }
 
 void __fastcall TFFMPEGVideo::TimerEventHandler(TObject *Sender)
@@ -1698,7 +1706,7 @@ bool __fastcall TFFMPEGVideo::DecodeVideoFrame(int num, bool update_null_time)
     return true;
 }
 
-TImageTool::TImageTool(TFCustomImage* aImage)
+TImageTool::TImageTool(TPhCustomImage* aImage)
 {
     FImage = aImage;
 }
@@ -1707,7 +1715,7 @@ TImageTool::~TImageTool()
 
 }
 
-TPaneTool::TPaneTool(TFCustomImage* aImage) : TImageTool(aImage)
+TPaneTool::TPaneTool(TPhCustomImage* aImage) : TImageTool(aImage)
 {
     mX = 0;
     mY = 0;
@@ -1778,7 +1786,7 @@ AnsiString TPaneTool::GetName()
 	return "Pane/Zoom";
 }
 //-------------------------------
-TZoomToRectTool::TZoomToRectTool(TFCustomImage* aImage):TImageTool(aImage)
+TZoomToRectTool::TZoomToRectTool(TPhCustomImage* aImage):TImageTool(aImage)
 {
    FImage = aImage;
    Pressed = false;
@@ -1879,7 +1887,7 @@ AnsiString TZoomToRectTool::GetName()
 	return "Zoom to rect";
 }
 
-TSelRectTool::TSelRectTool(TFCustomImage* aImage):TImageTool(aImage)
+TSelRectTool::TSelRectTool(TPhCustomImage* aImage):TImageTool(aImage)
 {
    FImage = aImage;
    Pressed = false;
@@ -2042,7 +2050,7 @@ bool in_Rect ( const TRect* r, int X, int Y )
 }
 
 // -------------------------------------------------------------------
-TLenzTool::TLenzTool(TFCustomImage* aImage):TImageTool(aImage)
+TLenzTool::TLenzTool(TPhCustomImage* aImage):TImageTool(aImage)
 {
    Zoom        = 2;
    LenzSize    = 200;
@@ -2159,7 +2167,7 @@ AnsiString TLenzTool::GetName()
 	return "Lenz";
 }
 
-TThumbSelectTool::TThumbSelectTool(TFCustomImage* aImage, int numThumbs, int tWidth, int tHeight):TImageTool(aImage)
+TThumbSelectTool::TThumbSelectTool(TPhCustomImage* aImage, int numThumbs, int tWidth, int tHeight):TImageTool(aImage)
 {
 	m_numThumbs = numThumbs;
 	m_tWidth 	= tWidth;
@@ -2332,7 +2340,7 @@ AnsiString TThumbSelectTool::GetName()
 }
 
 //---------------------------------------------------------------------------
-namespace Fimage
+namespace Fimage41
 {
 
 	void __fastcall PACKAGE Register    ()

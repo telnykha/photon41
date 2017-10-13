@@ -6,8 +6,8 @@
 // version 3.0
 // version 4.0
 // Alt-Soft.Net (c) 2004-2017
-#ifndef FImageH
-#define FImageH
+#ifndef FImage41H
+#define FImage41H
 
 //---------------------------------------------------------------------------
 #include <SysUtils.hpp>
@@ -16,6 +16,7 @@
 #include <ExtCtrls.hpp>
 #include <vfw.h>
 #include <ExtCtrls.hpp>
+#include "PhMediaSource.h"
 
 const int crHandOpenCursor  = 1;
 const int crHandCloseCursor = 2;
@@ -33,14 +34,15 @@ typedef enum  {ftNone, ftPane,  ftZoomToRect, ftLenz, ftSelRect, ftSelPixel, ftT
 
 // forward declarations
 class PACKAGE TImageTool;
-class PACKAGE TMediaSource;
 
-//TFCustomImage--------------------------------------------------------------------
-//TFCostomImage extends the TCustomControl component
-class PACKAGE TFCustomImage : public TCustomControl
+//TPhCustomImage--------------------------------------------------------------------
+//TPhCustomImage extends the TCustomControl component
+class PACKAGE TPhCustomImage : public TCustomControl
 {
 friend class TSelRectTool;
 protected:
+    // Media source
+    TPhMediaSource*             m_pMediaSource;
 
     TGraphic*                   FBitmap;
     double                      FScale;      // scale coefficient
@@ -110,16 +112,14 @@ protected:
     void __fastcall  	    	SetCurrentTool(TFTools Value);
     void __fastcall         	SetImageTool(TImageTool* pTool);
 
-    // Media source
-    // todo:
-    TMediaSource*               m_pMediaSource;
     // Close
     virtual void __fastcall             Close();
+    void __fastcall SetMediaSource(TPhMediaSource* source);
 
 public:
 
-    __fastcall                  TFCustomImage(TComponent* Owner);
-    __fastcall virtual          ~TFCustomImage();
+    __fastcall                  TPhCustomImage(TComponent* Owner);
+    __fastcall virtual          ~TPhCustomImage();
 
     // ====================operations========================================
     virtual bool __fastcall             Init(TStrings* Names);
@@ -174,12 +174,15 @@ public:
    __property  int ObjectsCount = {read = m_Count, write = m_Count};
    // inherited properties
    __property Canvas;
+
+    __property TPhMediaSource* MediaSource = {read = m_pMediaSource, write = SetMediaSource};
 __published:
    //
     __property TFBorderStyle     BorderStyle = {read = FBorderStyle, write = SetBorderStyle};
-    __property TFTools CurrentTool = {read = FCurrentTool, write = SetCurrentTool};
-    __property int ThumbWidht      = {read  = m_tWidth,  write = m_tWidth};
-    __property int ThumbHeight     = {read = m_tHeight, write = m_tHeight};
+    __property TFTools CurrentTool 	   = {read = FCurrentTool, write = SetCurrentTool};
+    __property int ThumbWidht      	   = {read  = m_tWidth,  write = m_tWidth};
+    __property int ThumbHeight     	   = {read = m_tHeight, write = m_tHeight};
+
 
    // наследуемые свойства
     __property Align;
@@ -215,21 +218,22 @@ __published:
     __property TNotifyEvent     OnToolChange = {read = FToolChange, write = FToolChange};
 };
 //-------------------------- export TPhImage -------------------------------------
-class PACKAGE TPhImage : public TFCustomImage
+class PACKAGE TPhImage : public TPhCustomImage
 {
 	virtual void foo();
 __published:
     __property TFBorderStyle     BorderStyle = {read = FBorderStyle, write = SetBorderStyle};
+    __property MediaSource;
 };
 
 // abstract image tool
 class PACKAGE TImageTool
 {
-friend class TFCustomImage;
+friend class TPhCustomImage;
 protected:
-	TFCustomImage* FImage;
+	TPhCustomImage* FImage;
 public:
-	TImageTool(TFCustomImage* aImage);
+	TImageTool(TPhCustomImage* aImage);
 	virtual ~TImageTool();
 	// methods
 	virtual void Draw(TCanvas* Canvas) = 0;
@@ -247,7 +251,7 @@ private:
 	int mY;
 	bool Pressed;
 public:
-	TPaneTool(TFCustomImage* aImage);
+	TPaneTool(TPhCustomImage* aImage);
 	virtual void Draw(TCanvas* Canvas);
 	virtual void MouseDown(int X, int Y, TMouseButton Button = mbLeft);
     virtual void MouseUp(int X, int Y, TMouseButton Button = mbLeft);
@@ -264,7 +268,7 @@ private:
     void DrawSelRect();
     bool Pressed;
 public:
-    TZoomToRectTool(TFCustomImage* aImage);
+    TZoomToRectTool(TPhCustomImage* aImage);
     virtual void Draw(TCanvas* Canvas);
     virtual void MouseDown(int X, int Y, TMouseButton Button = mbLeft);
     virtual void MouseUp(int X, int Y, TMouseButton Button = mbLeft);
@@ -276,7 +280,7 @@ public:
 class PACKAGE TLenzTool : public TImageTool
 {
 private:
-    TFCustomImage       *FImage;
+    TPhCustomImage       *FImage;
     float               Zoom;
     int                 LenzSize;
     bool                Applied;
@@ -284,7 +288,7 @@ private:
     void                ApplyLenz(int X, int Y);
 
 public:
-    TLenzTool(TFCustomImage* aImage);
+    TLenzTool(TPhCustomImage* aImage);
     ~TLenzTool();
 
     virtual void Draw(TCanvas* Canvas);
@@ -304,7 +308,7 @@ private:
     int   m_numCols;
     int   m_numRows;
 public:
-    TSelRectTool(TFCustomImage* aImage);
+    TSelRectTool(TPhCustomImage* aImage);
     virtual void Draw(TCanvas* Canvas);
     virtual void MouseDown(int X, int Y, TMouseButton Button = mbLeft);
     virtual void MouseUp(int X, int Y, TMouseButton Button = mbLeft);
@@ -331,7 +335,7 @@ protected:
 
 	 bool GetSelected(int index);
 public:
-	TThumbSelectTool(TFCustomImage* aImage,  int numThumbs, int tWidth, int tHeight);
+	TThumbSelectTool(TPhCustomImage* aImage,  int numThumbs, int tWidth, int tHeight);
 	virtual ~TThumbSelectTool();
 
 	virtual void Draw(TCanvas* Canvas);
@@ -379,7 +383,7 @@ protected:
     /*
         media display tool
     */
-    TFCustomImage* m_pDisplay;
+    TPhCustomImage* m_pDisplay;
     virtual bool __fastcall DecodeVideoFrame(double frameTime) = 0;
 
     /*
@@ -389,7 +393,7 @@ protected:
     virtual void __fastcall SetMediaState(EMediaState value) = 0;
 
 public:
-    TMediaSource(TFCustomImage* Display);
+    TMediaSource(TPhCustomImage* Display);
     virtual ~TMediaSource();
 
     virtual void __fastcall Init(TStrings* Names)= 0;
@@ -416,7 +420,7 @@ protected:
     virtual EMediaState  __fastcall GetMediaState();
     virtual void __fastcall SetMediaState(EMediaState value);
 public:
-    TNullMediaSource(TFCustomImage* Display);
+    TNullMediaSource(TPhCustomImage* Display);
     virtual ~TNullMediaSource();
 
     virtual void __fastcall Init(TStrings* Names);
@@ -436,7 +440,7 @@ protected:
     virtual EMediaState  __fastcall GetMediaState();
     virtual void __fastcall SetMediaState(EMediaState value);
 public:
-    TImageMediaSource(TFCustomImage* Display);
+    TImageMediaSource(TPhCustomImage* Display);
     virtual ~TImageMediaSource();
 
     virtual void __fastcall Init(TStrings* Names);
@@ -462,7 +466,7 @@ protected:
     void __fastcall         TimerEventHandler(TObject *Sender);
     virtual bool __fastcall DecodeVideoFrame(int num, bool update_null_time = false);
 public:
-    TSlideShow(TFCustomImage* Display);
+    TSlideShow(TPhCustomImage* Display);
     ~TSlideShow();
     //Инициализация объекта
     virtual void __fastcall Initialize(TStrings* Names);
@@ -483,7 +487,7 @@ protected:
     virtual bool __fastcall DecodeVideoFrame(int num, bool update_null_time = false);
 
 public:
-    TFFMPEGVideo(TFCustomImage* Display);
+    TFFMPEGVideo(TPhCustomImage* Display);
     ~TFFMPEGVideo();
 
     //Инициализация объекта

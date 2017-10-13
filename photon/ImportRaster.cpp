@@ -72,7 +72,7 @@ __fastcall TImportRaster::TImportRaster()
     Purpose:   онструктор класса TImportRaster
     Comments: »нициализирует внутренние переменные
 ---------------------------------------------------------------------------*/
-__fastcall TImportRaster::TImportRaster(TFCustomImage* AImage, const AnsiString& FileName)
+__fastcall TImportRaster::TImportRaster(TPhCustomImage* AImage, const AnsiString& FileName)
 {
     Image = AImage;
     SetFileName(FileName); 
@@ -234,7 +234,7 @@ void __fastcall TImportRaster::SetFileName(AnsiString FileName)
     Comments:  ”становка этой переменной недопустима во врем€ выполнени€
               нитки
 ---------------------------------------------------------------------------*/
-void __fastcall TImportRaster::SetImage(TFCustomImage* AImage)
+void __fastcall TImportRaster::SetImage(TPhCustomImage* AImage)
 {
    if (AImage != NULL && AImage != FImage)
    {

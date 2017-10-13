@@ -104,21 +104,25 @@
             <BuildOrder>2</BuildOrder>
             <PCH>true</PCH>
         </PCHCompile>
-        <CppCompile Include="photon\DIBImage.cpp">
-            <DependentOn>photon\DIBImage.h</DependentOn>
-            <BuildOrder>8</BuildOrder>
+        <CppCompile Include="photon\DIBImage41.cpp">
+            <DependentOn>photon\DIBImage41.h</DependentOn>
+            <BuildOrder>9</BuildOrder>
         </CppCompile>
         <CppCompile Include="photon\ExportRaster.cpp">
             <DependentOn>photon\ExportRaster.h</DependentOn>
             <BuildOrder>9</BuildOrder>
         </CppCompile>
-        <CppCompile Include="photon\FImage.cpp">
-            <DependentOn>photon\FImage.h</DependentOn>
-            <BuildOrder>9</BuildOrder>
+        <CppCompile Include="photon\FImage41.cpp">
+            <DependentOn>photon\FImage41.h</DependentOn>
+            <BuildOrder>10</BuildOrder>
         </CppCompile>
         <CppCompile Include="photon\ImportRaster.cpp">
             <DependentOn>photon\ImportRaster.h</DependentOn>
             <BuildOrder>6</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="photon\PhMediaSource.cpp">
+            <DependentOn>photon\PhMediaSource.h</DependentOn>
+            <BuildOrder>11</BuildOrder>
         </CppCompile>
         <CppCompile Include="photon\pnglibio.cpp">
             <DependentOn>photon\pnglibio.h</DependentOn>

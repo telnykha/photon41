@@ -3,7 +3,7 @@
 #ifndef ExportRasterH
 #define ExportRasterH
 //---------------------------------------------------------------------------
-#include "DIBImage.h"
+#include "DIBImage41.h"
 void saveToJpeg( char* filename, TDIBImage* FBitmap);
 void saveToTiff( char* filename, TDIBImage* FBitmap);
 void saveToPng( char* filename, TDIBImage* FBitmap);
