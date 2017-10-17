@@ -34,15 +34,18 @@ typedef enum  {ftNone, ftPane,  ftZoomToRect, ftLenz, ftSelRect, ftSelPixel, ftT
 
 // forward declarations
 class PACKAGE TImageTool;
-
+class PACKAGE TPhImageTool;
 //TPhCustomImage--------------------------------------------------------------------
 //TPhCustomImage extends the TCustomControl component
 class PACKAGE TPhCustomImage : public TCustomControl
 {
 friend class TSelRectTool;
+friend class TPhImageTool;
 protected:
     // Media source
     TPhMediaSource*             m_pMediaSource;
+	// PhImageTools
+	TList*                  	m_ph_tools;
 
     TGraphic*                   FBitmap;
     double                      FScale;      // scale coefficient
@@ -110,9 +113,14 @@ protected:
     TFTools                 	FCurrentTool;
     TImageTool*             	FTool;
     void __fastcall  	    	SetCurrentTool(TFTools Value);
-    void __fastcall         	SetImageTool(TImageTool* pTool);
+	void __fastcall         	SetImageTool(TImageTool* pTool);
 
-    // Close
+	// ph_tools
+	int                			m_selected_ph_tool;
+	void __fastcall         	AddPhTool(TPhImageTool* tool);
+	void __fastcall             RemovePhTool(TPhImageTool* tool);
+	TPhImageTool* __fastcall    GetSelectedTool();
+	// Close
     virtual void __fastcall             Close();
     void __fastcall SetMediaSource(TPhMediaSource* source);
 
@@ -142,9 +150,9 @@ public:
     void __fastcall         	ZoomToRect(const TRect Rect);
     void __fastcall             ZoomTo(int ZoomFactor);
 
-    // pane commands
+	// pane commands
     void __fastcall             MoveToCenter();
-    void __fastcall             MoveToLeftTop();
+	void __fastcall             MoveToLeftTop();
     void __fastcall         	MoveToRightBottom();
     void __fastcall             MoveTo(int X, int Y);
     void __fastcall             MoveBy(int dX, int dY);
@@ -158,13 +166,17 @@ public:
     int __fastcall              GetImageY(int ScreenY);
     TRect    __fastcall         GetImageRect(TRect ScreenR);
     TRect    __fastcall    	GetScreenRect(TRect ImageR);
-    TPoint   __fastcall         GetScreenPoint(int x, int y);
+	TPoint   __fastcall         GetScreenPoint(int x, int y);
+
+	//tools
+	void __fastcall             SelectPhTool(TPhImageTool* tool);
+
     // Public properties
     __property  TImageTool*     Tool = {read = FTool, write = SetImageTool};
     __property  AnsiString      AFileName = {read = FFileName, write = FFileName};
     __property  TGraphic*       Bitmap = {read = FBitmap, write = SetImage};
     __property  int             SelCols = {read = FSelCols, write = SetSelCols};
-    __property  int             SelRows = {read = FSelRows, write = SetSelRows};
+	__property  int             SelRows = {read = FSelRows, write = SetSelRows};
     __property  bool            Modified = {read = GetModified};
     __property  bool            Empty = {read = GetEmpty, write = SetEmpty};
 
@@ -175,7 +187,8 @@ public:
    // inherited properties
    __property Canvas;
 
-    __property TPhMediaSource* MediaSource = {read = m_pMediaSource, write = SetMediaSource};
+	__property TPhMediaSource* MediaSource = {read = m_pMediaSource, write = SetMediaSource};
+	__property TPhImageTool*   PhTool = {read = GetSelectedTool};
 __published:
    //
     __property TFBorderStyle     BorderStyle = {read = FBorderStyle, write = SetBorderStyle};
@@ -241,7 +254,7 @@ public:
 	virtual void MouseUp(int X, int Y, TMouseButton Button = mbLeft)   = 0;
 	virtual void MouseMove(int X, int Y, TShiftState Shift) = 0;
 	virtual void Reset() = 0;
-        virtual AnsiString GetName() = 0;
+	virtual AnsiString GetName() = 0;
 };
 // Zoom/pane tool
 class PACKAGE TPaneTool : public TImageTool

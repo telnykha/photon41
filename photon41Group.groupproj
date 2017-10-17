@@ -12,14 +12,8 @@
         <Projects Include="photon\tiff-v3.4\tifflib.cbproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="..\VideoA2\VideoA\VideoAnalytics\jpeg-6b\borland\JPEGLIB.cbproj">
-            <Dependencies/>
-        </Projects>
-        <Projects Include="..\VideoA2\VideoA\VideoAnalytics\awpipl2\borland\awpipl2b.cbproj">
-            <Dependencies/>
-        </Projects>
         <Projects Include="photon41.cbproj">
-            <Dependencies>photon\zlib\zlib.cbproj;photon\libpng\libpng.cbproj;photon\tiff-v3.4\tifflib.cbproj;..\VideoA2\VideoA\VideoAnalytics\jpeg-6b\borland\JPEGLIB.cbproj;..\VideoA2\VideoA\VideoAnalytics\awpipl2\borland\awpipl2b.cbproj</Dependencies>
+            <Dependencies>photon\zlib\zlib.cbproj;photon\libpng\libpng.cbproj;photon\tiff-v3.4\tifflib.cbproj</Dependencies>
         </Projects>
         <Projects Include="Demo\PhotonDemo.cbproj">
             <Dependencies>photon41.cbproj</Dependencies>
@@ -59,31 +53,13 @@
     <Target Name="tifflib:Make">
         <MSBuild Projects="photon\tiff-v3.4\tifflib.cbproj" Targets="Make"/>
     </Target>
-    <Target Name="JPEGLIB">
-        <MSBuild Projects="..\VideoA2\VideoA\VideoAnalytics\jpeg-6b\borland\JPEGLIB.cbproj"/>
-    </Target>
-    <Target Name="JPEGLIB:Clean">
-        <MSBuild Projects="..\VideoA2\VideoA\VideoAnalytics\jpeg-6b\borland\JPEGLIB.cbproj" Targets="Clean"/>
-    </Target>
-    <Target Name="JPEGLIB:Make">
-        <MSBuild Projects="..\VideoA2\VideoA\VideoAnalytics\jpeg-6b\borland\JPEGLIB.cbproj" Targets="Make"/>
-    </Target>
-    <Target Name="awpipl2b">
-        <MSBuild Projects="..\VideoA2\VideoA\VideoAnalytics\awpipl2\borland\awpipl2b.cbproj"/>
-    </Target>
-    <Target Name="awpipl2b:Clean">
-        <MSBuild Projects="..\VideoA2\VideoA\VideoAnalytics\awpipl2\borland\awpipl2b.cbproj" Targets="Clean"/>
-    </Target>
-    <Target Name="awpipl2b:Make">
-        <MSBuild Projects="..\VideoA2\VideoA\VideoAnalytics\awpipl2\borland\awpipl2b.cbproj" Targets="Make"/>
-    </Target>
-    <Target Name="photon41" DependsOnTargets="zlib;libpng;tifflib;JPEGLIB;awpipl2b">
+    <Target Name="photon41" DependsOnTargets="zlib;libpng;tifflib">
         <MSBuild Projects="photon41.cbproj"/>
     </Target>
-    <Target Name="photon41:Clean" DependsOnTargets="zlib:Clean;libpng:Clean;tifflib:Clean;JPEGLIB:Clean;awpipl2b:Clean">
+    <Target Name="photon41:Clean" DependsOnTargets="zlib:Clean;libpng:Clean;tifflib:Clean">
         <MSBuild Projects="photon41.cbproj" Targets="Clean"/>
     </Target>
-    <Target Name="photon41:Make" DependsOnTargets="zlib:Make;libpng:Make;tifflib:Make;JPEGLIB:Make;awpipl2b:Make">
+    <Target Name="photon41:Make" DependsOnTargets="zlib:Make;libpng:Make;tifflib:Make">
         <MSBuild Projects="photon41.cbproj" Targets="Make"/>
     </Target>
     <Target Name="PhotonDemo" DependsOnTargets="photon41">
@@ -96,13 +72,13 @@
         <MSBuild Projects="Demo\PhotonDemo.cbproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="zlib;libpng;tifflib;JPEGLIB;awpipl2b;photon41;PhotonDemo"/>
+        <CallTarget Targets="zlib;libpng;tifflib;photon41;PhotonDemo"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="zlib:Clean;libpng:Clean;tifflib:Clean;JPEGLIB:Clean;awpipl2b:Clean;photon41:Clean;PhotonDemo:Clean"/>
+        <CallTarget Targets="zlib:Clean;libpng:Clean;tifflib:Clean;photon41:Clean;PhotonDemo:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="zlib:Make;libpng:Make;tifflib:Make;JPEGLIB:Make;awpipl2b:Make;photon41:Make;PhotonDemo:Make"/>
+        <CallTarget Targets="zlib:Make;libpng:Make;tifflib:Make;photon41:Make;PhotonDemo:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

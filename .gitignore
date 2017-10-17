@@ -74,3 +74,5 @@ photon/__recovery/__recovery.ini
 *.#05
 *.#06
 *.~2~
+*.~3~
+*.~*

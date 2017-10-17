@@ -554,8 +554,8 @@ object mainForm: TmainForm
       Action = editPasteAction
     end
   end
-  object PhMediaSource1: TPhMediaSource
-    Left = 248
-    Top = 248
+  object PhPaneTool1: TPhPaneTool
+    Left = 520
+    Top = 80
   end
 end

@@ -94,9 +94,6 @@
         <TASM_Debugging>None</TASM_Debugging>
     </PropertyGroup>
     <ItemGroup>
-        <PackageImport Include="photon.bpi">
-            <BuildOrder>10</BuildOrder>
-        </PackageImport>
         <CppCompile Include="photon41.cpp">
             <BuildOrder>0</BuildOrder>
         </CppCompile>
@@ -120,9 +117,17 @@
             <DependentOn>photon\ImportRaster.h</DependentOn>
             <BuildOrder>6</BuildOrder>
         </CppCompile>
+        <CppCompile Include="photon\PhImageTool.cpp">
+            <DependentOn>photon\PhImageTool.h</DependentOn>
+            <BuildOrder>11</BuildOrder>
+        </CppCompile>
         <CppCompile Include="photon\PhMediaSource.cpp">
             <DependentOn>photon\PhMediaSource.h</DependentOn>
             <BuildOrder>11</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="photon\PhPaneTool.cpp">
+            <DependentOn>photon\PhPaneTool.h</DependentOn>
+            <BuildOrder>12</BuildOrder>
         </CppCompile>
         <CppCompile Include="photon\pnglibio.cpp">
             <DependentOn>photon\pnglibio.h</DependentOn>

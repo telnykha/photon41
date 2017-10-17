@@ -14,7 +14,7 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 	{
 		Application->Initialize();
 		Application->MainFormOnTaskBar = true;
-		TStyleManager::TrySetStyle("Aqua Light Slate");
+		TStyleManager::TrySetStyle("Carbon");
 		Application->CreateForm(__classid(TmainForm), &mainForm);
 		Application->Run();
 	}

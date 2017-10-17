@@ -17,6 +17,8 @@
 #include <Vcl.Dialogs.hpp>
 #include <Vcl.Buttons.hpp>
 #include "PhMediaSource.h"
+#include "PhImageTool.h"
+#include "PhPaneTool.h"
 //---------------------------------------------------------------------------
 class TmainForm : public TForm
 {
@@ -98,7 +100,7 @@ __published:	// IDE-managed Components
 	TAction *editClearSelectionAction;
 	TMenuItem *N7;
 	TMenuItem *ClearSelection1;
-	TPhMediaSource *PhMediaSource1;
+	TPhPaneTool *PhPaneTool1;
 	void __fastcall fileOpenActionExecute(TObject *Sender);
 	void __fastcall fileSaveActionExecute(TObject *Sender);
 	void __fastcall fileSaveActionUpdate(TObject *Sender);

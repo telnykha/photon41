@@ -7,7 +7,7 @@
 #include "DIBImage41.h"
 #include "ExportRaster.h"
 #include "ImportRaster.h"
-
+#include "PhImageTool.h"
 #pragma hdrstop
 #pragma package(smart_init)
 
@@ -51,7 +51,7 @@ static inline void ValidCtrCheck(TPhCustomImage *)
 __fastcall TPhCustomImage::TPhCustomImage(TComponent* Owner)
     : TCustomControl(Owner)
 {
-        FBitmap     = new TDIBImage();
+	FBitmap     = new TDIBImage();
 	FScale      = 1;
 
 	FBorderStyle = bsFSingle;
@@ -82,8 +82,10 @@ __fastcall TPhCustomImage::TPhCustomImage(TComponent* Owner)
 	FSelCols = 1;
 	FSelRows = 1;
 
-        m_modified = false;
-        m_pMediaSource = NULL;
+	m_modified = false;
+	m_pMediaSource = NULL;
+
+	m_ph_tools = new TList();
 }
 /* ---------------------------------------------------------------------------
 	Function:  destructor of the  TFCustomImage
@@ -1318,22 +1320,31 @@ bool  __fastcall TPhCustomImage::DoMouseWheelDown(TShiftState Shift, const TPoin
 void __fastcall TPhCustomImage::MouseDown(TMouseButton Button,  TShiftState Shift, Integer X, Integer Y)
 {
    SetFocus();
-   if (FTool != NULL)
-        FTool->MouseDown(X,Y, Button);
+   TPhImageTool* t =    GetSelectedTool();
+   if (t != NULL)
+	t->MouseDown(X,Y, Button);
+ //  if (FTool != NULL)
+ //       FTool->MouseDown(X,Y, Button);
    TCustomControl::MouseDown(Button, Shift,X,Y);
 }
 //---------------------------------------------------------------------------
 void __fastcall TPhCustomImage::MouseMove( TShiftState Shift, Integer X, Integer Y)
 {
-   if (FTool != NULL)
-        FTool->MouseMove(X,Y, Shift);
+//   if (FTool != NULL)
+//        FTool->MouseMove(X,Y, Shift);
+   TPhImageTool* t =    GetSelectedTool();
+   if (t != NULL)
+	t->MouseMove(X,Y, Shift);
     TCustomControl::MouseMove(Shift,X,Y);
 }
 //---------------------------------------------------------------------------
 void __fastcall TPhCustomImage::MouseUp(TMouseButton Button,  TShiftState Shift, Integer X, Integer Y)
 {
-   if (FTool != NULL)
-        FTool->MouseUp(X,Y, Button);
+//   if (FTool != NULL)
+//        FTool->MouseUp(X,Y, Button);
+    TPhImageTool* t =    GetSelectedTool();
+   if (t != NULL)
+	t->MouseUp(X,Y, Button);
     TCustomControl::MouseUp(Button, Shift,X,Y);
 }
 
@@ -1436,6 +1447,48 @@ void __fastcall TPhCustomImage::SetMediaSource(TPhMediaSource* source)
 	        m_pMediaSource->SetDisplay(this);
 }
 
+void __fastcall  TPhCustomImage::AddPhTool(TPhImageTool* tool)
+{
+	if (tool != NULL)
+	{
+		if (m_ph_tools->IndexOf(tool) < 0)
+            m_ph_tools->Add(tool);
+	}
+}
+void __fastcall  TPhCustomImage::RemovePhTool(TPhImageTool* tool)
+{
+   if (m_ph_tools->IndexOf(tool) > 0)
+	m_ph_tools->Remove(tool);
+}
+void __fastcall   TPhCustomImage::SelectPhTool(TPhImageTool* tool)
+{
+	int old_selected_tool_index = m_selected_ph_tool;
+
+	if (tool == NULL)
+		this->m_selected_ph_tool = 0;
+	else if (this->m_ph_tools->IndexOf(tool) >= 0)
+		this->m_selected_ph_tool = this->m_ph_tools->IndexOf(tool);
+	else
+		this->m_selected_ph_tool = 0;
+
+	if (old_selected_tool_index != m_selected_ph_tool)
+	{
+	   TPhImageTool* t = (TPhImageTool*)this->m_ph_tools->Items[old_selected_tool_index];
+	   if (t != NULL)
+			t->SetActive(false);
+	   t = (TPhImageTool*)this->m_ph_tools->Items[m_selected_ph_tool];
+	   if (t != NULL)
+			t->SetActive(true);
+	}
+}
+
+TPhImageTool* __fastcall    TPhCustomImage::GetSelectedTool()
+{
+	if (m_selected_ph_tool < m_ph_tools->Count)
+		return (TPhImageTool*)this->m_ph_tools->Items[m_selected_ph_tool];
+	else
+		return NULL;
+}
 
 void TPhImage::foo()
 {}
@@ -2349,7 +2402,7 @@ namespace Fimage41
 		 {
 		 __classid(TPhImage)
 		 };
-		 RegisterComponents("PHOTON", classes,
+		 RegisterComponents("Photon", classes,
 		 (sizeof(classes)/sizeof(TComponentClass))-1);
 	}
 }

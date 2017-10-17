@@ -6,8 +6,10 @@
 #include "mainUnit.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "FImage"
+#pragma link "FImage41"
 #pragma link "PhMediaSource"
+#pragma link "PhImageTool"
+#pragma link "PhPaneTool"
 #pragma resource "*.dfm"
 TmainForm *mainForm;
 //---------------------------------------------------------------------------
@@ -76,7 +78,7 @@ void __fastcall TmainForm::PhImage1AfterOpen(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::editCopyActionExecute(TObject *Sender)
 {
-        PhImage1->SaveToClipBoard();
+		PhImage1->SaveToClipBoard();
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::editCopyActionUpdate(TObject *Sender)
@@ -98,8 +100,8 @@ void __fastcall TmainForm::editPasteActionUpdate(TObject *Sender)
 void __fastcall TmainForm::PhImage1Change(TObject *Sender)
 {
         AnsiString _caption  = "Photon 4.1 demo  " + PhImage1->AFileName;
-        _caption += PhImage1->Modified ? L"*":L"";
-	Caption = _caption;
+		_caption += PhImage1->Modified ? L"*":L"";
+		Caption = _caption;
         if (PhImage1->Empty)
         {
                 StatusBar1->Panels->Items[2]->Text = "Zoom";
