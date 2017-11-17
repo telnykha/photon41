@@ -19,6 +19,7 @@
 #include "PhMediaSource.h"
 #include "PhImageTool.h"
 #include "PhPaneTool.h"
+#include "PhLenzTool.h"
 //---------------------------------------------------------------------------
 class TmainForm : public TForm
 {
@@ -101,6 +102,7 @@ __published:	// IDE-managed Components
 	TMenuItem *N7;
 	TMenuItem *ClearSelection1;
 	TPhPaneTool *PhPaneTool1;
+	TPhLenzTool *PhLenzTool1;
 	void __fastcall fileOpenActionExecute(TObject *Sender);
 	void __fastcall fileSaveActionExecute(TObject *Sender);
 	void __fastcall fileSaveActionUpdate(TObject *Sender);

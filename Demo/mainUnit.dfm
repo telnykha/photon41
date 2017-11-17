@@ -555,7 +555,13 @@ object mainForm: TmainForm
     end
   end
   object PhPaneTool1: TPhPaneTool
-    Left = 520
-    Top = 80
+    PhImage = PhImage1
+    Left = 416
+    Top = 32
+  end
+  object PhLenzTool1: TPhLenzTool
+    PhImage = PhImage1
+    Left = 464
+    Top = 32
   end
 end

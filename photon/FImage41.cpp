@@ -87,6 +87,7 @@ __fastcall TPhCustomImage::TPhCustomImage(TComponent* Owner)
 	m_pMediaSource = NULL;
 
 	m_ph_tools = new TList();
+    m_selected_ph_tool = 0;
 }
 /* ---------------------------------------------------------------------------
 	Function:  destructor of the  TFCustomImage

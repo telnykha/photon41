@@ -121,6 +121,10 @@
             <DependentOn>photon\PhImageTool.h</DependentOn>
             <BuildOrder>11</BuildOrder>
         </CppCompile>
+        <CppCompile Include="photon\PhLenzTool.cpp">
+            <DependentOn>photon\PhLenzTool.h</DependentOn>
+            <BuildOrder>13</BuildOrder>
+        </CppCompile>
         <CppCompile Include="photon\PhMediaSource.cpp">
             <DependentOn>photon\PhMediaSource.h</DependentOn>
             <BuildOrder>11</BuildOrder>

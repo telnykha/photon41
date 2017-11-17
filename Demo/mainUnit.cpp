@@ -10,6 +10,7 @@
 #pragma link "PhMediaSource"
 #pragma link "PhImageTool"
 #pragma link "PhPaneTool"
+#pragma link "PhLenzTool"
 #pragma resource "*.dfm"
 TmainForm *mainForm;
 //---------------------------------------------------------------------------
