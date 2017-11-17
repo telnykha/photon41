@@ -52,6 +52,7 @@ __fastcall TPhCustomImage::TPhCustomImage(TComponent* Owner)
     : TCustomControl(Owner)
 {
 	FBitmap     = new TDIBImage();
+    FSelectedBitmap = NULL;
 	FScale      = 1;
 
 	FBorderStyle = bsFSingle;
@@ -171,6 +172,13 @@ void __fastcall TPhCustomImage::Close()
    FBitmap     = new TDIBImage();
    if ( FTool != NULL )
       FTool->Reset();
+
+   if (FSelectedBitmap != NULL)
+   {
+    delete FSelectedBitmap;
+    FSelectedBitmap = NULL;
+   }
+
 }
 void __fastcall     TPhCustomImage::Resize(void)
 {
@@ -797,6 +805,11 @@ void __fastcall 	TPhCustomImage::ClearSelection()
     FSelRect.Top = 0;
     FSelRect.Right = 0;
     FSelRect.Bottom = 0;
+    if (this->FSelectedBitmap != NULL)
+    {
+        delete this->FSelectedBitmap;
+        this->FSelectedBitmap = NULL;
+    }
     Paint();
 }
 
@@ -816,6 +829,42 @@ TRect						TPhCustomImage::GetSelRect()
 void                        TPhCustomImage::SetSelRect(TRect r)
 {
      FSelRect = r;
+     TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
+     if (dib != NULL)
+     {
+        // clear selected bitmap
+        if (this->FSelectedBitmap != NULL)
+        {
+            delete this->FSelectedBitmap;
+            this->FSelectedBitmap = NULL;
+        }
+
+        FSelectedBitmap = new TDIBImage();
+
+        awpImage* src = NULL;
+        awpImage* sel = NULL;
+        TRect sel_rect = FSelRect;//this->GetImageRect(FSelRect);
+        awpRect sel_awprect;
+        sel_awprect.left = sel_rect.left;
+        sel_awprect.top = sel_rect.top;
+        sel_awprect.right = sel_awprect.left + sel_rect.Width();
+        sel_awprect.bottom = sel_awprect.top + sel_rect.Height();
+
+        //
+        dib->GetAWPImage(&src);
+        if (src != NULL)
+        {
+            awpCopyRect(src, &sel, &sel_awprect);
+            if (sel != NULL)
+            {
+
+                TDIBImage* sel_image = dynamic_cast<TDIBImage*>(FSelectedBitmap);
+                sel_image->SetAWPImage(sel);
+	            _AWP_SAFE_RELEASE_(sel)
+            }
+            _AWP_SAFE_RELEASE_(src)
+        }
+     }
      this->Paint();
 }
 
@@ -1366,6 +1415,11 @@ void __fastcall TPhCustomImage::SetImage(TGraphic* aBitmap)
 {
     TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
     dib->Assign(aBitmap);
+}
+
+TGraphic* __fastcall   TPhCustomImage::GetSelectedBitmap()
+{
+    return this->FSelectedBitmap;
 }
 
 void __fastcall  TPhCustomImage::SetCurrentTool(TFTools Value)

@@ -48,6 +48,7 @@ protected:
 	TList*                  	m_ph_tools;
 
     TGraphic*                   FBitmap;
+    TGraphic*                   FSelectedBitmap;
     double                      FScale;      // scale coefficient
     TPoint                      FStartPoint; // Левый верхний угол отображаемой области * 100%
     TFBorderStyle               FBorderStyle;
@@ -123,7 +124,7 @@ protected:
 	// Close
     virtual void __fastcall             Close();
     void __fastcall SetMediaSource(TPhMediaSource* source);
-
+     TGraphic* __fastcall   GetSelectedBitmap();
 public:
 
     __fastcall                  TPhCustomImage(TComponent* Owner);
@@ -175,6 +176,7 @@ public:
     __property  TImageTool*     Tool = {read = FTool, write = SetImageTool};
     __property  AnsiString      AFileName = {read = FFileName, write = FFileName};
     __property  TGraphic*       Bitmap = {read = FBitmap, write = SetImage};
+    __property  TGraphic*       SelectedBitmap = {read = GetSelectedBitmap};
     __property  int             SelCols = {read = FSelCols, write = SetSelCols};
 	__property  int             SelRows = {read = FSelRows, write = SetSelRows};
     __property  bool            Modified = {read = GetModified};
