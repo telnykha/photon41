@@ -11,6 +11,7 @@
 #pragma link "PhImageTool"
 #pragma link "PhPaneTool"
 #pragma link "PhLenzTool"
+#pragma link "PhZoomToRectTool"
 #pragma resource "*.dfm"
 TmainForm *mainForm;
 //---------------------------------------------------------------------------
@@ -123,24 +124,24 @@ void __fastcall TmainForm::FormClose(TObject *Sender, TCloseAction &Action)
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::toolPaneActionExecute(TObject *Sender)
 {
-        PhImage1->CurrentTool = ftPane;
+      PhImage1->SelectPhTool(PhPaneTool1);
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::toolPaneActionUpdate(TObject *Sender)
 {
     toolPaneAction->Enabled = !PhImage1->Empty;
-    toolPaneAction->Checked = PhImage1->CurrentTool == ftPane;
+    toolPaneAction->Checked =  dynamic_cast< TPhPaneTool*>(PhImage1->PhTool) != NULL;
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::toolZoomToRectActionExecute(TObject *Sender)
 {
-        PhImage1->CurrentTool = ftZoomToRect;
+         PhImage1->SelectPhTool(PhZoomToRectTool1);
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::toolZoomToRectActionUpdate(TObject *Sender)
 {
 	toolZoomToRectAction->Enabled = !PhImage1->Empty;
-        toolZoomToRectAction->Checked = PhImage1->CurrentTool == ftZoomToRect;
+    toolZoomToRectAction->Checked = dynamic_cast< TPhZoomToRectTool*>(PhImage1->PhTool) != NULL;
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::toolSelectRectActionExecute(TObject *Sender)
@@ -156,13 +157,13 @@ void __fastcall TmainForm::toolSelectRectActionUpdate(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::toolLenzActionExecute(TObject *Sender)
 {
-        PhImage1->CurrentTool = ftLenz;
+      PhImage1->SelectPhTool(PhLenzTool1);
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::toolLenzActionUpdate(TObject *Sender)
 {
 	toolLenzAction->Enabled = !PhImage1->Empty;
-        toolLenzAction->Checked = PhImage1->CurrentTool == ftLenz;
+    toolLenzAction->Checked =  dynamic_cast< TPhLenzTool*>(PhImage1->PhTool) != NULL;
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::viewZoomInActionExecute(TObject *Sender)

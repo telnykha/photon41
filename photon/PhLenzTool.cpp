@@ -27,6 +27,7 @@ static bool in_Rect ( const TRect* r, int X, int Y )
 
 __fastcall TPhLenzTool::TPhLenzTool(TComponent* Owner): TPhImageTool(Owner)
 {
+   m_strToolName = L"LENZ";
    Zoom        = 2;
    LenzSize    = 200;
    Applied     = false;

@@ -23,6 +23,7 @@ __fastcall TPhPaneTool::TPhPaneTool(TComponent* Owner)
 	m_X = 0;
 	m_Y = 0;
 	m_Pressed = false;
+    m_strToolName = L"ZOOM/PANE";
 }
 
 void TPhPaneTool::Draw(TCanvas* Canvas)

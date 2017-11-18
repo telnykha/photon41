@@ -556,12 +556,17 @@ object mainForm: TmainForm
   end
   object PhPaneTool1: TPhPaneTool
     PhImage = PhImage1
-    Left = 416
-    Top = 32
+    Left = 256
+    Top = 40
   end
   object PhLenzTool1: TPhLenzTool
     PhImage = PhImage1
-    Left = 464
-    Top = 32
+    Left = 256
+    Top = 168
+  end
+  object PhZoomToRectTool1: TPhZoomToRectTool
+    PhImage = PhImage1
+    Left = 256
+    Top = 104
   end
 end

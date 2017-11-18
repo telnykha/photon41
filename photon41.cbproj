@@ -133,6 +133,10 @@
             <DependentOn>photon\PhPaneTool.h</DependentOn>
             <BuildOrder>12</BuildOrder>
         </CppCompile>
+        <CppCompile Include="photon\PhZoomToRectTool.cpp">
+            <DependentOn>photon\PhZoomToRectTool.h</DependentOn>
+            <BuildOrder>14</BuildOrder>
+        </CppCompile>
         <CppCompile Include="photon\pnglibio.cpp">
             <DependentOn>photon\pnglibio.h</DependentOn>
             <BuildOrder>7</BuildOrder>

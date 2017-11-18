@@ -166,7 +166,7 @@ public:
     int __fastcall              GetImageX(int ScreenX);
     int __fastcall              GetImageY(int ScreenY);
     TRect    __fastcall         GetImageRect(TRect ScreenR);
-    TRect    __fastcall    	GetScreenRect(TRect ImageR);
+    TRect    __fastcall    		GetScreenRect(TRect ImageR);
 	TPoint   __fastcall         GetScreenPoint(int x, int y);
 
 	//tools
