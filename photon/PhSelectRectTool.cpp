@@ -49,7 +49,8 @@ void TPhSelRectTool::MouseUp(int X, int Y, TMouseButton Button)
 
 
       Pressed = false;
-      m_pImage->FSelRect = m_pImage->GetImageRect(FSelRect);
+
+      m_pImage->SetSelRect(m_pImage->GetImageRect(FSelRect));
       m_pImage->Paint();
    }
 }

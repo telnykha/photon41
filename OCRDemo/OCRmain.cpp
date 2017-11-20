@@ -6,6 +6,11 @@
 #include "OCRmain.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
+#pragma link "PhImageTool"
+#pragma link "PhLenzTool"
+#pragma link "PhPaneTool"
+#pragma link "PhSelectRectTool"
+#pragma link "PhZoomToRectTool"
 #pragma resource "*.dfm"
 TForm2 *Form2;
 //---------------------------------------------------------------------------
@@ -187,52 +192,52 @@ void __fastcall TForm2::viewFitHeightActionUpdate(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TForm2::toolPaneActionExecute(TObject *Sender)
 {
-	PhImage1->CurrentTool = ftPane;
+	PhImage1->SelectPhTool(PhPaneTool1);
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm2::toolPaneActionUpdate(TObject *Sender)
 {
     toolPaneAction->Enabled = !PhImage1->Empty;
-    toolPaneAction->Checked = PhImage1->CurrentTool == ftPane;
+    toolPaneAction->Checked = dynamic_cast< TPhPaneTool*>(PhImage1->PhTool) != NULL;
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm2::toolZoomToRectActionExecute(TObject *Sender)
 {
-	PhImage1->CurrentTool = ftZoomToRect;
+	PhImage1->SelectPhTool(PhZoomToRectTool1);
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm2::toolZoomToRectActionUpdate(TObject *Sender)
 {
 	toolZoomToRectAction->Enabled = !PhImage1->Empty;
-    toolZoomToRectAction->Checked = PhImage1->CurrentTool == ftZoomToRect;
+    toolZoomToRectAction->Checked = dynamic_cast< TPhZoomToRectTool*>(PhImage1->PhTool) != NULL;
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm2::toolSelectRectActionExecute(TObject *Sender)
 {
-	PhImage1->CurrentTool = ftSelRect;
+	PhImage1->SelectPhTool(PhSelRectTool1);
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm2::toolSelectRectActionUpdate(TObject *Sender)
 {
 	toolSelectRectAction->Enabled = !PhImage1->Empty;
-    toolSelectRectAction->Checked = PhImage1->CurrentTool == ftSelRect;
+    toolSelectRectAction->Checked =  dynamic_cast< TPhSelRectTool*>(PhImage1->PhTool) != NULL;
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm2::toolLenzActionExecute(TObject *Sender)
 {
-	PhImage1->CurrentTool = ftLenz;
+	PhImage1->SelectPhTool(PhLenzTool1);
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm2::toolLenzActionUpdate(TObject *Sender)
 {
 	toolLenzAction->Enabled = !PhImage1->Empty;
-    toolLenzAction->Checked = PhImage1->CurrentTool == ftLenz;
+    toolLenzAction->Checked =  dynamic_cast< TPhLenzTool*>(PhImage1->PhTool) != NULL;
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm2::PhImage1MouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift,
           int X, int Y)
 {
-    if (PhImage1->CurrentTool == ftSelRect && PhImage1->HasSelection())
+    if (dynamic_cast< TPhSelRectTool*>(PhImage1->PhTool) != NULL && PhImage1->HasSelection())
     {
     	//
         TGraphic* selected = PhImage1->SelectedBitmap;

@@ -304,4 +304,24 @@ object Form2: TForm2
     Left = 24
     Top = 120
   end
+  object PhSelRectTool1: TPhSelRectTool
+    PhImage = PhImage1
+    Left = 360
+    Top = 16
+  end
+  object PhPaneTool1: TPhPaneTool
+    PhImage = PhImage1
+    Left = 360
+    Top = 72
+  end
+  object PhZoomToRectTool1: TPhZoomToRectTool
+    PhImage = PhImage1
+    Left = 360
+    Top = 128
+  end
+  object PhLenzTool1: TPhLenzTool
+    PhImage = PhImage1
+    Left = 360
+    Top = 184
+  end
 end
