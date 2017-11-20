@@ -569,4 +569,9 @@ object mainForm: TmainForm
     Left = 256
     Top = 104
   end
+  object PhSelRectTool1: TPhSelRectTool
+    PhImage = PhImage1
+    Left = 256
+    Top = 232
+  end
 end

@@ -12,6 +12,7 @@
 #pragma link "PhPaneTool"
 #pragma link "PhLenzTool"
 #pragma link "PhZoomToRectTool"
+#pragma link "PhSelectRectTool"
 #pragma resource "*.dfm"
 TmainForm *mainForm;
 //---------------------------------------------------------------------------
@@ -146,13 +147,13 @@ void __fastcall TmainForm::toolZoomToRectActionUpdate(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::toolSelectRectActionExecute(TObject *Sender)
 {
-        PhImage1->CurrentTool = ftSelRect;
+        PhImage1->SelectPhTool(PhSelRectTool1);
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::toolSelectRectActionUpdate(TObject *Sender)
 {
 	toolSelectRectAction->Enabled = !PhImage1->Empty;
-        toolSelectRectAction->Checked = PhImage1->CurrentTool == ftSelRect;
+    toolSelectRectAction->Checked = dynamic_cast< TPhSelRectTool*>(PhImage1->PhTool) != NULL;
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::toolLenzActionExecute(TObject *Sender)

@@ -41,6 +41,7 @@ class PACKAGE TPhCustomImage : public TCustomControl
 {
 friend class TSelRectTool;
 friend class TPhImageTool;
+friend class TPhSelRectTool;
 protected:
     // Media source
     TPhMediaSource*             m_pMediaSource;

@@ -21,6 +21,7 @@
 #include "PhPaneTool.h"
 #include "PhLenzTool.h"
 #include "PhZoomToRectTool.h"
+#include "PhSelectRectTool.h"
 //---------------------------------------------------------------------------
 class TmainForm : public TForm
 {
@@ -105,6 +106,7 @@ __published:	// IDE-managed Components
 	TPhPaneTool *PhPaneTool1;
 	TPhLenzTool *PhLenzTool1;
 	TPhZoomToRectTool *PhZoomToRectTool1;
+	TPhSelRectTool *PhSelRectTool1;
 	void __fastcall fileOpenActionExecute(TObject *Sender);
 	void __fastcall fileSaveActionExecute(TObject *Sender);
 	void __fastcall fileSaveActionUpdate(TObject *Sender);
