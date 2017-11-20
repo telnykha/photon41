@@ -4,6 +4,9 @@
 #pragma hdrstop
 #include <Clipbrd.hpp>
 #include "OCRmain.h"
+#include "tesswrapper.h"
+#include "DIBImage41.h"
+
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "PhImageTool"
@@ -11,16 +14,27 @@
 #pragma link "PhPaneTool"
 #pragma link "PhSelectRectTool"
 #pragma link "PhZoomToRectTool"
+#pragma link "tesswrapper.lib"
+#pragma link "awpipl2b.lib"
+#pragma link "DIBImage41"
+
 #pragma resource "*.dfm"
 TForm2 *Form2;
 //---------------------------------------------------------------------------
 __fastcall TForm2::TForm2(TComponent* Owner)
 	: TForm(Owner)
 {
+    m_pTess = tessInit();
+    if (m_pTess == NULL)
+    {
+        ShowMessage("Cannot create OCR engine.");
+        Application->Terminate();
+    }
 }
 //---------------------------------------------------------------------------
 void __fastcall TForm2::Exit1Click(TObject *Sender)
 {
+   tessClose(m_pTess);
    Close();
 }
 //---------------------------------------------------------------------------
@@ -240,11 +254,62 @@ void __fastcall TForm2::PhImage1MouseUp(TObject *Sender, TMouseButton Button, TS
     if (dynamic_cast< TPhSelRectTool*>(PhImage1->PhTool) != NULL && PhImage1->HasSelection())
     {
     	//
-        TGraphic* selected = PhImage1->SelectedBitmap;
-        PhImage2->Bitmap = selected;
-        PhImage2->BestFit();
+     //   TGraphic* selected = PhImage1->SelectedBitmap;
+     //   PhImage2->Bitmap = selected;
+     //   PhImage2->BestFit();
 
         // set data to tesseract engine
+        OCRhelper();
     }
 }
 //---------------------------------------------------------------------------
+void __fastcall TForm2::OCRhelper()
+{
+    if (this->m_pTess == NULL)
+    {
+        ShowMessage("The OCR engine is not initialized.");
+        return;
+    }
+
+    //
+    TGraphic* selected = PhImage1->SelectedBitmap;
+    if (selected == NULL)
+    {
+        ShowMessage("There is not any image data.");
+        return;
+    }
+
+    TDIBImage* dib = (TDIBImage*)selected;
+    if (dib == NULL)
+    {
+        ShowMessage("There is not any image data.");
+        return;
+    }
+
+    awpImage* img = NULL;
+    dib->GetAWPImage(&img);
+    awpResize(img, 128, img->sSizeY*128/img->sSizeX);
+    awpConvert(img, AWP_CONVERT_3TO1_BYTE);
+    dib->SetAWPImage(img);
+    PhImage2->Bitmap = dib;
+    PhImage2->BestFit();
+    char result[32];
+    if (tessProcess(m_pTess, (unsigned char*)img->pPixels, img->sSizeX, img->sSizeY, img->bChannels, result) != 0)
+    {
+        ShowMessage("Cannot read this image");
+    }
+    else
+    {
+        AnsiString str = result;
+        Panel2->Caption = str;
+    }
+
+    _AWP_SAFE_RELEASE_(img)
+}
+
+void __fastcall TForm2::FormCreate(TObject *Sender)
+{
+	PhImage1->SelectPhTool(PhPaneTool1);
+}
+//---------------------------------------------------------------------------
+

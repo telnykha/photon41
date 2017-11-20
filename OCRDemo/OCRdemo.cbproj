@@ -60,9 +60,10 @@
         <UWP_CppLogo44>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_44.png</UWP_CppLogo44>
         <UWP_CppLogo150>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_150.png</UWP_CppLogo150>
         <SanitizedProjectName>OCRdemo</SanitizedProjectName>
-        <IncludePath>..\photon\;$(IncludePath)</IncludePath>
+        <IncludePath>..\photon\;$(AWP);$(IncludePath)</IncludePath>
         <VerInfo_Locale>1049</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <ILINK_LibraryPath>..\photon\;$(AWPLIB);$(ILINK_LibraryPath)</ILINK_LibraryPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <PackageImports>appanalytics;bcbsmp;bindcomp;bindcompfmx;bindcompvcl;bindengine;CustomIPTransport;dbrtl;dsnap;fmx;fmxase;fmxdae;fmxobj;FMXTee925;FMXTeeDB925;FMXTeeImport925;FMXTeeLanguage925;FMXTeePro925;FmxTeeUI925;FMXTree25;IndyCore;IndyProtocols;IndySystem;photon41;rtl;svn;Tee925;TeeDB925;TeeGL925;TeeImage925;TeeImport925;TeeLanguage925;TeeMaker125;TeePro925;TeeTree2D25Tee9;TeeUI925;TeeWorld925;tethering;vcl;vclactnband;vcldb;vcldsnap;vclie;vclimg;VclSmp;vcltouch;vclwinx;vclx;xmlrtl;$(PackageImports)</PackageImports>
@@ -125,6 +126,10 @@
             <FormType>dfm</FormType>
             <DependentOn>OCRmain.h</DependentOn>
             <BuildOrder>2</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\photon\DIBImage41.cpp">
+            <DependentOn>..\photon\DIBImage41.h</DependentOn>
+            <BuildOrder>3</BuildOrder>
         </CppCompile>
         <FormResources Include="OCRmain.dfm"/>
         <BuildConfiguration Include="Release">

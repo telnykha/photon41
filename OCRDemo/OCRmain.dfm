@@ -1,7 +1,7 @@
 object Form2: TForm2
   Left = 0
   Top = 0
-  Caption = 'Form2'
+  Caption = 'OCR demo'
   ClientHeight = 396
   ClientWidth = 600
   Color = clBtnFace
@@ -12,6 +12,7 @@ object Form2: TForm2
   Font.Style = []
   Menu = MainMenu1
   OldCreateOrder = False
+  OnCreate = FormCreate
   PixelsPerInch = 96
   TextHeight = 13
   object PhImage1: TPhImage
@@ -314,12 +315,12 @@ object Form2: TForm2
   end
   object PhZoomToRectTool1: TPhZoomToRectTool
     PhImage = PhImage1
-    Left = 360
+    Left = 352
     Top = 128
   end
   object PhLenzTool1: TPhLenzTool
     PhImage = PhImage1
-    Left = 360
+    Left = 352
     Top = 184
   end
 end

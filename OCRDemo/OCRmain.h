@@ -117,7 +117,10 @@ __published:	// IDE-managed Components
 	void __fastcall toolLenzActionUpdate(TObject *Sender);
 	void __fastcall PhImage1MouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift,
           int X, int Y);
+	void __fastcall FormCreate(TObject *Sender);
 private:	// User declarations
+    void* m_pTess;
+    void __fastcall OCRhelper();
 public:		// User declarations
 	__fastcall TForm2(TComponent* Owner);
 };
