@@ -30,16 +30,14 @@ typedef void __fastcall (__closure *TFrameEvent)(System::TObject* Sender, int wi
 typedef enum  {bsFNone, bsFSingle} TFBorderStyle;
 typedef enum  {vsNone, vsImage, vsSlideShow, vsVideo}   EMediaSourceType;
 typedef enum  {msPriview, msPlayBack, msPaused} 	EMediaState;
-typedef enum  {ftNone, ftPane,  ftZoomToRect, ftLenz, ftSelRect, ftSelPixel, ftThumbSelect} TFTools;
+
 
 // forward declarations
-class PACKAGE TImageTool;
 class PACKAGE TPhImageTool;
 //TPhCustomImage--------------------------------------------------------------------
 //TPhCustomImage extends the TCustomControl component
 class PACKAGE TPhCustomImage : public TCustomControl
 {
-friend class TSelRectTool;
 friend class TPhImageTool;
 friend class TPhSelRectTool;
 protected:
@@ -54,7 +52,6 @@ protected:
     TPoint                      FStartPoint; // Левый верхний угол отображаемой области * 100%
     TFBorderStyle               FBorderStyle;
     AnsiString                  FFileName;
-    bool                        FLocalTool;
 
     TNotifyEvent                FBeforeOpen;
     TNotifyEvent                FAfterOpen;
@@ -110,12 +107,6 @@ protected:
     // Keyboard
     DYNAMIC void __fastcall     KeyDown(Word &Key, Classes::TShiftState Shift);
     void __fastcall             DlgMessage(TWMGetDlgCode &Message);
-
-    // Image tools
-    TFTools                 	FCurrentTool;
-    TImageTool*             	FTool;
-    void __fastcall  	    	SetCurrentTool(TFTools Value);
-	void __fastcall         	SetImageTool(TImageTool* pTool);
 
 	// ph_tools
 	int                			m_selected_ph_tool;
@@ -174,7 +165,6 @@ public:
 	void __fastcall             SelectPhTool(TPhImageTool* tool);
 
     // Public properties
-    __property  TImageTool*     Tool = {read = FTool, write = SetImageTool};
     __property  AnsiString      AFileName = {read = FFileName, write = FFileName};
     __property  TGraphic*       Bitmap = {read = FBitmap, write = SetImage};
     __property  TGraphic*       SelectedBitmap = {read = GetSelectedBitmap};
@@ -195,7 +185,6 @@ public:
 __published:
    //
     __property TFBorderStyle     BorderStyle = {read = FBorderStyle, write = SetBorderStyle};
-    __property TFTools CurrentTool 	   = {read = FCurrentTool, write = SetCurrentTool};
     __property int ThumbWidht      	   = {read  = m_tWidth,  write = m_tWidth};
     __property int ThumbHeight     	   = {read = m_tHeight, write = m_tHeight};
 

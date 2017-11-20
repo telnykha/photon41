@@ -50,7 +50,6 @@ object mainForm: TmainForm
     Width = 709
     Height = 414
     BorderStyle = bsFSingle
-    CurrentTool = ftPane
     Align = alClient
     ParentColor = False
     PopupMenu = PopupMenu1

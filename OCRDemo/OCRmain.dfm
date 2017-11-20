@@ -20,7 +20,6 @@ object Form2: TForm2
     Width = 421
     Height = 377
     BorderStyle = bsFSingle
-    CurrentTool = ftPane
     Align = alClient
     ParentColor = False
     OnMouseUp = PhImage1MouseUp
@@ -67,7 +66,6 @@ object Form2: TForm2
       Width = 177
       Height = 100
       BorderStyle = bsFSingle
-      CurrentTool = ftPane
       Align = alTop
       ParentColor = False
     end

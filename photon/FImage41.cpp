@@ -69,8 +69,6 @@ __fastcall TPhCustomImage::TPhCustomImage(TComponent* Owner)
         FChange      = NULL;
 	FStartPoint.x = 0;
 	FStartPoint.y = 0;
-	FTool = new TPaneTool(this);
-	FLocalTool = true;
 //	Screen->Cursor = TCursor(crHandOpenCursor);
 //	this->Cursor   = TCursor(crHandOpenCursor);
 //	Screen->Cursor = TCursor(crDefault);
@@ -78,7 +76,6 @@ __fastcall TPhCustomImage::TPhCustomImage(TComponent* Owner)
 	FSelRect.Top = 0;
 	FSelRect.Right = 0;
 	FSelRect.Bottom = 0;
-	FCurrentTool = ftPane;
 
 	FSelCols = 1;
 	FSelRows = 1;
@@ -96,13 +93,6 @@ __fastcall TPhCustomImage::TPhCustomImage(TComponent* Owner)
 ---------------------------------------------------------------------------*/
 __fastcall TPhCustomImage::~TPhCustomImage()
 {
-	if ( FLocalTool )
-	{
-		delete FTool;
-		FTool = 0;
-		FLocalTool = false;
-	}
-
 	Close();
 }
 /* ---------------------------------------------------------------------------
@@ -128,14 +118,11 @@ bool  __fastcall TPhCustomImage::Init(TStrings* Names)
 
     AnsiString FileName;
     Close();
-    this->CurrentTool = ftPane;
     try
     {
        FileName = Names->Strings[0];
        if (FBeforeOpen)
           FBeforeOpen(this);
-       if ( FTool != NULL )
-          FTool->Reset();
        if (!LoadFromFile(FileName.c_str()))
           return false;
     }
@@ -171,8 +158,6 @@ void __fastcall TPhCustomImage::Close()
    FSelRect.Bottom = 0;
    delete FBitmap;
    FBitmap     = new TDIBImage();
-   if ( FTool != NULL )
-      FTool->Reset();
 
    if (FSelectedBitmap != NULL)
    {
@@ -922,9 +907,7 @@ void __fastcall TPhCustomImage::Paint(void)
 		  SRCCOPY);
 
 		DrawSelRect(bm);
-		if (this->FTool != NULL)
-		  this->FTool->Draw(bm->Canvas);
-
+        // todo: add drawing
 	   dib->ClosePixels();
 	   Canvas->CopyMode = cmSrcCopy;
 	   Canvas->Draw(0,0,bm);
@@ -1399,19 +1382,6 @@ void __fastcall TPhCustomImage::MouseUp(TMouseButton Button,  TShiftState Shift,
 }
 
 //---------------------------------------------------------------------------
-
-void __fastcall TPhCustomImage::SetImageTool(TImageTool* in_Tool)
-{
-    if ( FLocalTool )
-        delete FTool;
-
-    FLocalTool = false;
-    FTool      = in_Tool;
-    
-    if ( in_Tool != NULL )
-        in_Tool->FImage = this;
-}
-
 void __fastcall TPhCustomImage::SetImage(TGraphic* aBitmap)
 {
     TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
@@ -1422,74 +1392,14 @@ TGraphic* __fastcall   TPhCustomImage::GetSelectedBitmap()
 {
     return this->FSelectedBitmap;
 }
-
-void __fastcall  TPhCustomImage::SetCurrentTool(TFTools Value)
-{
-     if (Value == FCurrentTool)
-        return;
-     TPhCustomImage* FImage = this;
-
-     FCurrentTool = Value;
-     if (FTool != NULL)
-		delete FTool;
-     switch(FCurrentTool)
-     {
-		case ftNone:
-			FTool = NULL;
-#ifndef X64
-			Screen->Cursor = TCursor(crDefault);
-			FImage->Cursor = TCursor(crDefault);
-			Screen->Cursor = TCursor(crDefault);
-#endif
-		break;
-		case ftPane:
-			FTool = new TPaneTool(FImage);
-#ifndef X64
-			Screen->Cursor = TCursor(crHandOpenCursor);
-			FImage->Cursor = TCursor(crHandOpenCursor);
-			Screen->Cursor = TCursor(crDefault);
-#endif
-		break;
-		case ftZoomToRect:
-			FTool = new TZoomToRectTool(FImage);
-#ifndef X64
-			Screen->Cursor = TCursor(crZoom2RectCursor);
-			FImage->Cursor = TCursor(crZoom2RectCursor);
-			Screen->Cursor = TCursor(crDefault);
-#endif
-		break;
-		case ftLenz:
-#ifndef X64
-			FTool = new TLenzTool(FImage);
-			Screen->Cursor = TCursor(crLenzCursor);
-			FImage->Cursor = TCursor(crLenzCursor);
-			Screen->Cursor = TCursor(crDefault);
-#endif
-		break;
-		case ftSelRect:
-			FTool = new TSelRectTool(FImage);
-#ifndef X64
-			Screen->Cursor = TCursor(crLenzCursor);
-			FImage->Cursor = TCursor(crLenzCursor);
-			Screen->Cursor = TCursor(crDefault);
-#endif
-		break;
-		case ftThumbSelect:
-		  //	FTool = new TThumbSelectTool(FImage, this, this->m_Count, m_tWidth, m_tHeight);
-		break;
-	 }
-
-	 if (FToolChange)
-		FToolChange(this);
-}
-
+//todo: working with tools
 int	 __fastcall TPhCustomImage::GetSelectedIndex()
 {
-	TThumbSelectTool* tool = dynamic_cast<TThumbSelectTool*>(FTool);
+ /*	TThumbSelectTool* tool = dynamic_cast<TThumbSelectTool*>(FTool);
 	if (tool != NULL)
 		return tool->GetLastSelected();
 	else
-		return -1;
+		return -1; */
 }
 
 void __fastcall TPhCustomImage::SetMediaSource(TPhMediaSource* source)
@@ -1535,6 +1445,9 @@ void __fastcall   TPhCustomImage::SelectPhTool(TPhImageTool* tool)
 	   if (t != NULL)
 			t->SetActive(true);
 	}
+
+    if (FToolChange != NULL)
+        FToolChange(this);
 }
 
 TPhImageTool* __fastcall    TPhCustomImage::GetSelectedTool()
@@ -1821,458 +1734,6 @@ TImageTool::TImageTool(TPhCustomImage* aImage)
 TImageTool::~TImageTool()
 {
 
-}
-
-TPaneTool::TPaneTool(TPhCustomImage* aImage) : TImageTool(aImage)
-{
-    mX = 0;
-    mY = 0;
-    Pressed = false;
-    FImage = aImage;
-#ifndef X64
-    Screen->Cursors[crHandOpenCursor]  = LoadCursor( HInstance, "CURSOR_HAND_OPEN" );
-    Screen->Cursors[crHandCloseCursor] = LoadCursor( HInstance, "CURSOR_HAND_CLOSE" );
-#endif
-}
-
-void TPaneTool::Draw(TCanvas* Canvas)
-{
-	// инструмент перемещения ничего не рисует на Canvase
-}
-
-void TPaneTool::MouseDown(int X, int Y, TMouseButton Button)
-{
-   if ( FImage == NULL )
-	   return;
-   if ( Button != mbLeft )
-	   return;
-
-   mX      = X;
-   mY      = Y;
-   Pressed = true;
-#ifndef X64
-   Screen->Cursor = TCursor(crHandCloseCursor);
-   FImage->Cursor = TCursor(crHandCloseCursor);
-   Screen->Cursor = TCursor(crDefault);
-#endif
-}
-void TPaneTool::MouseUp(int X, int Y, TMouseButton Button)
-{
-   if ( FImage == NULL )
-		return;
-   if ( Button != mbLeft )
-	   return;
-
-   if ( Pressed )
-   {
-#ifndef X64
-	   Screen->Cursor = TCursor(crHandOpenCursor);
-	   FImage->Cursor = TCursor(crHandOpenCursor);
-	   Screen->Cursor = TCursor(crDefault);
-#endif
-   }
-   mX = 0;
-   mY = 0;
-   Pressed = false;
-}
-
-void TPaneTool::MouseMove(int X, int Y, TShiftState Shift)
-{
-   if (FImage == NULL)
-		return;
-
-   if (Pressed)
-	  FImage->MoveBy( mX-X, mY-Y );
-
-   mX = X;
-   mY = Y;
-}
-
-void TPaneTool::Reset() {}
-AnsiString TPaneTool::GetName()
-{
-	return "Pane/Zoom";
-}
-//-------------------------------
-TZoomToRectTool::TZoomToRectTool(TPhCustomImage* aImage):TImageTool(aImage)
-{
-   FImage = aImage;
-   Pressed = false;
-#ifndef X64
-   Screen->Cursors[crZoom2RectCursor] = LoadCursor( HInstance, "CURSOR_ZOOM2RECT" );
-#endif
-}
-void TZoomToRectTool::Draw(TCanvas* Canvas)
-{
-    // инструмент перемещения ничего не рисует на Canvase
-}
-
-void TZoomToRectTool::DrawSelRect()
-{
-   if (FImage == NULL)
-        return;
-
-   TPenStyle style = FImage->Canvas->Pen->Style;
-   TColor color = FImage->Canvas->Pen->Color;
-   TPenMode mode = FImage->Canvas->Pen->Mode;
-
-   FImage->Canvas->Pen->Style = psDot;
-   FImage->Canvas->Pen->Color = clBlack;
-   FImage->Canvas->Pen->Mode = pmNotXor;
-
-   FImage->Canvas->MoveTo(SelRect.Left, SelRect.Top);
-   FImage->Canvas->LineTo(SelRect.Right, SelRect.Top);
-   FImage->Canvas->LineTo(SelRect.Right, SelRect.Bottom);
-   FImage->Canvas->LineTo(SelRect.Left, SelRect.Bottom);
-   FImage->Canvas->LineTo(SelRect.Left, SelRect.Top);
-
-   FImage->Canvas->Pen->Style = style;
-   FImage->Canvas->Pen->Color = color;
-   FImage->Canvas->Pen->Mode = mode;
-}
-
-void TZoomToRectTool::MouseDown(int X, int Y, TMouseButton Button)
-{
-   if (FImage == NULL)
-        return;
-
-   if (Button == mbLeft)
-   {
-      SelRect.Top    = Y;
-	  SelRect.Bottom = Y;
-      SelRect.Left   = X;
-      SelRect.Right  = X;
-	  Pressed        = true;
-   }
-}
-void TZoomToRectTool::MouseUp(int X, int Y, TMouseButton Button)
-{
-   if (FImage == NULL)
-        return;
-
-   if (Button == mbLeft)
-   {
-      if (X < SelRect.Left)
-         SelRect.Left = X;
-      else
-         SelRect.Right = X;
-      if (Y < SelRect.Top)
-         SelRect.Top = Y;
-      else
-         SelRect.Bottom = Y;
-	  FImage->ZoomToRect(SelRect);
-      Pressed = false;
-   }
-}
-
-void TZoomToRectTool::MouseMove(int X, int Y, TShiftState Shift)
-{
-   if (FImage == NULL)
-        return;
-
-   if (Pressed)
-   {
-      DrawSelRect();
-
-      if (X < SelRect.Left)
-         SelRect.Left = X;
-      else
-         SelRect.Right = X;
-      if (Y < SelRect.Top)
-         SelRect.Top = Y;
-      else
-		 SelRect.Bottom = Y;
-
-      DrawSelRect();
-   }
-}
-
-void TZoomToRectTool::Reset()
-{
-}
-AnsiString TZoomToRectTool::GetName()
-{
-	return "Zoom to rect";
-}
-
-TSelRectTool::TSelRectTool(TPhCustomImage* aImage):TImageTool(aImage)
-{
-   FImage = aImage;
-   Pressed = false;
-   this->m_numCols = aImage->SelCols;
-   this->m_numRows = aImage->SelRows;
-#ifndef X64
-   Screen->Cursors[crZoom2RectCursor] = LoadCursor( HInstance, "CURSOR_ZOOM2RECT" );
-#endif
-}
-void TSelRectTool::Draw(TCanvas* Canvas)
-{
-}
-void TSelRectTool::MouseDown(int X, int Y, TMouseButton Button)
-{
-   if (FImage == NULL)
-        return;
-
-   if (Button == mbLeft)
-   {
-      FImage->FSelRect.Top    = 0;
-      FImage->FSelRect.Bottom = 0;
-      FImage->FSelRect.Left   = 0;
-      FImage->FSelRect.Right  = 0;
-      FImage->Paint();
-      FSelRect.Top    = Y;
-      FSelRect.Bottom = Y;
-      FSelRect.Left   = X;
-      FSelRect.Right  = X;
-      FImage->FSelRect = FImage->GetImageRect(FSelRect);
-      Pressed        = true;
-   }
-}
-
-void TSelRectTool::MouseUp(int X, int Y, TMouseButton Button)
-{
-   if (FImage == NULL)
-        return;
-
-   if (Button == mbLeft)
-   {
-/*      if (X < FSelRect.Left)
-		 FSelRect.Left = X;
-      else
-         FSelRect.Right = X;
-      if (Y < FSelRect.Top)
-         FSelRect.Top = Y;
-      else
-         FSelRect.Bottom = Y;
-*/
-      FSelRect.Left = AWP_MIN(X, FSelRect.Left);
-      FSelRect.Top  = AWP_MIN(Y, FSelRect.Top);
-      FSelRect.Right = AWP_MAX(X, FSelRect.Right);
-      FSelRect.Bottom = AWP_MAX(Y, FSelRect.Bottom);
-
-
-      Pressed = false;
-      FImage->FSelRect = FImage->GetImageRect(FSelRect);
-      FImage->Paint();
-   }
-}
-void TSelRectTool::MouseMove(int X, int Y, TShiftState Shift)
-{
-   if (FImage == NULL)
-        return;
-
-   if (Pressed)
-   {
-      DrawSelRect();
-      FSelRect.Left = AWP_MIN(X, FSelRect.Left);
-      FSelRect.Top  = AWP_MIN(Y, FSelRect.Top);
-      FSelRect.Right = AWP_MAX(X, FSelRect.Right);
-      FSelRect.Bottom = AWP_MAX(Y, FSelRect.Bottom);
-/*
-      if (X < FSelRect.Left)
-         FSelRect.Left = X;
-      else
-         FSelRect.Right = X;
-      if (Y < FSelRect.Top)
-         FSelRect.Top = Y;
-      else
-         FSelRect.Bottom = Y;
-*/
-      DrawSelRect();
-   }
-}
-
-void TSelRectTool::DrawSelRect()
-{
-   if (FImage == NULL)
-        return;
-
-   TPenStyle style = FImage->Canvas->Pen->Style;
-   TColor color = FImage->Canvas->Pen->Color;
-   TPenMode mode = FImage->Canvas->Pen->Mode;
-
-   FImage->Canvas->Pen->Style = psDot;
-   FImage->Canvas->Pen->Color = clBlack;
-   FImage->Canvas->Pen->Mode = pmNotXor;
-
-   FImage->Canvas->MoveTo(FSelRect.Left, FSelRect.Top);
-   FImage->Canvas->LineTo(FSelRect.Right, FSelRect.Top);
-   FImage->Canvas->LineTo(FSelRect.Right, FSelRect.Bottom);
-   FImage->Canvas->LineTo(FSelRect.Left, FSelRect.Bottom);
-   FImage->Canvas->LineTo(FSelRect.Left, FSelRect.Top);
-
-   float w = FSelRect.Width() / this->m_numCols;
-   for (int i = 1; i < this->m_numCols; i++)
-   {
-      int x,y;
-      x = FSelRect.left + i*w;
-      y = FSelRect.top;
-      FImage->Canvas->MoveTo(x,y);
-      y = FSelRect.bottom;
-      FImage->Canvas->LineTo(x,y);
-   }
-
-
-   float h = FSelRect.Height() / this->m_numRows;
-   for (int i = 1; i < this->m_numRows; i++)
-   {
-      int x,y;
-      x = FSelRect.left;
-      y = FSelRect.top + i*h;
-      FImage->Canvas->MoveTo(x,y);
-      x = FSelRect.right;
-      FImage->Canvas->LineTo(x,y);
-   }
-
-   FImage->Canvas->Pen->Style = style;
-   FImage->Canvas->Pen->Color = color;
-   FImage->Canvas->Pen->Mode = mode;
-}
-void TSelRectTool::Reset()
-{
-
-}
-AnsiString TSelRectTool::GetName()
-{
-    return "Select rect";
-}
-
-
-//-------------------------------
-bool in_Rect ( const TRect* r, const TPoint* p )
-{
-    if ( p->x <= r->Right && p->x >= r->Left &&
-         p->y <= r->Bottom && p->y >= r->Top )
-		return true;
-
-    return false;
-}
-
-bool in_Rect ( const TRect* r, int X, int Y )
-{
-    if ( X <= r->Right && X >= r->Left &&
-         Y <= r->Bottom && Y >= r->Top )
-        return true;
-
-    return false;
-}
-
-// -------------------------------------------------------------------
-TLenzTool::TLenzTool(TPhCustomImage* aImage):TImageTool(aImage)
-{
-   Zoom        = 2;
-   LenzSize    = 200;
-   FImage      = aImage;
-   Applied     = false;
-   FDrawHandle = DrawDibOpen();
-#ifndef X64
-   Screen->Cursors[crLenzCursor]  = LoadCursor( HInstance, "CURSOR_LENZ" );
-#endif
-}
-
-TLenzTool::~TLenzTool()
-{
-   DrawDibClose(FDrawHandle);
-}
-
-void TLenzTool::Draw(TCanvas* Canvas)
-{
-    // инструмент перемещения ничего не рисует на Canvase
-}
-
-void TLenzTool::MouseDown(int X, int Y, TMouseButton Button)
-{
-   if ( Button == mbLeft )
-      ApplyLenz(X, Y);
-}
-
-void TLenzTool::MouseUp(int X, int Y, TMouseButton Button)
-{
-   if (Button != mbLeft)
-      return;
-
-   Applied = false;
-   FImage->Paint();
-}
-
-void TLenzTool::MouseMove(int X, int Y, TShiftState Shift)
-{
-   if ( !Shift.Contains( ssLeft ) || Applied == false )
-      return;
-
-   FImage->Paint();
-   ApplyLenz(X, Y);
-}
-
-void TLenzTool::ApplyLenz(int X, int Y)
-{
-   int src_width = (LenzSize/Zoom) * (100/FImage->Scale);
-
-   // Calculate lenz position
-   TPoint dst_corner;
-   dst_corner.x = X - LenzSize/2;
-   dst_corner.y = Y - LenzSize/2;
-      
-   TRect visible_area  = FImage->VisibleArea;
-
-   int realY = RoundTo( FImage->Corner.y + Y*100/FImage->Scale, 0 );
-   int realX = RoundTo( FImage->Corner.x + X*100/FImage->Scale, 0 );
-
-   if ( FImage->Corner.x == 0 && !in_Rect( &visible_area, FImage->GetImageX(X), FImage->GetImageY(Y) ) )
-      return;
-   if ( FImage->Corner.y == 0 && !in_Rect( &visible_area, FImage->GetImageX(X), FImage->GetImageY(Y) ) )
-      return;
-
-   // Calculate area to zoom on the source image
-   TPoint src_corner;
-   src_corner.x = realX - src_width/2;
-   src_corner.y = realY - src_width/2;
-
-   // All image visible, correct empty areas
-   if ( FImage->Bitmap->Width*FImage->Scale/100 < FImage->Width )
-   {
-      src_corner.x -= (100*FImage->Width - FImage->Bitmap->Width*FImage->Scale)/(2*FImage->Scale);
-	  if ( src_corner.x < 0 )
-         src_corner.x = 0;
-      if ( src_corner.x >= FImage->Bitmap->Width - src_width )
-         src_corner.x = FImage->Bitmap->Width - src_width - 1;
-   }
-
-   if ( FImage->Bitmap->Height*FImage->Scale/100 < FImage->Height )
-   {
-      src_corner.y -= (100*FImage->Height - FImage->Bitmap->Height*FImage->Scale)/(2*FImage->Scale);
-      if ( src_corner.y < 0 )
-         src_corner.y = 0;
-      if ( src_corner.y >= FImage->Bitmap->Height - src_width )
-         src_corner.y = FImage->Bitmap->Height - src_width - 1;
-   }
-   TDIBImage* dib = dynamic_cast<TDIBImage*>(FImage->Bitmap);
-   DrawDibDraw(
-        FDrawHandle,
-        FImage->Canvas->Handle,
-		dst_corner.x,                   // x-coord of destination upper-left corner
-        dst_corner.y,                   // y-coord of destination upper-left corner
-        LenzSize,                       // width of destination rectangle
-        LenzSize,                       // height of destination rectangle
-        &(dib->DIBInfo.bmiHeader),
-        dib->OpenPixels(),
-		src_corner.x,                       // x-coord of source upper-left corner
-        src_corner.y,                     // y-coord of source upper-left corner
-        src_width,           // width of source rectangle
-        src_width,           // height of source rectangle
-        DDF_HALFTONE
-   );
-   dib->ClosePixels();
-
-   Applied = true;
-}
-
-void TLenzTool::Reset()
-{
-}
-AnsiString TLenzTool::GetName()
-{
-	return "Lenz";
 }
 
 TThumbSelectTool::TThumbSelectTool(TPhCustomImage* aImage, int numThumbs, int tWidth, int tHeight):TImageTool(aImage)

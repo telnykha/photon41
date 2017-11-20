@@ -294,13 +294,15 @@ void __fastcall TmainForm::PhImage1ScaleChange(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::PhImage1ToolChange(TObject *Sender)
 {
-     StatusBar1->Panels->Items[3]->Text =  PhImage1->Tool->GetName();
+      if (PhImage1->PhTool != NULL)
+	    StatusBar1->Panels->Items[3]->Text =  PhImage1->PhTool->ToolName;
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::FormCreate(TObject *Sender)
 {
     StatusBar1->Panels->Items[2]->Text =  L"Zoom";
-    StatusBar1->Panels->Items[3]->Text =  PhImage1->Tool->GetName();
+    if (PhImage1->PhTool != NULL)
+	    StatusBar1->Panels->Items[3]->Text =  PhImage1->PhTool->ToolName;
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::editClearSelectionActionExecute(TObject *Sender)
