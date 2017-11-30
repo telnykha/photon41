@@ -66,6 +66,7 @@ object mainForm: TmainForm
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 2
+    Visible = False
     object SpeedButton4: TSpeedButton
       Left = 192
       Top = 0
@@ -270,7 +271,7 @@ object mainForm: TmainForm
     Top = 16
     object fileOpenAction: TAction
       Category = 'File'
-      Caption = 'Open media...'
+      Caption = 'Open image(s)...'
       OnExecute = fileOpenActionExecute
     end
     object fileSaveAction: TAction

@@ -7,7 +7,6 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "FImage41"
-#pragma link "PhMediaSource"
 #pragma link "PhImageTool"
 #pragma link "PhPaneTool"
 #pragma link "PhLenzTool"
