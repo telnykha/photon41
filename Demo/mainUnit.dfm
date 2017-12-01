@@ -66,14 +66,13 @@ object mainForm: TmainForm
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 2
-    Visible = False
     object SpeedButton4: TSpeedButton
       Left = 192
       Top = 0
       Width = 64
       Height = 57
+      Action = navNextAction
       Align = alLeft
-      Caption = 'Next'
       Flat = True
       Glyph.Data = {
         B6020000424DB602000000000000760000002800000030000000180000000100
@@ -108,8 +107,8 @@ object mainForm: TmainForm
       Top = 0
       Width = 64
       Height = 57
+      Action = navLastAction
       Align = alLeft
-      Caption = 'Finish'
       Flat = True
       Glyph.Data = {
         B6020000424DB602000000000000760000002800000030000000180000000100
@@ -144,9 +143,9 @@ object mainForm: TmainForm
       Top = 0
       Width = 64
       Height = 57
+      Action = navPlayAction
       Align = alLeft
       AllowAllUp = True
-      Caption = 'Play'
       Flat = True
       Glyph.Data = {
         F6040000424DF604000000000000760000002800000060000000180000000100
@@ -199,8 +198,8 @@ object mainForm: TmainForm
       Top = 0
       Width = 64
       Height = 57
+      Action = navPrevAction
       Align = alLeft
-      Caption = 'Prev '
       Flat = True
       Glyph.Data = {
         B6020000424DB602000000000000760000002800000030000000180000000100
@@ -235,8 +234,8 @@ object mainForm: TmainForm
       Top = 0
       Width = 64
       Height = 57
+      Action = navFirstAction
       Align = alLeft
-      Caption = 'Start'
       Flat = True
       Glyph.Data = {
         B6020000424DB602000000000000760000002800000030000000180000000100
@@ -406,6 +405,36 @@ object mainForm: TmainForm
       OnExecute = editClearSelectionActionExecute
       OnUpdate = editClearSelectionActionUpdate
     end
+    object navFirstAction: TAction
+      Category = 'Navigation'
+      Caption = 'First'
+      OnExecute = navFirstActionExecute
+      OnUpdate = navFirstActionUpdate
+    end
+    object navLastAction: TAction
+      Category = 'Navigation'
+      Caption = 'Last'
+      OnExecute = navLastActionExecute
+      OnUpdate = navLastActionUpdate
+    end
+    object navPrevAction: TAction
+      Category = 'Navigation'
+      Caption = 'Prev'
+      OnExecute = navPrevActionExecute
+      OnUpdate = navPrevActionUpdate
+    end
+    object navNextAction: TAction
+      Category = 'Navigation'
+      Caption = 'Next'
+      OnExecute = navNextActionExecute
+      OnUpdate = navNextActionUpdate
+    end
+    object navPlayAction: TAction
+      Category = 'Navigation'
+      Caption = 'Play'
+      OnExecute = navPlayActionExecute
+      OnUpdate = navPlayActionUpdate
+    end
   end
   object MainMenu1: TMainMenu
     Left = 24
@@ -509,6 +538,7 @@ object mainForm: TmainForm
       'Jpeg images|*.jpg|BMP images|*.bmp|PPM images|*.ppm|TGA images|*' +
       '.tga|GIF images|*.gif|AWP images|*.awp|PNG images|*.png|TIFF ima' +
       'ges|*.tif'
+    Options = [ofHideReadOnly, ofAllowMultiSelect, ofEnableSizing]
     Left = 24
     Top = 120
   end

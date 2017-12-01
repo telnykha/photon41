@@ -83,6 +83,11 @@ __fastcall TPhCustomImage::TPhCustomImage(TComponent* Owner)
 	m_modified = false;
 	m_ph_tools = new TList();
     m_selected_ph_tool = 0;
+
+    this->m_Frames = new TPhFrames(this);
+    this->m_Timer = new TTimer(this);
+    this->m_Timer->Enabled = false;
+    this->m_Timer->OnTimer = TimerEventHandler;
 }
 /* ---------------------------------------------------------------------------
 	Function:  destructor of the  TFCustomImage
@@ -92,6 +97,8 @@ __fastcall TPhCustomImage::TPhCustomImage(TComponent* Owner)
 __fastcall TPhCustomImage::~TPhCustomImage()
 {
 	Close();
+    delete this->m_Frames;
+    delete this->m_Timer;
 }
 /* ---------------------------------------------------------------------------
 	Function: TFCustomImage::Init(AnsiString& FileName)
@@ -107,38 +114,12 @@ bool  __fastcall TPhCustomImage::Init(TStrings* Names)
     if (Names == NULL || Names->Count == 0)
         return false;
 
-    // todo: this version works only with one file
-    if (Names->Count > 1)
-        return false;
-
     // todo: check number of files in the source list
     // open list with limit 4096 files
 
     AnsiString FileName;
     Close();
-    try
-    {
-       FileName = Names->Strings[0];
-       if (FBeforeOpen)
-          FBeforeOpen(this);
-       if (!LoadFromFile(FileName.c_str()))
-          return false;
-    }
-    catch(Exception& e)
-    {
-        //FErrorMessage = e.Message;
-    }
-    catch(...)
-    {
-       // FErrorMessage = "Unknwn error.";
-        return false;
-    }
-    FFileName = FileName;
-    if (FAfterOpen)
-        FAfterOpen(this);
-    if (FChange)
-        FChange(this);
-    return true;
+    return this->m_Frames->Init(Names);
 }
 /*---------------------------------------------------------------------------
     Function: TFCustomImage::Close()
@@ -162,8 +143,36 @@ void __fastcall TPhCustomImage::Close()
     delete FSelectedBitmap;
     FSelectedBitmap = NULL;
    }
-
+   m_Timer->Enabled = false;
+   m_Frames->Close();
 }
+
+bool __fastcall TPhCustomImage::GetSlideShow()
+{
+    return this->m_Timer->Enabled;
+}
+
+void __fastcall TPhCustomImage::SetSlideShow(bool Value)
+{
+    if (m_Timer->Enabled == Value)
+        return;
+
+    if (!Value)
+    {
+        this->m_Timer->Enabled = false;
+        return;
+    }
+
+    if (Value && this->m_Frames->Count > 1)
+        this->m_Timer->Enabled = true;
+}
+
+void __fastcall   TPhCustomImage::TimerEventHandler(TObject *Sender)
+{
+    this->m_Frames->Next();
+}
+
+
 void __fastcall     TPhCustomImage::Resize(void)
 {
         Paint();
@@ -515,7 +524,7 @@ void __fastcall TPhCustomImage::ZoomToRect(const TRect Rect)
       FStartPoint.x = Cx - Width / (2*FScale);
    else
       FStartPoint.x = 0;
-      
+
    /* Скорректируем выходы за границы */
    FStartPoint.y = ( FStartPoint.y < 0 ) ? 0 : FStartPoint.y;
    FStartPoint.y = ( FStartPoint.y + GetHeightToDisplay()/FScale > FBitmap->Height ) ?
@@ -1100,6 +1109,10 @@ void __fastcall TPhCustomImage::CreateParams(Controls::TCreateParams &Params)
 ---------------------------------------------------------------------------*/
 bool  __fastcall TPhCustomImage::LoadFromFile(const char* lpFileName)
 {
+
+        if (FBeforeOpen)
+          FBeforeOpen(this);
+
       awpImage* tmp = NULL;
       AnsiString strExt = ExtractFileExt(lpFileName);
       if (strExt != ".awp" && strExt != ".jpg" && strExt != ".bmp" && strExt != ".ppm" && strExt != ".tga")
@@ -1131,6 +1144,14 @@ bool  __fastcall TPhCustomImage::LoadFromFile(const char* lpFileName)
       TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
       dib->SetAWPImage(tmp);
       awpReleaseImage(&tmp);
+      // setup filename
+      FFileName = lpFileName;
+
+      if (FAfterOpen)
+          FAfterOpen(this);
+      if (FChange)
+          FChange(this);
+
       return true;
 }
 

@@ -12,6 +12,7 @@
 #pragma link "PhLenzTool"
 #pragma link "PhZoomToRectTool"
 #pragma link "PhSelectRectTool"
+#pragma link "PhFrames"
 #pragma resource "*.dfm"
 TmainForm *mainForm;
 //---------------------------------------------------------------------------
@@ -35,6 +36,7 @@ void __fastcall TmainForm::fileOpenActionExecute(TObject *Sender)
           // Open Media
           if(!PhImage1->Init(OpenDialog1->Files))
           	ShowMessage("Cannot open file: " + OpenDialog1->Files->Strings[0]);
+          this->Panel1->Visible = OpenDialog1->Files->Count > 1;
         }
 }
 //---------------------------------------------------------------------------
@@ -61,6 +63,7 @@ void __fastcall TmainForm::fileCloseActionExecute(TObject *Sender)
                         this->fileSaveActionExecute(this);
                  }
         }
+        PhImage1->Close();
         PhImage1->Empty = true;
 }
 //---------------------------------------------------------------------------
@@ -315,5 +318,63 @@ void __fastcall TmainForm::editClearSelectionActionUpdate(TObject *Sender)
         editClearSelectionAction->Enabled = PhImage1->HasSelection();
 }
 //---------------------------------------------------------------------------
+ void __fastcall TmainForm::navFirstActionExecute(TObject *Sender)
+{
+    this->PhImage1->Frames->First();
+}
+//---------------------------------------------------------------------------
 
+void __fastcall TmainForm::navFirstActionUpdate(TObject *Sender)
+{
+    navFirstAction->Enabled = PhImage1->Frames->Count > 1;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::navLastActionExecute(TObject *Sender)
+{
+    this->PhImage1->Frames->Last();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::navLastActionUpdate(TObject *Sender)
+{
+    navLastAction->Enabled = PhImage1->Frames->Count > 1;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::navPrevActionExecute(TObject *Sender)
+{
+    this->PhImage1->Frames->Prev();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::navPrevActionUpdate(TObject *Sender)
+{
+    navPrevAction->Enabled =  PhImage1->Frames->Count > 1;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::navNextActionExecute(TObject *Sender)
+{
+    this->PhImage1->Frames->Next();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::navNextActionUpdate(TObject *Sender)
+{
+    navNextAction->Enabled = PhImage1->Frames->Count > 1;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::navPlayActionExecute(TObject *Sender)
+{
+    this->PhImage1->SlideShow = !this->PhImage1->SlideShow;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::navPlayActionUpdate(TObject *Sender)
+{
+    navPlayAction->Enabled =   PhImage1->Frames->Count > 1;
+}
+//---------------------------------------------------------------------------
 

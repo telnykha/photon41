@@ -116,6 +116,10 @@
             <DependentOn>photon\ImportRaster.h</DependentOn>
             <BuildOrder>6</BuildOrder>
         </CppCompile>
+        <CppCompile Include="photon\PhFrames.cpp">
+            <DependentOn>photon\PhFrames.h</DependentOn>
+            <BuildOrder>15</BuildOrder>
+        </CppCompile>
         <CppCompile Include="photon\PhImageTool.cpp">
             <DependentOn>photon\PhImageTool.h</DependentOn>
             <BuildOrder>11</BuildOrder>

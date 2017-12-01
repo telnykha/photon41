@@ -107,6 +107,11 @@ __published:	// IDE-managed Components
 	TPhLenzTool *PhLenzTool1;
 	TPhZoomToRectTool *PhZoomToRectTool1;
 	TPhSelRectTool *PhSelRectTool1;
+	TAction *navFirstAction;
+	TAction *navLastAction;
+	TAction *navPrevAction;
+	TAction *navNextAction;
+	TAction *navPlayAction;
 	void __fastcall fileOpenActionExecute(TObject *Sender);
 	void __fastcall fileSaveActionExecute(TObject *Sender);
 	void __fastcall fileSaveActionUpdate(TObject *Sender);
@@ -156,6 +161,16 @@ __published:	// IDE-managed Components
 	void __fastcall FormCreate(TObject *Sender);
 	void __fastcall editClearSelectionActionExecute(TObject *Sender);
 	void __fastcall editClearSelectionActionUpdate(TObject *Sender);
+	void __fastcall navFirstActionExecute(TObject *Sender);
+	void __fastcall navFirstActionUpdate(TObject *Sender);
+	void __fastcall navLastActionExecute(TObject *Sender);
+	void __fastcall navLastActionUpdate(TObject *Sender);
+	void __fastcall navPrevActionExecute(TObject *Sender);
+	void __fastcall navPrevActionUpdate(TObject *Sender);
+	void __fastcall navNextActionExecute(TObject *Sender);
+	void __fastcall navNextActionUpdate(TObject *Sender);
+	void __fastcall navPlayActionExecute(TObject *Sender);
+	void __fastcall navPlayActionUpdate(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TmainForm(TComponent* Owner);

@@ -14,6 +14,7 @@
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <ExtCtrls.hpp>
+#include "PhFrames.h"
 
 const int crHandOpenCursor  = 1;
 const int crHandCloseCursor = 2;
@@ -32,9 +33,11 @@ class PACKAGE TPhCustomImage : public TCustomControl
 {
 friend class TPhImageTool;
 friend class TPhSelRectTool;
+friend class TPhFrames;
 protected:
+    TTimer*                     m_Timer;
 	TList*                  	m_ph_tools;
-
+    TPhFrames*                  m_Frames;
 	TGraphic*                   FBitmap;
 	TGraphic*                   FSelectedBitmap;
 	double                      FScale;      // scale coefficient
@@ -56,12 +59,13 @@ protected:
 	int                         FSelRows;
 	int				m_tWidth;
 	int				m_tHeight;
-//	int				m_Count;
 	// image was modified
 	bool                        m_modified;
 	int				 __fastcall GetSelectedIndex();
+    void __fastcall         TimerEventHandler(TObject *Sender);
 protected:
 	void         __fastcall     SetImage(TGraphic* aBitmap);
+
 
 	// Painting
 	int                         GetWidthToDisplay() const;
@@ -84,6 +88,9 @@ protected:
 	void  __fastcall            SetSelCols(int num);
 	void  __fastcall            SetSelRows(int num);
 
+    bool __fastcall GetSlideShow();
+    void __fastcall SetSlideShow(bool Value);
+
 	// Mouse
 	DYNAMIC void __fastcall     MouseDown(TMouseButton Button,  TShiftState Shift, Integer X, Integer Y);
 	DYNAMIC void __fastcall     MouseMove( TShiftState Shift, Integer X, Integer Y);
@@ -102,8 +109,6 @@ protected:
 	void __fastcall         	AddPhTool(TPhImageTool* tool);
 	void __fastcall             RemovePhTool(TPhImageTool* tool);
 	TPhImageTool* __fastcall    GetSelectedTool();
-	// Close
-	virtual void __fastcall             Close();
 	 TGraphic* __fastcall   GetSelectedBitmap();
 public:
 
@@ -112,17 +117,20 @@ public:
 
 	// ====================operations========================================
 	virtual bool __fastcall         Init(TStrings* Names);
+	// Close
+	virtual void __fastcall             Close();
 	void __fastcall             	SaveToFile(const AnsiString& FileName);
 
 	// Clipboard
-	void __fastcall             LoadFromClipboard();
-	void __fastcall             SaveToClipBoard();
+	void __fastcall            		LoadFromClipboard();
+	void __fastcall             	SaveToClipBoard();
+
 
 	virtual void __fastcall     Paint(void);
 	// Raster data commands positioning
-	void __fastcall         BestFit   ();
-	void __fastcall         FitWidth  ();
-	void __fastcall         FitHeight ();
+	void __fastcall         	BestFit   ();
+	void __fastcall         	FitWidth  ();
+	void __fastcall         	FitHeight ();
 
 	// Data scale
 	void __fastcall             ActualSize();
@@ -154,12 +162,14 @@ public:
 
 	// Public properties
 	__property  AnsiString      AFileName = {read = FFileName, write = FFileName};
+    __property  TPhFrames*      Frames = {read = m_Frames};
 	__property  TGraphic*       Bitmap = {read = FBitmap, write = SetImage};
 	__property  TGraphic*       SelectedBitmap = {read = GetSelectedBitmap};
 	__property  int             SelCols = {read = FSelCols, write = SetSelCols};
 	__property  int             SelRows = {read = FSelRows, write = SetSelRows};
 	__property  bool            Modified = {read = GetModified};
 	__property  bool            Empty = {read = GetEmpty, write = SetEmpty};
+    __property  bool            SlideShow = {read = GetSlideShow, write = SetSlideShow};
 
 	__property float            Scale = {read = GetScale};
 	__property TPoint           Corner = {read = GetCorner};

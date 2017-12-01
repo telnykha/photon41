@@ -78,3 +78,4 @@ photon/__recovery/__recovery.ini
 *.~*
 OCRDemo/Win32/
 OCRDemo/__recovery/
+Demo/__recovery/__recovery.ini
