@@ -14,8 +14,6 @@
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <ExtCtrls.hpp>
-#include <vfw.h>
-#include <ExtCtrls.hpp>
 
 const int crHandOpenCursor  = 1;
 const int crHandCloseCursor = 2;
@@ -58,7 +56,7 @@ protected:
 	int                         FSelRows;
 	int				m_tWidth;
 	int				m_tHeight;
-	int				m_Count;
+//	int				m_Count;
 	// image was modified
 	bool                        m_modified;
 	int				 __fastcall GetSelectedIndex();
@@ -166,7 +164,7 @@ public:
 	__property float            Scale = {read = GetScale};
 	__property TPoint           Corner = {read = GetCorner};
 	__property TRect            VisibleArea = {read = GetVisibleArea};
-   __property  int ObjectsCount = {read = m_Count, write = m_Count};
+ //  __property  int ObjectsCount = {read = m_Count, write = m_Count};
    // inherited properties
    __property Canvas;
 	__property TPhImageTool*   PhTool = {read = GetSelectedTool};

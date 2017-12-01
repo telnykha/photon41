@@ -33,11 +33,11 @@ object mainForm: TmainForm
       end
       item
         Alignment = taCenter
-        Width = 100
+        Width = 150
       end
       item
         Alignment = taCenter
-        Width = 100
+        Width = 150
       end
       item
         Alignment = taCenter

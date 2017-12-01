@@ -5,6 +5,7 @@
 //---------------------------------------------------------------------------
 #include <System.SysUtils.hpp>
 #include <System.Classes.hpp>
+#include <vfw.h>
 #include "PhImageTool.h"
 class PACKAGE TPhLenzTool : public TPhImageTool
 {
