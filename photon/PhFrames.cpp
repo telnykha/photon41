@@ -3,16 +3,19 @@
 #pragma hdrstop
 #include "PhFrames.h"
 #include "FImage41.h"
+#include "PhReadImagesThread.h"
 //---------------------------------------------------------------------------
 TPhFrames::TPhFrames(TPhCustomImage* display)
 {
     m_names = new TStringList();
-    m_pDisplay = display;
+	m_pDisplay = display;
+	m_pReader = new TPhReadImagesThread(true);
     m_current = 0;
 }
 __fastcall TPhFrames::~TPhFrames()
 {
    delete m_names;
+   delete m_pReader;
 }
 
 bool TPhFrames::Init(TStrings* names)
@@ -22,9 +25,11 @@ bool TPhFrames::Init(TStrings* names)
 
     Close();
     m_names->SetStrings(names);
-    if (m_names->Count > 0)
+	if (m_names->Count > 0)
     {
-        First();
+		First();
+		if (m_names->Count > 4 )
+			m_pReader->SetNames(m_names);
     }
     else
         return false;

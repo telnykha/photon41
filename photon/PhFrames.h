@@ -4,11 +4,13 @@
 #include <System.Classes.hpp>
 //---------------------------------------------------------------------------
 class TPhCustomImage;
+class TPhReadImagesThread;
 class PACKAGE TPhFrames : public TObject
 {
 private:
-    TPhCustomImage* m_pDisplay;
-    TStrings* m_names;
+	TPhCustomImage* 		m_pDisplay;
+	TPhReadImagesThread* 	m_pReader;
+	TStrings* m_names;
     int       m_current;
 protected:
     int __fastcall GetCount();
