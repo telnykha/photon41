@@ -1,7 +1,6 @@
 //---------------------------------------------------------------------------
 #ifndef ImportRasterH
 #define ImportRasterH
-#include "FImage41.h"
 #include "DIBImage41.h"
 //TImageDecoder class----------------------------
 //абстракный базовый класс предназначенный для
@@ -51,20 +50,17 @@ private:
     TDIBImage*       FBitmap;  //место, куда будут распаковываться растровые данные
     TImageDecoder*  FDecoder; //декодер растровых данных
     AnsiString      FFileName;//имя файла с растровыми данными
-    TPhCustomImage*        FImage;   //
     void __fastcall SetFileName(AnsiString FileName);
-    void __fastcall SetImage(TPhCustomImage* AImage);
     void __fastcall SetBitmap(TDIBImage* ABitmap);
 public:
    __fastcall TImportRaster();
-   __fastcall TImportRaster(TPhCustomImage* AImage, const AnsiString& FileName);
+   __fastcall TImportRaster(const AnsiString& FileName);
    __fastcall ~TImportRaster();
    void __fastcall UpdateUI();
    virtual void __fastcall Execute();
    //properties
    __property TDIBImage*         Bitmap = {read = FBitmap, write = SetBitmap};
    __property AnsiString         FileName = {read = FFileName, write = SetFileName};
-   __property TPhCustomImage*     Image = {read = FImage, write = SetImage};
 };
 //---------------------------------------------------------------------------
 #endif

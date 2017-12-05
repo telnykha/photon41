@@ -2,7 +2,7 @@ object mainForm: TmainForm
   Left = 0
   Top = 0
   Caption = 'Photon 4.1 demo '
-  ClientHeight = 490
+  ClientHeight = 595
   ClientWidth = 709
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -20,7 +20,7 @@ object mainForm: TmainForm
   TextHeight = 13
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 471
+    Top = 576
     Width = 709
     Height = 19
     Panels = <
@@ -48,8 +48,10 @@ object mainForm: TmainForm
     Left = 0
     Top = 0
     Width = 709
-    Height = 414
+    Height = 519
     BorderStyle = bsFSingle
+    ThumbWidht = 320
+    ThumbHeight = 240
     Align = alClient
     ParentColor = False
     PopupMenu = PopupMenu1
@@ -60,7 +62,7 @@ object mainForm: TmainForm
   end
   object Panel1: TPanel
     Left = 0
-    Top = 414
+    Top = 519
     Width = 709
     Height = 57
     Align = alBottom
@@ -101,42 +103,6 @@ object mainForm: TmainForm
       NumGlyphs = 2
       ExplicitLeft = 216
       ExplicitTop = 6
-    end
-    object SpeedButton5: TSpeedButton
-      Left = 256
-      Top = 0
-      Width = 64
-      Height = 57
-      Action = navLastAction
-      Align = alLeft
-      Flat = True
-      Glyph.Data = {
-        B6020000424DB602000000000000760000002800000030000000180000000100
-        0400000000004002000000000000000000001000000000000000000000000000
-        8000008000000080800080000000800080008080000080808000C0C0C0000000
-        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00FFFFFFFFFFFF
-        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFCCFF
-        FCCCFFFFFFFFFFFFFFFF77FFF777FFFFFFFFFFFFFFFFCCCFFCCCFFFFFFFFFFFF
-        FFFF777FF777FFFFFFFFFFFFFFFFCCCCFCCCFFFFFFFFFFFFFFFF7777F777FFFF
-        FFFFFFFFFFFFCCCCCCCCFFFFFFFFFFFFFFFF77777777FFFFFFFFFFFFFFFFCCCC
-        CCCCFFFFFFFFFFFFFFFF77777777FFFFFFFFFFFFFFFFCCCCFCCCFFFFFFFFFFFF
-        FFFF7777F777FFFFFFFFFFFFFFFFCCCFFCCCFFFFFFFFFFFFFFFF777FF777FFFF
-        FFFFFFFFFFFFCCFFFCCCFFFFFFFFFFFFFFFF77FFF777FFFFFFFFFFFFFFFFFFFF
-        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
-        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
-      Layout = blGlyphTop
-      NumGlyphs = 2
-      ExplicitLeft = 296
-      ExplicitTop = -6
     end
     object SpeedButton9: TSpeedButton
       Left = 128
@@ -263,6 +229,42 @@ object mainForm: TmainForm
       Layout = blGlyphTop
       NumGlyphs = 2
       ExplicitTop = 6
+    end
+    object SpeedButton1: TSpeedButton
+      Left = 256
+      Top = 0
+      Width = 64
+      Height = 57
+      Action = navLastAction
+      Align = alLeft
+      Flat = True
+      Glyph.Data = {
+        B6020000424DB602000000000000760000002800000030000000180000000100
+        0400000000004002000000000000000000001000000000000000000000000000
+        8000008000000080800080000000800080008080000080808000C0C0C0000000
+        FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00FFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFCCFF
+        FCCCFFFFFFFFFFFFFFFF77FFF777FFFFFFFFFFFFFFFFCCCFFCCCFFFFFFFFFFFF
+        FFFF777FF777FFFFFFFFFFFFFFFFCCCCFCCCFFFFFFFFFFFFFFFF7777F777FFFF
+        FFFFFFFFFFFFCCCCCCCCFFFFFFFFFFFFFFFF77777777FFFFFFFFFFFFFFFFCCCC
+        CCCCFFFFFFFFFFFFFFFF77777777FFFFFFFFFFFFFFFFCCCCFCCCFFFFFFFFFFFF
+        FFFF7777F777FFFFFFFFFFFFFFFFCCCFFCCCFFFFFFFFFFFFFFFF777FF777FFFF
+        FFFFFFFFFFFFCCFFFCCCFFFFFFFFFFFFFFFF77FFF777FFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+        FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+      Layout = blGlyphTop
+      NumGlyphs = 2
+      ExplicitLeft = 296
+      ExplicitTop = -6
     end
   end
   object ActionList1: TActionList
@@ -435,6 +437,12 @@ object mainForm: TmainForm
       OnExecute = navPlayActionExecute
       OnUpdate = navPlayActionUpdate
     end
+    object viewMosaicAction: TAction
+      Category = 'View'
+      Caption = 'Mosaic '
+      OnExecute = viewMosaicActionExecute
+      OnUpdate = viewMosaicActionUpdate
+    end
   end
   object MainMenu1: TMainMenu
     Left = 24
@@ -492,6 +500,12 @@ object mainForm: TmainForm
     end
     object View1: TMenuItem
       Caption = 'View'
+      object viewMosaicAction1: TMenuItem
+        Action = viewMosaicAction
+      end
+      object N8: TMenuItem
+        Caption = '-'
+      end
       object ZoomIn1: TMenuItem
         Action = viewZoomInAction
       end
@@ -535,9 +549,10 @@ object mainForm: TmainForm
   end
   object OpenDialog1: TOpenDialog
     Filter = 
-      'Jpeg images|*.jpg|BMP images|*.bmp|PPM images|*.ppm|TGA images|*' +
-      '.tga|GIF images|*.gif|AWP images|*.awp|PNG images|*.png|TIFF ima' +
-      'ges|*.tif'
+      'All images| *.jpg|*.ppm|*.tga|*.gif|*.awp|*.png|*.tif|*.bmp|Jpeg' +
+      ' images|*.jpg|PPM images|*.ppm|TGA images|*.tga|GIF images|*.gif' +
+      '|AWP images|*.awp|PNG images|*.png|TIFF images|*.tif|BMP images|' +
+      '*.bmp'
     Options = [ofHideReadOnly, ofAllowMultiSelect, ofEnableSizing]
     Left = 24
     Top = 120
@@ -574,6 +589,12 @@ object mainForm: TmainForm
     object ActualSize2: TMenuItem
       Action = viewActualSizeAction
     end
+    object N9: TMenuItem
+      Caption = '-'
+    end
+    object Mosaic1: TMenuItem
+      Action = viewMosaicAction
+    end
     object N1: TMenuItem
       Caption = '-'
     end
@@ -586,22 +607,22 @@ object mainForm: TmainForm
   end
   object PhPaneTool1: TPhPaneTool
     PhImage = PhImage1
-    Left = 256
+    Left = 624
     Top = 40
   end
   object PhLenzTool1: TPhLenzTool
     PhImage = PhImage1
-    Left = 256
+    Left = 624
     Top = 168
   end
   object PhZoomToRectTool1: TPhZoomToRectTool
     PhImage = PhImage1
-    Left = 256
+    Left = 624
     Top = 104
   end
   object PhSelRectTool1: TPhSelRectTool
     PhImage = PhImage1
-    Left = 256
+    Left = 624
     Top = 232
   end
 end

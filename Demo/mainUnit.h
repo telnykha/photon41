@@ -96,7 +96,6 @@ __published:	// IDE-managed Components
 	TMenuItem *BestFit2;
 	TMenuItem *ActualSize2;
 	TSpeedButton *SpeedButton4;
-	TSpeedButton *SpeedButton5;
 	TSpeedButton *SpeedButton9;
 	TSpeedButton *SpeedButton3;
 	TSpeedButton *SpeedButton2;
@@ -112,6 +111,12 @@ __published:	// IDE-managed Components
 	TAction *navPrevAction;
 	TAction *navNextAction;
 	TAction *navPlayAction;
+	TSpeedButton *SpeedButton1;
+	TAction *viewMosaicAction;
+	TMenuItem *viewMosaicAction1;
+	TMenuItem *N8;
+	TMenuItem *Mosaic1;
+	TMenuItem *N9;
 	void __fastcall fileOpenActionExecute(TObject *Sender);
 	void __fastcall fileSaveActionExecute(TObject *Sender);
 	void __fastcall fileSaveActionUpdate(TObject *Sender);
@@ -171,6 +176,8 @@ __published:	// IDE-managed Components
 	void __fastcall navNextActionUpdate(TObject *Sender);
 	void __fastcall navPlayActionExecute(TObject *Sender);
 	void __fastcall navPlayActionUpdate(TObject *Sender);
+	void __fastcall viewMosaicActionExecute(TObject *Sender);
+	void __fastcall viewMosaicActionUpdate(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TmainForm(TComponent* Owner);

@@ -2,7 +2,7 @@
 #pragma hdrstop
 #include <Clipbrd.hpp>
 #include "DIBImage41.h"
-
+#include "ImportRaster.h"
 #pragma package(smart_init)
 
 //---------------------------------------------------------------------------
@@ -309,17 +309,43 @@ void __fastcall TDIBImage::SetWidth( int in_Width )
 }
 
 //---------------------------------------------------------------------------
+//
 void __fastcall TDIBImage::LoadFromFile(const UnicodeString Filename)
 {
-    awpImage *image = NULL;
-    AnsiString _FileName = Filename;
-    if ( awpLoadImage(_FileName.c_str(), &image) != AWP_OK )
-        return;
 
-    unsigned char *pDIB = (unsigned char *)::GlobalLock( (HGLOBAL)m_DIBPixels );
-    awpImageToDIB( image, &m_DIBInfo, &pDIB, true );
-    awpReleaseImage(&image);
-    ::GlobalUnlock( (HGLOBAL)m_DIBPixels );
+      awpImage* tmp = NULL;
+      AnsiString strExt = ExtractFileExt(Filename);
+      if (strExt != ".awp" && strExt != ".jpg" && strExt != ".bmp" && strExt != ".ppm" && strExt != ".tga")
+      {
+          TImportRaster* import = new TImportRaster();
+          try
+          {
+             import->FileName = Filename;
+             import->Bitmap = this;
+             import->Execute();
+          }
+          catch(...)
+          {
+                delete import;
+                throw new Exception("Cannot load file " + Filename);
+          }
+          delete import;
+          return;
+      }
+      else
+      {
+        AnsiString _ansi = Filename;
+        if (awpLoadImage(_ansi.c_str(), &tmp) != AWP_OK)
+        {
+            throw new Exception("Cannot load file " + Filename);
+        }
+      }
+
+      if (tmp->dwType != AWP_BYTE)
+            if (awpConvert(tmp, AWP_CONVERT_TO_BYTE_WITH_NORM) != AWP_OK)
+                throw new Exception("Cannot load file " + Filename);
+      SetAWPImage(tmp);
+      awpReleaseImage(&tmp);
 }
 
 //---------------------------------------------------------------------------

@@ -4,14 +4,17 @@
 #include <System.Classes.hpp>
 //---------------------------------------------------------------------------
 class TPhCustomImage;
+class TDIBImage;
 class TPhReadImagesThread;
 class PACKAGE TPhFrames : public TObject
 {
 private:
 	TPhCustomImage* 		m_pDisplay;
+	TStrings* 				m_names;
+    TGraphic*               m_pMosaic;
 	TPhReadImagesThread* 	m_pReader;
-	TStrings* m_names;
-    int       m_current;
+    int       				m_current;
+    void __fastcall OnTerminateHelper(TObject *Sender);
 protected:
     int __fastcall GetCount();
 public:
@@ -30,5 +33,7 @@ public:
     void __fastcall Frame(long num);
 
     __property int Count = {read = GetCount};
+    __property int CurrentFrame = {read = m_current};
+    __property TGraphic* Mosaic = {read = m_pMosaic};
 };
 #endif

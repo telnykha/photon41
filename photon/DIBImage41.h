@@ -15,10 +15,7 @@ private:
     _RTL_CRITICAL_SECTION       m_Lock;
     HANDLE                      m_DIBPixels;
     unsigned char               *m_OpenedPixels;
-
     void* __fastcall            GetScanline(int Row);
-
-
 protected:
     virtual int __fastcall      GetHeight(void);
     virtual int __fastcall      GetWidth(void);

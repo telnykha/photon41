@@ -6,7 +6,6 @@
 #include "FImage41.h"
 #include "DIBImage41.h"
 #include "ExportRaster.h"
-#include "ImportRaster.h"
 #include "PhImageTool.h"
 #pragma hdrstop
 #pragma package(smart_init)
@@ -88,6 +87,9 @@ __fastcall TPhCustomImage::TPhCustomImage(TComponent* Owner)
     this->m_Timer = new TTimer(this);
     this->m_Timer->Enabled = false;
     this->m_Timer->OnTimer = TimerEventHandler;
+    m_tWidth = 128;
+    m_tHeight = 128;
+    m_mosaic = false;
 }
 /* ---------------------------------------------------------------------------
 	Function:  destructor of the  TFCustomImage
@@ -145,6 +147,7 @@ void __fastcall TPhCustomImage::Close()
    }
    m_Timer->Enabled = false;
    m_Frames->Close();
+   m_mosaic = false;
 }
 
 bool __fastcall TPhCustomImage::GetSlideShow()
@@ -166,6 +169,37 @@ void __fastcall TPhCustomImage::SetSlideShow(bool Value)
     if (Value && this->m_Frames->Count > 1)
         this->m_Timer->Enabled = true;
 }
+
+bool __fastcall TPhCustomImage::GetMosaic()
+{
+   return this->m_mosaic;
+}
+void __fastcall TPhCustomImage::SetMosaic(bool Value)
+{
+    if (this->FBitmap->Empty)
+        return;
+
+    if (Value == m_mosaic)
+        return;
+    if (Value && this->m_Timer->Enabled)
+    {
+        this->m_Timer->Enabled = false;
+    }
+
+    if (Value)
+    {
+       this->FBitmap->Assign(this->m_Frames->Mosaic);
+       this->BestFit();
+       m_mosaic = true;
+    }
+    else
+    {
+        m_Frames->Frame(m_Frames->CurrentFrame);
+        m_mosaic = false;
+    }
+
+}
+
 
 void __fastcall   TPhCustomImage::TimerEventHandler(TObject *Sender)
 {
@@ -1110,40 +1144,17 @@ void __fastcall TPhCustomImage::CreateParams(Controls::TCreateParams &Params)
 bool  __fastcall TPhCustomImage::LoadFromFile(const char* lpFileName)
 {
 
-        if (FBeforeOpen)
-          FBeforeOpen(this);
-
-      awpImage* tmp = NULL;
-      AnsiString strExt = ExtractFileExt(lpFileName);
-      if (strExt != ".awp" && strExt != ".jpg" && strExt != ".bmp" && strExt != ".ppm" && strExt != ".tga")
+      if (FBeforeOpen)
+         FBeforeOpen(this);
+      try
       {
-          TImportRaster* import = new TImportRaster();
-          try
-          {
-             import->FileName = lpFileName;
-             import->Image = this;
-             import->Execute();
-          }
-          catch(...)
-          {
-                delete import;
-                return false;
-          }
-          delete import;
-          return true;
+	      FBitmap->LoadFromFile(lpFileName);
       }
-      else
+      catch(Exception& e)
       {
-        if (awpLoadImage(lpFileName, &tmp) != AWP_OK)
-            return false;
+        ShowMessage(e.Message);
       }
 
-      if (tmp->dwType != AWP_BYTE)
-            awpConvert(tmp, AWP_CONVERT_TO_BYTE_WITH_NORM);
-      m_modified = false;
-      TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
-      dib->SetAWPImage(tmp);
-      awpReleaseImage(&tmp);
       // setup filename
       FFileName = lpFileName;
 

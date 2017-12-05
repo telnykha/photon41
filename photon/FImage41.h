@@ -61,6 +61,7 @@ protected:
 	int				m_tHeight;
 	// image was modified
 	bool                        m_modified;
+    bool                        m_mosaic;
 	int				 __fastcall GetSelectedIndex();
     void __fastcall         TimerEventHandler(TObject *Sender);
 protected:
@@ -90,6 +91,10 @@ protected:
 
     bool __fastcall GetSlideShow();
     void __fastcall SetSlideShow(bool Value);
+
+    bool __fastcall GetMosaic();
+    void __fastcall SetMosaic(bool Value);
+
 
 	// Mouse
 	DYNAMIC void __fastcall     MouseDown(TMouseButton Button,  TShiftState Shift, Integer X, Integer Y);
@@ -170,6 +175,7 @@ public:
 	__property  bool            Modified = {read = GetModified};
 	__property  bool            Empty = {read = GetEmpty, write = SetEmpty};
     __property  bool            SlideShow = {read = GetSlideShow, write = SetSlideShow};
+    __property  bool            Mosaic = {read = GetMosaic, write = SetMosaic};
 
 	__property float            Scale = {read = GetScale};
 	__property TPoint           Corner = {read = GetCorner};

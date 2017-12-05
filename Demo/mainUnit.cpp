@@ -378,3 +378,16 @@ void __fastcall TmainForm::navPlayActionUpdate(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TmainForm::viewMosaicActionExecute(TObject *Sender)
+{
+   PhImage1->Mosaic = !PhImage1->Mosaic;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::viewMosaicActionUpdate(TObject *Sender)
+{
+   viewMosaicAction->Enabled = !this->PhImage1->Frames->Mosaic->Empty;
+   viewMosaicAction->Checked =  this->PhImage1->Mosaic;
+}
+//---------------------------------------------------------------------------
+

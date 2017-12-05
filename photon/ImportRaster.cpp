@@ -65,17 +65,15 @@ __fastcall TImportRaster::TImportRaster()
      FBitmap  = NULL;
      FDecoder = NULL;
      FFileName = "";
-     FImage = NULL;
 }
 /*TImportRaster-------------------------------------------------------------
     Function: TImportRaster::TImportRaster(bool CreateSuspended)
     Purpose:  Конструктор класса TImportRaster
     Comments: Инициализирует внутренние переменные
 ---------------------------------------------------------------------------*/
-__fastcall TImportRaster::TImportRaster(TPhCustomImage* AImage, const AnsiString& FileName)
+__fastcall TImportRaster::TImportRaster(const AnsiString& FileName)
 {
-    Image = AImage;
-    SetFileName(FileName); 
+    SetFileName(FileName);
 }
 
 
@@ -90,8 +88,6 @@ __fastcall TImportRaster::~TImportRaster()
    {
         delete FDecoder;
    }
- //  if( FBitmap != NULL )
- //   FBitmap->Clear();
 }
 /*TImportRaster-------------------------------------------------------------
     Function: TImportRaster::Execute()
@@ -125,8 +121,6 @@ void __fastcall TImportRaster::Execute()
            memcpy(dst, src, FDecoder->ScanLineSize);
       }
       FBitmap->ClosePixels();
-//      if (!Terminated)
-//          FImage->FinishLoading();
       if (FDecoder != NULL)
       {
           try
@@ -144,7 +138,6 @@ void __fastcall TImportRaster::Execute()
     }
     catch(...)
     {
-        //owMessage("Exception.");
         if (FDecoder != NULL)
         {
             try
@@ -163,8 +156,6 @@ void __fastcall TImportRaster::Execute()
   }
   __finally
   {
-///    if (!Terminated)
-//        FImage->FinishLoading();
     if (FDecoder != NULL)
     {
       delete FDecoder;
@@ -227,21 +218,6 @@ void __fastcall TImportRaster::SetFileName(AnsiString FileName)
      throw;
   }
 }
-/*TImportRaster-------------------------------------------------------------
-    Function:  TImportRaster::SetImage(TFCustomImage* AImage)
-    Purpose:   Устанавливает указатель на Компонент в который будет импортироваться
-               изображение
-    Comments:  Установка этой переменной недопустима во время выполнения
-              нитки
----------------------------------------------------------------------------*/
-void __fastcall TImportRaster::SetImage(TPhCustomImage* AImage)
-{
-   if (AImage != NULL && AImage != FImage)
-   {
-        FImage = AImage;
-        FBitmap = dynamic_cast<TDIBImage*>(FImage->Bitmap);
-   }
-}
 /*TImportRaster--------------------------------------------------------------
     Function: TImportRaster::SetBitmap(Graphics::TBitmap* ABitmap)
     Purpose:  Устанавливает указатель на Bitmap в который будет импортироваться
@@ -253,7 +229,5 @@ void __fastcall TImportRaster::SetBitmap(TDIBImage* ABitmap)
 {
     if (FBitmap != ABitmap)
         FBitmap = ABitmap;
-    if (FImage != NULL)
-        FImage = NULL;
 }
 #pragma package(smart_init)
