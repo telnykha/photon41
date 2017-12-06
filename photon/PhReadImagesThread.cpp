@@ -91,7 +91,6 @@ __fastcall TPhReadImagesThread::TPhReadImagesThread(bool CreateSuspended)
 	this->m_names = new TStringList();
     m_tmbWidth  = 128;
     m_tmbHeight = 128;
-
 }
 //---------------------------------------------------------------------------
 void __fastcall TPhReadImagesThread::Execute()
@@ -114,6 +113,8 @@ void __fastcall TPhReadImagesThread::Execute()
     for (int i = 0; i < this->m_names->Count; i++)
     {
         //
+        if (this->Terminated)
+            break;
         try
         {
 	        dib->LoadFromFile(m_names->Strings[i]);
@@ -139,7 +140,7 @@ void __fastcall TPhReadImagesThread::Execute()
         }
         catch(Exception& e)
         {
-            break;
+            continue;
         }
 
     }
@@ -153,7 +154,5 @@ void __fastcall TPhReadImagesThread::SetNames(TStrings* names)
 {
 	m_names->Clear();
 	m_names->SetStrings(names);
-
-	this->Resume();
 }
 

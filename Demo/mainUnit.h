@@ -117,6 +117,9 @@ __published:	// IDE-managed Components
 	TMenuItem *N8;
 	TMenuItem *Mosaic1;
 	TMenuItem *N9;
+	TPanel *Panel2;
+	TTrackBar *TrackBar1;
+	TPanel *Panel3;
 	void __fastcall fileOpenActionExecute(TObject *Sender);
 	void __fastcall fileSaveActionExecute(TObject *Sender);
 	void __fastcall fileSaveActionUpdate(TObject *Sender);
@@ -178,6 +181,7 @@ __published:	// IDE-managed Components
 	void __fastcall navPlayActionUpdate(TObject *Sender);
 	void __fastcall viewMosaicActionExecute(TObject *Sender);
 	void __fastcall viewMosaicActionUpdate(TObject *Sender);
+	void __fastcall TrackBar1Change(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TmainForm(TComponent* Owner);

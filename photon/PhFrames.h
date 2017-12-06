@@ -6,11 +6,17 @@
 class TPhCustomImage;
 class TDIBImage;
 class TPhReadImagesThread;
+struct SFrameItem
+{
+    UnicodeString strFileName;
+    bool          selected;
+};
 class PACKAGE TPhFrames : public TObject
 {
 private:
 	TPhCustomImage* 		m_pDisplay;
 	TStrings* 				m_names;
+    TList*                  m_items;
     TGraphic*               m_pMosaic;
 	TPhReadImagesThread* 	m_pReader;
     int       				m_current;

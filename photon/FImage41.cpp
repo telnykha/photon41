@@ -1,5 +1,4 @@
 //---------------------------------------------------------------------------
-
 #include <vcl.h>
 #include <Clipbrd.hpp>
 #include <math.hpp>
@@ -14,32 +13,23 @@
 #define MIN_ZOOM 0.01f
 #define ZOOM_STEP 0.1f
 
+extern "C"
+{
+    #pragma link "awpipl2b.lib"
+    #pragma link "JPEGLIB.lib"
+    #pragma link "libpng.lib"
+    #pragma link "tifflib.lib"
+    #pragma link "zlib.lib"
+}
 
-#if X64
-     extern "C"
-    {
-      #pragma link "awpipl2b.a"
-      #pragma link "JPEGLIB.a"
-    }
-#else
-     extern "C"
-    {
-      #pragma link "awpipl2b.lib"
-      #pragma link "JPEGLIB.lib"
-      #pragma link "libpng.lib"
-      #pragma link "tifflib.lib"
-      #pragma link "zlib.lib"
-    }
-
-#endif
 //---------------------------------------------------------------------------
 // ValidCtrCheck is used to assure that the components created do not have
 // any pure virtual functions.
 //
-static inline void ValidCtrCheck(TPhCustomImage *)
-{
-    new TPhCustomImage(NULL);
-}
+//static inline void ValidCtrCheck(TPhCustomImage *)
+//{
+ //   new TPhCustomImage(NULL);
+//}
 //---------------------------------------------------------------------------
 /*
     Function: TFCustomImage construction
@@ -54,7 +44,6 @@ __fastcall TPhCustomImage::TPhCustomImage(TComponent* Owner)
     FSelectedBitmap = NULL;
 	FScale      = 1;
 
-	FBorderStyle = bsFSingle;
 	// установка наследуемых свойств по умолчанию
 	Color = clWindow;
 	ParentColor = false;
@@ -65,7 +54,7 @@ __fastcall TPhCustomImage::TPhCustomImage(TComponent* Owner)
 	FAfterOpen  = NULL;
 	FPosChange  = NULL;
 	FScaleChange = NULL;
-        FChange      = NULL;
+    FChange      = NULL;
 	FStartPoint.x = 0;
 	FStartPoint.y = 0;
 //	Screen->Cursor = TCursor(crHandOpenCursor);
@@ -76,9 +65,6 @@ __fastcall TPhCustomImage::TPhCustomImage(TComponent* Owner)
 	FSelRect.Right = 0;
 	FSelRect.Bottom = 0;
 
-	FSelCols = 1;
-	FSelRows = 1;
-
 	m_modified = false;
 	m_ph_tools = new TList();
     m_selected_ph_tool = 0;
@@ -87,9 +73,14 @@ __fastcall TPhCustomImage::TPhCustomImage(TComponent* Owner)
     this->m_Timer = new TTimer(this);
     this->m_Timer->Enabled = false;
     this->m_Timer->OnTimer = TimerEventHandler;
+    this->m_Timer->Interval = 500;
     m_tWidth = 128;
     m_tHeight = 128;
     m_mosaic = false;
+}
+__fastcall TPhCustomImage::TPhCustomImage(HWND Parent):TCustomControl(Parent)
+{
+
 }
 /* ---------------------------------------------------------------------------
 	Function:  destructor of the  TFCustomImage
@@ -170,6 +161,14 @@ void __fastcall TPhCustomImage::SetSlideShow(bool Value)
         this->m_Timer->Enabled = true;
 }
 
+unsigned int __fastcall TPhCustomImage::GetSlideShowInterval()
+{
+    return this->m_Timer->Interval;
+}
+void __fastcall TPhCustomImage::SetSlideShowInterval(unsigned int Value)
+{
+    this->m_Timer->Interval = Value;
+}
 bool __fastcall TPhCustomImage::GetMosaic()
 {
    return this->m_mosaic;
@@ -780,50 +779,9 @@ void   TPhCustomImage::DrawSelRect(Graphics::TBitmap *bm)
    bm->Canvas->LineTo(FSelRect1.Left, FSelRect1.Bottom);
    bm->Canvas->LineTo(FSelRect1.Left, FSelRect1.Top);
 
-   float w = FSelRect1.Width() / this->FSelCols;
-   for (int i = 1; i < this->FSelCols; i++)
-   {
-      int x,y;
-      x = FSelRect1.left + i*w;
-      y = FSelRect1.top;
-      bm->Canvas->MoveTo(x,y);
-      y = FSelRect1.bottom;
-      bm->Canvas->LineTo(x,y);
-   }
-
-
-   float h = FSelRect1.Height() / this->FSelRows;
-   for (int i = 1; i < this->FSelRows; i++)
-   {
-      int x,y;
-      x = FSelRect1.left;
-      y = FSelRect1.top + i*h;
-      bm->Canvas->MoveTo(x,y);
-      x = FSelRect1.right;
-      bm->Canvas->LineTo(x,y);
-   }
-
    bm->Canvas->Pen->Style = style;
    bm->Canvas->Pen->Color = color;
    bm->Canvas->Pen->Mode = mode;
-}
-
-void  __fastcall TPhCustomImage::SetSelCols(int num)
-{
-    if (num >= 1 && num <= 16)
-    {
-       this->FSelCols = num;
-       Paint();
-    }
-}
-
-void  __fastcall TPhCustomImage::SetSelRows(int num)
-{
-    if (num >= 1 && num <= 16)
-    {
-       this->FSelRows = num;
-       Paint();
-    }
 }
 
 void __fastcall 	TPhCustomImage::ClearSelection()
@@ -948,6 +906,7 @@ void __fastcall TPhCustomImage::Paint(void)
 		  SRCCOPY);
 
 		DrawSelRect(bm);
+        DrawSelectedItems(bm, m_xx, m_yy);
         // todo: add drawing
 	   dib->ClosePixels();
 	   Canvas->CopyMode = cmSrcCopy;
@@ -1102,37 +1061,6 @@ TRect __fastcall TPhCustomImage::GetVisibleArea() const
     area.Right  = area.Left + GetWidthToDisplay() / FScale;
 
     return area;
-}
-
-/* ---------------------------------------------------------------------------
-    Function:
-    Purpose:
-    Comments:
----------------------------------------------------------------------------*/
-void __fastcall TPhCustomImage::SetBorderStyle(TFBorderStyle Value)
-{
-  if (FBorderStyle != Value)
-  {
-    FBorderStyle = Value;
-    RecreateWnd();
-  };
-}
-/* ---------------------------------------------------------------------------
-    Function:
-    Purpose:
-    Comments:
----------------------------------------------------------------------------*/
-void __fastcall TPhCustomImage::CreateParams(Controls::TCreateParams &Params)
-{
-  TCustomControl::CreateParams(Params);
-    if (FBorderStyle == bsFSingle)
-    {
-      if (Ctl3D)
-        Params.ExStyle |= WS_EX_CLIENTEDGE;
-      else
-        Params.Style |=  WS_BORDER;
-      Params.WindowClass.style = Params.WindowClass.style & !(CS_HREDRAW | CS_VREDRAW);
-    };
 }
 /*TFCustomImage-------------------------------------------------------------------
     Function: TFCustomImage::LoadFromFile(const AnsiString& FileName)
@@ -1350,6 +1278,20 @@ void __fastcall TPhCustomImage::KeyDown(Word &Key, Classes::TShiftState Shift)
 
 }
 
+void __fastcall 	TPhCustomImage::DblClick(void)
+{
+   if (Mosaic && this->m_idx >= 0 && this->m_idx < this->Frames->Count)
+   {
+        this->m_mosaic = false;
+        Frames->Frame(m_idx);
+   }
+   else
+        Mosaic = true;
+
+   TCustomControl::DblClick();
+}
+
+
 //---------------------------------------------------------------------------
 bool __fastcall TPhCustomImage::DoMouseWheel(System::Classes::TShiftState Shift, int WheelDelta, const System::Types::TPoint &MousePos)
 {
@@ -1386,26 +1328,42 @@ void __fastcall TPhCustomImage::MouseDown(TMouseButton Button,  TShiftState Shif
    TPhImageTool* t =    GetSelectedTool();
    if (t != NULL)
 	t->MouseDown(X,Y, Button);
- //  if (FTool != NULL)
- //       FTool->MouseDown(X,Y, Button);
    TCustomControl::MouseDown(Button, Shift,X,Y);
 }
 //---------------------------------------------------------------------------
 void __fastcall TPhCustomImage::MouseMove( TShiftState Shift, Integer X, Integer Y)
 {
-//   if (FTool != NULL)
-//        FTool->MouseMove(X,Y, Shift);
+    if (this->Mosaic && Shift.Contains(ssShift))
+    {
+        // call mosaic helper
+        int x = GetImageX(X);
+        int y = GetImageY(Y);
+        if (x >= 0 && x < FBitmap->Width && y >= 0 && y < FBitmap->Height)
+        {
+            x /= m_tWidth;
+            y /= m_tHeight;
+            int w = (int)floor(sqrt((float)this->Frames->Count) + 0.5);
+            int idx = (x+w*y);
+            if (idx != m_idx && idx < Frames->Count)
+            {
+                m_xx = X;
+                m_yy = Y;
+                m_idx = idx;
+                Paint();
+            }
+        }
+    }
+
    TPhImageTool* t =    GetSelectedTool();
    if (t != NULL)
-	t->MouseMove(X,Y, Shift);
+    t->MouseMove(X,Y, Shift);
+
     TCustomControl::MouseMove(Shift,X,Y);
 }
 //---------------------------------------------------------------------------
 void __fastcall TPhCustomImage::MouseUp(TMouseButton Button,  TShiftState Shift, Integer X, Integer Y)
 {
-//   if (FTool != NULL)
-//        FTool->MouseUp(X,Y, Button);
-    TPhImageTool* t =    GetSelectedTool();
+   TPhImageTool* t =    GetSelectedTool();
    if (t != NULL)
 	t->MouseUp(X,Y, Button);
     TCustomControl::MouseUp(Button, Shift,X,Y);
@@ -1477,6 +1435,64 @@ TPhImageTool* __fastcall    TPhCustomImage::GetSelectedTool()
 	else
 		return NULL;
 }
+
+void            __fastcall TPhCustomImage::DrawSelectedItems(Graphics::TBitmap* bm, int xx, int yy)
+{
+    if (!Mosaic)
+        return;
+
+	int x = GetImageX(xx);
+	int y = GetImageY(yy);
+
+	x /= m_tWidth;
+	y /= m_tHeight;
+
+	x*=m_tWidth;
+	y*=m_tHeight;
+
+	TRect rect;
+	rect.init(x,y,x+m_tWidth,y+m_tHeight);
+	TRect rect1 = GetScreenRect(rect);
+    TCanvas* cnv = bm->Canvas;
+	TColor 			oldColor = cnv->Pen->Color;
+	TBrushStyle     oldStyle = cnv->Brush->Style;
+	int 			oldWidth = cnv->Pen->Width;
+	cnv->Pen->Color = clYellow;
+	cnv->Pen->Width = 3;
+ 	cnv->Brush->Style = bsClear;
+
+	cnv->Rectangle(rect1);
+
+	// draw selected
+/*
+	Canvas->Pen->Color = clRed;
+	int w = (int)floor(sqrt((float)m_numThumbs) + 0.5);
+	for (int i = 0; i < m_numThumbs; i++)
+	{
+		if (m_selected[i])
+		{
+			x = i % w;
+			y = i / w;
+			x *= m_tWidth;
+			y *= m_tHeight;
+
+			rect.init(x,y,x+m_tWidth,y+m_tHeight);
+			rect1 = FImage->GetScreenRect(rect);
+			Canvas->Rectangle(rect1);
+		}
+	}
+*/
+	cnv->Brush->Style = oldStyle;
+	cnv->Pen->Color = oldColor;
+	cnv->Pen->Width = oldWidth;
+}
+
+
+__fastcall TPhImage::TPhImage(HWND Parent):TPhCustomImage(Parent)
+{
+
+}
+
 
 TImageTool::TImageTool(TPhCustomImage* aImage)
 {

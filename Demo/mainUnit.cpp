@@ -1,5 +1,4 @@
 //---------------------------------------------------------------------------
-
 #include <vcl.h>
 #pragma hdrstop
 #include <Clipbrd.hpp>
@@ -36,7 +35,6 @@ void __fastcall TmainForm::fileOpenActionExecute(TObject *Sender)
           // Open Media
           if(!PhImage1->Init(OpenDialog1->Files))
           	ShowMessage("Cannot open file: " + OpenDialog1->Files->Strings[0]);
-          this->Panel1->Visible = OpenDialog1->Files->Count > 1;
         }
 }
 //---------------------------------------------------------------------------
@@ -302,6 +300,8 @@ void __fastcall TmainForm::PhImage1ToolChange(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::FormCreate(TObject *Sender)
 {
+    this->TrackBar1->Position = this->PhImage1->SlideShowInterval;
+
     StatusBar1->Panels->Items[2]->Text =  L"Zoom";
     if (PhImage1->PhTool != NULL)
 	    StatusBar1->Panels->Items[3]->Text =  PhImage1->PhTool->ToolName;
@@ -365,29 +365,32 @@ void __fastcall TmainForm::navNextActionUpdate(TObject *Sender)
     navNextAction->Enabled = PhImage1->Frames->Count > 1;
 }
 //---------------------------------------------------------------------------
-
 void __fastcall TmainForm::navPlayActionExecute(TObject *Sender)
 {
     this->PhImage1->SlideShow = !this->PhImage1->SlideShow;
 }
 //---------------------------------------------------------------------------
-
 void __fastcall TmainForm::navPlayActionUpdate(TObject *Sender)
 {
     navPlayAction->Enabled =   PhImage1->Frames->Count > 1;
 }
 //---------------------------------------------------------------------------
-
 void __fastcall TmainForm::viewMosaicActionExecute(TObject *Sender)
 {
    PhImage1->Mosaic = !PhImage1->Mosaic;
 }
 //---------------------------------------------------------------------------
-
 void __fastcall TmainForm::viewMosaicActionUpdate(TObject *Sender)
 {
    viewMosaicAction->Enabled = !this->PhImage1->Frames->Mosaic->Empty;
    viewMosaicAction->Checked =  this->PhImage1->Mosaic;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::TrackBar1Change(TObject *Sender)
+{
+    PhImage1->SlideShowInterval = TrackBar1->Position;
+    Panel3->Caption = IntToStr((int)PhImage1->SlideShowInterval) + L" ms";
 }
 //---------------------------------------------------------------------------
 

@@ -15,18 +15,15 @@
 #include <Controls.hpp>
 #include <ExtCtrls.hpp>
 #include "PhFrames.h"
-
 const int crHandOpenCursor  = 1;
 const int crHandCloseCursor = 2;
 const int crMagnifyCursor   = 3;
 const int crLenzCursor      = 4;
 const int crZoom2RectCursor = 5;
 
-typedef enum  {bsFNone, bsFSingle} TFBorderStyle;
-typedef enum  {msPriview, msPlayBack, msPaused} 	EMediaState;
-
 // forward declarations
 class PACKAGE TPhImageTool;
+class TPhFrames;
 //TPhCustomImage--------------------------------------------------------------------
 //TPhCustomImage extends the TCustomControl component
 class PACKAGE TPhCustomImage : public TCustomControl
@@ -42,7 +39,6 @@ protected:
 	TGraphic*                   FSelectedBitmap;
 	double                      FScale;      // scale coefficient
 	TPoint                      FStartPoint; // Левый верхний угол отображаемой области * 100%
-	TFBorderStyle               FBorderStyle;
 	AnsiString                  FFileName;
 
 	TNotifyEvent                FBeforeOpen;
@@ -51,12 +47,14 @@ protected:
 	TNotifyEvent                FPosChange;
 	TNotifyEvent                FChange;
 	TNotifyEvent            	FToolChange;
+    int                         m_xx;
+    int                         m_yy;
+    int                         m_idx;
 	// selectoin
 	TRect			FSelRect;
 	void 			DrawSelRect(Graphics::TBitmap *bm);
+    void            __fastcall DrawSelectedItems(Graphics::TBitmap* bm, int xx, int yy);
 	// thumbs support
-	int                         FSelCols;
-	int                         FSelRows;
 	int				m_tWidth;
 	int				m_tHeight;
 	// image was modified
@@ -74,8 +72,6 @@ protected:
 	// File system
 	bool __fastcall             LoadFromFile(const char* lpFileName);
 	// window
-	void __fastcall             SetBorderStyle(TFBorderStyle Value);
-	virtual void __fastcall     CreateParams(Controls::TCreateParams &Params);
 	DYNAMIC void __fastcall     Resize(void);
 
 	bool __fastcall             GetModified();
@@ -96,10 +92,15 @@ protected:
     void __fastcall SetMosaic(bool Value);
 
 
+    unsigned int __fastcall GetSlideShowInterval();
+    void __fastcall 		SetSlideShowInterval(unsigned int Value);
+
+
 	// Mouse
 	DYNAMIC void __fastcall     MouseDown(TMouseButton Button,  TShiftState Shift, Integer X, Integer Y);
 	DYNAMIC void __fastcall     MouseMove( TShiftState Shift, Integer X, Integer Y);
 	DYNAMIC void __fastcall     MouseUp(TMouseButton Button,  TShiftState Shift, Integer X, Integer Y);
+    DYNAMIC void __fastcall 	DblClick(void);
 
 	DYNAMIC bool  __fastcall    DoMouseWheelUp(System::Classes::TShiftState Shift, const System::Types::TPoint &MousePos);
 	DYNAMIC bool  __fastcall    DoMouseWheelDown(TShiftState Shift, const TPoint &MousePos);
@@ -114,16 +115,17 @@ protected:
 	void __fastcall         	AddPhTool(TPhImageTool* tool);
 	void __fastcall             RemovePhTool(TPhImageTool* tool);
 	TPhImageTool* __fastcall    GetSelectedTool();
-	 TGraphic* __fastcall   GetSelectedBitmap();
+    TGraphic* __fastcall   		GetSelectedBitmap();
 public:
 
 	__fastcall                  TPhCustomImage(TComponent* Owner);
+	__fastcall                  TPhCustomImage(HWND Parent);
 	__fastcall virtual          ~TPhCustomImage();
 
 	// ====================operations========================================
 	virtual bool __fastcall         Init(TStrings* Names);
 	// Close
-	virtual void __fastcall             Close();
+	virtual void __fastcall         Close();
 	void __fastcall             	SaveToFile(const AnsiString& FileName);
 
 	// Clipboard
@@ -170,8 +172,7 @@ public:
     __property  TPhFrames*      Frames = {read = m_Frames};
 	__property  TGraphic*       Bitmap = {read = FBitmap, write = SetImage};
 	__property  TGraphic*       SelectedBitmap = {read = GetSelectedBitmap};
-	__property  int             SelCols = {read = FSelCols, write = SetSelCols};
-	__property  int             SelRows = {read = FSelRows, write = SetSelRows};
+
 	__property  bool            Modified = {read = GetModified};
 	__property  bool            Empty = {read = GetEmpty, write = SetEmpty};
     __property  bool            SlideShow = {read = GetSlideShow, write = SetSlideShow};
@@ -180,16 +181,14 @@ public:
 	__property float            Scale = {read = GetScale};
 	__property TPoint           Corner = {read = GetCorner};
 	__property TRect            VisibleArea = {read = GetVisibleArea};
- //  __property  int ObjectsCount = {read = m_Count, write = m_Count};
    // inherited properties
    __property Canvas;
 	__property TPhImageTool*   PhTool = {read = GetSelectedTool};
 __published:
    //
-	__property TFBorderStyle     BorderStyle = {read = FBorderStyle, write = SetBorderStyle};
 	__property int ThumbWidht      	   = {read  = m_tWidth,  write = m_tWidth};
 	__property int ThumbHeight     	   = {read = m_tHeight, write = m_tHeight};
-
+    __property  unsigned        SlideShowInterval = {read = GetSlideShowInterval, write = SetSlideShowInterval};
 
    // наследуемые свойства
 	__property Align;
@@ -227,8 +226,9 @@ __published:
 //-------------------------- export TPhImage -------------------------------------
 class PACKAGE TPhImage : public TPhCustomImage
 {
+public:
+    __fastcall TPhImage(HWND Parent);
 __published:
-	__property TFBorderStyle     BorderStyle = {read = FBorderStyle, write = SetBorderStyle};
 };
 
 // abstract image tool

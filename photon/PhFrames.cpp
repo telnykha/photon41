@@ -9,6 +9,7 @@
 TPhFrames::TPhFrames(TPhCustomImage* display)
 {
     m_names = new TStringList();
+    m_items = new TList();
 	m_pDisplay = display;
     m_current = 0;
     m_pMosaic = new TDIBImage();
@@ -17,6 +18,8 @@ __fastcall TPhFrames::~TPhFrames()
 {
    delete m_names;
    delete m_pMosaic;
+   delete m_items;
+   delete m_pReader;
 }
 
 bool TPhFrames::Init(TStrings* names)
@@ -26,21 +29,29 @@ bool TPhFrames::Init(TStrings* names)
 
     Close();
     m_names->SetStrings(names);
+    //
+    for (int i = 0; i < m_names->Count; i++)
+    {
+      SFrameItem* item = new SFrameItem();
+      item->strFileName = m_names->Strings[i];
+      item->selected = false;
+      m_items->Add(item);
+    }
+
 	if (m_names->Count > 0)
     {
 		First();
 		if (m_names->Count > 4 )
 		{
-            if (m_pReader != NULL && m_pReader->Started)
-                m_pReader->Terminate();
-
 
             m_pReader = new TPhReadImagesThread(true);
             m_pReader->FreeOnTerminate = true;
             m_pReader->OnTerminate = OnTerminateHelper;
+
             m_pReader->tmbWidth  = m_pDisplay->ThumbWidht;
             m_pReader->tmbHeight = m_pDisplay->ThumbHeight;
 			m_pReader->SetNames(m_names);
+            m_pReader->Start();
 		}
     }
     else
@@ -49,6 +60,8 @@ bool TPhFrames::Init(TStrings* names)
 void TPhFrames::Close()
 {
     m_names->Clear();
+    m_items->Clear();
+
     m_current = 0;
     m_pMosaic->Assign(NULL);
 }
@@ -110,13 +123,16 @@ int __fastcall TPhFrames::GetCount()
 
 void __fastcall TPhFrames::OnTerminateHelper(TObject *Sender)
 {
+#ifdef _DEBUG
     ShowMessage("Job done.");
+#endif
     if (m_pReader != NULL)
     {
        TDIBImage* img = dynamic_cast< TDIBImage*>(m_pMosaic);
        if (img != NULL)
 	       img->SetAWPImage(m_pReader->Mosaic);
     }
+    m_pReader = NULL;
 }
 
 #pragma package(smart_init)

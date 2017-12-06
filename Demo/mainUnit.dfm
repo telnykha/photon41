@@ -2,8 +2,8 @@ object mainForm: TmainForm
   Left = 0
   Top = 0
   Caption = 'Photon 4.1 demo '
-  ClientHeight = 595
-  ClientWidth = 709
+  ClientHeight = 491
+  ClientWidth = 692
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,8 +20,8 @@ object mainForm: TmainForm
   TextHeight = 13
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 576
-    Width = 709
+    Top = 472
+    Width = 692
     Height = 19
     Panels = <
       item
@@ -47,11 +47,11 @@ object mainForm: TmainForm
   object PhImage1: TPhImage
     Left = 0
     Top = 0
-    Width = 709
-    Height = 519
-    BorderStyle = bsFSingle
+    Width = 692
+    Height = 400
     ThumbWidht = 320
     ThumbHeight = 240
+    SlideShowInterval = 500
     Align = alClient
     ParentColor = False
     PopupMenu = PopupMenu1
@@ -62,9 +62,9 @@ object mainForm: TmainForm
   end
   object Panel1: TPanel
     Left = 0
-    Top = 519
-    Width = 709
-    Height = 57
+    Top = 400
+    Width = 692
+    Height = 72
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 2
@@ -72,7 +72,7 @@ object mainForm: TmainForm
       Left = 192
       Top = 0
       Width = 64
-      Height = 57
+      Height = 72
       Action = navNextAction
       Align = alLeft
       Flat = True
@@ -103,12 +103,13 @@ object mainForm: TmainForm
       NumGlyphs = 2
       ExplicitLeft = 216
       ExplicitTop = 6
+      ExplicitHeight = 57
     end
     object SpeedButton9: TSpeedButton
       Left = 128
       Top = 0
       Width = 64
-      Height = 57
+      Height = 72
       Action = navPlayAction
       Align = alLeft
       AllowAllUp = True
@@ -158,12 +159,13 @@ object mainForm: TmainForm
       NumGlyphs = 4
       ExplicitLeft = 144
       ExplicitTop = 6
+      ExplicitHeight = 57
     end
     object SpeedButton3: TSpeedButton
       Left = 64
       Top = 0
       Width = 64
-      Height = 57
+      Height = 72
       Action = navPrevAction
       Align = alLeft
       Flat = True
@@ -194,12 +196,13 @@ object mainForm: TmainForm
       NumGlyphs = 2
       ExplicitLeft = 80
       ExplicitTop = 6
+      ExplicitHeight = 57
     end
     object SpeedButton2: TSpeedButton
       Left = 0
       Top = 0
       Width = 64
-      Height = 57
+      Height = 72
       Action = navFirstAction
       Align = alLeft
       Flat = True
@@ -229,12 +232,13 @@ object mainForm: TmainForm
       Layout = blGlyphTop
       NumGlyphs = 2
       ExplicitTop = 6
+      ExplicitHeight = 57
     end
     object SpeedButton1: TSpeedButton
       Left = 256
       Top = 0
       Width = 64
-      Height = 57
+      Height = 72
       Action = navLastAction
       Align = alLeft
       Flat = True
@@ -265,6 +269,41 @@ object mainForm: TmainForm
       NumGlyphs = 2
       ExplicitLeft = 296
       ExplicitTop = -6
+      ExplicitHeight = 57
+    end
+    object Panel2: TPanel
+      Left = 320
+      Top = 0
+      Width = 185
+      Height = 72
+      Align = alLeft
+      BevelOuter = bvNone
+      TabOrder = 0
+      object TrackBar1: TTrackBar
+        Left = 0
+        Top = 25
+        Width = 185
+        Height = 47
+        Align = alClient
+        Max = 1000
+        Min = 100
+        Frequency = 100
+        Position = 100
+        ShowSelRange = False
+        TabOrder = 0
+        TickMarks = tmBoth
+        OnChange = TrackBar1Change
+      end
+      object Panel3: TPanel
+        Left = 0
+        Top = 0
+        Width = 185
+        Height = 25
+        Align = alTop
+        BevelOuter = bvNone
+        Caption = 'Panel3'
+        TabOrder = 1
+      end
     end
   end
   object ActionList1: TActionList
