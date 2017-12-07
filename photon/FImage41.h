@@ -23,7 +23,6 @@ const int crZoom2RectCursor = 5;
 
 // forward declarations
 class PACKAGE TPhImageTool;
-class TPhFrames;
 //TPhCustomImage--------------------------------------------------------------------
 //TPhCustomImage extends the TCustomControl component
 class PACKAGE TPhCustomImage : public TCustomControl
@@ -59,9 +58,10 @@ protected:
 	int				m_tHeight;
 	// image was modified
 	bool                        m_modified;
+
     bool                        m_mosaic;
 	int				 __fastcall GetSelectedIndex();
-    void __fastcall         TimerEventHandler(TObject *Sender);
+    void __fastcall         	TimerEventHandler(TObject *Sender);
 protected:
 	void         __fastcall     SetImage(TGraphic* aBitmap);
 
@@ -85,15 +85,15 @@ protected:
 	void  __fastcall            SetSelCols(int num);
 	void  __fastcall            SetSelRows(int num);
 
-    bool __fastcall GetSlideShow();
-    void __fastcall SetSlideShow(bool Value);
+    bool __fastcall 			GetSlideShow();
+    void __fastcall 			SetSlideShow(bool Value);
 
-    bool __fastcall GetMosaic();
-    void __fastcall SetMosaic(bool Value);
+    bool __fastcall 			GetMosaic();
+    void __fastcall 			SetMosaic(bool Value);
 
 
-    unsigned int __fastcall GetSlideShowInterval();
-    void __fastcall 		SetSlideShowInterval(unsigned int Value);
+    unsigned int __fastcall 	GetSlideShowInterval();
+    void __fastcall 			SetSlideShowInterval(unsigned int Value);
 
 
 	// Mouse
@@ -116,8 +116,9 @@ protected:
 	void __fastcall             RemovePhTool(TPhImageTool* tool);
 	TPhImageTool* __fastcall    GetSelectedTool();
     TGraphic* __fastcall   		GetSelectedBitmap();
-public:
 
+    void __fastcall DoDeleteImage();
+public:
 	__fastcall                  TPhCustomImage(TComponent* Owner);
 	__fastcall                  TPhCustomImage(HWND Parent);
 	__fastcall virtual          ~TPhCustomImage();
@@ -152,6 +153,7 @@ public:
 	void __fastcall         	MoveToRightBottom();
 	void __fastcall             MoveTo(int X, int Y);
 	void __fastcall             MoveBy(int dX, int dY);
+
 	// ROI commends
 	void __fastcall 			ClearSelection();
 	bool __fastcall				HasSelection();
@@ -166,6 +168,9 @@ public:
 
 	//tools
 	void __fastcall             SelectPhTool(TPhImageTool* tool);
+
+    //image operations
+    void __fastcall 			Delete();
 
 	// Public properties
 	__property  AnsiString      AFileName = {read = FFileName, write = FFileName};
@@ -229,55 +234,5 @@ class PACKAGE TPhImage : public TPhCustomImage
 public:
     __fastcall TPhImage(HWND Parent);
 __published:
-};
-
-// abstract image tool
-class PACKAGE TImageTool
-{
-friend class TPhCustomImage;
-protected:
-	TPhCustomImage* FImage;
-public:
-	TImageTool(TPhCustomImage* aImage);
-	virtual ~TImageTool();
-	// methods
-	virtual void Draw(TCanvas* Canvas) = 0;
-	virtual void MouseDown(int X, int Y, TMouseButton Button = mbLeft) = 0;
-	virtual void MouseUp(int X, int Y, TMouseButton Button = mbLeft)   = 0;
-	virtual void MouseMove(int X, int Y, TShiftState Shift) = 0;
-	virtual void Reset() = 0;
-	virtual AnsiString GetName() = 0;
-};
-
-class PACKAGE TThumbSelectTool : public TImageTool
-{
-protected:
-	 int m_numThumbs;
-	 int m_tWidth;
-	 int m_tHeight;
-	 int m_x;
-	 int m_y;
-     bool  m_down;
-	 bool* m_selected;
-	 int m_lastSelected;
-
-	 bool GetSelected(int index);
-public:
-	TThumbSelectTool(TPhCustomImage* aImage,  int numThumbs, int tWidth, int tHeight);
-	virtual ~TThumbSelectTool();
-
-	virtual void Draw(TCanvas* Canvas);
-	virtual void MouseDown(int X, int Y, TMouseButton Button = mbLeft);
-	virtual void MouseUp(int X, int Y, TMouseButton Button = mbLeft);
-	virtual void MouseMove(int X, int Y, TShiftState Shift);
-	virtual void Reset();
-
-	int GetLastSelected();
-	void SelectAll();
-	void InvertSelection();
-
-	__property int NumItems = {read = m_numThumbs};
-	__property bool IsSelected [int index] = {read = GetSelected};
-        virtual AnsiString GetName();
 };
 #endif

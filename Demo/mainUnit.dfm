@@ -10,7 +10,6 @@ object mainForm: TmainForm
   Font.Height = -11
   Font.Name = 'Tahoma'
   Font.Style = []
-  KeyPreview = True
   Menu = MainMenu1
   OldCreateOrder = False
   Position = poScreenCenter
@@ -49,8 +48,8 @@ object mainForm: TmainForm
     Top = 0
     Width = 692
     Height = 400
-    ThumbWidht = 320
-    ThumbHeight = 240
+    ThumbWidht = 160
+    ThumbHeight = 120
     SlideShowInterval = 500
     Align = alClient
     ParentColor = False

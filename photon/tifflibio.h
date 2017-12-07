@@ -25,7 +25,4 @@ public:
     virtual void __fastcall Init();
     virtual void __fastcall Close();
 };
-
-//void rgb_to_bgr(BYTE *ptr,int count);
-
 #endif

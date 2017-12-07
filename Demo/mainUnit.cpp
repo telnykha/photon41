@@ -386,7 +386,6 @@ void __fastcall TmainForm::viewMosaicActionUpdate(TObject *Sender)
    viewMosaicAction->Checked =  this->PhImage1->Mosaic;
 }
 //---------------------------------------------------------------------------
-
 void __fastcall TmainForm::TrackBar1Change(TObject *Sender)
 {
     PhImage1->SlideShowInterval = TrackBar1->Position;

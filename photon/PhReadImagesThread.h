@@ -9,7 +9,7 @@
 class TPhReadImagesThread : public TThread
 {
 private:
-    TStrings* m_names;
+    TList*    m_items;
     awpImage* m_mosaic;
     int       m_tmbWidth;
     int       m_tmbHeight;
@@ -17,7 +17,7 @@ protected:
 	void __fastcall Execute();
 public:
 	__fastcall TPhReadImagesThread(bool CreateSuspended);
-	void __fastcall SetNames(TStrings* names);
+	void __fastcall SetNames(TList* names);
 
     __property awpImage* Mosaic = {read = m_mosaic};
     __property int tmbWidth 	= {read = m_tmbWidth, write = m_tmbWidth};

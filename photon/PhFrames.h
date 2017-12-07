@@ -9,13 +9,14 @@ class TPhReadImagesThread;
 struct SFrameItem
 {
     UnicodeString strFileName;
+    int           width;
+    int           height;
     bool          selected;
 };
 class PACKAGE TPhFrames : public TObject
 {
 private:
 	TPhCustomImage* 		m_pDisplay;
-	TStrings* 				m_names;
     TList*                  m_items;
     TGraphic*               m_pMosaic;
 	TPhReadImagesThread* 	m_pReader;
@@ -37,6 +38,10 @@ public:
     void __fastcall Prev();
     void __fastcall Last();
     void __fastcall Frame(long num);
+
+    // operations
+    bool __fastcall DeleteImage(long num);
+    bool __fastcall DeleteSelected();
 
     __property int Count = {read = GetCount};
     __property int CurrentFrame = {read = m_current};

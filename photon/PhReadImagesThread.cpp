@@ -5,6 +5,7 @@
 
 #include "PhReadImagesThread.h"
 #include "DIBImage41.h"
+#include "PhFrames.h"
 #pragma package(smart_init)
 
 static awpImage* _awpFitImage(awpRect rect, awpImage* img)
@@ -88,13 +89,15 @@ static awpImage* _awpFitImage(awpRect rect, awpImage* img)
 __fastcall TPhReadImagesThread::TPhReadImagesThread(bool CreateSuspended)
 	: TThread(CreateSuspended)
 {
-	this->m_names = new TStringList();
+    m_items = NULL;
     m_tmbWidth  = 128;
     m_tmbHeight = 128;
 }
 //---------------------------------------------------------------------------
 void __fastcall TPhReadImagesThread::Execute()
 {
+    if (m_items == NULL)
+        return;
 	//---- Place thread code here ----
     TDIBImage* dib = new TDIBImage();
 
@@ -104,22 +107,27 @@ void __fastcall TPhReadImagesThread::Execute()
     rect.right = m_tmbWidth;
     rect.bottom = m_tmbHeight;
 
-   int imgCount =  floor(sqrt((float)this->m_names->Count) + 0.5);
+   int imgCount =  floor(sqrt((float)this->m_items->Count) + 0.5);
    int imgWidth  = m_tmbWidth*imgCount;
    int imgHeight = m_tmbHeight*imgCount;
    awpImage* result = NULL;
    awpCreateImage(&result, imgWidth, imgHeight, 3, AWP_BYTE);
    int num = 0;
-    for (int i = 0; i < this->m_names->Count; i++)
+    for (int i = 0; i < m_items->Count; i++)
     {
         //
         if (this->Terminated)
             break;
         try
         {
-	        dib->LoadFromFile(m_names->Strings[i]);
+            SFrameItem* item = (SFrameItem*)(m_items->Items[i]);
+	        dib->LoadFromFile(item->strFileName);
             awpImage* tmp = NULL;
             dib->GetAWPImage(&tmp);
+
+            item->width = tmp->sSizeX;
+            item->height = tmp->sSizeY;
+
             if (tmp != NULL)
             {
                 awpImage* fit = _awpFitImage(rect, tmp);
@@ -140,19 +148,21 @@ void __fastcall TPhReadImagesThread::Execute()
         }
         catch(Exception& e)
         {
+
+            //todo: if the thread cannot read the image
+            //remove item about it.
+
             continue;
         }
-
-    }
+     }
     delete dib;
     _AWP_SAFE_RELEASE_(m_mosaic)
     awpCopyImage(result, &m_mosaic);
     _AWP_SAFE_RELEASE_(result)
 }
 //---------------------------------------------------------------------------
-void __fastcall TPhReadImagesThread::SetNames(TStrings* names)
+void __fastcall TPhReadImagesThread::SetNames(TList* names)
 {
-	m_names->Clear();
-	m_names->SetStrings(names);
+    m_items = names;
 }
 

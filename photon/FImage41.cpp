@@ -1277,21 +1277,22 @@ void __fastcall TPhCustomImage::KeyDown(Word &Key, Classes::TShiftState Shift)
     }
 
 }
-
 void __fastcall 	TPhCustomImage::DblClick(void)
 {
-   if (Mosaic && this->m_idx >= 0 && this->m_idx < this->Frames->Count)
+
+   if (GetKeyState(VK_LSHIFT) < 0)
    {
-        this->m_mosaic = false;
-        Frames->Frame(m_idx);
+       if (Mosaic && this->m_idx >= 0 && this->m_idx < this->Frames->Count)
+       {
+            this->m_mosaic = false;
+            Frames->Frame(m_idx);
+       }
+       else
+            Mosaic = true;
    }
-   else
-        Mosaic = true;
 
-   TCustomControl::DblClick();
+  TCustomControl::DblClick();
 }
-
-
 //---------------------------------------------------------------------------
 bool __fastcall TPhCustomImage::DoMouseWheel(System::Classes::TShiftState Shift, int WheelDelta, const System::Types::TPoint &MousePos)
 {
@@ -1487,193 +1488,37 @@ void            __fastcall TPhCustomImage::DrawSelectedItems(Graphics::TBitmap* 
 	cnv->Pen->Width = oldWidth;
 }
 
+void __fastcall TPhCustomImage::DoDeleteImage()
+{
+    if (Frames->Count > 1)
+    {
+        Frames->DeleteImage(Frames->CurrentFrame);
+    }
+    else
+    {
+        DeleteFile(AFileName);
+        Close();
+    }
+}
 
+void __fastcall TPhCustomImage::Delete()
+{
+    SlideShow = false;
+    if (Mosaic)
+        Frames->DeleteSelected();
+    else
+        DoDeleteImage();
+}
+
+//=============================================================================
 __fastcall TPhImage::TPhImage(HWND Parent):TPhCustomImage(Parent)
 {
 
 }
 
 
-TImageTool::TImageTool(TPhCustomImage* aImage)
-{
-    FImage = aImage;
-}
-TImageTool::~TImageTool()
-{
-
-}
-
-TThumbSelectTool::TThumbSelectTool(TPhCustomImage* aImage, int numThumbs, int tWidth, int tHeight):TImageTool(aImage)
-{
-	m_numThumbs = numThumbs;
-	m_tWidth 	= tWidth;
-	m_tHeight 	= tHeight;
-	m_down 		= false;
-	m_selected  = new bool[numThumbs];
-	memset(m_selected, false, numThumbs*sizeof(bool));
-	this->m_lastSelected = -1;
-}
-TThumbSelectTool::~TThumbSelectTool()
-{
-   if (m_selected)
-	delete[] m_selected;
-}
-void TThumbSelectTool::Draw(TCanvas* Canvas)
-{
-	if (FImage == NULL)
-		return;
-
-	//int image_width =
-	int x = FImage->GetImageX(m_x);
-	int y = FImage->GetImageY(m_y);
-
-	x /= m_tWidth;
-	y /= m_tHeight;
-
-	x*=m_tWidth;
-	y*=m_tHeight;
-
-	TRect rect;
-	rect.init(x,y,x+m_tWidth,y+m_tHeight);
-	TRect rect1 = FImage->GetScreenRect(rect);
-
-	TColor 			oldColor = Canvas->Pen->Color;
-	TBrushStyle     oldStyle = Canvas->Brush->Style;
-	int 			oldWidth = Canvas->Pen->Width;
-	Canvas->Pen->Color = clYellow;
-	Canvas->Pen->Width = 3;
-	Canvas->Brush->Style = bsClear;
-
-	Canvas->Rectangle(rect1);
-
-	// draw selected
-	Canvas->Pen->Color = clRed;
-	int w = (int)floor(sqrt((float)m_numThumbs) + 0.5);
-	for (int i = 0; i < m_numThumbs; i++)
-	{
-		if (m_selected[i])
-		{
-			x = i % w;
-			y = i / w;
-			x *= m_tWidth;
-			y *= m_tHeight;
-
-			rect.init(x,y,x+m_tWidth,y+m_tHeight);
-			rect1 = FImage->GetScreenRect(rect);
-			Canvas->Rectangle(rect1);
-		}
-	}
-
-	Canvas->Brush->Style = oldStyle;
-	Canvas->Pen->Color = oldColor;
-	Canvas->Pen->Width = oldWidth;
-}
-void TThumbSelectTool::MouseDown(int X, int Y, TMouseButton Button)
-{
-	if (FImage == NULL)
-		return;
-
-//   if (Button == mbLeft)
-   {
-	 m_down = true;
-	 m_x = X;
-	 m_y = Y;
-   }
-}
-void TThumbSelectTool::MouseUp(int X, int Y, TMouseButton Button)
-{
-	if (FImage == NULL)
-		return;
-	if (m_down)
-	{
-
-		m_down = false;
-	   //	return;
-	}
-
-	//int image_width =
-	int x = FImage->GetImageX(X);
-	int y = FImage->GetImageY(Y);
-
-	x /= m_tWidth;
-	y /= m_tHeight;
-	int w = (int)floor(sqrt((float)m_numThumbs) + 0.5);
-	int idx = (x+w*y);
-	if (idx < m_numThumbs)
-	{
-		m_selected[idx] = !m_selected[idx];
-		this->m_lastSelected = idx;
-	}
-
-	FImage->Paint();
-}
-void TThumbSelectTool::MouseMove(int X, int Y, TShiftState Shift)
-{
-	if (FImage == NULL)
-		return;
 
 
-	if (m_down)
-	  FImage->MoveBy( m_x-X, m_y-Y );
-
-	 m_x = X;
-	 m_y = Y;
-
-	FImage->Paint();
-}
-void TThumbSelectTool::Reset()
-{
-	if (FImage == NULL)
-		return;
-
-	for (int i = 0; i < m_numThumbs; i++)
-	{
-		m_selected[i] = false;
-	}
-
-	FImage->Paint();
-}
-int TThumbSelectTool::GetLastSelected()
-{
-	return this->m_lastSelected;
-}
-
-void TThumbSelectTool::SelectAll()
-{
-	if (FImage == NULL)
-		return;
-
-	for (int i = 0; i < m_numThumbs; i++)
-	{
-		m_selected[i] = true;
-	}
-
-	FImage->Paint();
-}
-void TThumbSelectTool::InvertSelection()
-{
-	if (FImage == NULL)
-		return;
-
-	for (int i = 0; i < m_numThumbs; i++)
-	{
-		m_selected[i] = !m_selected[i];
-	}
-
-	FImage->Paint();
-}
-
-bool TThumbSelectTool::GetSelected(int index)
-{
-	if (index < 0 || index > m_numThumbs)
-		return false;
-	return  m_selected[index];
-}
-
-AnsiString TThumbSelectTool::GetName()
-{
-	return "Thumb";
-}
 
 //---------------------------------------------------------------------------
 namespace Fimage41

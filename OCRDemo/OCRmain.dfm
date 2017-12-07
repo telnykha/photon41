@@ -20,7 +20,9 @@ object Form2: TForm2
     Top = 0
     Width = 421
     Height = 377
-    BorderStyle = bsFSingle
+    ThumbWidht = 128
+    ThumbHeight = 128
+    SlideShowInterval = 500
     Align = alClient
     ParentColor = False
     OnMouseUp = PhImage1MouseUp
@@ -66,7 +68,9 @@ object Form2: TForm2
       Top = 1
       Width = 177
       Height = 100
-      BorderStyle = bsFSingle
+      ThumbWidht = 128
+      ThumbHeight = 128
+      SlideShowInterval = 500
       Align = alTop
       ParentColor = False
     end
