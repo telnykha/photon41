@@ -156,9 +156,7 @@
                 <Source>
                     <Source Name="MainSource">PhotonDemo.cpp</Source>
                 </Source>
-                <Excluded_Packages>
-                    <Excluded_Packages Name="C:\_alt\VideoA2\VideoA\VideoAnalytics\Modules\utils\photon4\photon\..\bin\photon.bpl">photon</Excluded_Packages>
-                </Excluded_Packages>
+                <Excluded_Packages/>
             </CPlusPlusBuilder.Personality>
             <Platforms>
                 <Platform value="Win32">True</Platform>

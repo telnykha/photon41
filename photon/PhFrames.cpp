@@ -184,10 +184,70 @@ SFrameItem* TPhFrames::GetFrameItem(long num)
 {
     if (num >= 0 && num < m_items->Count)
     {
-        return _FRAME_ITEM_(num);
-    }
+		return _FRAME_ITEM_(num);
+	}
     else
         return NULL;
+}
+
+void __fastcall TPhFrames::SelectAll()
+{
+	if (m_pDisplay == NULL)
+		return;
+	if (!m_pDisplay->Mosaic)
+		return;
+	if (this->m_items == NULL)
+		return;
+	for(int i = 0; i < m_items->Count; i++)
+	{
+	   SFrameItem* item = _FRAME_ITEM_(i);
+	   if (item)
+	   {
+		item->selected = true;
+	   }
+	}
+
+	m_pDisplay->Paint();
+}
+void __fastcall TPhFrames::InvertSelection()
+{
+	if (m_pDisplay == NULL)
+		return;
+	if (!m_pDisplay->Mosaic)
+		return;
+	if (this->m_items == NULL)
+		return;
+	for(int i = 0; i < m_items->Count; i++)
+	{
+	   SFrameItem* item = _FRAME_ITEM_(i);
+	   if (item)
+	   {
+		item->selected = !item->selected;
+	   }
+	}
+
+	m_pDisplay->Paint();
+}
+
+void __fastcall TPhFrames::ClearSelection()
+{
+	if (m_pDisplay == NULL)
+		return;
+	if (!m_pDisplay->Mosaic)
+		return;
+	if (m_pDisplay == NULL)
+		return;
+
+	for(int i = 0; i < m_items->Count; i++)
+	{
+	   SFrameItem* item = _FRAME_ITEM_(i);
+	   if (item)
+	   {
+		item->selected = false;
+	   }
+	}
+
+    m_pDisplay->Paint();
 }
 
 

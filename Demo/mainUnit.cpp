@@ -315,6 +315,8 @@ void __fastcall TmainForm::FormCreate(TObject *Sender)
 void __fastcall TmainForm::editClearSelectionActionExecute(TObject *Sender)
 {
 	PhImage1->ClearSelection();
+	if (PhImage1->Mosaic)
+        PhImage1->Frames->ClearSelection();
 }
 //---------------------------------------------------------------------------
 
@@ -395,6 +397,30 @@ void __fastcall TmainForm::TrackBar1Change(TObject *Sender)
 {
     PhImage1->SlideShowInterval = TrackBar1->Position;
     Panel3->Caption = IntToStr((int)PhImage1->SlideShowInterval) + L" ms";
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::editSelectAllActionExecute(TObject *Sender)
+{
+	PhImage1->Frames->SelectAll();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::editSelectAllActionUpdate(TObject *Sender)
+{
+	editSelectAllAction->Enabled = this->PhImage1->Mosaic;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::editInvertSelectionActionExecute(TObject *Sender)
+{
+    PhImage1->Frames->InvertSelection();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::editInvertSelectionActionUpdate(TObject *Sender)
+{
+	editInvertSelectionAction->Enabled = this->PhImage1->Mosaic;
 }
 //---------------------------------------------------------------------------
 

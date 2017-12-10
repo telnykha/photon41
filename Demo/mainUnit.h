@@ -120,6 +120,10 @@ __published:	// IDE-managed Components
 	TPanel *Panel2;
 	TTrackBar *TrackBar1;
 	TPanel *Panel3;
+	TAction *editSelectAllAction;
+	TAction *editInvertSelectionAction;
+	TMenuItem *SelectAll1;
+	TMenuItem *InvertSelection1;
 	void __fastcall fileOpenActionExecute(TObject *Sender);
 	void __fastcall fileSaveActionExecute(TObject *Sender);
 	void __fastcall fileSaveActionUpdate(TObject *Sender);
@@ -182,6 +186,10 @@ __published:	// IDE-managed Components
 	void __fastcall viewMosaicActionExecute(TObject *Sender);
 	void __fastcall viewMosaicActionUpdate(TObject *Sender);
 	void __fastcall TrackBar1Change(TObject *Sender);
+	void __fastcall editSelectAllActionExecute(TObject *Sender);
+	void __fastcall editSelectAllActionUpdate(TObject *Sender);
+	void __fastcall editInvertSelectionActionExecute(TObject *Sender);
+	void __fastcall editInvertSelectionActionUpdate(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TmainForm(TComponent* Owner);

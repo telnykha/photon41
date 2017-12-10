@@ -1494,7 +1494,7 @@ void            __fastcall TPhCustomImage::DrawSelectedItems(Graphics::TBitmap* 
 	cnv->Rectangle(rect1);
 
 	// draw selected
-
+  	cnv->Pen->Width = 10;
 	cnv->Pen->Color = clRed;
   	int w = (int)floor(sqrt((float)Frames->Count) + 0.5);
 	for (int i = 0; i < Frames->Count; i++)
@@ -1546,11 +1546,6 @@ __fastcall TPhImage::TPhImage(HWND Parent):TPhCustomImage(Parent)
 {
 
 }
-
-
-
-
-
 //---------------------------------------------------------------------------
 namespace Fimage41
 {

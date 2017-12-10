@@ -481,6 +481,18 @@ object mainForm: TmainForm
       OnExecute = viewMosaicActionExecute
       OnUpdate = viewMosaicActionUpdate
     end
+    object editSelectAllAction: TAction
+      Category = 'Edit'
+      Caption = 'Select All'
+      OnExecute = editSelectAllActionExecute
+      OnUpdate = editSelectAllActionUpdate
+    end
+    object editInvertSelectionAction: TAction
+      Category = 'Edit'
+      Caption = 'Invert Selection'
+      OnExecute = editInvertSelectionActionExecute
+      OnUpdate = editInvertSelectionActionUpdate
+    end
   end
   object MainMenu1: TMainMenu
     Left = 24
@@ -517,8 +529,15 @@ object mainForm: TmainForm
       object N7: TMenuItem
         Caption = '-'
       end
+      object SelectAll1: TMenuItem
+        Action = editSelectAllAction
+      end
+      object InvertSelection1: TMenuItem
+        Action = editInvertSelectionAction
+      end
       object ClearSelection1: TMenuItem
-        Action = editClearSelectionAction
+        Caption = 'Clear Selection'
+        OnClick = editClearSelectionActionExecute
       end
     end
     object Mode1: TMenuItem

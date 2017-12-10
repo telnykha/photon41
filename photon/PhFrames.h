@@ -43,6 +43,10 @@ public:
     bool __fastcall DeleteImage(long num);
     bool __fastcall DeleteSelected();
 
+	// selectiom
+	void __fastcall SelectAll();
+	void __fastcall InvertSelection();
+	void __fastcall ClearSelection();
 
     SFrameItem* GetFrameItem(long num);
 
