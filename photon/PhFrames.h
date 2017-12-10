@@ -43,8 +43,12 @@ public:
     bool __fastcall DeleteImage(long num);
     bool __fastcall DeleteSelected();
 
+
+    SFrameItem* GetFrameItem(long num);
+
     __property int Count = {read = GetCount};
     __property int CurrentFrame = {read = m_current};
     __property TGraphic* Mosaic = {read = m_pMosaic};
+
 };
 #endif

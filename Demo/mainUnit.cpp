@@ -110,6 +110,11 @@ void __fastcall TmainForm::PhImage1Change(TObject *Sender)
                 StatusBar1->Panels->Items[2]->Text = "Zoom";
                 StatusBar1->Panels->Items[1]->Text = "";
         }
+
+        if (!PhImage1->Empty)
+        {
+	        StatusBar1->Panels->Items[1]->Text = IntToStr(PhImage1->Bitmap->Width) + L":" + IntToStr(PhImage1->Bitmap->Height);
+        }
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::FormClose(TObject *Sender, TCloseAction &Action)

@@ -180,4 +180,15 @@ bool __fastcall TPhFrames::DeleteSelected()
     return true;
 }
 
+SFrameItem* TPhFrames::GetFrameItem(long num)
+{
+    if (num >= 0 && num < m_items->Count)
+    {
+        return _FRAME_ITEM_(num);
+    }
+    else
+        return NULL;
+}
+
+
 #pragma package(smart_init)

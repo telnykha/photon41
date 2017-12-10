@@ -197,6 +197,8 @@ void __fastcall TPhCustomImage::SetMosaic(bool Value)
         m_mosaic = false;
     }
 
+      if (FChange)
+          FChange(this);
 }
 
 
@@ -1364,6 +1366,31 @@ void __fastcall TPhCustomImage::MouseMove( TShiftState Shift, Integer X, Integer
 //---------------------------------------------------------------------------
 void __fastcall TPhCustomImage::MouseUp(TMouseButton Button,  TShiftState Shift, Integer X, Integer Y)
 {
+
+    if (this->Mosaic && Shift.Contains(ssShift))
+    {
+        // call mosaic helper
+        int x = GetImageX(X);
+        int y = GetImageY(Y);
+        if (x >= 0 && x < FBitmap->Width && y >= 0 && y < FBitmap->Height)
+        {
+            x /= m_tWidth;
+            y /= m_tHeight;
+            int w = (int)floor(sqrt((float)this->Frames->Count) + 0.5);
+            int idx = (x+w*y);
+            if (idx < Frames->Count)
+            {
+                SFrameItem* item = Frames->GetFrameItem(idx);
+                if (item != NULL)
+                {
+                    item->selected = !item->selected;
+                    Paint();
+                }
+            }
+        }
+    }
+
+
    TPhImageTool* t =    GetSelectedTool();
    if (t != NULL)
 	t->MouseUp(X,Y, Button);
@@ -1375,6 +1402,8 @@ void __fastcall TPhCustomImage::SetImage(TGraphic* aBitmap)
 {
     TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
     dib->Assign(aBitmap);
+    if (FChange)
+      FChange(this);
 }
 
 TGraphic* __fastcall   TPhCustomImage::GetSelectedBitmap()
@@ -1465,12 +1494,14 @@ void            __fastcall TPhCustomImage::DrawSelectedItems(Graphics::TBitmap* 
 	cnv->Rectangle(rect1);
 
 	// draw selected
-/*
-	Canvas->Pen->Color = clRed;
-	int w = (int)floor(sqrt((float)m_numThumbs) + 0.5);
-	for (int i = 0; i < m_numThumbs; i++)
+
+	cnv->Pen->Color = clRed;
+  	int w = (int)floor(sqrt((float)Frames->Count) + 0.5);
+	for (int i = 0; i < Frames->Count; i++)
 	{
-		if (m_selected[i])
+		SFrameItem* item = Frames->GetFrameItem(i);
+
+		if (item->selected)
 		{
 			x = i % w;
 			y = i / w;
@@ -1478,11 +1509,11 @@ void            __fastcall TPhCustomImage::DrawSelectedItems(Graphics::TBitmap* 
 			y *= m_tHeight;
 
 			rect.init(x,y,x+m_tWidth,y+m_tHeight);
-			rect1 = FImage->GetScreenRect(rect);
-			Canvas->Rectangle(rect1);
+			rect1 = GetScreenRect(rect);
+			cnv->Rectangle(rect1);
 		}
 	}
-*/
+
 	cnv->Brush->Style = oldStyle;
 	cnv->Pen->Color = oldColor;
 	cnv->Pen->Width = oldWidth;
