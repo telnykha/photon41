@@ -3,6 +3,10 @@
 #pragma hdrstop
 #include <Clipbrd.hpp>
 #include "mainUnit.h"
+#include "copyFormUnit.h"
+#include "resizeFormUnit.h"
+#include "rotateFormUnit.h"
+#include "convertFormUnit.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "FImage41"
@@ -421,6 +425,129 @@ void __fastcall TmainForm::editInvertSelectionActionExecute(TObject *Sender)
 void __fastcall TmainForm::editInvertSelectionActionUpdate(TObject *Sender)
 {
 	editInvertSelectionAction->Enabled = this->PhImage1->Mosaic;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::imgCopyActionExecute(TObject *Sender)
+{
+    if (copyForm->ShowModal() == mrOk)
+    {
+        //todo: do copy and others operations
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::imgCopyActionUpdate(TObject *Sender)
+{
+    imgCopyAction->Enabled = !PhImage1->Bitmap->Empty;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::imgMoveActionExecute(TObject *Sender)
+{
+    if (copyForm->ShowModal() == mrOk)
+    {
+        //todo: do copy and others operations
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::imgMoveActionUpdate(TObject *Sender)
+{
+    imgMoveAction->Enabled = !PhImage1->Bitmap->Empty;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::imgRotateActionExecute(TObject *Sender)
+{
+    if (rotateForm->ShowModal() == mrOk)
+    {
+        //todo: make rotation
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::imgRotateActionUpdate(TObject *Sender)
+{
+    imgRotateAction->Enabled = !PhImage1->Bitmap->Empty;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::imgResizeActionExecute(TObject *Sender)
+{
+    if (resizeForm->ShowModal() == mrOk)
+    {
+        //todo: do resize operation
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::imgResizeActionUpdate(TObject *Sender)
+{
+	imgResizeAction->Enabled = !PhImage1->Bitmap->Empty;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::imgGrayScaleActionExecute(TObject *Sender)
+{
+	//todo: do grayscale action
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::imgGrayScaleActionUpdate(TObject *Sender)
+{
+	imgGrayScaleAction->Enabled = !PhImage1->Bitmap->Empty;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::imgInvertActionExecute(TObject *Sender)
+{
+	//todo: do invert action
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::imgInvertActionUpdate(TObject *Sender)
+{
+    imgInvertAction->Enabled = !PhImage1->Bitmap->Empty;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::imgConvertActionExecute(TObject *Sender)
+{
+    if (convertForm->ShowModal() == mrOk)
+    {
+        //todo: do convert selection
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::imgConvertActionUpdate(TObject *Sender)
+{
+    imgConvertAction->Enabled = PhImage1->Mosaic;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::imgCropActionExecute(TObject *Sender)
+{
+	//todo: do crop operation
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::imgCropActionUpdate(TObject *Sender)
+{
+    imgCropAction->Enabled = PhImage1->Bitmap != NULL && PhImage1->HasSelection() && !PhImage1->Mosaic;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::imgDeleteActionExecute(TObject *Sender)
+{
+	PhImage1->Delete();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::imgDeleteActionUpdate(TObject *Sender)
+{
+    imgDeleteAction->Enabled = !PhImage1->Bitmap->Empty;
 }
 //---------------------------------------------------------------------------
 

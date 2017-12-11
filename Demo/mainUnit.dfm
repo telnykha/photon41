@@ -48,8 +48,8 @@ object mainForm: TmainForm
     Top = 0
     Width = 692
     Height = 400
-    ThumbWidht = 160
-    ThumbHeight = 120
+    ThumbWidht = 480
+    ThumbHeight = 480
     SlideShowInterval = 500
     Align = alClient
     ParentColor = False
@@ -493,6 +493,60 @@ object mainForm: TmainForm
       OnExecute = editInvertSelectionActionExecute
       OnUpdate = editInvertSelectionActionUpdate
     end
+    object imgCopyAction: TAction
+      Category = 'Image'
+      Caption = 'Copy Image(s)...'
+      OnExecute = imgCopyActionExecute
+      OnUpdate = imgCopyActionUpdate
+    end
+    object imgMoveAction: TAction
+      Category = 'Image'
+      Caption = 'Move Image(s)...'
+      OnExecute = imgMoveActionExecute
+      OnUpdate = imgMoveActionUpdate
+    end
+    object imgDeleteAction: TAction
+      Category = 'Image'
+      Caption = 'Delete Image(s)...'
+      OnExecute = imgDeleteActionExecute
+      OnUpdate = imgDeleteActionUpdate
+    end
+    object imgRotateAction: TAction
+      Category = 'Image'
+      Caption = 'Rotate Image(s)...'
+      OnExecute = imgRotateActionExecute
+      OnUpdate = imgRotateActionUpdate
+    end
+    object imgResizeAction: TAction
+      Category = 'Image'
+      Caption = 'Resize Image(s)...'
+      OnExecute = imgResizeActionExecute
+      OnUpdate = imgResizeActionUpdate
+    end
+    object imgGrayScaleAction: TAction
+      Category = 'Image'
+      Caption = 'Grayscale Image(s)'
+      OnExecute = imgGrayScaleActionExecute
+      OnUpdate = imgGrayScaleActionUpdate
+    end
+    object imgInvertAction: TAction
+      Category = 'Image'
+      Caption = 'Invert Image(s)'
+      OnExecute = imgInvertActionExecute
+      OnUpdate = imgInvertActionUpdate
+    end
+    object imgConvertAction: TAction
+      Category = 'Image'
+      Caption = 'Convert Image(s)...'
+      OnExecute = imgConvertActionExecute
+      OnUpdate = imgConvertActionUpdate
+    end
+    object imgCropAction: TAction
+      Category = 'Image'
+      Caption = 'Crop Image'
+      OnExecute = imgCropActionExecute
+      OnUpdate = imgCropActionUpdate
+    end
   end
   object MainMenu1: TMainMenu
     Left = 24
@@ -541,7 +595,7 @@ object mainForm: TmainForm
       end
     end
     object Mode1: TMenuItem
-      Caption = 'Mode'
+      Caption = 'Tool Mode'
       object PaneTool1: TMenuItem
         Action = toolPaneAction
       end
@@ -553,6 +607,39 @@ object mainForm: TmainForm
       end
       object LenzTool1: TMenuItem
         Action = toolLenzAction
+      end
+    end
+    object Image1: TMenuItem
+      Caption = 'Image'
+      object CopyImages1: TMenuItem
+        Action = imgCopyAction
+      end
+      object MoveImages1: TMenuItem
+        Action = imgMoveAction
+      end
+      object DeleteImages1: TMenuItem
+        Action = imgDeleteAction
+      end
+      object ConvertImages1: TMenuItem
+        Action = imgConvertAction
+      end
+      object N10: TMenuItem
+        Caption = '-'
+      end
+      object ResizeImages1: TMenuItem
+        Action = imgResizeAction
+      end
+      object RotateImages1: TMenuItem
+        Action = imgRotateAction
+      end
+      object GrayscaleImages1: TMenuItem
+        Action = imgGrayScaleAction
+      end
+      object InvertImages1: TMenuItem
+        Action = imgInvertAction
+      end
+      object CropImage1: TMenuItem
+        Action = imgCropAction
       end
     end
     object View1: TMenuItem

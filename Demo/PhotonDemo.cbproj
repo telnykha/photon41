@@ -53,7 +53,7 @@
         <ProjectType>CppVCLApplication</ProjectType>
         <PackageImports>inet;$(PackageImports)</PackageImports>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
-        <AllPackageLibs>rtl.lib;vcl.lib;photon41.lib</AllPackageLibs>
+        <AllPackageLibs>rtl.lib;vcl.lib;photon41.lib;vclx.lib;VclSmp.lib</AllPackageLibs>
         <_TCHARMapping>wchar_t</_TCHARMapping>
         <Multithreaded>true</Multithreaded>
         <Icon_MainIcon>$(BDS)\bin\cbuilder_PROJECTICON.ico</Icon_MainIcon>
@@ -64,7 +64,7 @@
         <ILINK_LibraryPath>..\photon\;$(AWPLIB);$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <VerInfo_Locale>1049</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-        <Custom_Styles>Amakrits|VCLSTYLE|$(BDSCOMMONDIR)\Styles\Amakrits.vsf;&quot;Amethyst Kamri|VCLSTYLE|$(BDSCOMMONDIR)\Styles\AmethystKamri.vsf&quot;;&quot;Aqua Light Slate|VCLSTYLE|$(BDSCOMMONDIR)\Styles\AquaLightSlate.vsf&quot;;Carbon|VCLSTYLE|$(BDSCOMMONDIR)\Styles\Carbon.vsf;&quot;Cobalt XEMedia|VCLSTYLE|$(BDSCOMMONDIR)\Styles\CobaltXEMedia.vsf&quot;;&quot;Cyan Night|VCLSTYLE|$(BDSCOMMONDIR)\Styles\CyanNight.vsf&quot;;Obsidian|VCLSTYLE|$(BDSCOMMONDIR)\Styles\Obsidian.vsf</Custom_Styles>
+        <Custom_Styles>Amakrits|VCLSTYLE|$(BDSCOMMONDIR)\Styles\Amakrits.vsf;&quot;Amethyst Kamri|VCLSTYLE|$(BDSCOMMONDIR)\Styles\AmethystKamri.vsf&quot;;&quot;Aqua Light Slate|VCLSTYLE|$(BDSCOMMONDIR)\Styles\AquaLightSlate.vsf&quot;;Carbon|VCLSTYLE|$(BDSCOMMONDIR)\Styles\Carbon.vsf;&quot;Cobalt XEMedia|VCLSTYLE|$(BDSCOMMONDIR)\Styles\CobaltXEMedia.vsf&quot;;&quot;Slate Classico|VCLSTYLE|$(BDSCOMMONDIR)\Styles\SlateClassico.vsf&quot;</Custom_Styles>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <PackageImports>appanalytics;bcbsmp;bindcomp;bindcompfmx;bindcompvcl;bindengine;CustomIPTransport;dbrtl;dsnap;fmx;fmxase;fmxdae;fmxobj;IndyCore;IndyProtocols;IndySystem;photon;photon41;rtl;svn;tethering;vcl;vclactnband;vcldb;vcldsnap;vclie;vclimg;VclSmp;vcltouch;vclwinx;vclx;xmlrtl;$(PackageImports)</PackageImports>
@@ -101,7 +101,7 @@
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppEnableHighDPI>true</AppEnableHighDPI>
-        <LinkPackageImports>rtl.bpi;vcl.bpi;photon41.bpi</LinkPackageImports>
+        <LinkPackageImports>rtl.bpi;vcl.bpi;photon41.bpi;vclx.bpi;VclSmp.bpi</LinkPackageImports>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Debugger_DebugSourcePath>C:\_alt\VideoA2\VideoA\VideoAnalytics\awpipl2\src\;C:\_alt\VideoA2\VideoA\VideoAnalytics\jpeg-6b\src\;$(Debugger_DebugSourcePath)</Debugger_DebugSourcePath>
@@ -116,6 +116,18 @@
         <BCC_PCHName_Clang>DemoPCH1.h</BCC_PCHName_Clang>
     </PropertyGroup>
     <ItemGroup>
+        <CppCompile Include="convertFormUnit.cpp">
+            <Form>convertForm</Form>
+            <FormType>dfm</FormType>
+            <DependentOn>convertFormUnit.h</DependentOn>
+            <BuildOrder>6</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="copyFormUnit.cpp">
+            <Form>copyForm</Form>
+            <FormType>dfm</FormType>
+            <DependentOn>copyFormUnit.h</DependentOn>
+            <BuildOrder>3</BuildOrder>
+        </CppCompile>
         <PCHCompile Include="DemoPCH1.h">
             <BuildOrder>1</BuildOrder>
             <PCH>true</PCH>
@@ -129,7 +141,23 @@
         <CppCompile Include="PhotonDemo.cpp">
             <BuildOrder>0</BuildOrder>
         </CppCompile>
+        <CppCompile Include="resizeFormUnit.cpp">
+            <Form>resizeForm</Form>
+            <FormType>dfm</FormType>
+            <DependentOn>resizeFormUnit.h</DependentOn>
+            <BuildOrder>4</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="rotateFormUnit.cpp">
+            <Form>rotateForm</Form>
+            <FormType>dfm</FormType>
+            <DependentOn>rotateFormUnit.h</DependentOn>
+            <BuildOrder>5</BuildOrder>
+        </CppCompile>
         <FormResources Include="mainUnit.dfm"/>
+        <FormResources Include="copyFormUnit.dfm"/>
+        <FormResources Include="resizeFormUnit.dfm"/>
+        <FormResources Include="rotateFormUnit.dfm"/>
+        <FormResources Include="convertFormUnit.dfm"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -156,7 +184,9 @@
                 <Source>
                     <Source Name="MainSource">PhotonDemo.cpp</Source>
                 </Source>
-                <Excluded_Packages/>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="C:\_alt\VideoA2\VideoA\VideoAnalytics\Modules\utils\photon4\photon\..\bin\photon.bpl">photon</Excluded_Packages>
+                </Excluded_Packages>
             </CPlusPlusBuilder.Personality>
             <Platforms>
                 <Platform value="Win32">True</Platform>

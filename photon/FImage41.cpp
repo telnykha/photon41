@@ -1114,7 +1114,7 @@ void __fastcall TPhCustomImage::SaveToFile(const AnsiString& FileName)
         awpImage* img = NULL;
         TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
         dib->GetAWPImage(&img);
-        if (img)
+        if (img != NULL)
         {
             strExt = ExtractFileExt(strFileName);
             strExt =strExt.LowerCase();

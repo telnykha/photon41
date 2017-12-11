@@ -7,6 +7,10 @@
 #include <Vcl.Styles.hpp>
 #include <Vcl.Themes.hpp>
 USEFORM("mainUnit.cpp", mainForm);
+USEFORM("copyFormUnit.cpp", copyForm);
+USEFORM("resizeFormUnit.cpp", resizeForm);
+USEFORM("rotateFormUnit.cpp", rotateForm);
+USEFORM("convertFormUnit.cpp", convertForm);
 //---------------------------------------------------------------------------
 int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 {
@@ -14,8 +18,12 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 	{
 		Application->Initialize();
 		Application->MainFormOnTaskBar = true;
-		TStyleManager::TrySetStyle("Cobalt XEMedia");
+		TStyleManager::TrySetStyle("Slate Classico");
 		Application->CreateForm(__classid(TmainForm), &mainForm);
+		Application->CreateForm(__classid(TcopyForm), &copyForm);
+		Application->CreateForm(__classid(TresizeForm), &resizeForm);
+		Application->CreateForm(__classid(TrotateForm), &rotateForm);
+		Application->CreateForm(__classid(TconvertForm), &convertForm);
 		Application->Run();
 	}
 	catch (Exception &exception)
