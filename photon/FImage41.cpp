@@ -771,7 +771,7 @@ void   TPhCustomImage::DrawSelRect(Graphics::TBitmap *bm)
    TPenMode mode = bm->Canvas->Pen->Mode;
 
    bm->Canvas->Pen->Style = psDot;
-   bm->Canvas->Pen->Width = 2;
+   bm->Canvas->Pen->Width = 10;
    bm->Canvas->Pen->Color = clRed;
    bm->Canvas->Pen->Mode = pmCopy;
 
@@ -1494,8 +1494,8 @@ void            __fastcall TPhCustomImage::DrawSelectedItems(Graphics::TBitmap* 
 	cnv->Rectangle(rect1);
 
 	// draw selected
-  	cnv->Pen->Width = 10;
-	cnv->Pen->Color = clRed;
+  	cnv->Pen->Width = 8;
+	cnv->Pen->Color = clGreen;
   	int w = (int)floor(sqrt((float)Frames->Count) + 0.5);
 	for (int i = 0; i < Frames->Count; i++)
 	{
@@ -1510,7 +1510,15 @@ void            __fastcall TPhCustomImage::DrawSelectedItems(Graphics::TBitmap* 
 
 			rect.init(x,y,x+m_tWidth,y+m_tHeight);
 			rect1 = GetScreenRect(rect);
-			cnv->Rectangle(rect1);
+   			cnv->Pen->Width = 8;
+            cnv->Ellipse(rect1);
+            rect1.Inflate(-15, -15);
+			cnv->Pen->Width = 4;
+            cnv->Ellipse(rect1);
+            rect1.Inflate(-15, -15);
+			cnv->Pen->Width = 2;
+            cnv->Ellipse(rect1);
+ //			cnv->Rectangle(rect1);
 		}
 	}
 
