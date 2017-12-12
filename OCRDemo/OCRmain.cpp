@@ -288,7 +288,7 @@ void __fastcall TForm2::OCRhelper()
 
     awpImage* img = NULL;
     dib->GetAWPImage(&img);
-    awpResize(img, 128, img->sSizeY*128/img->sSizeX);
+    awpResize(img, 64, img->sSizeY*64/img->sSizeX);
     awpConvert(img, AWP_CONVERT_3TO1_BYTE);
     dib->SetAWPImage(img);
     PhImage2->Bitmap = dib;

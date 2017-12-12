@@ -11,9 +11,11 @@ class PACKAGE TPhSelRectTool : public TPhImageTool
 private:
     void DrawSelRect();
 	bool Pressed;
+    int  vertex;
+    int  m_x;
+    int  m_y;
     TRect FSelRect;
-    int   m_numCols;
-    int   m_numRows;
+    void __fastcall SetVertexes(int x1, int x2, int y1, int y2);
 public:
     __fastcall TPhSelRectTool(TComponent* Owner);
     virtual void Draw(TCanvas* Canvas);
@@ -22,9 +24,7 @@ public:
     virtual void MouseMove(int X, int Y, TShiftState Shift);
     virtual void Reset();
 
-    __property int Cols ={read = m_numCols, write = m_numCols};
-    __property int Rows ={read = m_numRows, write = m_numRows};
-
+    __property TRect SelectRect = {read = FSelRect};
 };
 //---------------------------------------------------------------------------
 #endif

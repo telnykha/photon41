@@ -7,8 +7,7 @@ __fastcall TPhSelRectTool::TPhSelRectTool(TComponent* Owner):TPhImageTool(Owner)
 {
 
    Pressed = false;
-   this->m_numCols = 1;//aImage->SelCols;
-   this->m_numRows = 1;//aImage->SelRows;
+   vertex = 0;
    m_strToolName = L"SELECT RECT";
 }
 void TPhSelRectTool::Draw(TCanvas* Canvas)
@@ -30,6 +29,8 @@ void TPhSelRectTool::MouseDown(int X, int Y, TMouseButton Button)
       FSelRect.Bottom = Y;
       FSelRect.Left   = X;
       FSelRect.Right  = X;
+      m_x = X;
+      m_y = Y;
       m_pImage->FSelRect = m_pImage->GetImageRect(FSelRect);
       Pressed        = true;
    }
@@ -47,7 +48,6 @@ void TPhSelRectTool::MouseUp(int X, int Y, TMouseButton Button)
       FSelRect.Right = AWP_MAX(X, FSelRect.Right);
       FSelRect.Bottom = AWP_MAX(Y, FSelRect.Bottom);
 
-
       Pressed = false;
 
       m_pImage->SetSelRect(m_pImage->GetImageRect(FSelRect));
@@ -62,10 +62,8 @@ void TPhSelRectTool::MouseMove(int X, int Y, TShiftState Shift)
    if (Pressed)
    {
       DrawSelRect();
-      FSelRect.Left = AWP_MIN(X, FSelRect.Left);
-      FSelRect.Top  = AWP_MIN(Y, FSelRect.Top);
-      FSelRect.Right = AWP_MAX(X, FSelRect.Right);
-      FSelRect.Bottom = AWP_MAX(Y, FSelRect.Bottom);
+
+      this->SetVertexes(m_x, X, m_y, Y);
 
       DrawSelRect();
    }
@@ -90,29 +88,6 @@ void TPhSelRectTool::DrawSelRect()
    m_pImage->Canvas->LineTo(FSelRect.Left, FSelRect.Bottom);
    m_pImage->Canvas->LineTo(FSelRect.Left, FSelRect.Top);
 
-   float w = FSelRect.Width() / this->m_numCols;
-   for (int i = 1; i < this->m_numCols; i++)
-   {
-      int x,y;
-      x = FSelRect.left + i*w;
-      y = FSelRect.top;
-      m_pImage->Canvas->MoveTo(x,y);
-      y = FSelRect.bottom;
-      m_pImage->Canvas->LineTo(x,y);
-   }
-
-
-   float h = FSelRect.Height() / this->m_numRows;
-   for (int i = 1; i < this->m_numRows; i++)
-   {
-      int x,y;
-      x = FSelRect.left;
-      y = FSelRect.top + i*h;
-      m_pImage->Canvas->MoveTo(x,y);
-      x = FSelRect.right;
-      m_pImage->Canvas->LineTo(x,y);
-   }
-
    m_pImage->Canvas->Pen->Style = style;
    m_pImage->Canvas->Pen->Color = color;
    m_pImage->Canvas->Pen->Mode = mode;
@@ -120,6 +95,15 @@ void TPhSelRectTool::DrawSelRect()
 void TPhSelRectTool::Reset()
 {
 }
+
+void __fastcall TPhSelRectTool::SetVertexes(int x1, int x2, int y1, int y2)
+{
+    FSelRect.Left  = AWP_MIN(x1,x2);
+    FSelRect.Right = AWP_MAX(x1,x2);
+    FSelRect.Top   = AWP_MIN(y1,y2);
+    FSelRect.Bottom = AWP_MAX(y1,y2);
+}
+
 //---------------------------------------------------------------------------
 namespace Phselectrecttool
 {

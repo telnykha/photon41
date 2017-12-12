@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 
 #pragma hdrstop
-
+#include "awpipl.h"
 #include "PhZoomToRectTool.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -11,7 +11,7 @@ __fastcall TPhZoomToRectTool::TPhZoomToRectTool(TComponent* Owner)
 	: TPhImageTool(Owner)
 {
    Pressed = false;
-    m_strToolName = L"ZOOM TO REC";
+    m_strToolName = L"ZOOM TO RECT";
 }
 void TPhZoomToRectTool::Draw(TCanvas* Canvas)
 {
@@ -53,6 +53,8 @@ void TPhZoomToRectTool::MouseDown(int X, int Y, TMouseButton Button)
 	  SelRect.Bottom = Y;
       SelRect.Left   = X;
       SelRect.Right  = X;
+      m_x = X;
+      m_y = Y;
 	  Pressed        = true;
    }
 }
@@ -63,14 +65,7 @@ void TPhZoomToRectTool::MouseUp(int X, int Y, TMouseButton Button)
 
    if (Button == mbLeft)
    {
-      if (X < SelRect.Left)
-         SelRect.Left = X;
-      else
-         SelRect.Right = X;
-      if (Y < SelRect.Top)
-         SelRect.Top = Y;
-      else
-         SelRect.Bottom = Y;
+      this->SetVertexes(m_x, X, m_y, Y);
 	  m_pImage->ZoomToRect(SelRect);
       Pressed = false;
    }
@@ -85,14 +80,7 @@ void TPhZoomToRectTool::MouseMove(int X, int Y, TShiftState Shift)
    {
       DrawSelRect();
 
-      if (X < SelRect.Left)
-         SelRect.Left = X;
-      else
-         SelRect.Right = X;
-      if (Y < SelRect.Top)
-         SelRect.Top = Y;
-      else
-		 SelRect.Bottom = Y;
+      this->SetVertexes(m_x, X, m_y, Y);
 
       DrawSelRect();
    }
@@ -100,6 +88,14 @@ void TPhZoomToRectTool::MouseMove(int X, int Y, TShiftState Shift)
 
 void TPhZoomToRectTool::Reset()
 {
+}
+
+void __fastcall TPhZoomToRectTool::SetVertexes(int x1, int x2, int y1, int y2)
+{
+    SelRect.Left  = AWP_MIN(x1,x2);
+    SelRect.Right = AWP_MAX(x1,x2);
+    SelRect.Top   = AWP_MIN(y1,y2);
+    SelRect.Bottom = AWP_MAX(y1,y2);
 }
 
 namespace Phzoomtorecttool

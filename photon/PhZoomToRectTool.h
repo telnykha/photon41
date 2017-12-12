@@ -12,6 +12,9 @@ private:
     TRect SelRect;
     void DrawSelRect();
     bool Pressed;
+    int m_x;
+    int m_y;
+    void __fastcall SetVertexes(int x1, int x2, int y1, int y2);
 public:
     __fastcall TPhZoomToRectTool(TComponent* Owner);
     virtual void Draw(TCanvas* Canvas);
