@@ -771,7 +771,7 @@ void   TPhCustomImage::DrawSelRect(Graphics::TBitmap *bm)
    TPenMode mode = bm->Canvas->Pen->Mode;
 
    bm->Canvas->Pen->Style = psDot;
-   bm->Canvas->Pen->Width = 10;
+   bm->Canvas->Pen->Width = 4;
    bm->Canvas->Pen->Color = clRed;
    bm->Canvas->Pen->Mode = pmCopy;
 
@@ -889,7 +889,7 @@ void __fastcall TPhCustomImage::Paint(void)
 	   }
 
 	   src_r = GetInternalVisibleArea();
-           TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
+       TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
 	   unsigned char* pDIB = dib->OpenPixels();
 
 	   ::SetStretchBltMode(bm->Canvas->Handle, HALFTONE);
@@ -1101,8 +1101,9 @@ bool  __fastcall TPhCustomImage::LoadFromFile(const char* lpFileName)
     Purpose:  Save image to file.
     Comments: Default save image in JPEG format
 ---------------------------------------------------------------------------*/
-void __fastcall TPhCustomImage::SaveToFile(const AnsiString& FileName)
+void __fastcall TPhCustomImage::SaveToFile(const LPWSTR lpwFileName)
 {
+        UnicodeString FileName = lpwFileName;
         AnsiString strExt = ExtractFileExt(FileName);
         AnsiString strFileName = FileName;
         if (strExt == "")
@@ -1157,7 +1158,12 @@ void __fastcall TPhCustomImage::LoadFromClipboard()
 void __fastcall TPhCustomImage::SaveToClipBoard()
 {
    if (!Empty)
-      Clipboard()->Assign(FBitmap);
+   {
+      if (this->HasSelection())
+          Clipboard()->Assign(this->SelectedBitmap);
+      else
+	      Clipboard()->Assign(FBitmap);
+   }
 }
 /*TFCustomImage--------------------------------------------------------------------
     Function:
@@ -1532,6 +1538,7 @@ void __fastcall TPhCustomImage::DoDeleteImage()
     if (Frames->Count > 1)
     {
         Frames->DeleteImage(Frames->CurrentFrame);
+        Frames->Next();
     }
     else
     {
@@ -1547,6 +1554,59 @@ void __fastcall TPhCustomImage::Delete()
         Frames->DeleteSelected();
     else
         DoDeleteImage();
+}
+
+void __fastcall     TPhCustomImage::Copy(const LPWSTR lpwFolderName)
+{
+    SlideShow = false;
+    UnicodeString FolderName = lpwFolderName;
+    if (DirectoryExists(FolderName))
+    {
+        if (Frames->Count > 1)
+        {
+            if (!Frames->CopySelected(lpwFolderName))
+                ShowMessage(L"Cannot copy files to target folder: " + FolderName);
+        }
+        else
+        {
+            AnsiString strSrcFile = this->AFileName;
+            AnsiString strDstFile = lpwFolderName;
+            strDstFile += ExtractFileName(strSrcFile);
+            if (!CopyFile(strSrcFile.c_str(), strDstFile.c_str(), false))
+            {
+                ShowMessage(L"Cannot copy files to target folder: " + FolderName);
+            }
+        }
+    }
+    else
+        ShowMessage(L"Target folder does not exists.");
+}
+void __fastcall     TPhCustomImage::Move(const LPWSTR lpwFolderName)
+{
+    SlideShow = false;
+    UnicodeString FolderName = lpwFolderName;
+    if (DirectoryExists(FolderName))
+    {
+        if (Frames->Count > 1)
+        {
+            if (!Frames->MoveSelected(lpwFolderName))
+                ShowMessage(L"Cannot move files to target folder: " + FolderName);
+        }
+        else
+        {
+            AnsiString strSrcFile = this->AFileName;
+            AnsiString strDstFile = lpwFolderName;
+            strDstFile += ExtractFileName(strSrcFile);
+            if (!CopyFile(strSrcFile.c_str(), strDstFile.c_str(), false))
+            {
+                ShowMessage(L"Cannot copy files to target folder: " + FolderName);
+            }
+            DeleteFile(strSrcFile);
+            Close();
+        }
+    }
+    else
+        ShowMessage(L"Target folder does not exists.");
 }
 
 //=============================================================================

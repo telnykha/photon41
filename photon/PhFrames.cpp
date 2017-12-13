@@ -7,7 +7,6 @@
 #include "DIBImage41.h"
 
 #define _FRAME_ITEM_(a) ((SFrameItem*)(m_items->Items[a]))
-#define _FRAME_MIN_COUNT_ 3
 
 // Frame Items List. Service class to support automatic
 // deletion of the SFrameItem
@@ -31,12 +30,17 @@ TPhFrames::TPhFrames(TPhCustomImage* display)
 	m_pDisplay = display;
     m_current = 0;
     m_pMosaic = new TDIBImage();
+    m_pReader = NULL;
+    m_pCopier = NULL;
 }
 __fastcall TPhFrames::~TPhFrames()
 {
    delete m_pMosaic;
    delete m_items;
-   delete m_pReader;
+   if (m_pReader != NULL)
+	   delete m_pReader;
+   if (m_pCopier != NULL)
+	   delete m_pCopier;
 }
 
 bool TPhFrames::Init(TStrings* names)
@@ -145,9 +149,34 @@ void __fastcall TPhFrames::OnTerminateHelper(TObject *Sender)
        TDIBImage* img = dynamic_cast< TDIBImage*>(m_pMosaic);
        if (img != NULL)
 	       img->SetAWPImage(m_pReader->Mosaic);
+       if (m_pDisplay->Mosaic)
+       {
+        m_pDisplay->Bitmap->Assign(img);
+        m_pDisplay->Paint();
+       }
     }
     m_pReader = NULL;
 }
+
+void __fastcall TPhFrames::OnCopyTerminateHelper(TObject *Sender)
+{
+#ifdef _DEBUG
+    ShowMessage("Copy job done.");
+#endif
+    if (m_pCopier->Move && m_items->Count >= _FRAME_MIN_COUNT_)
+    {
+        m_pReader = new TPhReadImagesThread(true);
+        m_pReader->FreeOnTerminate = true;
+        m_pReader->OnTerminate = OnTerminateHelper;
+
+        m_pReader->tmbWidth  = m_pDisplay->ThumbWidht;
+        m_pReader->tmbHeight = m_pDisplay->ThumbHeight;
+        m_pReader->SetNames(m_items);
+        m_pReader->Start();
+    }
+    m_pCopier = NULL;
+}
+
 
 bool __fastcall TPhFrames::DeleteImage(long num)
 {
@@ -171,13 +200,62 @@ bool __fastcall TPhFrames::DeleteImage(long num)
         m_pReader->SetNames(m_items);
         m_pReader->Start();
     }
-
     return true;
 }
 
 bool __fastcall TPhFrames::DeleteSelected()
 {
+    int num_deleted = 0;
+    for (int i = m_items->Count - 1; i>=0; i--)
+    {
+        SFrameItem* item = _FRAME_ITEM_(i);
+        if (item != NULL && item->selected)
+        {
+        	UnicodeString FileName = item->strFileName;
+            DeleteFile(FileName);
+            m_items->Delete(i);
+            num_deleted++;
+        }
+    }
+    if (num_deleted > 0)
+    {
+        m_pMosaic->Assign(NULL);
+        if (m_items->Count >= _FRAME_MIN_COUNT_)
+        {
+            m_pReader = new TPhReadImagesThread(true);
+            m_pReader->FreeOnTerminate = true;
+            m_pReader->OnTerminate = OnTerminateHelper;
+
+            m_pReader->tmbWidth  = m_pDisplay->ThumbWidht;
+            m_pReader->tmbHeight = m_pDisplay->ThumbHeight;
+            m_pReader->SetNames(m_items);
+            m_pReader->Start();
+        }
+    }
+
     return true;
+}
+
+bool __fastcall TPhFrames::CopySelected(const LPWSTR lpDirName)
+{
+        m_pCopier = new TPhCopyImagesThread(true);
+        m_pCopier->FreeOnTerminate = true;
+        m_pCopier->OnTerminate = OnCopyTerminateHelper;
+
+        m_pCopier->SetNames(m_items, lpDirName);
+        m_pCopier->Start();
+    return true;
+}
+
+bool __fastcall TPhFrames::MoveSelected(const LPWSTR lpDirName)
+{
+        m_pCopier = new TPhCopyImagesThread(true);
+        m_pCopier->FreeOnTerminate = true;
+        m_pCopier->OnTerminate = OnCopyTerminateHelper;
+
+        m_pCopier->SetNames(m_items, lpDirName, true);
+        m_pCopier->Start();
+	    return true;
 }
 
 SFrameItem* TPhFrames::GetFrameItem(long num)

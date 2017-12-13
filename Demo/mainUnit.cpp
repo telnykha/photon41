@@ -47,7 +47,7 @@ void __fastcall TmainForm::fileSaveActionExecute(TObject *Sender)
         if (SaveDialog1->Execute())
         {
           //todo: setup extention
-          PhImage1->SaveToFile(SaveDialog1->FileName);
+          PhImage1->SaveToFile(SaveDialog1->FileName.c_str());
         }
 }
 //---------------------------------------------------------------------------
@@ -432,7 +432,16 @@ void __fastcall TmainForm::imgCopyActionExecute(TObject *Sender)
 {
     if (copyForm->ShowModal() == mrOk)
     {
-        //todo: do copy and others operations
+ 		if (MessageDlg(L"This operation can not be canceled. Are you sure you want to copy this image (s)?", mtWarning , TMsgDlgButtons() << mbOK << mbCancel, 0) == mrOk)
+         {
+            UnicodeString strPathToCopy = copyForm->Edit1->Text;
+            strPathToCopy += L"\\";
+#ifdef _DEBUG
+
+            ShowMessage(strPathToCopy);
+#endif
+            PhImage1->Copy(strPathToCopy.c_str());
+         }
     }
 }
 //---------------------------------------------------------------------------
@@ -447,7 +456,16 @@ void __fastcall TmainForm::imgMoveActionExecute(TObject *Sender)
 {
     if (copyForm->ShowModal() == mrOk)
     {
-        //todo: do copy and others operations
+ 		if (MessageDlg(L"This operation can not be canceled. Are you sure you want to move this image (s)?", mtWarning , TMsgDlgButtons() << mbOK << mbCancel, 0) == mrOk)
+         {
+            UnicodeString strPathToMove = copyForm->Edit1->Text;
+            strPathToMove += L"\\";
+#ifdef _DEBUG
+
+            ShowMessage(strPathToMove);
+#endif
+            PhImage1->Move(strPathToMove.c_str());
+         }
     }
 }
 //---------------------------------------------------------------------------
@@ -541,7 +559,11 @@ void __fastcall TmainForm::imgCropActionUpdate(TObject *Sender)
 
 void __fastcall TmainForm::imgDeleteActionExecute(TObject *Sender)
 {
-	PhImage1->Delete();
+
+ if (MessageDlg(L"This operation can not be canceled. Are you sure you want to delete this image (s)?", mtWarning , TMsgDlgButtons() << mbOK << mbCancel, 0) == mrOk)
+         {
+            PhImage1->Delete();
+         }
 }
 //---------------------------------------------------------------------------
 

@@ -26,6 +26,10 @@ __published:
 	TCheckBox *CheckBox1;
 	TCheckBox *CheckBox2;
 	TCheckBox *CheckBox3;
+	TDriveComboBox *DriveComboBox1;
+	TLabel *Label2;
+	void __fastcall FormShow(TObject *Sender);
+	void __fastcall DirectoryListBox1Change(TObject *Sender);
 private:
 public:
 	virtual __fastcall TcopyForm(TComponent* AOwner);

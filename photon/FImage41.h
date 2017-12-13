@@ -127,7 +127,7 @@ public:
 	virtual bool __fastcall         Init(TStrings* Names);
 	// Close
 	virtual void __fastcall         Close();
-	void __fastcall             	SaveToFile(const AnsiString& FileName);
+	void __fastcall             	SaveToFile(const LPWSTR lpwFileName);
 
 	// Clipboard
 	void __fastcall            		LoadFromClipboard();
@@ -171,6 +171,9 @@ public:
 
     //image operations
     void __fastcall 			Delete();
+    void __fastcall             Copy(const LPWSTR lpwFolderName);
+    void __fastcall             Move(const LPWSTR lpwFolderName);
+
 
 	// Public properties
 	__property  AnsiString      AFileName = {read = FFileName, write = FFileName};

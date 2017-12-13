@@ -9,6 +9,7 @@ object copyForm: TcopyForm
   ParentFont = True
   OldCreateOrder = True
   Position = poScreenCenter
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Bevel1: TBevel
@@ -24,6 +25,13 @@ object copyForm: TcopyForm
     Width = 44
     Height = 13
     Caption = 'To Path: '
+  end
+  object Label2: TLabel
+    Left = 18
+    Top = 208
+    Width = 25
+    Height = 13
+    Caption = 'Drive'
   end
   object OKBtn: TButton
     Left = 64
@@ -57,8 +65,9 @@ object copyForm: TcopyForm
     Left = 16
     Top = 43
     Width = 265
-    Height = 198
+    Height = 158
     TabOrder = 3
+    OnChange = DirectoryListBox1Change
   end
   object CheckBox1: TCheckBox
     Left = 8
@@ -83,5 +92,13 @@ object copyForm: TcopyForm
     Height = 17
     Caption = 'Open with new instance of Photon'
     TabOrder = 6
+  end
+  object DriveComboBox1: TDriveComboBox
+    Left = 16
+    Top = 224
+    Width = 265
+    Height = 19
+    DirList = DirectoryListBox1
+    TabOrder = 7
   end
 end

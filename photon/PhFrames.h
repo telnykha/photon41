@@ -3,9 +3,13 @@
 #define PhFramesH
 #include <System.Classes.hpp>
 //---------------------------------------------------------------------------
+
+#define _FRAME_MIN_COUNT_ 3
+
 class TPhCustomImage;
-class TDIBImage;
+//class TDIBImage;
 class TPhReadImagesThread;
+class TPhCopyImagesThread;
 struct SFrameItem
 {
     UnicodeString strFileName;
@@ -20,8 +24,10 @@ private:
     TList*                  m_items;
     TGraphic*               m_pMosaic;
 	TPhReadImagesThread* 	m_pReader;
+    TPhCopyImagesThread*    m_pCopier;
     int       				m_current;
     void __fastcall OnTerminateHelper(TObject *Sender);
+    void __fastcall OnCopyTerminateHelper(TObject *Sender);
 protected:
     int __fastcall GetCount();
 public:
@@ -42,6 +48,9 @@ public:
     // operations
     bool __fastcall DeleteImage(long num);
     bool __fastcall DeleteSelected();
+
+    bool __fastcall CopySelected(const LPWSTR lpDirName);
+    bool __fastcall MoveSelected(const LPWSTR lpDirName);
 
 	// selectiom
 	void __fastcall SelectAll();

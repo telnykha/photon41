@@ -166,3 +166,57 @@ void __fastcall TPhReadImagesThread::SetNames(TList* names)
     m_items = names;
 }
 
+__fastcall TPhCopyImagesThread::TPhCopyImagesThread(bool CreateSuspended)
+	: TThread(CreateSuspended)
+{
+    m_items = NULL;
+    m_FolderName = L"";
+    m_move = false;
+}
+void __fastcall TPhCopyImagesThread::SetNames(TList* names, const LPWSTR lpwFolderName, bool move)
+{
+    m_items = names;
+    m_FolderName = lpwFolderName;
+    m_move = move;
+}
+void __fastcall TPhCopyImagesThread::Execute()
+{
+    if (m_items == NULL)
+        return;
+    if (!DirectoryExists(m_FolderName))
+        return;
+
+    for (int i = m_items->Count - 1; i >= 0 ; i--)
+    {
+        //
+        if (this->Terminated)
+            break;
+        try
+        {
+            SFrameItem* item = (SFrameItem*)(m_items->Items[i]);
+            if (!item->selected)
+                continue;
+            AnsiString strSrcFile = item->strFileName;
+            AnsiString strDstFile = m_FolderName;
+            strDstFile += ExtractFileName(strSrcFile);
+            if (!CopyFile(strSrcFile.c_str(), strDstFile.c_str(), false))
+            {
+                //todo: add error status
+//                ShowMessage(L"Cannot copy files to target folder: " + FolderName);
+            }
+            if (m_move)
+            {
+                DeleteFile(item->strFileName);
+                m_items->Delete(i);
+            }
+        }
+        catch(Exception& e)
+        {
+
+            //todo: if the thread cannot read the image
+            //remove item about it.
+
+            continue;
+        }
+     }
+}
