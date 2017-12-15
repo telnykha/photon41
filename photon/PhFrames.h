@@ -43,7 +43,7 @@ public:
     void __fastcall Next();
     void __fastcall Prev();
     void __fastcall Last();
-    void __fastcall Frame(long num);
+    void __fastcall GoFrame(long num);
 
     // operations
     bool __fastcall DeleteImage(long num);
@@ -58,7 +58,7 @@ public:
 	void __fastcall ClearSelection();
 
     SFrameItem* GetFrameItem(long num);
-
+    __property SFrameItem* Frame[long index] = {read = GetFrameItem};
     __property int Count = {read = GetCount};
     __property int CurrentFrame = {read = m_current};
     __property TGraphic* Mosaic = {read = m_pMosaic};

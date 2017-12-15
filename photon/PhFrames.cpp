@@ -124,7 +124,7 @@ void __fastcall TPhFrames::Last()
     AnsiString strFileName =_FRAME_ITEM_(m_current)->strFileName;
     m_pDisplay->LoadFromFile(strFileName.c_str());
 }
-void __fastcall TPhFrames::Frame(long num)
+void __fastcall TPhFrames::GoFrame(long num)
 {
     if (num >= 0 && num < m_items->Count)
     {

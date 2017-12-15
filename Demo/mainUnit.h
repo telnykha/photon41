@@ -144,6 +144,9 @@ __published:	// IDE-managed Components
 	TMenuItem *GrayscaleImages1;
 	TMenuItem *InvertImages1;
 	TMenuItem *CropImage1;
+	TAction *fileNewInstanceAction;
+	TMenuItem *N11;
+	TMenuItem *NewInstance1;
 	void __fastcall fileOpenActionExecute(TObject *Sender);
 	void __fastcall fileSaveActionExecute(TObject *Sender);
 	void __fastcall fileSaveActionUpdate(TObject *Sender);
@@ -228,6 +231,8 @@ __published:	// IDE-managed Components
 	void __fastcall imgCropActionUpdate(TObject *Sender);
 	void __fastcall imgDeleteActionExecute(TObject *Sender);
 	void __fastcall imgDeleteActionUpdate(TObject *Sender);
+	void __fastcall Panel1Click(TObject *Sender);
+	void __fastcall fileNewInstanceActionExecute(TObject *Sender);
 private:	// User declarations
 public:		// User declarations
 	__fastcall TmainForm(TComponent* Owner);

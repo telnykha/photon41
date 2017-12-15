@@ -309,11 +309,26 @@ void __fastcall TmainForm::PhImage1ToolChange(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::FormCreate(TObject *Sender)
 {
-    this->TrackBar1->Position = this->PhImage1->SlideShowInterval;
+    if (ParamCount() > 0)
+    {
+        TStringList* list = new TStringList();
+        for (int i = 0; i <= ParamCount(); i++)
+        {
+            if (ExtractFileExt(ParamStr(i)) == L".exe")
+                continue;
+            list->Add(ParamStr(i));
+        }
+        PhImage1->Init(list);
+        delete list;
+    }
+    else
+    {
+        this->TrackBar1->Position = this->PhImage1->SlideShowInterval;
 
-    StatusBar1->Panels->Items[2]->Text =  L"Zoom";
-    if (PhImage1->PhTool != NULL)
-	    StatusBar1->Panels->Items[3]->Text =  PhImage1->PhTool->ToolName;
+        StatusBar1->Panels->Items[2]->Text =  L"Zoom";
+        if (PhImage1->PhTool != NULL)
+            StatusBar1->Panels->Items[3]->Text =  PhImage1->PhTool->ToolName;
+    }
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::editClearSelectionActionExecute(TObject *Sender)
@@ -570,6 +585,24 @@ void __fastcall TmainForm::imgDeleteActionExecute(TObject *Sender)
 void __fastcall TmainForm::imgDeleteActionUpdate(TObject *Sender)
 {
     imgDeleteAction->Enabled = !PhImage1->Bitmap->Empty;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::Panel1Click(TObject *Sender)
+{
+    this->PhImage1->FullScreen = true;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::fileNewInstanceActionExecute(TObject *Sender)
+{
+    AnsiString str = Application->ExeName;
+    for (int i = 0; i < PhImage1->Frames->Count; i++)
+    {
+        str += " ";
+        str += PhImage1->Frames->Frame[i]->strFileName;
+    }
+    WinExec(str.c_str(), SW_SHOW);
 }
 //---------------------------------------------------------------------------
 

@@ -105,6 +105,8 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Debugger_DebugSourcePath>C:\_alt\VideoA2\VideoA\VideoAnalytics\awpipl2\src\;C:\_alt\VideoA2\VideoA\VideoAnalytics\jpeg-6b\src\;$(Debugger_DebugSourcePath)</Debugger_DebugSourcePath>
+        <Debugger_RunParams>kbis_1.png kmbx.png</Debugger_RunParams>
+        <Debugger_CWD>C:\Users\ALT\Pictures</Debugger_CWD>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <Defines>NDEBUG;$(Defines)</Defines>
@@ -114,6 +116,7 @@
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppEnableHighDPI>true</AppEnableHighDPI>
         <BCC_PCHName_Clang>DemoPCH1.h</BCC_PCHName_Clang>
+        <LinkPackageImports>rtl.bpi;vcl.bpi;photon41.bpi;vclx.bpi;VclSmp.bpi</LinkPackageImports>
     </PropertyGroup>
     <ItemGroup>
         <CppCompile Include="convertFormUnit.cpp">

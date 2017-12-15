@@ -87,7 +87,7 @@ void __fastcall TForm2::fileSaveActionExecute(TObject *Sender)
         if (SaveDialog1->Execute())
         {
           //todo: setup extention
-          PhImage1->SaveToFile(SaveDialog1->FileName);
+          PhImage1->SaveToFile(SaveDialog1->FileName.c_str());
         }
 }
 //---------------------------------------------------------------------------
@@ -288,8 +288,10 @@ void __fastcall TForm2::OCRhelper()
 
     awpImage* img = NULL;
     dib->GetAWPImage(&img);
-    awpResize(img, 64, img->sSizeY*64/img->sSizeX);
+    awpResize(img, 128, img->sSizeY*128/img->sSizeX);
     awpConvert(img, AWP_CONVERT_3TO1_BYTE);
+    awpFilter(img,AWP_BLUR,AWP_FILTER_METHOD_ORDINARY);
+    awpAutoLevels(img);
     dib->SetAWPImage(img);
     PhImage2->Bitmap = dib;
     PhImage2->BestFit();

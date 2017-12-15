@@ -62,6 +62,10 @@ protected:
     bool                        m_mosaic;
 	int				 __fastcall GetSelectedIndex();
     void __fastcall         	TimerEventHandler(TObject *Sender);
+
+    bool                        m_fullscreen;
+    bool __fastcall GetFullScreen();
+    void __fastcall SetFullScreen(bool value);
 protected:
 	void         __fastcall     SetImage(TGraphic* aBitmap);
 
@@ -189,6 +193,7 @@ public:
 	__property float            Scale = {read = GetScale};
 	__property TPoint           Corner = {read = GetCorner};
 	__property TRect            VisibleArea = {read = GetVisibleArea};
+    __property bool FullScreen  = {read = GetFullScreen, write = SetFullScreen};
    // inherited properties
    __property Canvas;
 	__property TPhImageTool*   PhTool = {read = GetSelectedTool};

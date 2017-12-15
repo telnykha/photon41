@@ -77,6 +77,7 @@ __fastcall TPhCustomImage::TPhCustomImage(TComponent* Owner)
     m_tWidth = 128;
     m_tHeight = 128;
     m_mosaic = false;
+    m_fullscreen = false;
 }
 __fastcall TPhCustomImage::TPhCustomImage(HWND Parent):TCustomControl(Parent)
 {
@@ -193,7 +194,7 @@ void __fastcall TPhCustomImage::SetMosaic(bool Value)
     }
     else
     {
-        m_Frames->Frame(m_Frames->CurrentFrame);
+        m_Frames->GoFrame(m_Frames->CurrentFrame);
         m_mosaic = false;
     }
 
@@ -1293,7 +1294,7 @@ void __fastcall 	TPhCustomImage::DblClick(void)
        if (Mosaic && this->m_idx >= 0 && this->m_idx < this->Frames->Count)
        {
             this->m_mosaic = false;
-            Frames->Frame(m_idx);
+            Frames->GoFrame(m_idx);
        }
        else
             Mosaic = true;
@@ -1607,6 +1608,27 @@ void __fastcall     TPhCustomImage::Move(const LPWSTR lpwFolderName)
     }
     else
         ShowMessage(L"Target folder does not exists.");
+}
+
+bool __fastcall TPhCustomImage::GetFullScreen()
+{
+    return this->m_fullscreen;
+}
+void __fastcall TPhCustomImage::SetFullScreen(bool value)
+{
+     if (value == m_fullscreen)
+        return;
+
+	 if (!value)
+	 {
+		m_fullscreen = false;
+        //WindowState = wsMaximized;
+
+	 }
+	 else
+	 {
+		m_fullscreen = true;
+	 }
 }
 
 //=============================================================================

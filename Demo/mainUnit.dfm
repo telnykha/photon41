@@ -67,6 +67,7 @@ object mainForm: TmainForm
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 2
+    OnClick = Panel1Click
     object SpeedButton4: TSpeedButton
       Left = 192
       Top = 0
@@ -547,12 +548,23 @@ object mainForm: TmainForm
       OnExecute = imgCropActionExecute
       OnUpdate = imgCropActionUpdate
     end
+    object fileNewInstanceAction: TAction
+      Category = 'File'
+      Caption = 'New Instance'
+      OnExecute = fileNewInstanceActionExecute
+    end
   end
   object MainMenu1: TMainMenu
     Left = 24
     Top = 64
     object File1: TMenuItem
       Caption = '&File'
+      object NewInstance1: TMenuItem
+        Action = fileNewInstanceAction
+      end
+      object N11: TMenuItem
+        Caption = '-'
+      end
       object Open1: TMenuItem
         Action = fileOpenAction
       end
@@ -693,10 +705,10 @@ object mainForm: TmainForm
   end
   object OpenDialog1: TOpenDialog
     Filter = 
-      'All images| *.jpg|*.ppm|*.tga|*.gif|*.awp|*.png|*.tif|*.bmp|Jpeg' +
-      ' images|*.jpg|PPM images|*.ppm|TGA images|*.tga|GIF images|*.gif' +
-      '|AWP images|*.awp|PNG images|*.png|TIFF images|*.tif|BMP images|' +
-      '*.bmp'
+      'All images| *.jpg;*.tga;*.png;*.awp;*.tiff;*.jpeg;*.tif;*.bmp;*.' +
+      'ppm|*.ppm|*.tga|*.gif|*.awp|*.png|*.tif|*.bmp|Jpeg images|*.jpg|' +
+      'PPM images|*.ppm|TGA images|*.tga|GIF images|*.gif|AWP images|*.' +
+      'awp|PNG images|*.png|TIFF images|*.tif|BMP images|*.bmp'
     Options = [ofHideReadOnly, ofAllowMultiSelect, ofEnableSizing]
     Left = 24
     Top = 120
