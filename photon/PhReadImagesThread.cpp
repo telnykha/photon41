@@ -92,6 +92,14 @@ __fastcall TPhReadImagesThread::TPhReadImagesThread(bool CreateSuspended)
     m_items = NULL;
     m_tmbWidth  = 128;
     m_tmbHeight = 128;
+    m_OnProgress = NULL;
+    m_cancel = false;
+}
+
+void __fastcall TPhReadImagesThread::ProgressHelper()
+{
+    if (m_OnProgress)
+        m_OnProgress(this, m_msg, m_progress);
 }
 //---------------------------------------------------------------------------
 void __fastcall TPhReadImagesThread::Execute()
@@ -118,6 +126,12 @@ void __fastcall TPhReadImagesThread::Execute()
         //
         if (this->Terminated)
             break;
+        m_msg = L"Reading... ";
+        m_msg += IntToStr(i);
+        m_msg += L" of ";
+        m_msg += IntToStr(m_items->Count);
+        m_progress =  100*i/m_items->Count;
+        Synchronize(&this->ProgressHelper);
         try
         {
             SFrameItem* item = (SFrameItem*)(m_items->Items[i]);
@@ -160,6 +174,12 @@ void __fastcall TPhReadImagesThread::Execute()
     awpCopyImage(result, &m_mosaic);
     _AWP_SAFE_RELEASE_(result)
 }
+void __fastcall TPhReadImagesThread::Cancel()
+{
+    m_cancel = true;
+    this->Terminate();
+}
+
 //---------------------------------------------------------------------------
 void __fastcall TPhReadImagesThread::SetNames(TList* names)
 {

@@ -37,7 +37,7 @@ public:
     // init
     bool Init(TStrings* names);
     void Close();
-
+    void Cancel();
     // navigation
     void __fastcall First();
     void __fastcall Next();

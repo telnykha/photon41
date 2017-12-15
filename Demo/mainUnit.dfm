@@ -48,8 +48,8 @@ object mainForm: TmainForm
     Top = 0
     Width = 692
     Height = 400
-    ThumbWidht = 320
-    ThumbHeight = 240
+    ThumbWidht = 160
+    ThumbHeight = 120
     SlideShowInterval = 500
     Align = alClient
     ParentColor = False
@@ -58,6 +58,7 @@ object mainForm: TmainForm
     OnScaleChange = PhImage1ScaleChange
     OnChange = PhImage1Change
     OnToolChange = PhImage1ToolChange
+    OnProgress = PhImage1Progress
   end
   object Panel1: TPanel
     Left = 0
@@ -271,6 +272,20 @@ object mainForm: TmainForm
       ExplicitTop = -6
       ExplicitHeight = 57
     end
+    object Label1: TLabel
+      Left = 520
+      Top = 6
+      Width = 31
+      Height = 13
+      Caption = 'Label1'
+    end
+    object Gauge1: TGauge
+      Left = 520
+      Top = 25
+      Width = 145
+      Height = 14
+      Progress = 0
+    end
     object Panel2: TPanel
       Left = 320
       Top = 0
@@ -304,6 +319,15 @@ object mainForm: TmainForm
         Caption = 'Panel3'
         TabOrder = 1
       end
+    end
+    object Button1: TButton
+      Left = 520
+      Top = 45
+      Width = 75
+      Height = 25
+      Caption = 'Cancel'
+      TabOrder = 1
+      OnClick = Button1Click
     end
   end
   object ActionList1: TActionList

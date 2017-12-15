@@ -606,3 +606,18 @@ void __fastcall TmainForm::fileNewInstanceActionExecute(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TmainForm::PhImage1Progress(TObject *Sender, UnicodeString &strMessage,
+          int Progress)
+{
+    //
+    Label1->Caption = strMessage;
+    Gauge1->Progress = Progress;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::Button1Click(TObject *Sender)
+{
+    PhImage1->Cancel();
+}
+//---------------------------------------------------------------------------
+

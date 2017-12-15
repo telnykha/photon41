@@ -1631,6 +1631,12 @@ void __fastcall TPhCustomImage::SetFullScreen(bool value)
 	 }
 }
 
+void __fastcall TPhCustomImage::Cancel()
+{
+    Frames->Cancel();
+}
+
+
 //=============================================================================
 __fastcall TPhImage::TPhImage(HWND Parent):TPhCustomImage(Parent)
 {

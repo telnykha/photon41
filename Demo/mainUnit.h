@@ -22,6 +22,7 @@
 #include "PhLenzTool.h"
 #include "PhZoomToRectTool.h"
 #include "PhSelectRectTool.h"
+#include <Vcl.Samples.Gauges.hpp>
 //---------------------------------------------------------------------------
 class TmainForm : public TForm
 {
@@ -147,6 +148,9 @@ __published:	// IDE-managed Components
 	TAction *fileNewInstanceAction;
 	TMenuItem *N11;
 	TMenuItem *NewInstance1;
+	TLabel *Label1;
+	TGauge *Gauge1;
+	TButton *Button1;
 	void __fastcall fileOpenActionExecute(TObject *Sender);
 	void __fastcall fileSaveActionExecute(TObject *Sender);
 	void __fastcall fileSaveActionUpdate(TObject *Sender);
@@ -233,6 +237,9 @@ __published:	// IDE-managed Components
 	void __fastcall imgDeleteActionUpdate(TObject *Sender);
 	void __fastcall Panel1Click(TObject *Sender);
 	void __fastcall fileNewInstanceActionExecute(TObject *Sender);
+	void __fastcall PhImage1Progress(TObject *Sender, UnicodeString &strMessage, int Progress);
+	void __fastcall Button1Click(TObject *Sender);
+
 private:	// User declarations
 public:		// User declarations
 	__fastcall TmainForm(TComponent* Owner);

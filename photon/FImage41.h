@@ -20,7 +20,7 @@ const int crHandCloseCursor = 2;
 const int crMagnifyCursor   = 3;
 const int crLenzCursor      = 4;
 const int crZoom2RectCursor = 5;
-
+typedef void __fastcall (__closure *TPhProgressEvent)(System::TObject* Sender, UnicodeString& strMessage, int Progress);
 // forward declarations
 class PACKAGE TPhImageTool;
 //TPhCustomImage--------------------------------------------------------------------
@@ -30,6 +30,14 @@ class PACKAGE TPhCustomImage : public TCustomControl
 friend class TPhImageTool;
 friend class TPhSelRectTool;
 friend class TPhFrames;
+private:
+	TNotifyEvent                FBeforeOpen;
+	TNotifyEvent                FAfterOpen;
+	TNotifyEvent                FScaleChange;
+	TNotifyEvent                FPosChange;
+	TNotifyEvent                FChange;
+	TNotifyEvent            	FToolChange;
+    TPhProgressEvent  			m_OnProgress;
 protected:
     TTimer*                     m_Timer;
 	TList*                  	m_ph_tools;
@@ -40,12 +48,6 @@ protected:
 	TPoint                      FStartPoint; // Левый верхний угол отображаемой области * 100%
 	AnsiString                  FFileName;
 
-	TNotifyEvent                FBeforeOpen;
-	TNotifyEvent                FAfterOpen;
-	TNotifyEvent                FScaleChange;
-	TNotifyEvent                FPosChange;
-	TNotifyEvent                FChange;
-	TNotifyEvent            	FToolChange;
     int                         m_xx;
     int                         m_yy;
     int                         m_idx;
@@ -129,6 +131,7 @@ public:
 
 	// ====================operations========================================
 	virtual bool __fastcall         Init(TStrings* Names);
+    void __fastcall Cancel();
 	// Close
 	virtual void __fastcall         Close();
 	void __fastcall             	SaveToFile(const LPWSTR lpwFileName);
@@ -235,6 +238,7 @@ __published:
     __property TNotifyEvent     OnPane = {read = FPosChange, write = FPosChange};
     __property TNotifyEvent     OnChange = {read = FChange, write = FChange};
     __property TNotifyEvent     OnToolChange = {read = FToolChange, write = FToolChange};
+    __property TPhProgressEvent OnProgress = {read = m_OnProgress, write = m_OnProgress};
 };
 //-------------------------- export TPhImage -------------------------------------
 class PACKAGE TPhImage : public TPhCustomImage

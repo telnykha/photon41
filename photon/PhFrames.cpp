@@ -70,6 +70,7 @@ bool TPhFrames::Init(TStrings* names)
             m_pReader->tmbWidth  = m_pDisplay->ThumbWidht;
             m_pReader->tmbHeight = m_pDisplay->ThumbHeight;
 			m_pReader->SetNames(m_items);
+            m_pReader->OnProgress = m_pDisplay->OnProgress;
             m_pReader->Start();
 		}
     }
@@ -79,7 +80,7 @@ bool TPhFrames::Init(TStrings* names)
 void TPhFrames::Close()
 {
     m_items->Clear();
-
+    Cancel();
     m_current = 0;
     m_pMosaic->Assign(NULL);
 }
@@ -142,9 +143,12 @@ int __fastcall TPhFrames::GetCount()
 void __fastcall TPhFrames::OnTerminateHelper(TObject *Sender)
 {
 #ifdef _DEBUG
-    ShowMessage("Job done.");
+    if (m_pReader != NULL && !m_pReader->Canceled)
+	    ShowMessage("Job done.");
+    else
+        ShowMessage("Job canceled.");
 #endif
-    if (m_pReader != NULL)
+    if (m_pReader != NULL && !m_pReader->Canceled)
     {
        TDIBImage* img = dynamic_cast< TDIBImage*>(m_pMosaic);
        if (img != NULL)
@@ -326,6 +330,13 @@ void __fastcall TPhFrames::ClearSelection()
 	}
 
     m_pDisplay->Paint();
+}
+
+
+void TPhFrames::Cancel()
+{
+    if (m_pReader != NULL)
+        m_pReader->Cancel();
 }
 
 

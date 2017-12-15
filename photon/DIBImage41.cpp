@@ -316,7 +316,7 @@ void __fastcall TDIBImage::LoadFromFile(const UnicodeString Filename)
       awpImage* tmp = NULL;
       AnsiString strExt = ExtractFileExt(Filename);
       strExt = strExt.LowerCase();
-      if (strExt != ".awp" && strExt != ".jpg" && strExt != ".bmp" && strExt != ".ppm" && strExt != ".tga")
+      if (strExt != ".awp" && strExt != ".jpg" && strExt != ".jpeg" && strExt != ".bmp" && strExt != ".ppm" && strExt != ".tga")
       {
           TImportRaster* import = new TImportRaster();
           try

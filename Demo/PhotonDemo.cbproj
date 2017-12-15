@@ -156,6 +156,10 @@
             <DependentOn>rotateFormUnit.h</DependentOn>
             <BuildOrder>5</BuildOrder>
         </CppCompile>
+        <CppCompile Include="..\photon\PhBatchProcessor.cpp">
+            <DependentOn>..\photon\PhBatchProcessor.h</DependentOn>
+            <BuildOrder>7</BuildOrder>
+        </CppCompile>
         <FormResources Include="resizeFormUnit.dfm"/>
         <FormResources Include="rotateFormUnit.dfm"/>
         <FormResources Include="mainUnit.dfm"/>
