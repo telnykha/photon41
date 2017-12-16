@@ -148,9 +148,9 @@ __published:	// IDE-managed Components
 	TAction *fileNewInstanceAction;
 	TMenuItem *N11;
 	TMenuItem *NewInstance1;
-	TLabel *Label1;
-	TGauge *Gauge1;
+	TGroupBox *GroupBox1;
 	TButton *Button1;
+	TGauge *Gauge1;
 	void __fastcall fileOpenActionExecute(TObject *Sender);
 	void __fastcall fileSaveActionExecute(TObject *Sender);
 	void __fastcall fileSaveActionUpdate(TObject *Sender);
@@ -239,6 +239,8 @@ __published:	// IDE-managed Components
 	void __fastcall fileNewInstanceActionExecute(TObject *Sender);
 	void __fastcall PhImage1Progress(TObject *Sender, UnicodeString &strMessage, int Progress);
 	void __fastcall Button1Click(TObject *Sender);
+	void __fastcall PhImage1Start(TObject *Sender);
+	void __fastcall PhImage1Finish(TObject *Sender);
 
 private:	// User declarations
 public:		// User declarations

@@ -38,6 +38,9 @@ private:
 	TNotifyEvent                FChange;
 	TNotifyEvent            	FToolChange;
     TPhProgressEvent  			m_OnProgress;
+    TNotifyEvent       			m_OnStart;
+    TNotifyEvent       			m_OnFinish;
+
 protected:
     TTimer*                     m_Timer;
 	TList*                  	m_ph_tools;
@@ -239,6 +242,8 @@ __published:
     __property TNotifyEvent     OnChange = {read = FChange, write = FChange};
     __property TNotifyEvent     OnToolChange = {read = FToolChange, write = FToolChange};
     __property TPhProgressEvent OnProgress = {read = m_OnProgress, write = m_OnProgress};
+    __property TNotifyEvent OnStart = {read = m_OnStart, write = m_OnStart};
+    __property TNotifyEvent OnFinish = {read = m_OnFinish, write = m_OnFinish};
 };
 //-------------------------- export TPhImage -------------------------------------
 class PACKAGE TPhImage : public TPhCustomImage

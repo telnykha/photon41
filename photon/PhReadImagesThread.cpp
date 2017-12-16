@@ -125,12 +125,14 @@ void __fastcall TPhReadImagesThread::Execute()
     {
         //
         if (this->Terminated)
+        {
             break;
+        }
         m_msg = L"Reading... ";
         m_msg += IntToStr(i);
         m_msg += L" of ";
         m_msg += IntToStr(m_items->Count);
-        m_progress =  100*i/m_items->Count;
+        m_progress =  100*(i+1)/m_items->Count;
         Synchronize(&this->ProgressHelper);
         try
         {
@@ -191,13 +193,12 @@ __fastcall TPhCopyImagesThread::TPhCopyImagesThread(bool CreateSuspended)
 {
     m_items = NULL;
     m_FolderName = L"";
-    m_move = false;
 }
-void __fastcall TPhCopyImagesThread::SetNames(TList* names, const LPWSTR lpwFolderName, bool move)
+void __fastcall TPhCopyImagesThread::SetNames(TList* names, const LPWSTR lpwFolderName,EPhCopyThreadOperations operation)
 {
     m_items = names;
     m_FolderName = lpwFolderName;
-    m_move = move;
+    m_operatoin = operation;
 }
 void __fastcall TPhCopyImagesThread::Execute()
 {
@@ -205,26 +206,57 @@ void __fastcall TPhCopyImagesThread::Execute()
         return;
     if (!DirectoryExists(m_FolderName))
         return;
-
+    int num_selected = 0;
+    for (int i = 0; i < m_items->Count; i++)
+    {
+    	SFrameItem* item = (SFrameItem*)(m_items->Items[i]);
+        if (item->selected)
+            num_selected++;
+    }
+    if (num_selected == 0)
+        return;
+    int c = 0;
     for (int i = m_items->Count - 1; i >= 0 ; i--)
     {
         //
         if (this->Terminated)
             break;
+        switch(m_operatoin)
+        {
+            case ephCopy:
+	            m_msg = L"Copy images... ";
+            break;
+            case ephMove:
+		        m_msg = L"Move images... ";
+            break;
+            case ephDelete:
+		        m_msg = L"Delete images... ";
+            break;
+        }
+
+        m_msg += IntToStr(c);
+        m_msg += L" of ";
+        m_msg += IntToStr(num_selected);
+        m_progress =  100*(c+1)/num_selected;
+        Synchronize(&this->ProgressHelper);
         try
         {
             SFrameItem* item = (SFrameItem*)(m_items->Items[i]);
             if (!item->selected)
                 continue;
-            AnsiString strSrcFile = item->strFileName;
-            AnsiString strDstFile = m_FolderName;
-            strDstFile += ExtractFileName(strSrcFile);
-            if (!CopyFile(strSrcFile.c_str(), strDstFile.c_str(), false))
+            c++;
+            if (m_operatoin == ephMove || m_operatoin == ephCopy)
             {
-                //todo: add error status
-//                ShowMessage(L"Cannot copy files to target folder: " + FolderName);
+                AnsiString strSrcFile = item->strFileName;
+                AnsiString strDstFile = m_FolderName;
+                strDstFile += ExtractFileName(strSrcFile);
+                if (!CopyFile(strSrcFile.c_str(), strDstFile.c_str(), false))
+                {
+                    //todo: add error status
+    //                ShowMessage(L"Cannot copy files to target folder: " + FolderName);
+                }
             }
-            if (m_move)
+            if (m_operatoin == ephMove || m_operatoin == ephDelete)
             {
                 DeleteFile(item->strFileName);
                 m_items->Delete(i);
@@ -239,4 +271,9 @@ void __fastcall TPhCopyImagesThread::Execute()
             continue;
         }
      }
+}
+void __fastcall TPhCopyImagesThread::ProgressHelper()
+{
+    if (m_OnProgress)
+        m_OnProgress(this, m_msg, m_progress);
 }

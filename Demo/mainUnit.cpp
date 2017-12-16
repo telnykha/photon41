@@ -123,6 +123,7 @@ void __fastcall TmainForm::PhImage1Change(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::FormClose(TObject *Sender, TCloseAction &Action)
 {
+        PhImage1->Cancel();
         if (PhImage1->Modified)
         {
 		 if (MessageDlg("Save changes?", mtConfirmation, TMsgDlgButtons() << mbOK << mbCancel, 0) == mrOk)
@@ -610,7 +611,7 @@ void __fastcall TmainForm::PhImage1Progress(TObject *Sender, UnicodeString &strM
           int Progress)
 {
     //
-    Label1->Caption = strMessage;
+    GroupBox1->Caption = strMessage;
     Gauge1->Progress = Progress;
 }
 //---------------------------------------------------------------------------
@@ -618,6 +619,20 @@ void __fastcall TmainForm::PhImage1Progress(TObject *Sender, UnicodeString &strM
 void __fastcall TmainForm::Button1Click(TObject *Sender)
 {
     PhImage1->Cancel();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::PhImage1Start(TObject *Sender)
+{
+    GroupBox1->Caption = L"";
+    Gauge1->Progress = 0;
+    GroupBox1->Visible = true;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::PhImage1Finish(TObject *Sender)
+{
+    GroupBox1->Visible = false;
 }
 //---------------------------------------------------------------------------
 

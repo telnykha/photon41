@@ -60,19 +60,7 @@ bool TPhFrames::Init(TStrings* names)
 	if (names->Count > 0)
     {
 		First();
-		if (names->Count >= _FRAME_MIN_COUNT_  )
-		{
-
-            m_pReader = new TPhReadImagesThread(true);
-            m_pReader->FreeOnTerminate = true;
-            m_pReader->OnTerminate = OnTerminateHelper;
-
-            m_pReader->tmbWidth  = m_pDisplay->ThumbWidht;
-            m_pReader->tmbHeight = m_pDisplay->ThumbHeight;
-			m_pReader->SetNames(m_items);
-            m_pReader->OnProgress = m_pDisplay->OnProgress;
-            m_pReader->Start();
-		}
+        StartReadJobHelper();
     }
     else
         return false;
@@ -84,6 +72,33 @@ void TPhFrames::Close()
     m_current = 0;
     m_pMosaic->Assign(NULL);
 }
+
+void TPhFrames::StartReadJobHelper()
+{
+    if (m_items->Count >= _FRAME_MIN_COUNT_  )
+    {
+        if (m_pReader != NULL)
+        {
+            m_pReader->Cancel();
+            m_pReader->WaitFor();
+            delete m_pReader;
+            m_pReader = NULL;
+        }
+
+        m_pReader = new TPhReadImagesThread(true);
+        m_pReader->FreeOnTerminate = false;
+        m_pReader->OnTerminate = OnTerminateHelper;
+
+        m_pReader->tmbWidth  = m_pDisplay->ThumbWidht;
+        m_pReader->tmbHeight = m_pDisplay->ThumbHeight;
+        m_pReader->SetNames(m_items);
+        m_pReader->OnProgress = m_pDisplay->OnProgress;
+        if (m_pDisplay->OnStart)
+            m_pDisplay->OnStart(this);
+        m_pReader->Start();
+    }
+}
+
 
 void __fastcall TPhFrames::First()
 {
@@ -159,7 +174,8 @@ void __fastcall TPhFrames::OnTerminateHelper(TObject *Sender)
         m_pDisplay->Paint();
        }
     }
-    m_pReader = NULL;
+    if (m_pDisplay->OnFinish)
+        m_pDisplay->OnFinish(this);
 }
 
 void __fastcall TPhFrames::OnCopyTerminateHelper(TObject *Sender)
@@ -167,18 +183,12 @@ void __fastcall TPhFrames::OnCopyTerminateHelper(TObject *Sender)
 #ifdef _DEBUG
     ShowMessage("Copy job done.");
 #endif
-    if (m_pCopier->Move && m_items->Count >= _FRAME_MIN_COUNT_)
+    if (m_pDisplay->OnFinish)
+        m_pDisplay->OnFinish(this);
+    if (m_pCopier->operation != ephCopy  && m_items->Count >= _FRAME_MIN_COUNT_)
     {
-        m_pReader = new TPhReadImagesThread(true);
-        m_pReader->FreeOnTerminate = true;
-        m_pReader->OnTerminate = OnTerminateHelper;
-
-        m_pReader->tmbWidth  = m_pDisplay->ThumbWidht;
-        m_pReader->tmbHeight = m_pDisplay->ThumbHeight;
-        m_pReader->SetNames(m_items);
-        m_pReader->Start();
+		StartReadJobHelper();
     }
-    m_pCopier = NULL;
 }
 
 
@@ -195,14 +205,7 @@ bool __fastcall TPhFrames::DeleteImage(long num)
 
     if (m_items->Count >= _FRAME_MIN_COUNT_)
     {
-        m_pReader = new TPhReadImagesThread(true);
-        m_pReader->FreeOnTerminate = true;
-        m_pReader->OnTerminate = OnTerminateHelper;
-
-        m_pReader->tmbWidth  = m_pDisplay->ThumbWidht;
-        m_pReader->tmbHeight = m_pDisplay->ThumbHeight;
-        m_pReader->SetNames(m_items);
-        m_pReader->Start();
+		StartReadJobHelper();
     }
     return true;
 }
@@ -226,14 +229,7 @@ bool __fastcall TPhFrames::DeleteSelected()
         m_pMosaic->Assign(NULL);
         if (m_items->Count >= _FRAME_MIN_COUNT_)
         {
-            m_pReader = new TPhReadImagesThread(true);
-            m_pReader->FreeOnTerminate = true;
-            m_pReader->OnTerminate = OnTerminateHelper;
-
-            m_pReader->tmbWidth  = m_pDisplay->ThumbWidht;
-            m_pReader->tmbHeight = m_pDisplay->ThumbHeight;
-            m_pReader->SetNames(m_items);
-            m_pReader->Start();
+			StartReadJobHelper();
         }
     }
 
@@ -242,24 +238,43 @@ bool __fastcall TPhFrames::DeleteSelected()
 
 bool __fastcall TPhFrames::CopySelected(const LPWSTR lpDirName)
 {
-        m_pCopier = new TPhCopyImagesThread(true);
-        m_pCopier->FreeOnTerminate = true;
-        m_pCopier->OnTerminate = OnCopyTerminateHelper;
+     if (this->m_pCopier != NULL)
+    {
+        m_pCopier->Terminate();
+        m_pCopier->WaitFor();
+        delete m_pCopier;
+        m_pCopier = NULL;
+    }
 
-        m_pCopier->SetNames(m_items, lpDirName);
-        m_pCopier->Start();
+    m_pCopier = new TPhCopyImagesThread(true);
+    m_pCopier->FreeOnTerminate = false;
+    m_pCopier->OnTerminate = OnCopyTerminateHelper;
+    m_pCopier->OnProgress = m_pDisplay->OnProgress;
+    m_pCopier->SetNames(m_items, lpDirName, ephCopy);
+    if (m_pDisplay->OnStart)
+        m_pDisplay->OnStart(this);
+    m_pCopier->Start();
     return true;
 }
 
 bool __fastcall TPhFrames::MoveSelected(const LPWSTR lpDirName)
 {
-        m_pCopier = new TPhCopyImagesThread(true);
-        m_pCopier->FreeOnTerminate = true;
-        m_pCopier->OnTerminate = OnCopyTerminateHelper;
-
-        m_pCopier->SetNames(m_items, lpDirName, true);
-        m_pCopier->Start();
-	    return true;
+    if (this->m_pCopier != NULL)
+    {
+        m_pCopier->Terminate();
+        m_pCopier->WaitFor();
+        delete m_pCopier;
+        m_pCopier = NULL;
+    }
+    m_pCopier = new TPhCopyImagesThread(true);
+    m_pCopier->FreeOnTerminate = false;
+    m_pCopier->OnTerminate = OnCopyTerminateHelper;
+    m_pCopier->OnProgress = m_pDisplay->OnProgress;
+    m_pCopier->SetNames(m_items, lpDirName, ephMove);
+    if (m_pDisplay->OnStart)
+        m_pDisplay->OnStart(this);
+    m_pCopier->Start();
+    return true;
 }
 
 SFrameItem* TPhFrames::GetFrameItem(long num)
@@ -336,7 +351,20 @@ void __fastcall TPhFrames::ClearSelection()
 void TPhFrames::Cancel()
 {
     if (m_pReader != NULL)
+    {
         m_pReader->Cancel();
+        m_pReader->WaitFor();
+        delete m_pReader;
+        m_pReader = NULL;
+    }
+
+    if (this->m_pCopier != NULL)
+    {
+        m_pCopier->Terminate();
+        m_pCopier->WaitFor();
+        delete m_pCopier;
+        m_pCopier = NULL;
+    }
 }
 
 

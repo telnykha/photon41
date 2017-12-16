@@ -35,17 +35,25 @@ public:
     __property TPhProgressEvent OnProgress = {read = m_OnProgress, write = m_OnProgress};
 };
 //---------------------------------------------------------------------------
+// this thread performs copy, move and delete operations
+typedef enum {ephCopy, ephMove, ephDelete} EPhCopyThreadOperations;
 class TPhCopyImagesThread : public TThread
 {
 private:
+    TPhProgressEvent   m_OnProgress;
+    void __fastcall ProgressHelper();
+private:
     TList*    m_items;
     UnicodeString m_FolderName;
-    bool      m_move;
+    EPhCopyThreadOperations m_operatoin;
+    UnicodeString m_msg;
+    int       m_progress;
 protected:
 	void __fastcall Execute();
 public:
 	__fastcall TPhCopyImagesThread(bool CreateSuspended);
-	void __fastcall SetNames(TList* names, const LPWSTR lpwFolderName, bool move = false);
-    __property bool Move = {read = m_move};
+	void __fastcall SetNames(TList* names, const LPWSTR lpwFolderName, EPhCopyThreadOperations operation = ephCopy);
+    __property EPhCopyThreadOperations operation = {read = m_operatoin};
+    __property TPhProgressEvent OnProgress = {read = m_OnProgress, write = m_OnProgress};
 };
 #endif

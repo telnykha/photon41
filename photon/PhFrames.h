@@ -30,6 +30,7 @@ private:
     void __fastcall OnCopyTerminateHelper(TObject *Sender);
 protected:
     int __fastcall GetCount();
+    void StartReadJobHelper();
 public:
     TPhFrames(TPhCustomImage* display);
     __fastcall virtual~TPhFrames();
@@ -62,6 +63,5 @@ public:
     __property int Count = {read = GetCount};
     __property int CurrentFrame = {read = m_current};
     __property TGraphic* Mosaic = {read = m_pMosaic};
-
 };
 #endif
