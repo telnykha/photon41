@@ -178,8 +178,8 @@ void __fastcall TPhReadImagesThread::Execute()
 }
 void __fastcall TPhReadImagesThread::Cancel()
 {
-    m_cancel = true;
-    this->Terminate();
+	m_cancel = true;
+	this->Terminate();
 }
 
 //---------------------------------------------------------------------------
@@ -200,12 +200,20 @@ void __fastcall TPhCopyImagesThread::SetNames(TList* names, const LPWSTR lpwFold
     m_FolderName = lpwFolderName;
     m_operatoin = operation;
 }
+void __fastcall TPhCopyImagesThread::Cancel()
+{
+    m_cancel = true;
+	this->Terminate();
+}
 void __fastcall TPhCopyImagesThread::Execute()
 {
     if (m_items == NULL)
-        return;
-    if (!DirectoryExists(m_FolderName))
-        return;
+		return;
+	if (m_operatoin != ephDelete)
+	{
+	 if (!DirectoryExists(m_FolderName))
+		return;
+    }
     int num_selected = 0;
     for (int i = 0; i < m_items->Count; i++)
     {
@@ -263,11 +271,9 @@ void __fastcall TPhCopyImagesThread::Execute()
             }
         }
         catch(Exception& e)
-        {
-
-            //todo: if the thread cannot read the image
-            //remove item about it.
-
+		{
+			//todo: if the thread cannot read the image
+			//remove item about it.
             continue;
         }
      }

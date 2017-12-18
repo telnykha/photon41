@@ -40,7 +40,7 @@ private:
     TPhProgressEvent  			m_OnProgress;
     TNotifyEvent       			m_OnStart;
     TNotifyEvent       			m_OnFinish;
-
+	TNotifyEvent       			m_OnCancel;
 protected:
     TTimer*                     m_Timer;
 	TList*                  	m_ph_tools;
@@ -66,11 +66,7 @@ protected:
 
     bool                        m_mosaic;
 	int				 __fastcall GetSelectedIndex();
-    void __fastcall         	TimerEventHandler(TObject *Sender);
-
-    bool                        m_fullscreen;
-    bool __fastcall GetFullScreen();
-    void __fastcall SetFullScreen(bool value);
+	void __fastcall         	TimerEventHandler(TObject *Sender);
 protected:
 	void         __fastcall     SetImage(TGraphic* aBitmap);
 
@@ -199,7 +195,6 @@ public:
 	__property float            Scale = {read = GetScale};
 	__property TPoint           Corner = {read = GetCorner};
 	__property TRect            VisibleArea = {read = GetVisibleArea};
-    __property bool FullScreen  = {read = GetFullScreen, write = SetFullScreen};
    // inherited properties
    __property Canvas;
 	__property TPhImageTool*   PhTool = {read = GetSelectedTool};
@@ -242,8 +237,9 @@ __published:
     __property TNotifyEvent     OnChange = {read = FChange, write = FChange};
     __property TNotifyEvent     OnToolChange = {read = FToolChange, write = FToolChange};
     __property TPhProgressEvent OnProgress = {read = m_OnProgress, write = m_OnProgress};
-    __property TNotifyEvent OnStart = {read = m_OnStart, write = m_OnStart};
-    __property TNotifyEvent OnFinish = {read = m_OnFinish, write = m_OnFinish};
+	__property TNotifyEvent OnStart = {read = m_OnStart, write = m_OnStart};
+	__property TNotifyEvent OnFinish = {read = m_OnFinish, write = m_OnFinish};
+	__property TNotifyEvent OnCancel = {read = m_OnCancel, write = m_OnCancel};
 };
 //-------------------------- export TPhImage -------------------------------------
 class PACKAGE TPhImage : public TPhCustomImage

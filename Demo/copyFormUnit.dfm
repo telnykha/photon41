@@ -3,7 +3,7 @@ object copyForm: TcopyForm
   Top = 108
   BorderStyle = bsDialog
   Caption = 'Copy/Move Image(s)'
-  ClientHeight = 374
+  ClientHeight = 381
   ClientWidth = 297
   Color = clBtnFace
   ParentFont = True
@@ -14,9 +14,9 @@ object copyForm: TcopyForm
   TextHeight = 13
   object Bevel1: TBevel
     Left = 8
-    Top = 8
+    Top = 7
     Width = 281
-    Height = 241
+    Height = 234
     Shape = bsFrame
   end
   object Label1: TLabel
@@ -27,15 +27,15 @@ object copyForm: TcopyForm
     Caption = 'To Path: '
   end
   object Label2: TLabel
-    Left = 18
-    Top = 208
+    Left = 16
+    Top = 195
     Width = 25
     Height = 13
     Caption = 'Drive'
   end
   object OKBtn: TButton
     Left = 64
-    Top = 342
+    Top = 348
     Width = 75
     Height = 25
     Caption = 'OK'
@@ -45,7 +45,7 @@ object copyForm: TcopyForm
   end
   object CancelBtn: TButton
     Left = 145
-    Top = 342
+    Top = 348
     Width = 75
     Height = 25
     Cancel = True
@@ -65,40 +65,29 @@ object copyForm: TcopyForm
     Left = 16
     Top = 43
     Width = 265
-    Height = 158
+    Height = 150
     TabOrder = 3
     OnChange = DirectoryListBox1Change
   end
-  object CheckBox1: TCheckBox
-    Left = 8
-    Top = 256
-    Width = 281
-    Height = 17
-    Caption = 'Open in Explorer '
-    TabOrder = 4
-  end
-  object CheckBox2: TCheckBox
-    Left = 8
-    Top = 280
-    Width = 281
-    Height = 17
-    Caption = 'Open with Photon '
-    TabOrder = 5
-  end
-  object CheckBox3: TCheckBox
-    Left = 8
-    Top = 304
-    Width = 281
-    Height = 17
-    Caption = 'Open with new instance of Photon'
-    TabOrder = 6
-  end
   object DriveComboBox1: TDriveComboBox
     Left = 16
-    Top = 224
+    Top = 213
     Width = 265
     Height = 19
     DirList = DirectoryListBox1
-    TabOrder = 7
+    TabOrder = 4
+  end
+  object RadioGroup1: TRadioGroup
+    Left = 8
+    Top = 247
+    Width = 281
+    Height = 95
+    Caption = 'After Operatioin Action'
+    ItemIndex = 0
+    Items.Strings = (
+      'Open images in Windows Explorer '
+      'Open images with this Photon'
+      'Open images with new Photon')
+    TabOrder = 5
   end
 end

@@ -105,7 +105,6 @@
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Debugger_DebugSourcePath>C:\_alt\VideoA2\VideoA\VideoAnalytics\awpipl2\src\;C:\_alt\VideoA2\VideoA\VideoAnalytics\jpeg-6b\src\;$(Debugger_DebugSourcePath)</Debugger_DebugSourcePath>
-        <Debugger_RunParams>kbis_1.png kmbx.png</Debugger_RunParams>
         <Debugger_CWD>C:\Users\ALT\Pictures</Debugger_CWD>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -162,9 +161,9 @@
         </CppCompile>
         <FormResources Include="resizeFormUnit.dfm"/>
         <FormResources Include="rotateFormUnit.dfm"/>
-        <FormResources Include="mainUnit.dfm"/>
-        <FormResources Include="convertFormUnit.dfm"/>
         <FormResources Include="copyFormUnit.dfm"/>
+        <FormResources Include="convertFormUnit.dfm"/>
+        <FormResources Include="mainUnit.dfm"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>

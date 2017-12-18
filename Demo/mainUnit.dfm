@@ -37,10 +37,6 @@ object mainForm: TmainForm
       item
         Alignment = taCenter
         Width = 150
-      end
-      item
-        Alignment = taCenter
-        Width = 100
       end>
   end
   object PhImage1: TPhImage
@@ -48,8 +44,8 @@ object mainForm: TmainForm
     Top = 0
     Width = 700
     Height = 400
-    ThumbWidht = 160
-    ThumbHeight = 120
+    ThumbWidht = 128
+    ThumbHeight = 128
     SlideShowInterval = 500
     Align = alClient
     ParentColor = False
@@ -61,6 +57,7 @@ object mainForm: TmainForm
     OnProgress = PhImage1Progress
     OnStart = PhImage1Start
     OnFinish = PhImage1Finish
+    OnCancel = PhImage1Cancel
   end
   object Panel1: TPanel
     Left = 0
@@ -70,7 +67,6 @@ object mainForm: TmainForm
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 2
-    OnClick = Panel1Click
     object SpeedButton4: TSpeedButton
       Left = 192
       Top = 0
@@ -314,7 +310,8 @@ object mainForm: TmainForm
       Width = 185
       Height = 72
       Align = alLeft
-      Caption = 'GroupBox1'
+      DoubleBuffered = True
+      ParentDoubleBuffered = False
       TabOrder = 1
       Visible = False
       object Gauge1: TGauge
@@ -324,6 +321,13 @@ object mainForm: TmainForm
         Height = 14
         ForeColor = clBlue
         Progress = 50
+      end
+      object Label1: TLabel
+        Left = 11
+        Top = 6
+        Width = 31
+        Height = 13
+        Caption = 'Label1'
       end
       object Button1: TButton
         Left = 11

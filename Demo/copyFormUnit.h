@@ -23,11 +23,9 @@ __published:
 	TLabel *Label1;
 	TEdit *Edit1;
 	TDirectoryListBox *DirectoryListBox1;
-	TCheckBox *CheckBox1;
-	TCheckBox *CheckBox2;
-	TCheckBox *CheckBox3;
 	TDriveComboBox *DriveComboBox1;
 	TLabel *Label2;
+	TRadioGroup *RadioGroup1;
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall DirectoryListBox1Change(TObject *Sender);
 private:

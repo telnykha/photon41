@@ -3,9 +3,7 @@
 #define PhFramesH
 #include <System.Classes.hpp>
 //---------------------------------------------------------------------------
-
 #define _FRAME_MIN_COUNT_ 3
-
 class TPhCustomImage;
 //class TDIBImage;
 class TPhReadImagesThread;

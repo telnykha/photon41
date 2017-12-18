@@ -54,12 +54,12 @@ __fastcall TPhCustomImage::TPhCustomImage(TComponent* Owner)
 	FAfterOpen  = NULL;
 	FPosChange  = NULL;
 	FScaleChange = NULL;
-    FChange      = NULL;
+	FChange      = NULL;
+	m_OnCancel   = NULL;
+	m_OnFinish   = NULL;
+    m_OnStart    = NULL;
 	FStartPoint.x = 0;
 	FStartPoint.y = 0;
-//	Screen->Cursor = TCursor(crHandOpenCursor);
-//	this->Cursor   = TCursor(crHandOpenCursor);
-//	Screen->Cursor = TCursor(crDefault);
 	FSelRect.Left = 0;
 	FSelRect.Top = 0;
 	FSelRect.Right = 0;
@@ -76,8 +76,7 @@ __fastcall TPhCustomImage::TPhCustomImage(TComponent* Owner)
     this->m_Timer->Interval = 500;
     m_tWidth = 128;
     m_tHeight = 128;
-    m_mosaic = false;
-    m_fullscreen = false;
+	m_mosaic = false;
 }
 __fastcall TPhCustomImage::TPhCustomImage(HWND Parent):TCustomControl(Parent)
 {
@@ -1610,33 +1609,10 @@ void __fastcall     TPhCustomImage::Move(const LPWSTR lpwFolderName)
         ShowMessage(L"Target folder does not exists.");
 }
 
-bool __fastcall TPhCustomImage::GetFullScreen()
-{
-    return this->m_fullscreen;
-}
-void __fastcall TPhCustomImage::SetFullScreen(bool value)
-{
-     if (value == m_fullscreen)
-        return;
-
-	 if (!value)
-	 {
-		m_fullscreen = false;
-        //WindowState = wsMaximized;
-
-	 }
-	 else
-	 {
-		m_fullscreen = true;
-	 }
-}
-
 void __fastcall TPhCustomImage::Cancel()
 {
     Frames->Cancel();
 }
-
-
 //=============================================================================
 __fastcall TPhImage::TPhImage(HWND Parent):TPhCustomImage(Parent)
 {

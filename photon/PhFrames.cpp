@@ -163,28 +163,49 @@ void __fastcall TPhFrames::OnTerminateHelper(TObject *Sender)
     else
         ShowMessage("Job canceled.");
 #endif
-    if (m_pReader != NULL && !m_pReader->Canceled)
+	if (m_pReader != NULL && !m_pReader->Canceled)
     {
        TDIBImage* img = dynamic_cast< TDIBImage*>(m_pMosaic);
        if (img != NULL)
 	       img->SetAWPImage(m_pReader->Mosaic);
        if (m_pDisplay->Mosaic)
        {
-        m_pDisplay->Bitmap->Assign(img);
-        m_pDisplay->Paint();
-       }
-    }
-    if (m_pDisplay->OnFinish)
-        m_pDisplay->OnFinish(this);
+		m_pDisplay->Bitmap->Assign(img);
+		m_pDisplay->Paint();
+	   }
+		if (m_pDisplay->OnFinish)
+			m_pDisplay->OnFinish(this);
+	}
+	if (m_pReader != NULL && m_pReader->Canceled)
+	{
+		if (m_pDisplay->OnCancel)
+            m_pDisplay->OnCancel(this);
+	}
 }
 
 void __fastcall TPhFrames::OnCopyTerminateHelper(TObject *Sender)
 {
 #ifdef _DEBUG
-    ShowMessage("Copy job done.");
+	ShowMessage("Copy job done.");
 #endif
-    if (m_pDisplay->OnFinish)
-        m_pDisplay->OnFinish(this);
+
+	if (m_pCopier == NULL)
+		return;
+	if (m_pCopier->Canceled)
+	{
+		if (m_pDisplay->OnCancel)
+            m_pDisplay->OnCancel(this);
+	}
+	else
+	{
+		if (m_pDisplay->OnFinish)
+			m_pDisplay->OnFinish(this);
+	}
+	if (m_items->Count == 0)
+	{
+		m_pDisplay->Bitmap->Assign(NULL);
+        m_pDisplay->Paint();
+	}
     if (m_pCopier->operation != ephCopy  && m_items->Count >= _FRAME_MIN_COUNT_)
     {
 		StartReadJobHelper();
@@ -212,28 +233,23 @@ bool __fastcall TPhFrames::DeleteImage(long num)
 
 bool __fastcall TPhFrames::DeleteSelected()
 {
-    int num_deleted = 0;
-    for (int i = m_items->Count - 1; i>=0; i--)
+     if (this->m_pCopier != NULL)
     {
-        SFrameItem* item = _FRAME_ITEM_(i);
-        if (item != NULL && item->selected)
-        {
-        	UnicodeString FileName = item->strFileName;
-            DeleteFile(FileName);
-            m_items->Delete(i);
-            num_deleted++;
-        }
-    }
-    if (num_deleted > 0)
-    {
-        m_pMosaic->Assign(NULL);
-        if (m_items->Count >= _FRAME_MIN_COUNT_)
-        {
-			StartReadJobHelper();
-        }
+        m_pCopier->Terminate();
+        m_pCopier->WaitFor();
+        delete m_pCopier;
+        m_pCopier = NULL;
     }
 
-    return true;
+    m_pCopier = new TPhCopyImagesThread(true);
+    m_pCopier->FreeOnTerminate = false;
+    m_pCopier->OnTerminate = OnCopyTerminateHelper;
+    m_pCopier->OnProgress = m_pDisplay->OnProgress;
+	m_pCopier->SetNames(m_items, L"", ephDelete);
+    if (m_pDisplay->OnStart)
+        m_pDisplay->OnStart(this);
+    m_pCopier->Start();
+	return true;
 }
 
 bool __fastcall TPhFrames::CopySelected(const LPWSTR lpDirName)
@@ -347,7 +363,6 @@ void __fastcall TPhFrames::ClearSelection()
     m_pDisplay->Paint();
 }
 
-
 void TPhFrames::Cancel()
 {
     if (m_pReader != NULL)
@@ -360,12 +375,10 @@ void TPhFrames::Cancel()
 
     if (this->m_pCopier != NULL)
     {
-        m_pCopier->Terminate();
-        m_pCopier->WaitFor();
+		m_pCopier->Cancel();
+		m_pCopier->WaitFor();
         delete m_pCopier;
         m_pCopier = NULL;
     }
 }
-
-
 #pragma package(smart_init)

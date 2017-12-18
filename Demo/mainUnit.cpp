@@ -589,15 +589,10 @@ void __fastcall TmainForm::imgDeleteActionUpdate(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TmainForm::Panel1Click(TObject *Sender)
-{
-    this->PhImage1->FullScreen = true;
-}
-//---------------------------------------------------------------------------
 
 void __fastcall TmainForm::fileNewInstanceActionExecute(TObject *Sender)
 {
-    AnsiString str = Application->ExeName;
+		AnsiString str = Application->ExeName;
     for (int i = 0; i < PhImage1->Frames->Count; i++)
     {
         str += " ";
@@ -611,7 +606,7 @@ void __fastcall TmainForm::PhImage1Progress(TObject *Sender, UnicodeString &strM
           int Progress)
 {
     //
-    GroupBox1->Caption = strMessage;
+    Label1->Caption = strMessage;
     Gauge1->Progress = Progress;
 }
 //---------------------------------------------------------------------------
@@ -632,7 +627,26 @@ void __fastcall TmainForm::PhImage1Start(TObject *Sender)
 
 void __fastcall TmainForm::PhImage1Finish(TObject *Sender)
 {
-    GroupBox1->Visible = false;
+	GroupBox1->Visible = false;
+}
+//---------------------------------------------------------------------------
+void __fastcall TmainForm::OpenInExplorer()
+{
+
+}
+
+void __fastcall TmainForm::OpenInNewInstance()
+{
+
+}
+
+void __fastcall TmainForm::OpenHere()
+{
+
+}
+void __fastcall TmainForm::PhImage1Cancel(TObject *Sender)
+{
+	ShowMessage(L"Job canceled.");
 }
 //---------------------------------------------------------------------------
 
