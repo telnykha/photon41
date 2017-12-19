@@ -3,7 +3,7 @@ object copyForm: TcopyForm
   Top = 108
   BorderStyle = bsDialog
   Caption = 'Copy/Move Image(s)'
-  ClientHeight = 381
+  ClientHeight = 385
   ClientWidth = 297
   Color = clBtnFace
   ParentFont = True
@@ -34,8 +34,8 @@ object copyForm: TcopyForm
     Caption = 'Drive'
   end
   object OKBtn: TButton
-    Left = 64
-    Top = 348
+    Left = 72
+    Top = 351
     Width = 75
     Height = 25
     Caption = 'OK'
@@ -44,8 +44,8 @@ object copyForm: TcopyForm
     TabOrder = 0
   end
   object CancelBtn: TButton
-    Left = 145
-    Top = 348
+    Left = 153
+    Top = 351
     Width = 75
     Height = 25
     Cancel = True
@@ -81,12 +81,12 @@ object copyForm: TcopyForm
     Left = 8
     Top = 247
     Width = 281
-    Height = 95
+    Height = 98
     Caption = 'After Operatioin Action'
     ItemIndex = 0
     Items.Strings = (
+      'Do not do anything'
       'Open images in Windows Explorer '
-      'Open images with this Photon'
       'Open images with new Photon')
     TabOrder = 5
   end

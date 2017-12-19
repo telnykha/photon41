@@ -81,18 +81,16 @@ void TPhFrames::StartReadJobHelper()
         {
             m_pReader->Cancel();
             m_pReader->WaitFor();
-            delete m_pReader;
-            m_pReader = NULL;
         }
 
-        m_pReader = new TPhReadImagesThread(true);
-        m_pReader->FreeOnTerminate = false;
+        m_pReader = new TPhReadImagesThread(m_items);
+        m_pReader->FreeOnTerminate = true;
         m_pReader->OnTerminate = OnTerminateHelper;
 
         m_pReader->tmbWidth  = m_pDisplay->ThumbWidht;
         m_pReader->tmbHeight = m_pDisplay->ThumbHeight;
-        m_pReader->SetNames(m_items);
         m_pReader->OnProgress = m_pDisplay->OnProgress;
+        m_pReader->OnFinish  = m_pDisplay->OnFinish;
         if (m_pDisplay->OnStart)
             m_pDisplay->OnStart(this);
         m_pReader->Start();
@@ -173,22 +171,17 @@ void __fastcall TPhFrames::OnTerminateHelper(TObject *Sender)
 		m_pDisplay->Bitmap->Assign(img);
 		m_pDisplay->Paint();
 	   }
-		if (m_pDisplay->OnFinish)
-			m_pDisplay->OnFinish(this);
 	}
 	if (m_pReader != NULL && m_pReader->Canceled)
 	{
 		if (m_pDisplay->OnCancel)
             m_pDisplay->OnCancel(this);
 	}
+    m_pReader = NULL;
 }
 
 void __fastcall TPhFrames::OnCopyTerminateHelper(TObject *Sender)
 {
-#ifdef _DEBUG
-	ShowMessage("Copy job done.");
-#endif
-
 	if (m_pCopier == NULL)
 		return;
 	if (m_pCopier->Canceled)
@@ -196,22 +189,17 @@ void __fastcall TPhFrames::OnCopyTerminateHelper(TObject *Sender)
 		if (m_pDisplay->OnCancel)
             m_pDisplay->OnCancel(this);
 	}
-	else
-	{
-		if (m_pDisplay->OnFinish)
-			m_pDisplay->OnFinish(this);
-	}
 	if (m_items->Count == 0)
 	{
 		m_pDisplay->Bitmap->Assign(NULL);
         m_pDisplay->Paint();
 	}
-    if (m_pCopier->operation != ephCopy  && m_items->Count >= _FRAME_MIN_COUNT_)
+    if (m_pCopier->reason != copyJob  && m_items->Count >= _FRAME_MIN_COUNT_)
     {
 		StartReadJobHelper();
     }
+    m_pCopier = NULL;
 }
-
 
 bool __fastcall TPhFrames::DeleteImage(long num)
 {
@@ -237,15 +225,13 @@ bool __fastcall TPhFrames::DeleteSelected()
     {
         m_pCopier->Terminate();
         m_pCopier->WaitFor();
-        delete m_pCopier;
-        m_pCopier = NULL;
     }
 
-    m_pCopier = new TPhCopyImagesThread(true);
-    m_pCopier->FreeOnTerminate = false;
+    m_pCopier = new TPhCopyImagesThread(m_items, L"", deleteJob);
+    m_pCopier->FreeOnTerminate = true;
     m_pCopier->OnTerminate = OnCopyTerminateHelper;
+    m_pCopier->OnFinish = m_pDisplay->OnFinish;
     m_pCopier->OnProgress = m_pDisplay->OnProgress;
-	m_pCopier->SetNames(m_items, L"", ephDelete);
     if (m_pDisplay->OnStart)
         m_pDisplay->OnStart(this);
     m_pCopier->Start();
@@ -258,15 +244,13 @@ bool __fastcall TPhFrames::CopySelected(const LPWSTR lpDirName)
     {
         m_pCopier->Terminate();
         m_pCopier->WaitFor();
-        delete m_pCopier;
-        m_pCopier = NULL;
     }
 
-    m_pCopier = new TPhCopyImagesThread(true);
-    m_pCopier->FreeOnTerminate = false;
+    m_pCopier = new TPhCopyImagesThread(m_items, lpDirName, copyJob);
+    m_pCopier->FreeOnTerminate = true;
     m_pCopier->OnTerminate = OnCopyTerminateHelper;
+    m_pCopier->OnFinish = m_pDisplay->OnFinish;
     m_pCopier->OnProgress = m_pDisplay->OnProgress;
-    m_pCopier->SetNames(m_items, lpDirName, ephCopy);
     if (m_pDisplay->OnStart)
         m_pDisplay->OnStart(this);
     m_pCopier->Start();
@@ -279,14 +263,12 @@ bool __fastcall TPhFrames::MoveSelected(const LPWSTR lpDirName)
     {
         m_pCopier->Terminate();
         m_pCopier->WaitFor();
-        delete m_pCopier;
-        m_pCopier = NULL;
     }
-    m_pCopier = new TPhCopyImagesThread(true);
-    m_pCopier->FreeOnTerminate = false;
+    m_pCopier = new TPhCopyImagesThread(m_items, lpDirName, moveJob);
+    m_pCopier->FreeOnTerminate = true;
     m_pCopier->OnTerminate = OnCopyTerminateHelper;
     m_pCopier->OnProgress = m_pDisplay->OnProgress;
-    m_pCopier->SetNames(m_items, lpDirName, ephMove);
+    m_pCopier->OnFinish = m_pDisplay->OnFinish;
     if (m_pDisplay->OnStart)
         m_pDisplay->OnStart(this);
     m_pCopier->Start();
@@ -369,16 +351,12 @@ void TPhFrames::Cancel()
     {
         m_pReader->Cancel();
         m_pReader->WaitFor();
-        delete m_pReader;
-        m_pReader = NULL;
     }
 
     if (this->m_pCopier != NULL)
     {
 		m_pCopier->Cancel();
 		m_pCopier->WaitFor();
-        delete m_pCopier;
-        m_pCopier = NULL;
     }
 }
 #pragma package(smart_init)

@@ -25,3 +25,4 @@ void __fastcall TcopyForm::DirectoryListBox1Change(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+

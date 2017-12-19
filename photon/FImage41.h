@@ -20,7 +20,9 @@ const int crHandCloseCursor = 2;
 const int crMagnifyCursor   = 3;
 const int crLenzCursor      = 4;
 const int crZoom2RectCursor = 5;
+typedef enum {readJob, copyJob, moveJob, deleteJob, convertJob, processJob}EPhJobReason;
 typedef void __fastcall (__closure *TPhProgressEvent)(System::TObject* Sender, UnicodeString& strMessage, int Progress);
+typedef void __fastcall (__closure *TPhJobEvent) (System::TObject* Sender, EPhJobReason reason);
 // forward declarations
 class PACKAGE TPhImageTool;
 //TPhCustomImage--------------------------------------------------------------------
@@ -39,7 +41,7 @@ private:
 	TNotifyEvent            	FToolChange;
     TPhProgressEvent  			m_OnProgress;
     TNotifyEvent       			m_OnStart;
-    TNotifyEvent       			m_OnFinish;
+    TPhJobEvent		       		m_OnFinish;
 	TNotifyEvent       			m_OnCancel;
 protected:
     TTimer*                     m_Timer;
@@ -237,9 +239,9 @@ __published:
     __property TNotifyEvent     OnChange = {read = FChange, write = FChange};
     __property TNotifyEvent     OnToolChange = {read = FToolChange, write = FToolChange};
     __property TPhProgressEvent OnProgress = {read = m_OnProgress, write = m_OnProgress};
-	__property TNotifyEvent OnStart = {read = m_OnStart, write = m_OnStart};
-	__property TNotifyEvent OnFinish = {read = m_OnFinish, write = m_OnFinish};
-	__property TNotifyEvent OnCancel = {read = m_OnCancel, write = m_OnCancel};
+	__property TNotifyEvent 	OnStart = {read = m_OnStart, write = m_OnStart};
+	__property TPhJobEvent	 	OnFinish = {read = m_OnFinish, write = m_OnFinish};
+	__property TNotifyEvent 	OnCancel = {read = m_OnCancel, write = m_OnCancel};
 };
 //-------------------------- export TPhImage -------------------------------------
 class PACKAGE TPhImage : public TPhCustomImage

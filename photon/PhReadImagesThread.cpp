@@ -1,6 +1,7 @@
 //---------------------------------------------------------------------------
 
 #include <System.hpp>
+#include <Vcl.Dialogs.hpp>
 #pragma hdrstop
 
 #include "PhReadImagesThread.h"
@@ -69,37 +70,40 @@ static awpImage* _awpFitImage(awpRect rect, awpImage* img)
 	}
 	return result;
 }
-
-
 //---------------------------------------------------------------------------
-
-//   Important: Methods and properties of objects in VCL can only be
-//   used in a method called using Synchronize, for example:
-//
-//      Synchronize(&UpdateCaption);
-//
-//   where UpdateCaption could look like:
-//
-//      void __fastcall TPhReadImagesThread::UpdateCaption()
-//      {
-//        Form1->Caption = "Updated in a thread";
-//      }
-//---------------------------------------------------------------------------
-
-__fastcall TPhReadImagesThread::TPhReadImagesThread(bool CreateSuspended)
-	: TThread(CreateSuspended)
+__fastcall IPthThread::IPthThread(TList* items) : TThread(true)
 {
-    m_items = NULL;
-    m_tmbWidth  = 128;
-    m_tmbHeight = 128;
+    this->m_items = items;
     m_OnProgress = NULL;
     m_cancel = false;
 }
-
-void __fastcall TPhReadImagesThread::ProgressHelper()
+void __fastcall IPthThread::Cancel()
+{
+	m_cancel = true;
+	this->Terminate();
+}
+void __fastcall IPthThread::ProgressHelper()
 {
     if (m_OnProgress)
         m_OnProgress(this, m_msg, m_progress);
+}
+//---------------------------------------------------------------------------
+__fastcall TPhReadImagesThread::TPhReadImagesThread(TList* items)
+	: IPthThread(items)
+{
+    m_tmbWidth  = 128;
+    m_tmbHeight = 128;
+    m_mosaic = NULL;
+}
+__fastcall TPhReadImagesThread::~TPhReadImagesThread()
+{
+}
+void __fastcall TPhReadImagesThread::BeforeDestruction(void)
+{
+    _AWP_SAFE_RELEASE_(m_mosaic)
+   if (m_FihishEvent)
+	    m_FihishEvent(this, readJob);
+
 }
 //---------------------------------------------------------------------------
 void __fastcall TPhReadImagesThread::Execute()
@@ -176,40 +180,20 @@ void __fastcall TPhReadImagesThread::Execute()
     awpCopyImage(result, &m_mosaic);
     _AWP_SAFE_RELEASE_(result)
 }
-void __fastcall TPhReadImagesThread::Cancel()
-{
-	m_cancel = true;
-	this->Terminate();
-}
 
 //---------------------------------------------------------------------------
-void __fastcall TPhReadImagesThread::SetNames(TList* names)
+__fastcall TPhCopyImagesThread::TPhCopyImagesThread(TList* names,const LPWSTR lpwFolderName, EPhJobReason reason)
+	: IPthThread(names)
 {
-    m_items = names;
-}
-
-__fastcall TPhCopyImagesThread::TPhCopyImagesThread(bool CreateSuspended)
-	: TThread(CreateSuspended)
-{
-    m_items = NULL;
-    m_FolderName = L"";
-}
-void __fastcall TPhCopyImagesThread::SetNames(TList* names, const LPWSTR lpwFolderName,EPhCopyThreadOperations operation)
-{
-    m_items = names;
+    m_reason = reason;
     m_FolderName = lpwFolderName;
-    m_operatoin = operation;
 }
-void __fastcall TPhCopyImagesThread::Cancel()
-{
-    m_cancel = true;
-	this->Terminate();
-}
+//---------------------------------------------------------------------------
 void __fastcall TPhCopyImagesThread::Execute()
 {
     if (m_items == NULL)
 		return;
-	if (m_operatoin != ephDelete)
+	if (m_reason != deleteJob)
 	{
 	 if (!DirectoryExists(m_FolderName))
 		return;
@@ -229,15 +213,15 @@ void __fastcall TPhCopyImagesThread::Execute()
         //
         if (this->Terminated)
             break;
-        switch(m_operatoin)
+        switch(m_reason)
         {
-            case ephCopy:
+            case copyJob:
 	            m_msg = L"Copy images... ";
             break;
-            case ephMove:
+            case moveJob:
 		        m_msg = L"Move images... ";
             break;
-            case ephDelete:
+            case deleteJob:
 		        m_msg = L"Delete images... ";
             break;
         }
@@ -253,7 +237,7 @@ void __fastcall TPhCopyImagesThread::Execute()
             if (!item->selected)
                 continue;
             c++;
-            if (m_operatoin == ephMove || m_operatoin == ephCopy)
+            if (m_reason == moveJob || m_reason == copyJob)
             {
                 AnsiString strSrcFile = item->strFileName;
                 AnsiString strDstFile = m_FolderName;
@@ -264,7 +248,7 @@ void __fastcall TPhCopyImagesThread::Execute()
     //                ShowMessage(L"Cannot copy files to target folder: " + FolderName);
                 }
             }
-            if (m_operatoin == ephMove || m_operatoin == ephDelete)
+            if (m_reason == moveJob || m_reason == deleteJob)
             {
                 DeleteFile(item->strFileName);
                 m_items->Delete(i);
@@ -278,8 +262,9 @@ void __fastcall TPhCopyImagesThread::Execute()
         }
      }
 }
-void __fastcall TPhCopyImagesThread::ProgressHelper()
+void __fastcall TPhCopyImagesThread::BeforeDestruction(void)
 {
-    if (m_OnProgress)
-        m_OnProgress(this, m_msg, m_progress);
+   if (m_FihishEvent)
+    m_FihishEvent(this, m_reason);
 }
+
