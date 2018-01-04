@@ -22,7 +22,7 @@ const int crLenzCursor      = 4;
 const int crZoom2RectCursor = 5;
 typedef enum {readJob, copyJob, moveJob, deleteJob, convertJob, processJob} EPhJobReason;
 typedef void __fastcall (__closure *TPhProgressEvent)(System::TObject* Sender, UnicodeString& strMessage, int Progress);
-typedef void __fastcall (__closure *TPhJobEvent) (System::TObject* Sender, EPhJobReason reason);
+typedef void __fastcall (__closure *TPhJobEvent) (System::TObject* Sender, EPhJobReason reason, bool Cancel);
 // forward declarations
 class PACKAGE TPhImageTool;
 //TPhCustomImage--------------------------------------------------------------------

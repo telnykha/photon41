@@ -57,6 +57,7 @@ object mainForm: TmainForm
     OnProgress = PhImage1Progress
     OnStart = PhImage1Start
     OnFinish = PhImage1Finish
+    OnCancel = PhImage1Cancel
   end
   object Panel1: TPanel
     Left = 0

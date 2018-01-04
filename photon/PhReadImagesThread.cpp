@@ -338,7 +338,7 @@ void __fastcall TPhJobThread::DoProcessJob()
 void __fastcall TPhJobThread::BeforeDestruction(void)
 {
    if (m_FihishEvent)
-	m_FihishEvent(this, m_reason);
+	m_FihishEvent(this, m_reason, this->m_cancel);
 }
 void __fastcall TPhJobThread::DoMosaic()
 {

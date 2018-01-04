@@ -664,24 +664,6 @@ void __fastcall TmainForm::PhImage1Cancel(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TmainForm::PhImage1Finish(TObject *Sender, EPhJobReason reason)
-{
-	GroupBox1->Visible = false;
-    if (reason == copyJob || reason == moveJob)
-    {
-        switch(copyForm->RadioGroup1->ItemIndex)
-        {
-            case 1:
-                OpenInExplorer();
-            break;
-            case 2:
-				OpenInNewInstance();
-            break;
-        }
-    }
-
-}
-//---------------------------------------------------------------------------
 void __fastcall TmainForm::BuildSelected()
 {
     //
@@ -694,4 +676,26 @@ void __fastcall TmainForm::BuildSelected()
         }
     }
 }
+
+
+void __fastcall TmainForm::PhImage1Finish(TObject *Sender, EPhJobReason reason, bool Cancel)
+
+{
+	GroupBox1->Visible = false;
+	if (Cancel)
+        return;
+    if (reason == copyJob || reason == moveJob)
+    {
+        switch(copyForm->RadioGroup1->ItemIndex)
+        {
+            case 1:
+                OpenInExplorer();
+            break;
+            case 2:
+				OpenInNewInstance();
+            break;
+        }
+	}
+}
+//---------------------------------------------------------------------------
 

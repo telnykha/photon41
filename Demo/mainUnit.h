@@ -241,7 +241,9 @@ __published:	// IDE-managed Components
 	void __fastcall Button1Click(TObject *Sender);
 	void __fastcall PhImage1Start(TObject *Sender);
 	void __fastcall PhImage1Cancel(TObject *Sender);
-	void __fastcall PhImage1Finish(TObject *Sender, EPhJobReason reason);
+	void __fastcall PhImage1Finish(TObject *Sender, EPhJobReason reason, bool Cancel);
+
+
 
 private:	// User declarations
 	int m_UserChoise;

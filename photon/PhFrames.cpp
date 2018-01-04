@@ -340,8 +340,7 @@ void TPhFrames::Cancel()
 {
     if (m_pReader != NULL)
     {
-        m_pReader->Cancel();
-		m_pReader->WaitFor();
+		m_pReader->Cancel();
 	}
 }
 #pragma package(smart_init)
