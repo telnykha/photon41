@@ -71,200 +71,310 @@ static awpImage* _awpFitImage(awpRect rect, awpImage* img)
 	return result;
 }
 //---------------------------------------------------------------------------
-__fastcall IPthThread::IPthThread(TList* items) : TThread(true)
+__fastcall IPhThread::IPhThread(TList* items) : TThread(true)
 {
     this->m_items = items;
     m_OnProgress = NULL;
     m_cancel = false;
 }
-void __fastcall IPthThread::Cancel()
+void __fastcall IPhThread::Cancel()
 {
 	m_cancel = true;
 	this->Terminate();
 }
-void __fastcall IPthThread::ProgressHelper()
+void __fastcall IPhThread::ProgressHelper()
 {
     if (m_OnProgress)
-        m_OnProgress(this, m_msg, m_progress);
+		m_OnProgress(this, m_msg, m_progress);
 }
-//---------------------------------------------------------------------------
-__fastcall TPhReadImagesThread::TPhReadImagesThread(TList* items)
-	: IPthThread(items)
+__fastcall  TPhJobThread::TPhJobThread(TList* names, const LPWSTR lpwFolderName, EPhJobReason reason)
+: IPhThread(names)
 {
-    m_tmbWidth  = 128;
-    m_tmbHeight = 128;
-    m_mosaic = NULL;
+	m_reason = reason;
+	m_FolderName = lpwFolderName;
+	m_tmbWidth  = 128;
+	m_tmbHeight = 128;
+	m_mosaic 	= NULL;
 }
-__fastcall TPhReadImagesThread::~TPhReadImagesThread()
+
+int __fastcall TPhJobThread::GetNumSelectedItems()
+{
+   if (this->m_items == NULL)
+	return 0;
+	int num_selected = 0;
+	for (int i = 0; i < m_items->Count; i++)
+	{
+		SFrameItem* item = (SFrameItem*)(m_items->Items[i]);
+		if (item->selected)
+			num_selected++;
+	}
+	return num_selected;
+}
+
+
+void __fastcall TPhJobThread::Execute()
+{
+	if (m_items == NULL)
+		return;
+
+	 switch(m_reason)
+	 {
+		case readJob:
+			DoReadJob();
+		break;
+		case copyJob:
+			DoCopyJob();
+		break;
+		case moveJob:
+			DoMoveJob();
+		break;
+		case deleteJob:
+			DoDeleteJob();
+		break;
+		case convertJob:
+			DoConvertJob();
+		break;
+		case processJob:
+			DoProcessJob();
+		break;
+	 }
+}
+
+void __fastcall TPhJobThread::DoReadJob()
+{
+	TDIBImage* dib = new TDIBImage();
+
+	awpRect rect;
+	rect.left = 0;
+	rect.top = 0;
+	rect.right = m_tmbWidth;
+	rect.bottom = m_tmbHeight;
+   int num = 0;
+	for (int i = 0; i < m_items->Count; i++)
+	{
+		//
+		if (this->Terminated)
+		{
+			break;
+		}
+		m_msg = L"Reading... ";
+		m_msg += IntToStr(i);
+		m_msg += L" of ";
+		m_msg += IntToStr(m_items->Count);
+		m_progress =  100*(i+1)/m_items->Count;
+		Synchronize(&this->ProgressHelper);
+		try
+		{
+			SFrameItem* item = (SFrameItem*)(m_items->Items[i]);
+			dib->LoadFromFile(item->strFileName);
+			awpImage* tmp = NULL;
+			dib->GetAWPImage(&tmp);
+			if (tmp != NULL)
+			{
+
+				item->width = tmp->sSizeX;
+				item->height = tmp->sSizeY;
+				awpImage* fit = _awpFitImage(rect, tmp);
+				item->image = new TDIBImage();
+				TDIBImage* dibItemImage = dynamic_cast<TDIBImage* >(item->image);
+				dibItemImage->SetAWPImage(fit);
+				if (fit != NULL)
+				{
+					_AWP_SAFE_RELEASE_(fit)
+					num++;
+                }
+                _AWP_SAFE_RELEASE_(tmp)
+			}
+
+        }
+        catch(Exception& e)
+		{
+
+            //todo: if the thread cannot read the image
+            //remove item about it.
+
+			continue;
+		}
+	 }
+	delete dib;
+
+	this->DoMosaic();
+}
+void __fastcall TPhJobThread::DoDeleteJob()
+{
+	int num_selected = this->GetNumSelectedItems();
+	if (num_selected == 0)
+		return;
+
+
+	int c = 0;
+	for (int i = m_items->Count - 1; i >= 0 ; i--)
+	{
+		//
+		if (this->Terminated)
+			break;
+		m_msg = L"Delete images... ";
+		m_msg += IntToStr(c);
+		m_msg += L" of ";
+		m_msg += IntToStr(num_selected);
+		m_progress =  100*(c+1)/num_selected;
+		Synchronize(&this->ProgressHelper);
+		try
+		{
+			SFrameItem* item = (SFrameItem*)(m_items->Items[i]);
+			if (!item->selected)
+				continue;
+			c++;
+
+			DeleteFile(item->strFileName);
+			m_items->Delete(i);
+		}
+		catch(Exception& e)
+		{
+			//todo: if the thread cannot read the image
+			//remove item about it.
+			continue;
+		}
+	 }
+	 this->DoMosaic();
+}
+void __fastcall TPhJobThread::DoMoveJob()
+{
+	int num_selected = this->GetNumSelectedItems();
+	if (num_selected == 0)
+		return;
+
+	int c = 0;
+	for (int i = m_items->Count - 1; i >= 0 ; i--)
+	{
+		//
+		if (this->Terminated)
+			break;
+
+		m_msg = L"Move images... ";
+		m_msg += IntToStr(c);
+		m_msg += L" of ";
+		m_msg += IntToStr(num_selected);
+		m_progress =  100*(c+1)/num_selected;
+		Synchronize(&this->ProgressHelper);
+		try
+		{
+			SFrameItem* item = (SFrameItem*)(m_items->Items[i]);
+			if (!item->selected)
+				continue;
+			c++;
+
+			AnsiString strSrcFile = item->strFileName;
+			AnsiString strDstFile = m_FolderName;
+			strDstFile += ExtractFileName(strSrcFile);
+			if (!CopyFile(strSrcFile.c_str(), strDstFile.c_str(), false))
+			{
+				//todo: add error status
+//                ShowMessage(L"Cannot copy files to target folder: " + FolderName);
+				continue;
+			}
+			DeleteFile(item->strFileName);
+			m_items->Delete(i);
+		}
+		catch(Exception& e)
+		{
+			//todo: if the thread cannot read the image
+			//remove item about it.
+			continue;
+		}
+	 }
+	 this->DoMosaic();
+}
+void __fastcall TPhJobThread::DoCopyJob()
+{
+	int num_selected = this->GetNumSelectedItems();
+	if (num_selected == 0)
+		return;
+
+	int c = 0;
+	for (int i = m_items->Count - 1; i >= 0 ; i--)
+	{
+		//
+		if (this->Terminated)
+			break;
+
+		m_msg = L"Copy images... ";
+		m_msg += IntToStr(c);
+		m_msg += L" of ";
+		m_msg += IntToStr(num_selected);
+		m_progress =  100*(c+1)/num_selected;
+		Synchronize(&this->ProgressHelper);
+		try
+		{
+			SFrameItem* item = (SFrameItem*)(m_items->Items[i]);
+			if (!item->selected)
+				continue;
+			c++;
+
+			AnsiString strSrcFile = item->strFileName;
+			AnsiString strDstFile = m_FolderName;
+			strDstFile += ExtractFileName(strSrcFile);
+			if (!CopyFile(strSrcFile.c_str(), strDstFile.c_str(), false))
+			{
+				//todo: add error status
+//                ShowMessage(L"Cannot copy files to target folder: " + FolderName);
+			}
+
+		}
+		catch(Exception& e)
+		{
+			//todo: if the thread cannot read the image
+			//remove item about it.
+			continue;
+		}
+	 }
+}
+void __fastcall TPhJobThread::DoConvertJob()
 {
 }
-void __fastcall TPhReadImagesThread::BeforeDestruction(void)
+void __fastcall TPhJobThread::DoProcessJob()
 {
-    _AWP_SAFE_RELEASE_(m_mosaic)
+}
+void __fastcall TPhJobThread::BeforeDestruction(void)
+{
    if (m_FihishEvent)
-	    m_FihishEvent(this, readJob);
-
+	m_FihishEvent(this, m_reason);
 }
-//---------------------------------------------------------------------------
-void __fastcall TPhReadImagesThread::Execute()
+void __fastcall TPhJobThread::DoMosaic()
 {
-    if (m_items == NULL)
-        return;
-	//---- Place thread code here ----
-    TDIBImage* dib = new TDIBImage();
+	 if (this->m_items == NULL)
+		return;
 
-    awpRect rect;
-    rect.left = 0;
-    rect.top = 0;
-    rect.right = m_tmbWidth;
-    rect.bottom = m_tmbHeight;
+	awpRect rect;
+	rect.left = 0;
+	rect.top = 0;
+	rect.right = m_tmbWidth;
+	rect.bottom = m_tmbHeight;
 
    int imgCount =  floor(sqrt((float)this->m_items->Count) + 0.5);
    int imgWidth  = m_tmbWidth*imgCount;
    int imgHeight = m_tmbHeight*imgCount;
    awpImage* result = NULL;
    awpCreateImage(&result, imgWidth, imgHeight, 3, AWP_BYTE);
-   int num = 0;
-    for (int i = 0; i < m_items->Count; i++)
-    {
-        //
-        if (this->Terminated)
-        {
-            break;
-        }
-        m_msg = L"Reading... ";
-        m_msg += IntToStr(i);
-        m_msg += L" of ";
-        m_msg += IntToStr(m_items->Count);
-        m_progress =  100*(i+1)/m_items->Count;
-        Synchronize(&this->ProgressHelper);
-        try
-        {
-            SFrameItem* item = (SFrameItem*)(m_items->Items[i]);
-	        dib->LoadFromFile(item->strFileName);
-            awpImage* tmp = NULL;
-            dib->GetAWPImage(&tmp);
-
-            item->width = tmp->sSizeX;
-            item->height = tmp->sSizeY;
-
-            if (tmp != NULL)
-            {
-                awpImage* fit = _awpFitImage(rect, tmp);
-                if (fit != NULL)
-                {
-					 awpPoint p;
-					 p.Y = (num / imgCount)*m_tmbHeight;
-					 p.X = (num % imgCount)*m_tmbWidth;
-
-					 awpPasteRect(fit, result, p);
-
-					_AWP_SAFE_RELEASE_(fit)
-                    num++;
-                }
-                _AWP_SAFE_RELEASE_(tmp)
-            }
-
-        }
-        catch(Exception& e)
-        {
-
-            //todo: if the thread cannot read the image
-            //remove item about it.
-
-            continue;
-        }
-     }
-    delete dib;
-    _AWP_SAFE_RELEASE_(m_mosaic)
-    awpCopyImage(result, &m_mosaic);
-    _AWP_SAFE_RELEASE_(result)
-}
-
-//---------------------------------------------------------------------------
-__fastcall TPhCopyImagesThread::TPhCopyImagesThread(TList* names,const LPWSTR lpwFolderName, EPhJobReason reason)
-	: IPthThread(names)
-{
-    m_reason = reason;
-    m_FolderName = lpwFolderName;
-}
-//---------------------------------------------------------------------------
-void __fastcall TPhCopyImagesThread::Execute()
-{
-    if (m_items == NULL)
-		return;
-	if (m_reason != deleteJob)
-	{
-	 if (!DirectoryExists(m_FolderName))
-		return;
-    }
-    int num_selected = 0;
-    for (int i = 0; i < m_items->Count; i++)
-    {
-    	SFrameItem* item = (SFrameItem*)(m_items->Items[i]);
-        if (item->selected)
-            num_selected++;
-    }
-    if (num_selected == 0)
-        return;
-    int c = 0;
-    for (int i = m_items->Count - 1; i >= 0 ; i--)
-    {
-        //
-        if (this->Terminated)
-            break;
-        switch(m_reason)
-        {
-            case copyJob:
-	            m_msg = L"Copy images... ";
-            break;
-            case moveJob:
-		        m_msg = L"Move images... ";
-            break;
-            case deleteJob:
-		        m_msg = L"Delete images... ";
-            break;
-        }
-
-        m_msg += IntToStr(c);
-        m_msg += L" of ";
-        m_msg += IntToStr(num_selected);
-        m_progress =  100*(c+1)/num_selected;
-        Synchronize(&this->ProgressHelper);
-        try
-        {
-            SFrameItem* item = (SFrameItem*)(m_items->Items[i]);
-            if (!item->selected)
-                continue;
-            c++;
-            if (m_reason == moveJob || m_reason == copyJob)
-            {
-                AnsiString strSrcFile = item->strFileName;
-                AnsiString strDstFile = m_FolderName;
-                strDstFile += ExtractFileName(strSrcFile);
-                if (!CopyFile(strSrcFile.c_str(), strDstFile.c_str(), false))
-                {
-                    //todo: add error status
-    //                ShowMessage(L"Cannot copy files to target folder: " + FolderName);
-                }
-            }
-            if (m_reason == moveJob || m_reason == deleteJob)
-            {
-                DeleteFile(item->strFileName);
-                m_items->Delete(i);
-            }
-        }
-        catch(Exception& e)
+   for (int i = 0; i < m_items->Count; i++)
+   {
+		SFrameItem* item = (SFrameItem*)(m_items->Items[i]);
+		TDIBImage* dibItemImage = dynamic_cast<TDIBImage* >(item->image);
+		if (dibItemImage != NULL)
 		{
-			//todo: if the thread cannot read the image
-			//remove item about it.
-            continue;
-        }
-     }
+			awpImage* img = NULL;
+			dibItemImage->GetAWPImage(&img);
+			if (img != NULL)
+			{
+				 awpPoint p;
+				 p.Y = (i / imgCount)*m_tmbHeight;
+				 p.X = (i % imgCount)*m_tmbWidth;
+				 awpPasteRect(img, result, p);
+				_AWP_SAFE_RELEASE_(img)
+			}
+		}
+   }
+    _AWP_SAFE_RELEASE_(m_mosaic)
+	awpCopyImage(result, &m_mosaic);
+	_AWP_SAFE_RELEASE_(result)
 }
-void __fastcall TPhCopyImagesThread::BeforeDestruction(void)
-{
-   if (m_FihishEvent)
-    m_FihishEvent(this, m_reason);
-}
-

@@ -5,36 +5,33 @@
 //---------------------------------------------------------------------------
 #define _FRAME_MIN_COUNT_ 3
 class TPhCustomImage;
-//class TDIBImage;
-class TPhReadImagesThread;
-class TPhCopyImagesThread;
+class TPhJobThread;
 struct SFrameItem
 {
     UnicodeString strFileName;
     int           width;
     int           height;
-    bool          selected;
+	bool          selected;
+    TGraphic*     image;
 };
 class PACKAGE TPhFrames : public TObject
 {
 private:
 	TPhCustomImage* 		m_pDisplay;
     TList*                  m_items;
-    TGraphic*               m_pMosaic;
-	TPhReadImagesThread* 	m_pReader;
-    TPhCopyImagesThread*    m_pCopier;
+	TGraphic*               m_pMosaic;
+	TPhJobThread* 			m_pReader;
     int       				m_current;
-    void __fastcall OnTerminateHelper(TObject *Sender);
-    void __fastcall OnCopyTerminateHelper(TObject *Sender);
+	void __fastcall OnTerminateHelper(TObject *Sender);
 protected:
     int __fastcall GetCount();
-    void StartReadJobHelper();
+	void StartReadJobHelper();
 public:
     TPhFrames(TPhCustomImage* display);
     __fastcall virtual~TPhFrames();
 
     // init
-    bool Init(TStrings* names);
+	bool Init(TStrings* names);
     void Close();
     void Cancel();
     // navigation

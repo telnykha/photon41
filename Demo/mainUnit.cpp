@@ -454,19 +454,19 @@ void __fastcall TmainForm::editInvertSelectionActionUpdate(TObject *Sender)
 
 void __fastcall TmainForm::imgCopyActionExecute(TObject *Sender)
 {
-    if (copyForm->ShowModal() == mrOk)
+	if (copyForm->ShowModal() == mrOk)
     {
  		if (MessageDlg(L"This operation can not be canceled. Are you sure you want to copy this image (s)?", mtWarning , TMsgDlgButtons() << mbOK << mbCancel, 0) == mrOk)
          {
-            UnicodeString strPathToCopy = copyForm->Edit1->Text;
-            strPathToCopy += L"\\";
-            this->BuildSelected();
-            if (PhImage1->Mosaic && m_selected->Count > 0)
-            {
-                m_PathTo = strPathToCopy;
-                PhImage1->Copy(strPathToCopy.c_str());
-            }
-         }
+			UnicodeString strPathToCopy = copyForm->Edit1->Text;
+			strPathToCopy += L"\\";
+			this->BuildSelected();
+			if (PhImage1->Mosaic && m_selected->Count > 0)
+			{
+				m_PathTo = strPathToCopy;
+				PhImage1->Copy(strPathToCopy.c_str());
+			}
+		 }
     }
 }
 //---------------------------------------------------------------------------
@@ -482,14 +482,15 @@ void __fastcall TmainForm::imgMoveActionExecute(TObject *Sender)
     if (copyForm->ShowModal() == mrOk)
     {
  		if (MessageDlg(L"This operation can not be canceled. Are you sure you want to move this image (s)?", mtWarning , TMsgDlgButtons() << mbOK << mbCancel, 0) == mrOk)
-         {
-            UnicodeString strPathToMove = copyForm->Edit1->Text;
-            strPathToMove += L"\\";
-#ifdef _DEBUG
-
-            ShowMessage(strPathToMove);
-#endif
-            PhImage1->Move(strPathToMove.c_str());
+		 {
+			UnicodeString strPathToCopy = copyForm->Edit1->Text;
+			strPathToCopy += L"\\";
+			this->BuildSelected();
+			if (PhImage1->Mosaic && m_selected->Count > 0)
+			{
+				m_PathTo = strPathToCopy;
+				PhImage1->Move(strPathToCopy.c_str());
+			}
          }
     }
 }
@@ -674,7 +675,7 @@ void __fastcall TmainForm::PhImage1Finish(TObject *Sender, EPhJobReason reason)
                 OpenInExplorer();
             break;
             case 2:
-                OpenInNewInstance();
+				OpenInNewInstance();
             break;
         }
     }

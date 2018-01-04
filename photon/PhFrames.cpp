@@ -17,8 +17,9 @@ virtual void __fastcall Notify(void * Ptr, TListNotification Action)
 {
     if (Action == lnDeleted)
     {
-        SFrameItem* item = (SFrameItem*)Ptr;
-        delete item;
+		SFrameItem* item = (SFrameItem*)Ptr;
+		delete item->image;
+		delete item;
     }
 }
 };
@@ -31,7 +32,7 @@ TPhFrames::TPhFrames(TPhCustomImage* display)
     m_current = 0;
     m_pMosaic = new TDIBImage();
     m_pReader = NULL;
-    m_pCopier = NULL;
+
 }
 __fastcall TPhFrames::~TPhFrames()
 {
@@ -39,8 +40,6 @@ __fastcall TPhFrames::~TPhFrames()
    delete m_items;
    if (m_pReader != NULL)
 	   delete m_pReader;
-   if (m_pCopier != NULL)
-	   delete m_pCopier;
 }
 
 bool TPhFrames::Init(TStrings* names)
@@ -81,14 +80,14 @@ void TPhFrames::StartReadJobHelper()
         {
             m_pReader->Cancel();
             m_pReader->WaitFor();
-        }
+		}
 
-        m_pReader = new TPhReadImagesThread(m_items);
+		m_pReader = new TPhJobThread (m_items, NULL, readJob);
         m_pReader->FreeOnTerminate = true;
         m_pReader->OnTerminate = OnTerminateHelper;
 
-        m_pReader->tmbWidth  = m_pDisplay->ThumbWidht;
-        m_pReader->tmbHeight = m_pDisplay->ThumbHeight;
+		m_pReader->tmbWidth  = m_pDisplay->ThumbWidht;
+		m_pReader->tmbHeight = m_pDisplay->ThumbHeight;
         m_pReader->OnProgress = m_pDisplay->OnProgress;
         m_pReader->OnFinish  = m_pDisplay->OnFinish;
         if (m_pDisplay->OnStart)
@@ -156,7 +155,7 @@ int __fastcall TPhFrames::GetCount()
 void __fastcall TPhFrames::OnTerminateHelper(TObject *Sender)
 {
 #ifdef _DEBUG
-    if (m_pReader != NULL && !m_pReader->Canceled)
+	if (m_pReader != NULL && !m_pReader->Canceled)
 	    ShowMessage("Job done.");
     else
         ShowMessage("Job canceled.");
@@ -165,41 +164,28 @@ void __fastcall TPhFrames::OnTerminateHelper(TObject *Sender)
     {
        TDIBImage* img = dynamic_cast< TDIBImage*>(m_pMosaic);
        if (img != NULL)
-	       img->SetAWPImage(m_pReader->Mosaic);
+		   img->SetAWPImage(m_pReader->Mosaic);
        if (m_pDisplay->Mosaic)
        {
 		m_pDisplay->Bitmap->Assign(img);
 		m_pDisplay->Paint();
 	   }
 	}
+
 	if (m_pReader != NULL && m_pReader->Canceled)
 	{
 		if (m_pDisplay->OnCancel)
             m_pDisplay->OnCancel(this);
 	}
-    m_pReader = NULL;
-}
 
-void __fastcall TPhFrames::OnCopyTerminateHelper(TObject *Sender)
-{
-	if (m_pCopier == NULL)
-		return;
-	if (m_pCopier->Canceled)
-	{
-		if (m_pDisplay->OnCancel)
-            m_pDisplay->OnCancel(this);
-	}
 	if (m_items->Count == 0)
 	{
 		m_pDisplay->Bitmap->Assign(NULL);
-        m_pDisplay->Paint();
+		m_pDisplay->Paint();
 	}
-    if (m_pCopier->reason != copyJob  && m_items->Count >= _FRAME_MIN_COUNT_)
-    {
-		StartReadJobHelper();
-    }
-    m_pCopier = NULL;
+    m_pReader = NULL;
 }
+
 
 bool __fastcall TPhFrames::DeleteImage(long num)
 {
@@ -221,58 +207,63 @@ bool __fastcall TPhFrames::DeleteImage(long num)
 
 bool __fastcall TPhFrames::DeleteSelected()
 {
-     if (this->m_pCopier != NULL)
-    {
-        m_pCopier->Terminate();
-        m_pCopier->WaitFor();
-    }
+	 if (this->m_pReader != NULL)
+	{
+		m_pReader->Terminate();
+		m_pReader->WaitFor();
+	}
 
-    m_pCopier = new TPhCopyImagesThread(m_items, L"", deleteJob);
-    m_pCopier->FreeOnTerminate = true;
-    m_pCopier->OnTerminate = OnCopyTerminateHelper;
-    m_pCopier->OnFinish = m_pDisplay->OnFinish;
-    m_pCopier->OnProgress = m_pDisplay->OnProgress;
-    if (m_pDisplay->OnStart)
-        m_pDisplay->OnStart(this);
-    m_pCopier->Start();
+	m_pReader =  new TPhJobThread (m_items, L"", deleteJob);
+	m_pReader->tmbWidth  = m_pDisplay->ThumbWidht;
+	m_pReader->tmbHeight = m_pDisplay->ThumbHeight;
+	m_pReader->FreeOnTerminate = true;
+	m_pReader->OnTerminate = OnTerminateHelper;
+	m_pReader->OnFinish = m_pDisplay->OnFinish;
+	m_pReader->OnProgress = m_pDisplay->OnProgress;
+	if (m_pDisplay->OnStart)
+		m_pDisplay->OnStart(this);
+	m_pReader->Start();
 	return true;
 }
 
 bool __fastcall TPhFrames::CopySelected(const LPWSTR lpDirName)
 {
-     if (this->m_pCopier != NULL)
-    {
-        m_pCopier->Terminate();
-        m_pCopier->WaitFor();
-    }
+	 if (this->m_pReader != NULL)
+	{
+		m_pReader->Terminate();
+		m_pReader->WaitFor();
+	}
 
-    m_pCopier = new TPhCopyImagesThread(m_items, lpDirName, copyJob);
-    m_pCopier->FreeOnTerminate = true;
-    m_pCopier->OnTerminate = OnCopyTerminateHelper;
-    m_pCopier->OnFinish = m_pDisplay->OnFinish;
-    m_pCopier->OnProgress = m_pDisplay->OnProgress;
-    if (m_pDisplay->OnStart)
-        m_pDisplay->OnStart(this);
-    m_pCopier->Start();
+	m_pReader =  new TPhJobThread (m_items, lpDirName, copyJob);
+	m_pReader->FreeOnTerminate = true;
+	m_pReader->OnTerminate = OnTerminateHelper;
+	m_pReader->OnFinish = m_pDisplay->OnFinish;
+	m_pReader->OnProgress = m_pDisplay->OnProgress;
+	if (m_pDisplay->OnStart)
+		m_pDisplay->OnStart(this);
+	m_pReader->Start();
     return true;
 }
 
 bool __fastcall TPhFrames::MoveSelected(const LPWSTR lpDirName)
 {
-    if (this->m_pCopier != NULL)
-    {
-        m_pCopier->Terminate();
-        m_pCopier->WaitFor();
-    }
-    m_pCopier = new TPhCopyImagesThread(m_items, lpDirName, moveJob);
-    m_pCopier->FreeOnTerminate = true;
-    m_pCopier->OnTerminate = OnCopyTerminateHelper;
-    m_pCopier->OnProgress = m_pDisplay->OnProgress;
-    m_pCopier->OnFinish = m_pDisplay->OnFinish;
-    if (m_pDisplay->OnStart)
-        m_pDisplay->OnStart(this);
-    m_pCopier->Start();
-    return true;
+	 if (this->m_pReader != NULL)
+	{
+		m_pReader->Terminate();
+		m_pReader->WaitFor();
+	}
+
+	m_pReader =  new TPhJobThread (m_items, lpDirName, moveJob);
+	m_pReader->tmbWidth  = m_pDisplay->ThumbWidht;
+	m_pReader->tmbHeight = m_pDisplay->ThumbHeight;
+	m_pReader->FreeOnTerminate = true;
+	m_pReader->OnTerminate = OnTerminateHelper;
+	m_pReader->OnFinish = m_pDisplay->OnFinish;
+	m_pReader->OnProgress = m_pDisplay->OnProgress;
+	if (m_pDisplay->OnStart)
+		m_pDisplay->OnStart(this);
+	m_pReader->Start();
+	return true;
 }
 
 SFrameItem* TPhFrames::GetFrameItem(long num)
@@ -350,13 +341,7 @@ void TPhFrames::Cancel()
     if (m_pReader != NULL)
     {
         m_pReader->Cancel();
-        m_pReader->WaitFor();
-    }
-
-    if (this->m_pCopier != NULL)
-    {
-		m_pCopier->Cancel();
-		m_pCopier->WaitFor();
-    }
+		m_pReader->WaitFor();
+	}
 }
 #pragma package(smart_init)
