@@ -103,7 +103,7 @@ void __fastcall TPhFrames::First()
         return;
 
     m_current = 0;
-    AnsiString strFileName = _FRAME_ITEM_(m_current)->strFileName;
+	AnsiString strFileName = _FRAME_ITEM_(m_current)->strFileName;
     m_pDisplay->LoadFromFile(strFileName.c_str());
 }
 void __fastcall TPhFrames::Next()
@@ -112,7 +112,7 @@ void __fastcall TPhFrames::Next()
         return;
 
     m_current++;
-    if (m_current >= m_items->Count)
+	if (m_current >= m_items->Count)
         m_current = 0;
     AnsiString strFileName = _FRAME_ITEM_(m_current)->strFileName;
     m_pDisplay->LoadFromFile(strFileName.c_str());
@@ -266,6 +266,30 @@ bool __fastcall TPhFrames::MoveSelected(const LPWSTR lpDirName)
 	return true;
 }
 
+bool __fastcall TPhFrames::ConvertSelected(EPhImageFormats format, bool keepSource)
+{
+	 if (this->m_pReader != NULL)
+	{
+		m_pReader->Terminate();
+		m_pReader->WaitFor();
+	}
+
+	m_pReader =  new TPhJobThread (m_items, L"", convertJob);
+	m_pReader->tmbWidth  = m_pDisplay->ThumbWidht;
+	m_pReader->tmbHeight = m_pDisplay->ThumbHeight;
+	m_pReader->TargetFormat = format;
+    m_pReader->KeepSource = keepSource;
+	m_pReader->FreeOnTerminate = true;
+	m_pReader->OnTerminate = OnTerminateHelper;
+	m_pReader->OnFinish = m_pDisplay->OnFinish;
+	m_pReader->OnProgress = m_pDisplay->OnProgress;
+	if (m_pDisplay->OnStart)
+		m_pDisplay->OnStart(this);
+	m_pReader->Start();
+	return true;
+}
+
+
 SFrameItem* TPhFrames::GetFrameItem(long num)
 {
     if (num >= 0 && num < m_items->Count)
@@ -338,9 +362,10 @@ void __fastcall TPhFrames::ClearSelection()
 
 void TPhFrames::Cancel()
 {
-    if (m_pReader != NULL)
-    {
+	if (m_pReader != NULL)
+	{
 		m_pReader->Cancel();
 	}
 }
+
 #pragma package(smart_init)

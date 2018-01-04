@@ -560,8 +560,25 @@ void __fastcall TmainForm::imgConvertActionExecute(TObject *Sender)
 {
     if (convertForm->ShowModal() == mrOk)
     {
-        //todo: do convert selection
-    }
+		//todo: do convert selection
+		EPhImageFormats target;
+		switch (convertForm->ComboBox1->ItemIndex)
+		{
+			case 0:
+				target = jpegFormat;
+			break;
+			case 1:
+				target = pngFormat;
+			break;
+			case 2:
+				target = tiffFormat;
+			break;
+			case 3:
+				target = awpFormat;
+			break;
+		}
+        PhImage1->Frames->ConvertSelected(target, convertForm->CheckBox1->Checked);
+	}
 }
 //---------------------------------------------------------------------------
 

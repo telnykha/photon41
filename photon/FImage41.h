@@ -14,15 +14,17 @@
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <ExtCtrls.hpp>
-#include "PhFrames.h"
 const int crHandOpenCursor  = 1;
 const int crHandCloseCursor = 2;
 const int crMagnifyCursor   = 3;
 const int crLenzCursor      = 4;
 const int crZoom2RectCursor = 5;
+#include "PhFrames.h"
+
 typedef enum {readJob, copyJob, moveJob, deleteJob, convertJob, processJob} EPhJobReason;
 typedef void __fastcall (__closure *TPhProgressEvent)(System::TObject* Sender, UnicodeString& strMessage, int Progress);
 typedef void __fastcall (__closure *TPhJobEvent) (System::TObject* Sender, EPhJobReason reason, bool Cancel);
+
 // forward declarations
 class PACKAGE TPhImageTool;
 //TPhCustomImage--------------------------------------------------------------------

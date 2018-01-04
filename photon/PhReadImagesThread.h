@@ -35,6 +35,8 @@ private:
 	awpImage* 		m_mosaic;
 	int       		m_tmbWidth;
 	int       		m_tmbHeight;
+	EPhImageFormats m_targetFormat;
+	bool            m_keepSource;
 protected:
 	virtual void __fastcall BeforeDestruction(void);
 	int __fastcall  GetNumSelectedItems();
@@ -54,6 +56,8 @@ public:
 	__property awpImage* Mosaic = {read = m_mosaic};
 	__property int tmbWidth 	= {read = m_tmbWidth, write = m_tmbWidth};
 	__property int tmbHeight    = {read = m_tmbHeight, write = m_tmbHeight};
+	__property EPhImageFormats TargetFormat = {read = m_targetFormat, write = m_targetFormat};
+	__property bool KeepSource = {read = m_keepSource, write = m_keepSource};
 	__property  TPhJobEvent  OnFinish = {read = m_FihishEvent, write =m_FihishEvent};
 };
 

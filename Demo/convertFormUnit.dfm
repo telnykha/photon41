@@ -3,7 +3,7 @@ object convertForm: TconvertForm
   Top = 108
   BorderStyle = bsDialog
   Caption = 'Convert images'
-  ClientHeight = 131
+  ClientHeight = 143
   ClientWidth = 187
   Color = clBtnFace
   ParentFont = True
@@ -26,8 +26,8 @@ object convertForm: TconvertForm
     Caption = 'Output File Format '
   end
   object OKBtn: TButton
-    Left = 12
-    Top = 103
+    Left = 14
+    Top = 109
     Width = 75
     Height = 25
     Caption = 'OK'
@@ -36,8 +36,8 @@ object convertForm: TconvertForm
     TabOrder = 0
   end
   object CancelBtn: TButton
-    Left = 93
-    Top = 103
+    Left = 95
+    Top = 109
     Width = 75
     Height = 25
     Cancel = True
@@ -58,9 +58,6 @@ object convertForm: TconvertForm
       'jpeg'
       'png'
       'tiff'
-      'tga'
-      'bmp '
-      'ppm'
       'awp')
   end
   object CheckBox1: TCheckBox

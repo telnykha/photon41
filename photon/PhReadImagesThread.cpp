@@ -95,6 +95,8 @@ __fastcall  TPhJobThread::TPhJobThread(TList* names, const LPWSTR lpwFolderName,
 	m_tmbWidth  = 128;
 	m_tmbHeight = 128;
 	m_mosaic 	= NULL;
+	m_targetFormat = jpegFormat;
+	m_keepSource = true;
 }
 
 int __fastcall TPhJobThread::GetNumSelectedItems()
@@ -329,8 +331,95 @@ void __fastcall TPhJobThread::DoCopyJob()
 		}
 	 }
 }
+static UnicodeString _getFormatExt(EPhImageFormats format)
+{
+	 switch(format)
+	 {
+		case jpegFormat:
+		   return L".jpg";
+		case pngFormat:
+			return L".png";
+		case tiffFormat:
+			return L".tif";
+		case  tgaFormat:
+			return L".tga";
+		 case  bmpFormat:
+			return L".bmp";
+		 case awpFormat:
+			return L".awp";
+		 case ppmFormat:
+			return L".ppm";
+	 }
+	 return L".jpg";
+}
+
+static bool _needConvertImage(EPhImageFormats format, UnicodeString& strExt)
+{
+	 switch(format)
+	 {
+		case jpegFormat:
+		   return !(strExt == L".jpg" || strExt == L".jpeg");
+		case pngFormat:
+			return strExt != L".png";
+		case tiffFormat:
+			return !(strExt == L".tif" || strExt == L".tiff");
+		case  tgaFormat:
+			return strExt != L".tga";
+		 case  bmpFormat:
+			return strExt != L".bmp";
+		 case awpFormat:
+			return strExt != L".awp";
+		 case ppmFormat:
+			return strExt != L".ppm";
+	 }
+	 return true;
+}
 void __fastcall TPhJobThread::DoConvertJob()
 {
+	int num_selected = this->GetNumSelectedItems();
+	if (num_selected == 0)
+		return;
+
+	int c = 0;
+	for (int i = m_items->Count - 1; i >= 0 ; i--)
+	{
+		//
+		if (this->Terminated)
+			break;
+
+		m_msg = L"Convert images... ";
+		m_msg += IntToStr(c);
+		m_msg += L" of ";
+		m_msg += IntToStr(num_selected);
+		m_progress =  100*(c+1)/num_selected;
+		Synchronize(&this->ProgressHelper);
+		try
+		{
+			SFrameItem* item = (SFrameItem*)(m_items->Items[i]);
+			if (!item->selected)
+				continue;
+			c++;
+			UnicodeString strExt = ExtractFileExt(item->strFileName);
+			if (!_needConvertImage(m_targetFormat, strExt ))
+				continue;
+			TDIBImage* image = new TDIBImage();
+            image->LoadFromFile(item->strFileName);
+			{
+				UnicodeString strOutputFile = ChangeFileExt(item->strFileName, _getFormatExt(m_targetFormat));
+				image->SaveToFile(strOutputFile);
+				delete image;
+				if (!this->m_keepSource)
+					DeleteFile(item->strFileName);
+				item->strFileName = strOutputFile;
+			}
+		}
+		catch(Exception& e)
+		{
+			//todo: if the thread cannot read the image
+			//remove item about it.
+			continue;
+		}
+	 }
 }
 void __fastcall TPhJobThread::DoProcessJob()
 {

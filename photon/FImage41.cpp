@@ -1097,49 +1097,28 @@ bool  __fastcall TPhCustomImage::LoadFromFile(const char* lpFileName)
 }
 
 /*TFCustomImage--------------------------------------------------------------------
-    Function: TFCustomImage::SaveToFile(const AnsiString& FileName)
+	Function: TFCustomImage::SaveToFile(const AnsiString& FileName)
     Purpose:  Save image to file.
     Comments: Default save image in JPEG format
 ---------------------------------------------------------------------------*/
 void __fastcall TPhCustomImage::SaveToFile(const LPWSTR lpwFileName)
 {
-        UnicodeString FileName = lpwFileName;
-        AnsiString strExt = ExtractFileExt(FileName);
-        AnsiString strFileName = FileName;
-        if (strExt == "")
-        {
-            strFileName += ".jpg";
-            strExt = ".jpg";
-        }
+	   UnicodeString FileName = lpwFileName;
 
-        awpImage* img = NULL;
-        TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
-        dib->GetAWPImage(&img);
-        if (img != NULL)
-        {
-            strExt = ExtractFileExt(strFileName);
-            strExt =strExt.LowerCase();
-            if (strExt == ".awp" || strExt == ".jpg")
-                awpSaveImage(strFileName.c_str(), img);
-            else
-            {
-                strExt =strExt.UpperCase();
-                if (strExt == ".TIF" || strExt == ".TIFF")
-                    saveToTiff( strFileName.c_str(), dib );
-                if (strExt == ".PNG")
-                    saveToPng( strFileName.c_str(), dib );
-            }
-            awpReleaseImage(&img);
-            this->m_modified = false;
-            FFileName = strFileName;
-            if (FChange)
-                FChange(this);
-        }
+	   TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
+	   dib->SaveToFile(FileName);
+
+	   this->m_modified = false;
+		FFileName = lpwFileName;
+		if (FChange)
+			FChange(this);
+
+	   return;
 }
 /*TFCustomImage--------------------------------------------------------------------
-    Function: TFCustomImage::LoadFromClipboard()
-    Purpose:  Импортирует изображение из буфера обмена.
-    Comments:
+	Function: TFCustomImage::LoadFromClipboard()
+	Purpose:  Импортирует изображение из буфера обмена.
+	Comments:
 ---------------------------------------------------------------------------*/
 void __fastcall TPhCustomImage::LoadFromClipboard()
 {

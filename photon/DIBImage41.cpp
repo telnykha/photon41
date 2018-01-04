@@ -3,6 +3,7 @@
 #include <Clipbrd.hpp>
 #include "DIBImage41.h"
 #include "ImportRaster.h"
+#include "ExportRaster.h"
 #pragma package(smart_init)
 
 //---------------------------------------------------------------------------
@@ -350,13 +351,33 @@ void __fastcall TDIBImage::LoadFromFile(const UnicodeString Filename)
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TDIBImage::SaveToFile(const UnicodeString Filename)
+void __fastcall TDIBImage::SaveToFile(const UnicodeString FileName)
 {
-    awpImage *image = NULL;
-    GetAWPImage( &image );
-    AnsiString _FileName = Filename;
-    awpSaveImage( _FileName.c_str(), image );
-    awpReleaseImage( &image );
+	awpImage* img = NULL;
+	GetAWPImage(&img);
+	if (img != NULL)
+	{
+		AnsiString _ansi = FileName;
+		UnicodeString strExt = ExtractFileExt(FileName);
+		strExt =strExt.LowerCase();
+		if (strExt == ".awp" || strExt == ".jpg")
+			awpSaveImage(_ansi.c_str(), img);
+		else
+		{
+			strExt =strExt.UpperCase();
+			if (strExt == ".TIF" || strExt == ".TIFF")
+				saveToTiff( _ansi.c_str(), this );
+			if (strExt == ".PNG")
+				saveToPng( _ansi.c_str(), this );
+		}
+		awpReleaseImage(&img);
+	 }
+
+ /*   awpImage *image = NULL;
+	GetAWPImage( &image );
+	AnsiString _FileName = Filename;
+	awpSaveImage( _FileName.c_str(), image );
+	awpReleaseImage( &image );*/
 }
 
 //---------------------------------------------------------------------------
