@@ -58,6 +58,8 @@ __fastcall TPhCustomImage::TPhCustomImage(TComponent* Owner)
 	m_OnCancel   = NULL;
 	m_OnFinish   = NULL;
     m_OnStart    = NULL;
+    m_OnFrame    = NULL;
+    m_OnFrameData = NULL;
 	FStartPoint.x = 0;
 	FStartPoint.y = 0;
 	FSelRect.Left = 0;
@@ -169,6 +171,26 @@ void __fastcall TPhCustomImage::SetSlideShowInterval(unsigned int Value)
 {
     this->m_Timer->Interval = Value;
 }
+
+void __fastcall   TPhCustomImage::SetMosaicSelected(int value)
+{
+    if (!this->Mosaic)
+        return;
+    if (value < 0 || value > this->Frames->Count-1)
+        return;
+    m_idx = value;
+    //
+    int w = floor(sqrt((double)Frames->Count) + 0.5);
+    int y = m_idx / w;
+    int x = m_idx % w;
+
+    TPoint p = this->GetScreenPoint(x*this->m_tWidth + this->m_tWidth/2, y*this->m_tHeight + m_tHeight / 2);
+    m_xx = p.x + 1;
+    m_yy = p.y + 1;
+    Paint();
+}
+
+
 bool __fastcall TPhCustomImage::GetMosaic()
 {
    return this->m_mosaic;
@@ -197,8 +219,10 @@ void __fastcall TPhCustomImage::SetMosaic(bool Value)
         m_mosaic = false;
     }
 
-      if (FChange)
-          FChange(this);
+    if (FMosaic)
+        FMosaic(this);
+    if (FChange)
+        FChange(this);
 }
 
 
@@ -910,6 +934,9 @@ void __fastcall TPhCustomImage::Paint(void)
 		DrawSelRect(bm);
         DrawSelectedItems(bm, m_xx, m_yy);
         // todo: add drawing
+        if (PhTool != NULL)
+          PhTool->Draw(bm->Canvas);
+
 	   dib->ClosePixels();
 	   Canvas->CopyMode = cmSrcCopy;
 	   Canvas->Draw(0,0,bm);
@@ -1016,7 +1043,7 @@ TPoint   __fastcall         TPhCustomImage::GetScreenPoint(int x, int y)
         dy = (Height - GetHeightToDisplay()) / 2;
 
     result.x    =  (x - Corner.x)*FScale + dx;
-    result.y    = (y - Corner.y)*FScale + dy;//FStartPoint.y + FScale*ImageR.Top;//GetImageY( ScreenR.Top );
+    result.y    =  (y - Corner.y)*FScale + dy;//FStartPoint.y + FScale*ImageR.Top;//GetImageY( ScreenR.Top );
 
     return result;
 }
@@ -1083,10 +1110,31 @@ bool  __fastcall TPhCustomImage::LoadFromFile(const char* lpFileName)
       catch(Exception& e)
       {
         ShowMessage(e.Message);
+        return false;
       }
 
       // setup filename
       FFileName = lpFileName;
+
+      if (m_OnFrame)
+      {
+		  TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
+          m_OnFrame(this, dib);
+      }
+
+      if (m_OnFrameData)
+      {
+		  TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
+          awpImage* img = NULL;
+          dib->GetAWPImage(&img);
+          if (img != NULL)
+          {
+            //
+            m_OnFrameData(this, img->sSizeX, img->sSizeY, img->bChannels, (unsigned char*)img->pPixels);
+            dib->SetAWPImage(img);
+            _AWP_SAFE_RELEASE_(img)
+          }
+      }
 
       if (FAfterOpen)
           FAfterOpen(this);
@@ -1271,7 +1319,7 @@ void __fastcall 	TPhCustomImage::DblClick(void)
    {
        if (Mosaic && this->m_idx >= 0 && this->m_idx < this->Frames->Count)
        {
-            this->m_mosaic = false;
+            Mosaic = false;
             Frames->GoFrame(m_idx);
        }
        else
@@ -1492,7 +1540,7 @@ void            __fastcall TPhCustomImage::DrawSelectedItems(Graphics::TBitmap* 
 			y = i / w;
 			x *= m_tWidth;
 			y *= m_tHeight;
-
+/*
 			rect.init(x,y,x+m_tWidth,y+m_tHeight);
 			rect1 = GetScreenRect(rect);
    			cnv->Pen->Width = 8;
@@ -1503,7 +1551,7 @@ void            __fastcall TPhCustomImage::DrawSelectedItems(Graphics::TBitmap* 
             rect1.Inflate(-15, -15);
 			cnv->Pen->Width = 2;
             cnv->Ellipse(rect1);
- //			cnv->Rectangle(rect1);
+ 			cnv->Rectangle(rect1);*/
 		}
 	}
 
@@ -1592,6 +1640,26 @@ void __fastcall TPhCustomImage::Cancel()
 {
     Frames->Cancel();
 }
+
+void __fastcall TPhCustomImage::SetImageData(int w, int h, int c, unsigned char* data)
+{
+    awpImage img;
+    img.nMagic = AWP_MAGIC2;
+    img.sSizeX = w;
+    img.sSizeY = h;
+    img.bChannels = c;
+    img.dwType = AWP_BYTE;
+    img.pPixels = data;
+    if (m_OnFrameData != NULL)
+    {
+        m_OnFrameData(this, w,h,c,data);
+    }
+
+    TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
+    dib->SetAWPImage(&img);
+    BestFit();
+}
+
 //=============================================================================
 __fastcall TPhImage::TPhImage(HWND Parent):TPhCustomImage(Parent)
 {

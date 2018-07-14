@@ -1,5 +1,4 @@
 //---------------------------------------------------------------------------
-
 #ifndef PhLenzToolH
 #define PhLenzToolH
 //---------------------------------------------------------------------------
@@ -26,5 +25,4 @@ public:
     virtual void MouseMove(int X, int Y, TShiftState Shift);
 	virtual void Reset();
 };
-
 #endif

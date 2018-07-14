@@ -156,6 +156,10 @@
             <DependentOn>photon\PhReadImagesThread.h</DependentOn>
             <BuildOrder>21</BuildOrder>
         </CppCompile>
+        <CppCompile Include="photon\PhRulerTool.cpp">
+            <DependentOn>photon\PhRulerTool.h</DependentOn>
+            <BuildOrder>22</BuildOrder>
+        </CppCompile>
         <CppCompile Include="photon\PhSelectRectTool.cpp">
             <DependentOn>photon\PhSelectRectTool.h</DependentOn>
             <BuildOrder>15</BuildOrder>

@@ -24,6 +24,8 @@ const int crZoom2RectCursor = 5;
 typedef enum {readJob, copyJob, moveJob, deleteJob, convertJob, processJob} EPhJobReason;
 typedef void __fastcall (__closure *TPhProgressEvent)(System::TObject* Sender, UnicodeString& strMessage, int Progress);
 typedef void __fastcall (__closure *TPhJobEvent) (System::TObject* Sender, EPhJobReason reason, bool Cancel);
+typedef void __fastcall (__closure *TPhFrameEvent)(System::TObject* Sender, TGraphic* data);
+typedef void __fastcall (__closure *TPhFrameDataEvent)(System::TObject* Sender, int w, int h, int c, BYTE* data);
 
 // forward declarations
 class PACKAGE TPhImageTool;
@@ -40,11 +42,14 @@ private:
 	TNotifyEvent                FScaleChange;
 	TNotifyEvent                FPosChange;
 	TNotifyEvent                FChange;
+    TNotifyEvent                FMosaic;
 	TNotifyEvent            	FToolChange;
     TPhProgressEvent  			m_OnProgress;
     TNotifyEvent       			m_OnStart;
     TPhJobEvent		       		m_OnFinish;
 	TNotifyEvent       			m_OnCancel;
+    TPhFrameEvent               m_OnFrame;
+    TPhFrameDataEvent           m_OnFrameData;
 protected:
     TTimer*                     m_Timer;
 	TList*                  	m_ph_tools;
@@ -99,6 +104,8 @@ protected:
 
     bool __fastcall 			GetMosaic();
     void __fastcall 			SetMosaic(bool Value);
+
+    void __fastcall             SetMosaicSelected(int value);
 
 
     unsigned int __fastcall 	GetSlideShowInterval();
@@ -184,6 +191,7 @@ public:
     void __fastcall             Copy(const LPWSTR lpwFolderName);
     void __fastcall             Move(const LPWSTR lpwFolderName);
 
+    void __fastcall             SetImageData(int w, int h, int c, unsigned char* data);
 
 	// Public properties
 	__property  AnsiString      AFileName = {read = FFileName, write = FFileName};
@@ -199,6 +207,7 @@ public:
 	__property float            Scale = {read = GetScale};
 	__property TPoint           Corner = {read = GetCorner};
 	__property TRect            VisibleArea = {read = GetVisibleArea};
+    __property int              MosaicSelected = {read = m_idx, write = SetMosaicSelected};
    // inherited properties
    __property Canvas;
 	__property TPhImageTool*   PhTool = {read = GetSelectedTool};
@@ -206,7 +215,7 @@ __published:
    //
 	__property int ThumbWidht      	   = {read  = m_tWidth,  write = m_tWidth};
 	__property int ThumbHeight     	   = {read = m_tHeight, write = m_tHeight};
-    __property  unsigned        SlideShowInterval = {read = GetSlideShowInterval, write = SetSlideShowInterval};
+    __property  unsigned  SlideShowInterval = {read = GetSlideShowInterval, write = SetSlideShowInterval};
 
    // наследуемые свойства
 	__property Align;
@@ -239,11 +248,14 @@ __published:
     __property TNotifyEvent     OnScaleChange = {read = FScaleChange, write = FScaleChange};
     __property TNotifyEvent     OnPane = {read = FPosChange, write = FPosChange};
     __property TNotifyEvent     OnChange = {read = FChange, write = FChange};
+    __property TNotifyEvent     OnMosaic = {read = FMosaic, write = FMosaic};
     __property TNotifyEvent     OnToolChange = {read = FToolChange, write = FToolChange};
     __property TPhProgressEvent OnProgress = {read = m_OnProgress, write = m_OnProgress};
 	__property TNotifyEvent 	OnStart = {read = m_OnStart, write = m_OnStart};
 	__property TPhJobEvent	 	OnFinish = {read = m_OnFinish, write = m_OnFinish};
 	__property TNotifyEvent 	OnCancel = {read = m_OnCancel, write = m_OnCancel};
+    __property TPhFrameEvent    OnFrame  = {read = m_OnFrame, write = m_OnFrame};
+    __property TPhFrameDataEvent OnFrameData = {read = m_OnFrameData, write = m_OnFrameData};
 };
 //-------------------------- export TPhImage -------------------------------------
 class PACKAGE TPhImage : public TPhCustomImage
