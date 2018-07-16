@@ -53,17 +53,17 @@
         <ProjectType>CppVCLApplication</ProjectType>
         <PackageImports>inet;$(PackageImports)</PackageImports>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
-        <AllPackageLibs>rtl.lib;vcl.lib;photon41.lib</AllPackageLibs>
+        <AllPackageLibs>rtl.lib;vcl.lib;photon41.lib;VclSmp.lib;vclx.lib;Tee925.lib;vclimg.lib</AllPackageLibs>
         <_TCHARMapping>wchar_t</_TCHARMapping>
         <Multithreaded>true</Multithreaded>
         <Icon_MainIcon>$(BDS)\bin\cbuilder_PROJECTICON.ico</Icon_MainIcon>
         <UWP_CppLogo44>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_44.png</UWP_CppLogo44>
         <UWP_CppLogo150>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_150.png</UWP_CppLogo150>
         <SanitizedProjectName>Ceramica</SanitizedProjectName>
-        <IncludePath>..\photon41\photon\;$(PHOTON41);$(AWP);$(TIFF);$(PNG);$(ZLIB);$(LF);$(TINY);..\photon41\photon\awpcvvideo\;$(IncludePath)</IncludePath>
+        <IncludePath>..\common\;..\photon41\photon\;$(PHOTON41);$(AWP);$(TIFF);$(PNG);$(ZLIB);$(LF);$(TINY);..\photon41\photon\awpcvvideo\;$(IncludePath)</IncludePath>
         <VerInfo_Locale>1049</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-        <ILINK_LibraryPath>..\photon41\photon\;C:\_alt\photon41\photon\awpcvvideo;$(PHOTON41)\lib\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+        <ILINK_LibraryPath>..\common\;..\photon41\photon\;C:\_alt\photon41\photon\awpcvvideo;$(PHOTON41)\lib\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <PackageImports>appanalytics;bcbsmp;bindcomp;bindcompfmx;bindcompvcl;bindengine;CustomIPTransport;dbrtl;dsnap;fmx;fmxase;fmxdae;fmxobj;FMXTee925;FMXTeeDB925;FMXTeeImport925;FMXTeeLanguage925;FMXTeePro925;FmxTeeUI925;FMXTree25;IndyCore;IndyProtocols;IndySystem;photon;photon41;rtl;svn;Tee925;TeeDB925;TeeGL925;TeeImage925;TeeImport925;TeeLanguage925;TeeMaker125;TeePro925;TeeTree2D25Tee9;TeeUI925;TeeWorld925;tethering;vcl;vclactnband;vcldb;vcldsnap;vclie;vclimg;VclSmp;vcltouch;vclwinx;vclx;xmlrtl;$(PackageImports)</PackageImports>
@@ -100,9 +100,12 @@
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppEnableHighDPI>true</AppEnableHighDPI>
-        <LinkPackageImports>rtl.bpi;vcl.bpi;photon41.bpi</LinkPackageImports>
+        <LinkPackageImports>rtl.bpi;vcl.bpi;photon41.bpi;VclSmp.bpi;vclx.bpi;Tee925.bpi;vclimg.bpi</LinkPackageImports>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
+        <PostBuildEvent><![CDATA[copy awpcvvideo.dll .\$(Platform)\$(Config)\awpcvvideo.dll
+$(PostBuildEvent)]]></PostBuildEvent>
+        <Debugger_DebugSourcePath>C:\_alt\awpipl2\src\;$(Debugger_DebugSourcePath)</Debugger_DebugSourcePath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <Defines>NDEBUG;$(Defines)</Defines>
@@ -112,6 +115,11 @@
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppEnableHighDPI>true</AppEnableHighDPI>
         <BCC_PCHName_Clang>CeramicaPCH1.h</BCC_PCHName_Clang>
+        <PostBuildEvent><![CDATA[copy awpcvvideo.dll .\$(Platform)\$(Config)\awpcvvideo.dll
+$(PostBuildEvent)]]></PostBuildEvent>
+        <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
+        <VerInfo_Locale>1033</VerInfo_Locale>
+        <LinkPackageImports>rtl.bpi;vcl.bpi;photon41.bpi;VclSmp.bpi;vclx.bpi;Tee925.bpi;vclimg.bpi</LinkPackageImports>
     </PropertyGroup>
     <ItemGroup>
         <CppCompile Include="Ceramica.cpp">
@@ -142,6 +150,10 @@
         <CppCompile Include="PhVideo.cpp">
             <DependentOn>PhVideo.h</DependentOn>
             <BuildOrder>4</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\common\Bitmap2Dib.cpp">
+            <DependentOn>..\common\Bitmap2Dib.h</DependentOn>
+            <BuildOrder>7</BuildOrder>
         </CppCompile>
         <FormResources Include="MainUnit.dfm"/>
         <BuildConfiguration Include="Release">
@@ -179,4 +191,20 @@
     </ProjectExtensions>
     <Import Project="$(BDS)\Bin\CodeGear.Cpp.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Cpp.Targets')"/>
     <Import Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj" Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')"/>
+    <PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='Win32'">
+        <PreBuildEvent/>
+        <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
+        <PreLinkEvent/>
+        <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
+        <PostBuildEvent>copy awpcvvideo.dll .\$(Platform)\$(Config)\awpcvvideo.dll</PostBuildEvent>
+        <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='Win32'">
+        <PreBuildEvent/>
+        <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
+        <PreLinkEvent/>
+        <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
+        <PostBuildEvent>copy awpcvvideo.dll .\$(Platform)\$(Config)\awpcvvideo.dll</PostBuildEvent>
+        <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
+    </PropertyGroup>
 </Project>

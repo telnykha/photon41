@@ -28,11 +28,13 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
 {
     m_videoSource = NULL;
     m_modeAction  = NULL;
+    m_buffer = new TLFBuffer(32, 0);
 }
 
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::fileExitActionExecute(TObject *Sender)
 {
+    delete m_buffer;
     Close();
 }
 #define _MODE_ENABLED_(v) \
@@ -285,6 +287,7 @@ void __fastcall TMainForm::FormCreate(TObject *Sender)
 {
 	SetMode(modeHandAction);
     SetSource(NULL);
+    this->LoadParams();
 }
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::SetSource(TPhMediaSource* source)
@@ -319,8 +322,11 @@ void __fastcall TMainForm::PhImage1FrameData(TObject *Sender, int w, int h, int 
           BYTE *data)
 {
     if (m_videoSource != NULL)
+    {
 		StatusBar1->Panels->Items[1]->Text = L"Кадр "  + IntToStr( m_videoSource->CurrentFrame) +
    		" of " + IntToStr(m_videoSource->NumFrames);
+	    StatusBar1->Panels->Items[3]->Text = L"Изображение: " + IntToStr(w) + L":" + IntToStr(h) + L":" + IntToStr(c);
+    }
     else
 		StatusBar1->Panels->Items[1]->Text = L" ";
 
@@ -458,23 +464,18 @@ void __fastcall TMainForm::DrawRuler(awpImage* img)
     awpPoint p1;
     awpPoint p2;
 
-    p1.X = sx;
-    p1.Y = h - sy;
-    p2.X = p1.X + 140;
-    p2.Y = p1.Y;
-    awpDrawCLine(img, p1, p2, 0,255,0, 3);
+    int _length = this->m_c.ValuePix(2);
+    int _delta  = 20;
 
-    p1.X = sx;
-    p1.Y = h - sy - 10;
-    p2.X = p1.X;
-    p2.Y = h - sy + 10;
-    awpDrawCLine(img, p1, p2, 0,255,0, 3);
+    awpRect rect;
+    rect.left = sx;
+    rect.top  = h - sy - 20;
+    rect.right = sx + _length;
+    rect.bottom = h - sy;
 
-    p1.X = sx + 140;
-    p1.Y = h - sy - 10;
-    p2.X = p1.X;
-    p2.Y = h - sy + 10;
-    awpDrawCLine(img, p1, p2, 0,255,0, 3);
+    awpDrawCRect(img, &rect, 0,255,0, 3);
+    rect.right = sx + _length / 2;
+   	awpFillRect(img, &rect, 1, 255);
 }
 void __fastcall TMainForm::FormResize(TObject *Sender)
 {
@@ -483,16 +484,150 @@ void __fastcall TMainForm::FormResize(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::ShowResult()
 {
-    Label5->Caption = FormatFloat("000.00", m_c.Value(m_engine.diam));
-    Label6->Caption = FormatFloat("000.00", m_c.Value(m_engine.major));
-    Label7->Caption = FormatFloat("000.00", m_c.Value(m_engine.minor));
-    Label8->Caption = FormatFloat("000.00", m_c.Value(m_engine.angle));
-    Label10->Caption = FormatFloat("000.00", m_c.Value(m_engine.center.X)) + L":" + FormatFloat("000.00", m_c.Value(m_engine.center.Y));
-}
+    m_buffer->Push(m_c.ValueMM(m_engine.diam));
 
+    Label5->Caption = FormatFloat("000.00  mm", m_c.ValueMM(m_engine.diam));
+    Label6->Caption = FormatFloat("000.00  mm", m_c.ValueMM(m_engine.major));
+    Label7->Caption = FormatFloat("000.00  mm", m_c.ValueMM(m_engine.minor));
+    Label8->Caption = FormatFloat("000.00  grad", m_c.ValueMM(m_engine.angle));
+    Label10->Caption = FormatFloat("000.00", m_c.ValueMM(m_engine.center.X)) + L":" + FormatFloat("000.00", m_c.ValueMM(m_engine.center.Y));
+    Series1->Clear();
+    for (int i = 0; i < m_buffer->GetSize(); i++)
+        Series1->Add(m_buffer->GetValue(i));
+}
+//---------------------------------------------------------------------------
 void __fastcall TMainForm::viewSourceImageActionExecute(TObject *Sender)
 {
     viewSourceImageAction->Checked = !viewSourceImageAction->Checked;
+}
+//---------------------------------------------------------------------------
+void  __fastcall TMainForm::SaveParams()
+{
+	UnicodeString str = GetEnvironmentVariable(L"APPDATA");
+    str += L"\\ceramica\\";
+    if (!DirectoryExists(str))
+        CreateDir(str);
+    str += L"ceramica.ini";
+    AnsiString _ansi = str;
+    FILE* f = fopen(_ansi.c_str(), "w+t");
+
+    // коэф. масштабирования
+    float dv = m_c.alfa;
+    fprintf(f, "%f\n", dv);
+    // использовать ли буферизацию
+    int  iv = (int)CheckBox1->Checked;
+    fprintf(f, "%i\n", iv);
+    // размер буфера
+    iv = SpinEdit1->Value;
+    fprintf(f, "%i\n", iv);
+    // путь для записи архива
+    _ansi = Edit2->Text;
+    fprintf(f, "%s\n", _ansi.c_str());
+    // скважность записи
+    iv = SpinEdit2->Value;
+    fprintf(f, "%i\n", iv);
+    // время экспозиции
+    iv = StrToInt(Edit3->Text);
+    fprintf(f, "%i\n", iv);
+
+    fclose(f);
+
+}
+//---------------------------------------------------------------------------
+void  __fastcall TMainForm::LoadParams()
+{
+	UnicodeString str = GetEnvironmentVariable(L"APPDATA");
+    str += L"\\ceramica\\";
+    UnicodeString FileName = str;
+    FileName += L"ceramica.ini";
+    if (DirectoryExists(str))
+    {
+        if (FileExists(FileName))
+        {
+            AnsiString _ansi = FileName;
+            FILE* f = fopen(_ansi.c_str(), "r+t");
+            float dv = 0;
+            int   iv = 0;
+            // калибровка
+            fscanf(f, "%f\n", &dv);
+            m_c.alfa = dv;
+            Label15->Caption = L"В одном мм " + IntToStr(m_c.ValuePix(1)) + L"пискелей";
+            // использование буферизации
+            fscanf(f, "%i\n",&iv);
+            CheckBox1->Checked = (bool)iv;
+            // размер буфера
+            fscanf(f, "%i\n", &iv);
+            SpinEdit1->Value = iv;
+            // путь к архиву
+            char buf[1024];
+            fscanf(f, "%s\n", buf);
+            _ansi = buf;
+            Edit2->Text = _ansi;
+            // скважность записи
+            fscanf(f, "%i\n", &iv);
+            SpinEdit2->Value = iv;
+            // время экспозиции
+            fscanf(f, "%i\n", &iv);
+            Edit3->Text = IntToStr(iv);
+
+
+/*
+            fscanf(f, "%i\n", &value);
+            SpinEdit1->Value = value;
+            fscanf(f, "%i\n", &value);
+            SpinEdit2->Value = value;
+            fscanf(f, "%i\n", &value);
+            SpinEdit3->Value = value;
+            fscanf(f, "%i\n", &value);
+            SpinEdit4->Value = value;
+*/
+            fclose(f);
+        }
+        else
+            SaveParams();
+    }
+    else
+        SaveParams();
+}
+
+
+void __fastcall TMainForm::CheckBox1Click(TObject *Sender)
+{
+    SaveParams();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::SpinEdit1Change(TObject *Sender)
+{
+    SaveParams();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::Edit2Change(TObject *Sender)
+{
+	SaveParams();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::SpinEdit2Change(TObject *Sender)
+{
+	SaveParams();
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::Edit3Change(TObject *Sender)
+{
+    int v;
+    if (TryStrToInt(Edit3->Text, v))
+	    SaveParams();
+    else
+        Edit3->Text = m_e3ov;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::Edit3Enter(TObject *Sender)
+{
+    m_e3ov = StrToInt(Edit3->Text);
 }
 //---------------------------------------------------------------------------
 

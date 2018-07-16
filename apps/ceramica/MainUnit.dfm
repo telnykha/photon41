@@ -2,8 +2,8 @@ object MainForm: TMainForm
   Left = 0
   Top = 0
   Caption = #1050#1077#1088#1072#1084#1080#1082#1072' '
-  ClientHeight = 442
-  ClientWidth = 647
+  ClientHeight = 542
+  ClientWidth = 784
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -20,8 +20,8 @@ object MainForm: TMainForm
   TextHeight = 13
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 423
-    Width = 647
+    Top = 523
+    Width = 784
     Height = 19
     Panels = <
       item
@@ -39,21 +39,21 @@ object MainForm: TMainForm
         Width = 200
       end
       item
-        Text = #1057#1090#1072#1090#1091#1089':'
+        Text = #1048#1079#1086#1073#1088#1072#1078#1077#1085#1080#1077':'
         Width = 50
       end>
   end
   object Panel2: TPanel
     Left = 0
     Top = 0
-    Width = 647
-    Height = 423
+    Width = 784
+    Height = 523
     Align = alClient
     TabOrder = 1
     object Panel3: TPanel
       Left = 1
-      Top = 343
-      Width = 645
+      Top = 443
+      Width = 782
       Height = 79
       Align = alBottom
       TabOrder = 0
@@ -257,12 +257,20 @@ object MainForm: TMainForm
         Layout = blGlyphTop
         NumGlyphs = 4
       end
+      object GroupBox3: TGroupBox
+        Left = 526
+        Top = 1
+        Width = 255
+        Height = 77
+        Align = alRight
+        TabOrder = 0
+      end
     end
     object PhImage1: TPhImage
       Left = 1
       Top = 1
-      Width = 407
-      Height = 342
+      Width = 526
+      Height = 442
       ThumbWidht = 128
       ThumbHeight = 128
       SlideShowInterval = 500
@@ -273,51 +281,75 @@ object MainForm: TMainForm
       OnFrameData = PhImage1FrameData
     end
     object Panel1: TPanel
-      Left = 408
+      Left = 527
       Top = 1
-      Width = 238
-      Height = 342
+      Width = 256
+      Height = 442
       Align = alRight
       TabOrder = 2
       object GroupBox1: TGroupBox
         Left = 1
         Top = 1
-        Width = 236
-        Height = 160
+        Width = 254
+        Height = 111
         Align = alTop
         Caption = #1048#1079#1084#1077#1088#1077#1085#1085#1099#1077' '#1079#1085#1072#1095#1077#1085#1080#1103
         TabOrder = 0
         object Label1: TLabel
           Left = 5
-          Top = 37
-          Width = 67
+          Top = 23
+          Width = 55
           Height = 13
-          Caption = #1044#1080#1072#1084#1077#1090#1088' ('#1084#1084')'
+          Caption = #1044#1080#1072#1084#1077#1090#1088':'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
         end
         object Label2: TLabel
           Left = 5
-          Top = 61
-          Width = 111
+          Top = 39
+          Width = 105
           Height = 13
-          Caption = #1041#1086#1083#1100#1096#1072#1103' '#1087#1086#1083#1091#1086#1089#1100' ('#1084#1084')'
+          Caption = #1041#1086#1083#1100#1096#1072#1103' '#1087#1086#1083#1091#1086#1089#1100':'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
         end
         object Label3: TLabel
           Left = 5
-          Top = 87
-          Width = 99
+          Top = 57
+          Width = 92
           Height = 13
-          Caption = #1052#1072#1083#1072#1103' '#1087#1086#1083#1091#1086#1089#1100' ('#1084#1084')'
+          Caption = #1052#1072#1083#1072#1103' '#1087#1086#1083#1091#1086#1089#1100':'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
         end
         object Label4: TLabel
           Left = 5
-          Top = 113
-          Width = 104
+          Top = 74
+          Width = 83
           Height = 13
-          Caption = #1059#1075#1086#1083' '#1085#1072#1082#1083#1086#1085#1072' ('#1075#1088#1072#1076')'
+          Caption = #1059#1075#1086#1083' '#1085#1072#1082#1083#1086#1085#1072':'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
         end
         object Label5: TLabel
           Left = 132
-          Top = 31
+          Top = 17
           Width = 55
           Height = 19
           Caption = '000.00'
@@ -330,7 +362,7 @@ object MainForm: TMainForm
         end
         object Label6: TLabel
           Left = 132
-          Top = 56
+          Top = 34
           Width = 55
           Height = 19
           Caption = '000.00'
@@ -343,7 +375,7 @@ object MainForm: TMainForm
         end
         object Label7: TLabel
           Left = 132
-          Top = 82
+          Top = 52
           Width = 55
           Height = 19
           Caption = '000.00'
@@ -356,7 +388,7 @@ object MainForm: TMainForm
         end
         object Label8: TLabel
           Left = 132
-          Top = 108
+          Top = 69
           Width = 55
           Height = 19
           Caption = '000.00'
@@ -369,14 +401,20 @@ object MainForm: TMainForm
         end
         object Label9: TLabel
           Left = 5
-          Top = 138
-          Width = 96
+          Top = 90
+          Width = 115
           Height = 13
           Caption = #1062#1077#1085#1090#1088' '#1084#1072#1089#1089' ('#1084#1084':'#1084#1084')'
+          Font.Charset = DEFAULT_CHARSET
+          Font.Color = clWindowText
+          Font.Height = -11
+          Font.Name = 'Tahoma'
+          Font.Style = [fsBold]
+          ParentFont = False
         end
         object Label10: TLabel
           Left = 132
-          Top = 137
+          Top = 89
           Width = 92
           Height = 14
           Caption = '000.00:000.00'
@@ -390,47 +428,269 @@ object MainForm: TMainForm
       end
       object GroupBox2: TGroupBox
         Left = 1
-        Top = 161
-        Width = 236
-        Height = 180
+        Top = 213
+        Width = 254
+        Height = 228
         Align = alClient
         Caption = #1055#1072#1088#1072#1084#1077#1090#1088#1099' '#1072#1083#1075#1086#1088#1080#1090#1084#1072
         TabOrder = 1
-        object Label11: TLabel
-          Left = 8
-          Top = 24
-          Width = 68
-          Height = 13
-          Caption = #1050#1072#1083#1080#1073#1088#1086#1074#1082#1072': '
-        end
         object Label12: TLabel
-          Left = 8
-          Top = 40
+          Left = 4
+          Top = 39
           Width = 77
           Height = 13
           Caption = #1044#1083#1080#1085#1072' ('#1087#1080#1082#1089') ='
         end
         object Label13: TLabel
-          Left = 91
-          Top = 40
+          Left = 89
+          Top = 39
           Width = 40
           Height = 13
           Caption = '0000.00'
         end
         object Label14: TLabel
-          Left = 208
-          Top = 40
+          Left = 206
+          Top = 39
           Width = 16
           Height = 13
           Caption = 'mm'
         end
+        object Label15: TLabel
+          Left = 5
+          Top = 20
+          Width = 131
+          Height = 13
+          Caption = #1042' '#1086#1076#1085#1086#1084' '#1084#1084' ..... '#1087#1080#1089#1082#1077#1083#1077#1081' '
+        end
+        object Label16: TLabel
+          Left = 5
+          Top = 104
+          Width = 76
+          Height = 13
+          Caption = #1056#1072#1079#1084#1077#1088' '#1073#1091#1092#1077#1088#1072
+        end
+        object Label17: TLabel
+          Left = 160
+          Top = 104
+          Width = 40
+          Height = 13
+          Caption = #1082#1072#1076#1088#1086#1074' '
+        end
+        object Label18: TLabel
+          Left = 5
+          Top = 141
+          Width = 38
+          Height = 13
+          Caption = #1040#1088#1093#1080#1074': '
+        end
+        object Bevel1: TBevel
+          Left = 5
+          Top = 127
+          Width = 221
+          Height = 9
+          Shape = bsTopLine
+        end
+        object Label19: TLabel
+          Left = 5
+          Top = 168
+          Width = 106
+          Height = 13
+          Caption = #1057#1082#1074#1072#1078#1085#1086#1089#1090#1100' '#1079#1072#1087#1080#1089#1080': '
+        end
+        object Label20: TLabel
+          Left = 192
+          Top = 167
+          Width = 13
+          Height = 13
+          Caption = 'ms'
+        end
+        object Bevel2: TBevel
+          Left = 4
+          Top = 193
+          Width = 221
+          Height = 9
+          Shape = bsTopLine
+        end
+        object Bevel3: TBevel
+          Left = 5
+          Top = 67
+          Width = 221
+          Height = 9
+          Shape = bsTopLine
+        end
+        object Label11: TLabel
+          Left = 5
+          Top = 202
+          Width = 93
+          Height = 13
+          Caption = #1042#1088#1077#1084#1103' '#1101#1082#1089#1087#1086#1079#1080#1094#1080#1080' '
+        end
+        object Label21: TLabel
+          Left = 192
+          Top = 203
+          Width = 13
+          Height = 13
+          Caption = 'ms'
+        end
         object Edit1: TEdit
-          Left = 137
-          Top = 37
+          Left = 135
+          Top = 36
           Width = 56
           Height = 21
           TabOrder = 0
           Text = '10'
+        end
+        object CheckBox1: TCheckBox
+          Left = 5
+          Top = 80
+          Width = 180
+          Height = 17
+          Caption = #1048#1089#1087#1086#1083#1100#1079#1086#1074#1072#1090#1100' '#1073#1091#1092#1077#1088#1080#1079#1072#1094#1080#1102
+          TabOrder = 1
+          OnClick = CheckBox1Click
+        end
+        object SpinEdit1: TSpinEdit
+          Left = 90
+          Top = 101
+          Width = 57
+          Height = 22
+          MaxValue = 20
+          MinValue = 1
+          TabOrder = 2
+          Value = 10
+          OnChange = SpinEdit1Change
+        end
+        object Button1: TButton
+          Left = 192
+          Top = 136
+          Width = 33
+          Height = 25
+          Caption = '...'
+          TabOrder = 3
+        end
+        object Edit2: TEdit
+          Left = 49
+          Top = 138
+          Width = 136
+          Height = 21
+          Enabled = False
+          TabOrder = 4
+          Text = 'c:\archive\'
+          OnChange = Edit2Change
+        end
+        object SpinEdit2: TSpinEdit
+          Left = 115
+          Top = 165
+          Width = 70
+          Height = 22
+          MaxValue = 5000
+          MinValue = 500
+          TabOrder = 5
+          Value = 1000
+          OnChange = SpinEdit2Change
+        end
+        object Edit3: TEdit
+          Left = 115
+          Top = 200
+          Width = 70
+          Height = 21
+          TabOrder = 6
+          Text = '10'
+          OnChange = Edit3Change
+          OnEnter = Edit3Enter
+        end
+      end
+      object Chart1: TChart
+        Left = 1
+        Top = 112
+        Width = 254
+        Height = 101
+        BackWall.Brush.Gradient.Direction = gdBottomTop
+        BackWall.Brush.Gradient.EndColor = clWhite
+        BackWall.Brush.Gradient.StartColor = 15395562
+        BackWall.Brush.Gradient.Visible = True
+        BackWall.Transparent = False
+        Foot.Font.Color = clBlue
+        Foot.Font.Name = 'Verdana'
+        Gradient.Direction = gdBottomTop
+        Gradient.EndColor = clWhite
+        Gradient.MidColor = 15395562
+        Gradient.StartColor = 15395562
+        Gradient.Visible = True
+        LeftWall.Color = 14745599
+        Legend.Font.Name = 'Verdana'
+        Legend.Shadow.Transparency = 0
+        Legend.Visible = False
+        RightWall.Color = 14745599
+        Title.Font.Name = 'Verdana'
+        Title.Visible = False
+        BottomAxis.Axis.Color = 4210752
+        BottomAxis.Grid.Color = 11119017
+        BottomAxis.LabelsFormat.Font.Name = 'Verdana'
+        BottomAxis.TicksInner.Color = 11119017
+        BottomAxis.Title.Caption = 'qq'
+        BottomAxis.Title.Font.Name = 'Verdana'
+        BottomAxis.Visible = False
+        DepthAxis.Axis.Color = 4210752
+        DepthAxis.Grid.Color = 11119017
+        DepthAxis.LabelsFormat.Font.Name = 'Verdana'
+        DepthAxis.TicksInner.Color = 11119017
+        DepthAxis.Title.Font.Name = 'Verdana'
+        DepthTopAxis.Axis.Color = 4210752
+        DepthTopAxis.Grid.Color = 11119017
+        DepthTopAxis.LabelsFormat.Font.Name = 'Verdana'
+        DepthTopAxis.TicksInner.Color = 11119017
+        DepthTopAxis.Title.Font.Name = 'Verdana'
+        LeftAxis.Automatic = False
+        LeftAxis.AutomaticMaximum = False
+        LeftAxis.AutomaticMinimum = False
+        LeftAxis.Axis.Color = 4210752
+        LeftAxis.Grid.Color = 11119017
+        LeftAxis.LabelsFormat.Font.Name = 'Verdana'
+        LeftAxis.Maximum = 15.000000000000000000
+        LeftAxis.Minimum = 5.000000000000000000
+        LeftAxis.TicksInner.Color = 11119017
+        LeftAxis.Title.Font.Name = 'Verdana'
+        RightAxis.Automatic = False
+        RightAxis.AutomaticMaximum = False
+        RightAxis.AutomaticMinimum = False
+        RightAxis.Axis.Color = 4210752
+        RightAxis.Grid.Color = 11119017
+        RightAxis.LabelsFormat.Font.Name = 'Verdana'
+        RightAxis.Maximum = 15.000000000000000000
+        RightAxis.TicksInner.Color = 11119017
+        RightAxis.Title.Font.Name = 'Verdana'
+        TopAxis.Automatic = False
+        TopAxis.AutomaticMaximum = False
+        TopAxis.AutomaticMinimum = False
+        TopAxis.Axis.Color = 4210752
+        TopAxis.Grid.Color = 11119017
+        TopAxis.LabelsFormat.Font.Name = 'Verdana'
+        TopAxis.TicksInner.Color = 11119017
+        TopAxis.Title.Font.Name = 'Verdana'
+        TopAxis.Visible = False
+        View3D = False
+        Zoom.Allow = False
+        Align = alTop
+        BevelOuter = bvNone
+        TabOrder = 2
+        DefaultCanvas = 'TGDIPlusCanvas'
+        PrintMargins = (
+          15
+          17
+          15
+          17)
+        ColorPaletteIndex = 13
+        object Series1: TFastLineSeries
+          Marks.Callout.Length = 20
+          SeriesColor = clRed
+          LinePen.Color = clRed
+          LinePen.Width = 4
+          TreatNulls = tnDontPaint
+          XValues.Name = 'X'
+          XValues.Order = loAscending
+          YValues.Name = 'Y'
+          YValues.Order = loNone
         end
       end
     end

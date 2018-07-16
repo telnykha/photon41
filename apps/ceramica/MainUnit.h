@@ -20,6 +20,12 @@
 #include "PhPaneTool.h"
 #include "CeramUtils.h"
 #include "awpipl.h"
+#include <Vcl.Samples.Spin.hpp>
+#include <VCLTee.Chart.hpp>
+#include <VCLTee.Series.hpp>
+#include <VclTee.TeeGDIPlus.hpp>
+#include <VCLTee.TeEngine.hpp>
+#include <VCLTee.TeeProcs.hpp>
 
 //---------------------------------------------------------------------------
 class TPhMediaSource;
@@ -91,11 +97,30 @@ __published:	// IDE-managed Components
 	TAction *viewPlayAction;
 	TPhRulerTool *PhRulerTool1;
 	TPhPaneTool *PhPaneTool1;
-	TLabel *Label11;
 	TLabel *Label12;
 	TLabel *Label13;
 	TEdit *Edit1;
 	TLabel *Label14;
+	TLabel *Label15;
+	TCheckBox *CheckBox1;
+	TLabel *Label16;
+	TSpinEdit *SpinEdit1;
+	TLabel *Label17;
+	TLabel *Label18;
+	TBevel *Bevel1;
+	TButton *Button1;
+	TEdit *Edit2;
+	TLabel *Label19;
+	TSpinEdit *SpinEdit2;
+	TLabel *Label20;
+	TBevel *Bevel2;
+	TBevel *Bevel3;
+	TLabel *Label11;
+	TEdit *Edit3;
+	TLabel *Label21;
+	TChart *Chart1;
+	TGroupBox *GroupBox3;
+	TFastLineSeries *Series1;
 	void __fastcall fileExitActionExecute(TObject *Sender);
 	void __fastcall modeExperimentActionExecute(TObject *Sender);
 	void __fastcall modeExperimentActionUpdate(TObject *Sender);
@@ -134,6 +159,12 @@ __published:	// IDE-managed Components
 	void __fastcall PhImage1FrameData(TObject *Sender, int w, int h, int c, BYTE *data);
 	void __fastcall FormResize(TObject *Sender);
 	void __fastcall viewSourceImageActionExecute(TObject *Sender);
+	void __fastcall CheckBox1Click(TObject *Sender);
+	void __fastcall SpinEdit1Change(TObject *Sender);
+	void __fastcall Edit2Change(TObject *Sender);
+	void __fastcall SpinEdit2Change(TObject *Sender);
+	void __fastcall Edit3Change(TObject *Sender);
+	void __fastcall Edit3Enter(TObject *Sender);
 
 
 
@@ -156,9 +187,16 @@ private:	// User declarations
     // processing
     TCeramImageProcessor m_engine;
     TCeramCalibration    m_c;
-
+    TLFBuffer*           m_buffer;
     // result
     void __fastcall ShowResult();
+
+    // params
+    void  __fastcall SaveParams();
+    void  __fastcall LoadParams();
+
+    // edit
+    int m_e3ov;
 
 public:		// User declarations
 	__fastcall TMainForm(TComponent* Owner);

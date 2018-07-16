@@ -15,7 +15,10 @@ public:
 
     ~TCeramCalibration();
     void __fastcall Init(double lenght_pix, double lenght_mm);
-    double __fastcall Value(double value);
+    double __fastcall ValueMM(double value);
+    int __fastcall ValuePix(double value_mm);
+
+    __property double alfa = {read = m_alfa, write = m_alfa};
 };
 
 class TCeramImageProcessor

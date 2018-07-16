@@ -31,10 +31,15 @@ void __fastcall TCeramCalibration::Init(double lenght_pix, double lenght_mm)
     m_alfa =  lenght_mm / lenght_pix;
 }
 
-
-double __fastcall TCeramCalibration::Value(double value)
+// возвращает число mm в отрезке длиной value pix
+double __fastcall TCeramCalibration::ValueMM(double value)
 {
     return value*this->m_alfa;
+}
+// возвращает число pix в отрезке длиной value_mm миллиметров
+int __fastcall TCeramCalibration::ValuePix(double value_mm)
+{
+    return int(value_mm/this->m_alfa);
 }
 
 
