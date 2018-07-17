@@ -155,6 +155,10 @@ $(PostBuildEvent)]]></PostBuildEvent>
             <DependentOn>..\common\Bitmap2Dib.h</DependentOn>
             <BuildOrder>7</BuildOrder>
         </CppCompile>
+        <CppCompile Include="..\common\SelDirUnit.cpp">
+            <DependentOn>..\common\SelDirUnit.h</DependentOn>
+            <BuildOrder>8</BuildOrder>
+        </CppCompile>
         <FormResources Include="MainUnit.dfm"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>

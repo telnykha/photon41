@@ -30,6 +30,9 @@ private:
     TLFBuffer* m_by;
     TLFBuffer* m_bd;
     int        m_count;
+
+    bool       m_useBuffer;
+    int        m_bufferSize;
 protected:
     awpImage*   m_process;
     awpImage*   m_copy;
@@ -44,11 +47,15 @@ protected:
     void __fastcall ProcessHelper();
     void __fastcall Analysis();
     bool __fastcall FindCircle(awpImage* img, int &r, awpPoint &p);
+    void __fastcall SetUseBuffer(bool value);
+    void __fastcall SetBufferSize(int value);
+    int  __fastcall GetBufferSize();
 public:
     TCeramImageProcessor();
     ~TCeramImageProcessor();
 
     bool __fastcall Process(awpImage* img);
+    void __fastcall Reset();
 
     __property awpImage* source = {read = m_copy};
     __property awp2DPoint center = {read = m_center};
@@ -58,5 +65,9 @@ public:
     __property double    angle  = {read = m_angle};
     __property double    major  = {read = m_major};
     __property double    minor  = {read = m_minor};
+
+    // управл€ющие параметры.
+    __property bool useBuffer   = {read = m_useBuffer, write = SetUseBuffer};
+    __property int  bufferSize  = {read = GetBufferSize, write = SetBufferSize};
 };
 #endif

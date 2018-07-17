@@ -7,6 +7,8 @@
 #include "CeramUtils.h"
 #include "PhVideo.h"
 #include "PhSlideShow.h"
+#include "SelDirUnit.h"
+
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "FImage41"
@@ -151,6 +153,7 @@ void __fastcall TMainForm::fileOpenVideoActionExecute(TObject *Sender)
         {
             SetSource(videoSource);
 	        m_videoSource->First();
+			SetMode(modeHandAction);
         }
     }
 }
@@ -164,6 +167,8 @@ void __fastcall TMainForm::fileCloseActionExecute(TObject *Sender)
 {
     PhImage1->Close();
     PhImage1->Refresh();
+    this->m_videoSource = NULL;
+	SetMode(modeHandAction);
 }
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::FormClose(TObject *Sender, TCloseAction &Action)
@@ -241,12 +246,16 @@ void __fastcall TMainForm::viewPlayActionExecute(TObject *Sender)
 	    m_videoSource->Play();
         viewPlayAction->Caption = L"Стоп";
         SpeedButton9->Down = true;
+ //       Panel1->Visible = false;
+//        PhImage1->BestFit();
     }
     else
     {
         m_videoSource->Stop();
         viewPlayAction->Caption = L"Воспроизвести";
         SpeedButton9->Down = false;
+//        Panel1->Visible = true;
+  //      PhImage1->BestFit();
     }
 }
 //---------------------------------------------------------------------------
@@ -267,11 +276,12 @@ void __fastcall TMainForm::SetMode(TAction* action)
    Label8->Enabled  = m_modeAction != modeHandAction;
    Label10->Enabled = m_modeAction != modeHandAction;
 
-   Label12->Enabled = m_modeAction == modeHandAction && m_videoSource != NULL;
-   Label13->Enabled = m_modeAction == modeHandAction && m_videoSource != NULL;
-   Label14->Enabled = m_modeAction == modeHandAction && m_videoSource != NULL;
-   Edit1->Enabled = m_modeAction == modeHandAction && m_videoSource != NULL;
-
+    for (int i = 0; i < GroupBox2->ControlCount; i++)
+    {
+        TControl* c = GroupBox2->Controls[i];
+        if (c != NULL)
+            c->Enabled = m_modeAction == modeHandAction && m_videoSource != NULL;
+    }
 
    if (m_modeAction == modeHandAction)
    {
@@ -279,7 +289,7 @@ void __fastcall TMainForm::SetMode(TAction* action)
    }
    else
    {
-    	PhImage1->SelectPhTool(PhPaneTool1);
+      PhImage1->SelectPhTool(PhPaneTool1);
    }
 }
 //---------------------------------------------------------------------------
@@ -314,6 +324,8 @@ void __fastcall TMainForm::PhImage1MouseMove(TObject *Sender, TShiftState Shift,
    if (m_modeAction == modeHandAction)
    {
      Label13->Caption = FormatFloat(L"####.##",this->PhRulerTool1->Lendth);
+     double mm = m_c.ValueMM(this->PhRulerTool1->Lendth);
+     Edit1->Text = FormatFloat("###.##", mm);
    }
 }
 //---------------------------------------------------------------------------
@@ -330,6 +342,8 @@ void __fastcall TMainForm::PhImage1FrameData(TObject *Sender, int w, int h, int 
     else
 		StatusBar1->Panels->Items[1]->Text = L" ";
 
+
+
     if (w > 0 && h > 0 && c > 0 && data != NULL)
     {
        awpImage img;
@@ -339,6 +353,9 @@ void __fastcall TMainForm::PhImage1FrameData(TObject *Sender, int w, int h, int 
        img.sSizeY = h;
        img.dwType = AWP_BYTE;
        img.pPixels = data;
+       DrawRuler(&img);
+       if (m_modeAction == modeHandAction)
+         return;
 
        m_engine.Process(&img);
        RenderScene(&img);
@@ -353,28 +370,12 @@ void __fastcall TMainForm::RenderScene(awpImage* img)
    DrawCenter(img);
    DrawObject(img);
    DrawEllipce(img);
-   DrawRuler(img);
 }
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::DrawSource(awpImage* img)
 {
     if (!viewSourceImageAction->Checked)
-	    awpZeroImage(img)
-/*    else
-    {
-        if (m_engine.process != NULL)
-        {
-            AWPBYTE* p = (AWPBYTE*)m_engine.process->pPixels;
-            AWPBYTE* b = (AWPBYTE*)img->pPixels;
-            for (int i = 0; i < m_engine.process->sSizeX*m_engine.process->sSizeY; i++)
-            {
-               b[3*i] = p[i];
-               b[3*i+1] = p[i];
-               b[3*i+2] = p[i];
-            }
-        }
-    }
-*/
+	    this->DrawBinary(img);
 }
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::DrawCenter(awpImage* img)
@@ -429,9 +430,26 @@ void __fastcall TMainForm::DrawEllipce(awpImage* img)
 
 void __fastcall TMainForm::DrawAxis(awpImage* img)
 {
-
+//
 }
 
+void __fastcall TMainForm::DrawBinary(awpImage* img)
+{
+    if (!viewBinaryAction->Checked)
+        return;
+
+    if (m_engine.process != NULL)
+    {
+        AWPBYTE* p = (AWPBYTE*)m_engine.process->pPixels;
+        AWPBYTE* b = (AWPBYTE*)img->pPixels;
+        for (int i = 0; i < m_engine.process->sSizeX*m_engine.process->sSizeY; i++)
+        {
+           b[3*i] = p[i];
+           b[3*i+1] = p[i];
+           b[3*i+2] = p[i];
+        }
+    }
+}
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::DrawMask(awpImage* img)
 {
@@ -510,8 +528,7 @@ void  __fastcall TMainForm::SaveParams()
     str += L"ceramica.ini";
     AnsiString _ansi = str;
     FILE* f = fopen(_ansi.c_str(), "w+t");
-
-    // коэф. масштабирования
+     // коэф. масштабирования
     float dv = m_c.alfa;
     fprintf(f, "%f\n", dv);
     // использовать ли буферизацию
@@ -531,7 +548,7 @@ void  __fastcall TMainForm::SaveParams()
     fprintf(f, "%i\n", iv);
 
     fclose(f);
-
+    LoadParams();
 }
 //---------------------------------------------------------------------------
 void  __fastcall TMainForm::LoadParams()
@@ -551,7 +568,7 @@ void  __fastcall TMainForm::LoadParams()
             // калибровка
             fscanf(f, "%f\n", &dv);
             m_c.alfa = dv;
-            Label15->Caption = L"В одном мм " + IntToStr(m_c.ValuePix(1)) + L"пискелей";
+            Label15->Caption = L"В одном мм " + IntToStr(m_c.ValuePix(1)) + L" пискелей";
             // использование буферизации
             fscanf(f, "%i\n",&iv);
             CheckBox1->Checked = (bool)iv;
@@ -569,18 +586,6 @@ void  __fastcall TMainForm::LoadParams()
             // время экспозиции
             fscanf(f, "%i\n", &iv);
             Edit3->Text = IntToStr(iv);
-
-
-/*
-            fscanf(f, "%i\n", &value);
-            SpinEdit1->Value = value;
-            fscanf(f, "%i\n", &value);
-            SpinEdit2->Value = value;
-            fscanf(f, "%i\n", &value);
-            SpinEdit3->Value = value;
-            fscanf(f, "%i\n", &value);
-            SpinEdit4->Value = value;
-*/
             fclose(f);
         }
         else
@@ -594,12 +599,14 @@ void  __fastcall TMainForm::LoadParams()
 void __fastcall TMainForm::CheckBox1Click(TObject *Sender)
 {
     SaveParams();
+    this->m_engine.useBuffer = CheckBox1->Checked;
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TMainForm::SpinEdit1Change(TObject *Sender)
 {
     SaveParams();
+    this->m_engine.bufferSize = SpinEdit1->Value;
 }
 //---------------------------------------------------------------------------
 
@@ -628,6 +635,70 @@ void __fastcall TMainForm::Edit3Change(TObject *Sender)
 void __fastcall TMainForm::Edit3Enter(TObject *Sender)
 {
     m_e3ov = StrToInt(Edit3->Text);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::viewBinaryActionExecute(TObject *Sender)
+{
+    viewBinaryAction->Checked = !viewBinaryAction->Checked;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::viewBinaryActionUpdate(TObject *Sender)
+{
+//
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::Edit1Change(TObject *Sender)
+{
+    if (this->m_videoSource == NULL)
+        return;
+
+    float v = 10;
+    if (TryStrToFloat(Edit1->Text, v))
+    {
+        m_c.Init(this->PhRulerTool1->Lendth, v);
+	    SaveParams();
+    }
+    else
+        Edit1->Text = m_e1ov;
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::Edit1Enter(TObject *Sender)
+{
+    m_e1ov = StrToFloat(Edit1->Text);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::Timer1Timer(TObject *Sender)
+{
+ // Сохранение в архив и в tcp
+
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::UpdateRuler()
+{
+
+}
+
+void __fastcall TMainForm::Button1Click(TObject *Sender)
+{
+    String DirName;
+	if (GetDirNamePreview(DirName))
+    {
+        Edit2->Text = DirName;
+	    SaveParams();
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::Panel4Click(TObject *Sender)
+{
+    Panel1->Visible = !Panel1->Visible;
+    PhImage1->BestFit();
 }
 //---------------------------------------------------------------------------
 

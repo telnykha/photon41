@@ -77,19 +77,6 @@ __published:	// IDE-managed Components
 	TSpeedButton *SpeedButton3;
 	TSpeedButton *SpeedButton2;
 	TSpeedButton *SpeedButton9;
-	TPanel *Panel1;
-	TGroupBox *GroupBox1;
-	TLabel *Label1;
-	TLabel *Label2;
-	TLabel *Label3;
-	TLabel *Label4;
-	TGroupBox *GroupBox2;
-	TLabel *Label5;
-	TLabel *Label6;
-	TLabel *Label7;
-	TLabel *Label8;
-	TLabel *Label9;
-	TLabel *Label10;
 	TAction *viewFirstAction;
 	TAction *viewPrevAction;
 	TAction *viewNextAction;
@@ -97,30 +84,46 @@ __published:	// IDE-managed Components
 	TAction *viewPlayAction;
 	TPhRulerTool *PhRulerTool1;
 	TPhPaneTool *PhPaneTool1;
+	TAction *viewBinaryAction;
+	TMenuItem *N20;
+	TTimer *Timer1;
+	TPanel *Panel1;
+	TGroupBox *GroupBox1;
+	TLabel *Label1;
+	TLabel *Label2;
+	TLabel *Label3;
+	TLabel *Label4;
+	TLabel *Label5;
+	TLabel *Label6;
+	TLabel *Label7;
+	TLabel *Label8;
+	TLabel *Label9;
+	TLabel *Label10;
+	TGroupBox *GroupBox2;
 	TLabel *Label12;
 	TLabel *Label13;
-	TEdit *Edit1;
 	TLabel *Label14;
 	TLabel *Label15;
-	TCheckBox *CheckBox1;
 	TLabel *Label16;
-	TSpinEdit *SpinEdit1;
 	TLabel *Label17;
 	TLabel *Label18;
 	TBevel *Bevel1;
-	TButton *Button1;
-	TEdit *Edit2;
 	TLabel *Label19;
-	TSpinEdit *SpinEdit2;
 	TLabel *Label20;
 	TBevel *Bevel2;
 	TBevel *Bevel3;
 	TLabel *Label11;
-	TEdit *Edit3;
 	TLabel *Label21;
+	TEdit *Edit1;
+	TCheckBox *CheckBox1;
+	TSpinEdit *SpinEdit1;
+	TButton *Button1;
+	TEdit *Edit2;
+	TSpinEdit *SpinEdit2;
+	TEdit *Edit3;
 	TChart *Chart1;
-	TGroupBox *GroupBox3;
 	TFastLineSeries *Series1;
+	TPanel *Panel4;
 	void __fastcall fileExitActionExecute(TObject *Sender);
 	void __fastcall modeExperimentActionExecute(TObject *Sender);
 	void __fastcall modeExperimentActionUpdate(TObject *Sender);
@@ -165,6 +168,13 @@ __published:	// IDE-managed Components
 	void __fastcall SpinEdit2Change(TObject *Sender);
 	void __fastcall Edit3Change(TObject *Sender);
 	void __fastcall Edit3Enter(TObject *Sender);
+	void __fastcall viewBinaryActionExecute(TObject *Sender);
+	void __fastcall viewBinaryActionUpdate(TObject *Sender);
+	void __fastcall Edit1Change(TObject *Sender);
+	void __fastcall Edit1Enter(TObject *Sender);
+	void __fastcall Timer1Timer(TObject *Sender);
+	void __fastcall Button1Click(TObject *Sender);
+	void __fastcall Panel4Click(TObject *Sender);
 
 
 
@@ -184,6 +194,7 @@ private:	// User declarations
     void __fastcall DrawObject(awpImage* img);
     void __fastcall DrawEllipce(awpImage* img);
     void __fastcall DrawAxis(awpImage* img);
+    void __fastcall DrawBinary(awpImage* img);
     // processing
     TCeramImageProcessor m_engine;
     TCeramCalibration    m_c;
@@ -195,8 +206,13 @@ private:	// User declarations
     void  __fastcall SaveParams();
     void  __fastcall LoadParams();
 
-    // edit
+    // updates
+    void __fastcall UpdateRuler();
+
+    // edit3 old value
     int m_e3ov;
+    // edit1 ild value
+    float m_e1ov;
 
 public:		// User declarations
 	__fastcall TMainForm(TComponent* Owner);

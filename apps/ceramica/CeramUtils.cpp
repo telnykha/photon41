@@ -57,9 +57,11 @@ TCeramImageProcessor::TCeramImageProcessor()
     m_oldc.X = 0;
     m_oldc.Y = 0;
     m_oldr = 0;
-    m_bx = new TLFBuffer(20, 0);
-    m_by = new TLFBuffer(20, 0);
-    m_bd = new TLFBuffer(20, 0);
+    m_useBuffer = true;
+    m_bufferSize = 10;
+    m_bx = new TLFBuffer(m_bufferSize, 0);
+    m_by = new TLFBuffer(m_bufferSize, 0);
+    m_bd = new TLFBuffer(m_bufferSize, 0);
     m_count = 0;
 }
 
@@ -68,6 +70,7 @@ TCeramImageProcessor::~TCeramImageProcessor()
     _AWP_SAFE_RELEASE_(this->m_copy)
     _AWP_SAFE_RELEASE_(this->m_mask)
     _AWP_SAFE_RELEASE_(this->m_process)
+
     delete m_bx;
     delete m_by;
     delete m_bd;
@@ -245,7 +248,7 @@ void __fastcall TCeramImageProcessor::Analysis()
          m_by->Push(c.Y);
          m_bd->Push(2*sqrt(double(maxS) / AWP_PI));
          m_count++;
-         if (m_count <= 20)
+         if (m_count <= this->bufferSize)
          {
              this->m_center.X = c.X;
              this->m_center.Y = c.Y;
@@ -263,5 +266,39 @@ void __fastcall TCeramImageProcessor::Analysis()
     }
     awpFreeStrokes(Num, &obj);
 }
+
+void __fastcall TCeramImageProcessor::Reset()
+{
+    _AWP_SAFE_RELEASE_(this->m_copy)
+    _AWP_SAFE_RELEASE_(this->m_mask)
+    _AWP_SAFE_RELEASE_(this->m_process)
+    delete m_bx;
+    delete m_by;
+    delete m_bd;
+    m_count = 0;
+    int size = this->bufferSize;
+    m_bx = new TLFBuffer(size, 0);
+    m_by = new TLFBuffer(size, 0);
+    m_bd = new TLFBuffer(size, 0);
+
+}
+
+void __fastcall TCeramImageProcessor::SetUseBuffer(bool value)
+{
+    this->m_useBuffer = value;
+    this->Reset();
+
+}
+void __fastcall TCeramImageProcessor::SetBufferSize(int value)
+{
+    this->m_bufferSize = value;
+    this->Reset();
+}
+
+int  __fastcall TCeramImageProcessor::GetBufferSize()
+{
+    return m_useBuffer ? m_bufferSize:1;
+}
+
 
 
