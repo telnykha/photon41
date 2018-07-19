@@ -53,7 +53,7 @@
         <ProjectType>CppVCLApplication</ProjectType>
         <PackageImports>inet;$(PackageImports)</PackageImports>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;Vcl;Vcl.Imaging;Vcl.Touch;Vcl.Samples;Vcl.Shell;$(DCC_Namespace)</DCC_Namespace>
-        <AllPackageLibs>rtl.lib;vcl.lib;photon41.lib;VclSmp.lib;vclx.lib;Tee925.lib;vclimg.lib</AllPackageLibs>
+        <AllPackageLibs>rtl.lib;vcl.lib;photon41.lib;VclSmp.lib;vclx.lib;Tee925.lib;vclimg.lib;IndyCore.lib;IndySystem.lib</AllPackageLibs>
         <_TCHARMapping>wchar_t</_TCHARMapping>
         <Multithreaded>true</Multithreaded>
         <Icon_MainIcon>$(BDS)\bin\cbuilder_PROJECTICON.ico</Icon_MainIcon>
@@ -100,7 +100,7 @@
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppEnableHighDPI>true</AppEnableHighDPI>
-        <LinkPackageImports>rtl.bpi;vcl.bpi;photon41.bpi;VclSmp.bpi;vclx.bpi;Tee925.bpi;vclimg.bpi</LinkPackageImports>
+        <LinkPackageImports>rtl.bpi;vcl.bpi;photon41.bpi;VclSmp.bpi;vclx.bpi;Tee925.bpi;vclimg.bpi;IndyCore.bpi;IndySystem.bpi</LinkPackageImports>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <PostBuildEvent><![CDATA[copy awpcvvideo.dll .\$(Platform)\$(Config)\awpcvvideo.dll
@@ -119,9 +119,13 @@ $(PostBuildEvent)]]></PostBuildEvent>
 $(PostBuildEvent)]]></PostBuildEvent>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <LinkPackageImports>rtl.bpi;vcl.bpi;photon41.bpi;VclSmp.bpi;vclx.bpi;Tee925.bpi;vclimg.bpi</LinkPackageImports>
+        <LinkPackageImports>rtl.bpi;vcl.bpi;photon41.bpi;VclSmp.bpi;vclx.bpi;Tee925.bpi;vclimg.bpi;IndyCore.bpi;IndySystem.bpi</LinkPackageImports>
     </PropertyGroup>
     <ItemGroup>
+        <CppCompile Include="CeramArchive.cpp">
+            <DependentOn>CeramArchive.h</DependentOn>
+            <BuildOrder>9</BuildOrder>
+        </CppCompile>
         <CppCompile Include="Ceramica.cpp">
             <BuildOrder>0</BuildOrder>
         </CppCompile>

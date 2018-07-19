@@ -42,8 +42,6 @@ object MainForm: TMainForm
         Text = #1048#1079#1086#1073#1088#1072#1078#1077#1085#1080#1077':'
         Width = 50
       end>
-    ExplicitTop = 523
-    ExplicitWidth = 784
   end
   object Panel2: TPanel
     Left = 0
@@ -52,9 +50,6 @@ object MainForm: TMainForm
     Height = 526
     Align = alClient
     TabOrder = 1
-    ExplicitTop = -6
-    ExplicitWidth = 528
-    ExplicitHeight = 523
     object Panel3: TPanel
       Left = 1
       Top = 467
@@ -62,8 +57,6 @@ object MainForm: TMainForm
       Height = 58
       Align = alBottom
       TabOrder = 0
-      ExplicitTop = 464
-      ExplicitWidth = 526
       object SpeedButton4: TSpeedButton
         Left = 241
         Top = 1
@@ -281,22 +274,15 @@ object MainForm: TMainForm
       OnMouseMove = PhImage1MouseMove
       AfterOpen = PhImage1AfterOpen
       OnFrameData = PhImage1FrameData
-      ExplicitLeft = 90
-      ExplicitTop = -38
-      ExplicitWidth = 432
-      ExplicitHeight = 374
     end
   end
   object Panel1: TPanel
-    Left = 579
+    Left = 572
     Top = 0
     Width = 256
     Height = 526
     Align = alRight
     TabOrder = 2
-    ExplicitLeft = 527
-    ExplicitTop = 1
-    ExplicitHeight = 442
     object GroupBox1: TGroupBox
       Left = 1
       Top = 1
@@ -444,8 +430,6 @@ object MainForm: TMainForm
       Align = alClient
       Caption = #1055#1072#1088#1072#1084#1077#1090#1088#1099' '#1072#1083#1075#1086#1088#1080#1090#1084#1072
       TabOrder = 1
-      ExplicitTop = 240
-      ExplicitHeight = 282
       object Label12: TLabel
         Left = 4
         Top = 39
@@ -551,8 +535,8 @@ object MainForm: TMainForm
         Height = 21
         TabOrder = 0
         Text = '10'
-        OnChange = Edit1Change
         OnEnter = Edit1Enter
+        OnExit = Edit1Change
       end
       object CheckBox1: TCheckBox
         Left = 5
@@ -691,8 +675,6 @@ object MainForm: TMainForm
       Align = alTop
       BevelOuter = bvNone
       TabOrder = 2
-      ExplicitLeft = 154
-      ExplicitWidth = 128
       DefaultCanvas = 'TGDIPlusCanvas'
       PrintMargins = (
         15
@@ -716,14 +698,13 @@ object MainForm: TMainForm
     end
   end
   object Panel4: TPanel
-    Left = 572
+    Left = 828
     Top = 0
     Width = 7
     Height = 526
     Align = alRight
     TabOrder = 3
     OnClick = Panel4Click
-    ExplicitLeft = 554
   end
   object ActionList1: TActionList
     Left = 56
@@ -931,5 +912,11 @@ object MainForm: TMainForm
     OnTimer = Timer1Timer
     Left = 96
     Top = 80
+  end
+  object IdTCPServer1: TIdTCPServer
+    Bindings = <>
+    DefaultPort = 0
+    Left = 176
+    Top = 24
   end
 end

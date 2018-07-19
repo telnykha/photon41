@@ -31,6 +31,7 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
     m_videoSource = NULL;
     m_modeAction  = NULL;
     m_buffer = new TLFBuffer(32, 0);
+    m_archive = NULL;
 }
 
 //---------------------------------------------------------------------------
@@ -267,7 +268,14 @@ void __fastcall TMainForm::viewPlayActionUpdate(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::SetMode(TAction* action)
 {
+   if (m_modeAction == modeExperimentAction)
+    this->StopExperiment();
+
    m_modeAction = action;
+   if (m_modeAction == modeExperimentAction)
+    this->StartExperiment();
+
+
    action->Checked = true;
    StatusBar1->Panels->Items[0]->Text = L"–ежим: " + action->Caption;
 
@@ -356,9 +364,18 @@ void __fastcall TMainForm::PhImage1FrameData(TObject *Sender, int w, int h, int 
        DrawRuler(&img);
        if (m_modeAction == modeHandAction)
          return;
+       // перед тем, как начать обработку сделаем копию
+       // изображени€
 
+       m_copy.SetImage(&img);
+       // обработка изображени€.
        m_engine.Process(&img);
+       // отображение результатов обработки на
+       // изображении
        RenderScene(&img);
+       // отображение результатов обработки на
+       // пользовательском интерфейсе
+
        ShowResult();
     }
 }
@@ -367,6 +384,7 @@ void __fastcall TMainForm::RenderScene(awpImage* img)
 {
    DrawSource(img);
    DrawMask(img);
+   DrawAxis(img);
    DrawCenter(img);
    DrawObject(img);
    DrawEllipce(img);
@@ -419,18 +437,22 @@ void __fastcall TMainForm::DrawEllipce(awpImage* img)
         return;
 
     awpPoint p;
-
-    m_engine.minor;
     p.X = m_engine.center.X;
     p.Y = m_engine.center.Y;
 
     awpDrawCEllipse(img, p, m_engine.major/2, m_engine.minor/2, m_engine.angle, 255,0,255, 3);
-
 }
 
 void __fastcall TMainForm::DrawAxis(awpImage* img)
 {
-//
+    if (!viewAxisAction->Checked)
+        return;
+
+    awpPoint p;
+    p.X = m_engine.center.X;
+    p.Y = m_engine.center.Y;
+
+	awpDrawCEllipseCross(img, p, m_engine.major, m_engine.minor, m_engine.angle, 255,0,0, 3);
 }
 
 void __fastcall TMainForm::DrawBinary(awpImage* img)
@@ -507,7 +529,7 @@ void __fastcall TMainForm::ShowResult()
     Label5->Caption = FormatFloat("000.00  mm", m_c.ValueMM(m_engine.diam));
     Label6->Caption = FormatFloat("000.00  mm", m_c.ValueMM(m_engine.major));
     Label7->Caption = FormatFloat("000.00  mm", m_c.ValueMM(m_engine.minor));
-    Label8->Caption = FormatFloat("000.00  grad", m_c.ValueMM(m_engine.angle));
+    Label8->Caption = FormatFloat("000.00  grad",m_engine.angle);
     Label10->Caption = FormatFloat("000.00", m_c.ValueMM(m_engine.center.X)) + L":" + FormatFloat("000.00", m_c.ValueMM(m_engine.center.Y));
     Series1->Clear();
     for (int i = 0; i < m_buffer->GetSize(); i++)
@@ -675,8 +697,19 @@ void __fastcall TMainForm::Edit1Enter(TObject *Sender)
 
 void __fastcall TMainForm::Timer1Timer(TObject *Sender)
 {
- // —охранение в архив и в tcp
-
+ 	// —охранение в архив и в tcp
+    if (m_archive != NULL)
+    {
+        TCeramArchiveRecord r;
+        r.diam = m_c.ValueMM(m_engine.diam);
+        r.xpos = m_c.ValueMM(m_engine.center.X);
+        r.ypos = m_c.ValueMM(m_engine.center.Y);
+        r.mi = m_c.ValueMM(m_engine.minor);
+        r.ma = m_c.ValueMM(m_engine.major);
+        r.angle = m_c.ValueMM(m_engine.angle);
+        r.img = m_copy.GetImage();
+        m_archive->AddRecord(r);
+    }
 }
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::UpdateRuler()
@@ -694,11 +727,36 @@ void __fastcall TMainForm::Button1Click(TObject *Sender)
     }
 }
 //---------------------------------------------------------------------------
-
 void __fastcall TMainForm::Panel4Click(TObject *Sender)
 {
     Panel1->Visible = !Panel1->Visible;
     PhImage1->BestFit();
 }
 //---------------------------------------------------------------------------
+void __fastcall TMainForm::StartExperiment()
+{
+    if (this->m_archive != NULL)
+        delete m_archive;
+    AnsiString _ansi = Edit2->Text;
+    m_archive = new TCeramArchive(_ansi.c_str());
+
+    TCeramArchiveHeader header;
+    header.alfa = m_c.alfa;
+    header.bufferSize = m_engine.bufferSize;
+    header.dutyRatio  = SpinEdit2->Value;
+    header.exposure   = StrToInt(Edit3->Text);
+
+    if (!m_archive->Create(header))
+    {
+        ShowMessage("Ќе могу создать архив: " + Edit2->Text);
+        return;
+    }
+    this->Timer1->Interval = SpinEdit2->Value;
+    this->Timer1->Enabled  = true;
+}
+void __fastcall TMainForm::StopExperiment()
+{
+    this->Timer1->Enabled  = false;
+    m_archive->Close();
+}
 

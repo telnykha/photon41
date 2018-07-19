@@ -18,14 +18,19 @@
 #include "PhImageTool.h"
 #include "PhRulerTool.h"
 #include "PhPaneTool.h"
-#include "CeramUtils.h"
 #include "awpipl.h"
+#include "CeramUtils.h"
+#include "CeramArchive.h"
 #include <Vcl.Samples.Spin.hpp>
 #include <VCLTee.Chart.hpp>
 #include <VCLTee.Series.hpp>
 #include <VclTee.TeeGDIPlus.hpp>
 #include <VCLTee.TeEngine.hpp>
 #include <VCLTee.TeeProcs.hpp>
+#include <IdBaseComponent.hpp>
+#include <IdComponent.hpp>
+#include <IdCustomTCPServer.hpp>
+#include <IdTCPServer.hpp>
 
 //---------------------------------------------------------------------------
 class TPhMediaSource;
@@ -124,6 +129,7 @@ __published:	// IDE-managed Components
 	TChart *Chart1;
 	TFastLineSeries *Series1;
 	TPanel *Panel4;
+	TIdTCPServer *IdTCPServer1;
 	void __fastcall fileExitActionExecute(TObject *Sender);
 	void __fastcall modeExperimentActionExecute(TObject *Sender);
 	void __fastcall modeExperimentActionUpdate(TObject *Sender);
@@ -182,6 +188,11 @@ __published:	// IDE-managed Components
 private:	// User declarations
     void __fastcall SetMode(TAction* action);
     void __fastcall SetSource(TPhMediaSource* source);
+
+    void __fastcall StartExperiment();
+    void __fastcall StopExperiment();
+
+
     TPhMediaSource* m_videoSource;
     TAction*        m_modeAction;
 
@@ -199,6 +210,8 @@ private:	// User declarations
     TCeramImageProcessor m_engine;
     TCeramCalibration    m_c;
     TLFBuffer*           m_buffer;
+    TCeramArchive*       m_archive;
+    TLFImage             m_copy;
     // result
     void __fastcall ShowResult();
 
