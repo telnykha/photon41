@@ -104,10 +104,10 @@ bool __fastcall TCeramImageProcessor::Process(awpImage* img)
     this->m_major *= coef;
     this->m_minor *= coef;
 
-    if (m_mask != NULL)
-        awpResize(m_mask, coef*m_mask->sSizeX, coef*m_mask->sSizeY);
-    if (m_process != NULL)
-        awpResize(m_process, coef*m_process->sSizeX, coef*m_process->sSizeY);
+  //  if (m_mask != NULL)
+  //      awpResize(m_mask, coef*m_mask->sSizeX, coef*m_mask->sSizeY);
+ //   if (m_process != NULL)
+  //      awpResize(m_process, coef*m_process->sSizeX, coef*m_process->sSizeY);
 
 }
 
@@ -116,6 +116,7 @@ bool __fastcall TCeramImageProcessor::FindCircle(awpImage* img, int &r, awpPoint
     awpImage* crls = NULL;
     int 	  num = 0;
     bool result = false;
+    double thr = 2*img->sSizeX /  100.;
  	awpCreateImage(&crls, 100, 3, 1, AWP_DOUBLE);
     if (awpcvHoughCircles(m_process, crls, &num) == S_OK)
     {
@@ -139,7 +140,7 @@ bool __fastcall TCeramImageProcessor::FindCircle(awpImage* img, int &r, awpPoint
                 r = (data[2*crls->sSizeX + min_idx ]);
                 if (this->m_oldr == 0)
                     result = true;
-                else if (fabs((double)r - (double)m_oldr) < 10)
+                else if (fabs((double)r - (double)m_oldr) < thr)
 	                result = true;
                 else
                     result = false;

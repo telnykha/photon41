@@ -24,6 +24,9 @@
         <Projects Include="apps\ceramica\Ceramica.cbproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="apps\ceramica_client\CeramClient.cbproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -95,14 +98,23 @@
     <Target Name="Ceramica:Make">
         <MSBuild Projects="apps\ceramica\Ceramica.cbproj" Targets="Make"/>
     </Target>
+    <Target Name="CeramClient">
+        <MSBuild Projects="apps\ceramica_client\CeramClient.cbproj"/>
+    </Target>
+    <Target Name="CeramClient:Clean">
+        <MSBuild Projects="apps\ceramica_client\CeramClient.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="CeramClient:Make">
+        <MSBuild Projects="apps\ceramica_client\CeramClient.cbproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="zlib;libpng;tifflib;photon41;PhotonDemo;Blood41;Ceramica"/>
+        <CallTarget Targets="zlib;libpng;tifflib;photon41;PhotonDemo;Blood41;Ceramica;CeramClient"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="zlib:Clean;libpng:Clean;tifflib:Clean;photon41:Clean;PhotonDemo:Clean;Blood41:Clean;Ceramica:Clean"/>
+        <CallTarget Targets="zlib:Clean;libpng:Clean;tifflib:Clean;photon41:Clean;PhotonDemo:Clean;Blood41:Clean;Ceramica:Clean;CeramClient:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="zlib:Make;libpng:Make;tifflib:Make;photon41:Make;PhotonDemo:Make;Blood41:Make;Ceramica:Make"/>
+        <CallTarget Targets="zlib:Make;libpng:Make;tifflib:Make;photon41:Make;PhotonDemo:Make;Blood41:Make;Ceramica:Make;CeramClient:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

@@ -2,7 +2,7 @@ object MainForm: TMainForm
   Left = 0
   Top = 0
   Caption = #1050#1077#1088#1072#1084#1080#1082#1072' '
-  ClientHeight = 545
+  ClientHeight = 550
   ClientWidth = 835
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -20,7 +20,7 @@ object MainForm: TMainForm
   TextHeight = 13
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 526
+    Top = 531
     Width = 835
     Height = 19
     Panels = <
@@ -42,21 +42,24 @@ object MainForm: TMainForm
         Text = #1048#1079#1086#1073#1088#1072#1078#1077#1085#1080#1077':'
         Width = 50
       end>
+    ExplicitTop = 526
   end
   object Panel2: TPanel
     Left = 0
     Top = 0
     Width = 572
-    Height = 526
+    Height = 531
     Align = alClient
     TabOrder = 1
+    ExplicitHeight = 526
     object Panel3: TPanel
       Left = 1
-      Top = 467
+      Top = 472
       Width = 570
       Height = 58
       Align = alBottom
       TabOrder = 0
+      ExplicitTop = 467
       object SpeedButton4: TSpeedButton
         Left = 241
         Top = 1
@@ -260,12 +263,68 @@ object MainForm: TMainForm
         ExplicitLeft = 169
         ExplicitHeight = 77
       end
+      object SpeedButton5: TSpeedButton
+        Left = 409
+        Top = 1
+        Width = 84
+        Height = 56
+        Action = modeExperimentAction
+        Align = alLeft
+        AllowAllUp = True
+        GroupIndex = 2
+        Flat = True
+        Glyph.Data = {
+          F6040000424DF604000000000000760000002800000060000000180000000100
+          0400000000008004000000000000000000001000000000000000000000000000
+          8000008000000080800080000000800080008080000080808000C0C0C0000000
+          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00FFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF1111
+          11FFFFFFFFFFFFFFFFFFF777777FFFFFFFFFFFFFFFFFF111111FFFFFFFFFFFFF
+          FFFFFF999999FFFFFFFFFFFFFF1111111111FFFFFFFFFFFFFFF7777777777FFF
+          FFFFFFFFFFF1111111111FFFFFFFFFFFFFFF9999999999FFFFFFFFFFF1111111
+          11111FFFFFFFFFFFFF777777777777FFFFFFFFFFFF111111111111FFFFFFFFFF
+          FFF999999999999FFFFFFFFF11111111111111FFFFFFFFFFF77777777777777F
+          FFFFFFFFF11111111111111FFFFFFFFFFF99999999999999FFFFFFF111111111
+          1111111FFFFFFFFF7777777777777777FFFFFFFF1111111111111111FFFFFFFF
+          F9999999999999999FFFFFF1111111111111111FFFFFFFFF7777777777777777
+          FFFFFFFF1111111111111111FFFFFFFFF9999999999999999FFFFF1111111111
+          11111111FFFFFFF777777777777777777FFFFFF111111111111111111FFFFFFF
+          999999999999999999FFFF111111111111111111FFFFFFF77777777777777777
+          7FFFFFF111111111111111111FFFFFFF999999999999999999FFFF1111111111
+          11111111FFFFFFF777777777777777777FFFFFF111111111111111111FFFFFFF
+          999999999999999999FFFF111111111111111111FFFFFFF77777777777777777
+          7FFFFFF111111111111111111FFFFFFF999999999999999999FFFF1111111111
+          11111111FFFFFFF777777777777777777FFFFFF111111111111111111FFFFFFF
+          999999999999999999FFFFF1111111111111111FFFFFFFFF7777777777777777
+          FFFFFFFF1111111111111111FFFFFFFFF9999999999999999FFFFFF111111111
+          1111111FFFFFFFFF7777777777777777FFFFFFFF1111111111111111FFFFFFFF
+          F9999999999999999FFFFFFF11111111111111FFFFFFFFFFF77777777777777F
+          FFFFFFFFF11111111111111FFFFFFFFFFF99999999999999FFFFFFFFF1111111
+          11111FFFFFFFFFFFFF777777777777FFFFFFFFFFFF111111111111FFFFFFFFFF
+          FFF999999999999FFFFFFFFFFF1111111111FFFFFFFFFFFFFFF7777777777FFF
+          FFFFFFFFFFF1111111111FFFFFFFFFFFFFFF9999999999FFFFFFFFFFFFFF1111
+          11FFFFFFFFFFFFFFFFFFF777777FFFFFFFFFFFFFFFFFF111111FFFFFFFFFFFFF
+          FFFFFF999999FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+          FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+        Layout = blGlyphTop
+        NumGlyphs = 4
+        ExplicitLeft = 437
+        ExplicitTop = 6
+      end
     end
     object PhImage1: TPhImage
       Left = 1
       Top = 1
       Width = 570
-      Height = 466
+      Height = 471
       ThumbWidht = 128
       ThumbHeight = 128
       SlideShowInterval = 500
@@ -274,15 +333,17 @@ object MainForm: TMainForm
       OnMouseMove = PhImage1MouseMove
       AfterOpen = PhImage1AfterOpen
       OnFrameData = PhImage1FrameData
+      ExplicitHeight = 466
     end
   end
   object Panel1: TPanel
     Left = 572
     Top = 0
     Width = 256
-    Height = 526
+    Height = 531
     Align = alRight
     TabOrder = 2
+    ExplicitHeight = 526
     object GroupBox1: TGroupBox
       Left = 1
       Top = 1
@@ -426,10 +487,11 @@ object MainForm: TMainForm
       Left = 1
       Top = 213
       Width = 254
-      Height = 312
+      Height = 317
       Align = alClient
       Caption = #1055#1072#1088#1072#1084#1077#1090#1088#1099' '#1072#1083#1075#1086#1088#1080#1090#1084#1072
       TabOrder = 1
+      ExplicitHeight = 312
       object Label12: TLabel
         Left = 4
         Top = 39
@@ -598,6 +660,19 @@ object MainForm: TMainForm
         OnChange = Edit3Change
         OnEnter = Edit3Enter
       end
+      object Memo1: TMemo
+        Left = 2
+        Top = 226
+        Width = 250
+        Height = 89
+        Align = alBottom
+        Lines.Strings = (
+          'Memo1')
+        TabOrder = 7
+        ExplicitLeft = 72
+        ExplicitTop = 272
+        ExplicitWidth = 185
+      end
     end
     object Chart1: TChart
       Left = 1
@@ -701,10 +776,11 @@ object MainForm: TMainForm
     Left = 828
     Top = 0
     Width = 7
-    Height = 526
+    Height = 531
     Align = alRight
     TabOrder = 3
     OnClick = Panel4Click
+    ExplicitHeight = 526
   end
   object ActionList1: TActionList
     Left = 56
@@ -716,7 +792,7 @@ object MainForm: TMainForm
     end
     object modeExperimentAction: TAction
       Category = 'Mode'
-      Caption = #1069#1082#1089#1087#1077#1088#1080#1084#1077#1085#1090
+      Caption = #1047#1072#1087#1080#1089#1100
       GroupIndex = 1
       OnExecute = modeExperimentActionExecute
       OnUpdate = modeExperimentActionUpdate
@@ -739,11 +815,13 @@ object MainForm: TMainForm
       Category = 'view'
       Caption = #1048#1089#1093#1086#1076#1085#1086#1077' '#1080#1079#1086#1073#1088#1072#1078#1077#1085#1080#1077
       GroupIndex = 2
+      Visible = False
       OnExecute = viewSourceImageActionExecute
     end
     object viewAnalysisAreaAction: TAction
       Category = 'view'
       Caption = #1054#1073#1083#1072#1089#1090#1100' '#1072#1085#1072#1083#1080#1079#1072' '#1076#1072#1085#1085#1099#1093' '
+      Visible = False
       OnExecute = viewAnalysisAreaActionExecute
       OnUpdate = viewAnalysisAreaActionUpdate
     end
@@ -825,6 +903,7 @@ object MainForm: TMainForm
       Category = 'view'
       Caption = #1048#1079#1086#1073#1088#1072#1078#1077#1085#1080#1077' '#1087#1088#1077#1087#1072#1088#1072#1090#1072
       GroupIndex = 2
+      Visible = False
       OnExecute = viewBinaryActionExecute
       OnUpdate = viewBinaryActionUpdate
     end
@@ -888,9 +967,6 @@ object MainForm: TMainForm
       object N6: TMenuItem
         Action = modeAutoAnalysisAction
       end
-      object N5: TMenuItem
-        Action = modeExperimentAction
-      end
     end
   end
   object OpenDialog1: TOpenDialog
@@ -914,9 +990,16 @@ object MainForm: TMainForm
     Top = 80
   end
   object IdTCPServer1: TIdTCPServer
-    Bindings = <>
+    Bindings = <
+      item
+        IP = '0.0.0.0'
+        Port = 12340
+      end>
     DefaultPort = 0
-    Left = 176
-    Top = 24
+    OnConnect = IdTCPServer1Connect
+    OnDisconnect = IdTCPServer1Disconnect
+    OnExecute = IdTCPServer1Execute
+    Left = 160
+    Top = 16
   end
 end

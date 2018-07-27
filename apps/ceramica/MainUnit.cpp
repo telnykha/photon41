@@ -46,7 +46,10 @@ void __fastcall TMainForm::fileExitActionExecute(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::modeExperimentActionExecute(TObject *Sender)
 {
-	SetMode(modeExperimentAction);
+    if (m_modeAction != modeExperimentAction)
+		SetMode(modeExperimentAction);
+    else
+        SetMode(modeAutoAnalysisAction);
 }
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::modeExperimentActionUpdate(TObject *Sender)
@@ -294,10 +297,12 @@ void __fastcall TMainForm::SetMode(TAction* action)
    if (m_modeAction == modeHandAction)
    {
       PhImage1->SelectPhTool(PhRulerTool1);
+      IdTCPServer1->Active = false;
    }
    else
    {
       PhImage1->SelectPhTool(PhPaneTool1);
+      IdTCPServer1->Active = true;
    }
 }
 //---------------------------------------------------------------------------
@@ -305,7 +310,10 @@ void __fastcall TMainForm::FormCreate(TObject *Sender)
 {
 	SetMode(modeHandAction);
     SetSource(NULL);
-    this->LoadParams();
+    LoadParams();
+
+  	IdTCPServer1->Bindings->Add()->IP =  L"127.0.0.1";
+  	IdTCPServer1->Bindings->Add()->Port = 6000;
 }
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::SetSource(TPhMediaSource* source)
@@ -697,7 +705,9 @@ void __fastcall TMainForm::Edit1Enter(TObject *Sender)
 
 void __fastcall TMainForm::Timer1Timer(TObject *Sender)
 {
- 	// Сохранение в архив и в tcp
+    if (this->m_videoSource == NULL || !this->m_videoSource->IsPlaying)
+        return;
+ 	// Сохранение в архив
     if (m_archive != NULL)
     {
         TCeramArchiveRecord r;
@@ -706,7 +716,7 @@ void __fastcall TMainForm::Timer1Timer(TObject *Sender)
         r.ypos = m_c.ValueMM(m_engine.center.Y);
         r.mi = m_c.ValueMM(m_engine.minor);
         r.ma = m_c.ValueMM(m_engine.major);
-        r.angle = m_c.ValueMM(m_engine.angle);
+        r.angle = m_engine.angle;
         r.img = m_copy.GetImage();
         m_archive->AddRecord(r);
     }
@@ -759,4 +769,75 @@ void __fastcall TMainForm::StopExperiment()
     this->Timer1->Enabled  = false;
     m_archive->Close();
 }
+
+void __fastcall TMainForm::IdTCPServer1Execute(TIdContext *AContext)
+{
+  UnicodeString LLine = AContext->Connection->IOHandler->ReadLn();
+  Memo1->Lines->Add(LLine);
+  TDateTime dt = Now();
+  unsigned short year, month, day;
+  dt.DecodeDate(&year, &month, &day);
+  unsigned short hour, min, sec, msec;
+  dt.DecodeTime(&hour, &min, &sec, &msec);
+
+    TCeramArchiveRecord r;
+    r.diam = m_c.ValueMM(m_engine.diam);
+    r.xpos = m_c.ValueMM(m_engine.center.X);
+    r.ypos = m_c.ValueMM(m_engine.center.Y);
+    r.mi = m_c.ValueMM(m_engine.minor);
+    r.ma = m_c.ValueMM(m_engine.major);
+    r.angle = m_engine.angle;
+
+
+  AContext->Connection->IOHandler->WriteLn(IntToStr(1945) + " : " +
+  IntToStr(year) + " : " +
+  IntToStr(month) + " : " +
+  IntToStr(day) + " : " +
+  IntToStr(hour) + " : " +
+  IntToStr(min) + " : " +
+  IntToStr(sec) + " : " +
+  FormatFloat("000.00  mm", r.diam) + " : " +
+  FormatFloat("000.00  mm", r.ma) + " : " +
+  FormatFloat("000.00  mm", r.mi) + " : " +
+  FormatFloat("000.00  mm", r.xpos) + " : " +
+  FormatFloat("000.00  mm", r.ypos) + " : " +
+  FormatFloat("000.00  grad", r.angle)
+  );
+  float array[14];
+  // упаковка данных
+  TByteDynArray a;
+  a.set_length(66);
+  unsigned char* byte = &a[0];
+  int* tmp = (int*)byte;
+  tmp[0] = 1945;
+  tmp[1] = year;
+  tmp[2] = month;
+  tmp[3] = day;
+  tmp[4] = hour;
+  tmp[5] = min;
+  tmp[6] = sec;
+  float* f = (float*)&tmp[7];
+  f[0] = r.diam;
+  f[1] = r.ma;
+  f[2] = r.mi;
+  f[3] = r.xpos;
+  f[4] = r.ypos;
+  f[5] = r.angle;
+
+  AContext->Connection->IOHandler->WriteDirect(a);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::IdTCPServer1Connect(TIdContext *AContext)
+{
+    Memo1->Lines->Add("подключение клиента. ");
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TMainForm::IdTCPServer1Disconnect(TIdContext *AContext)
+{
+    Memo1->Lines->Add("отключение клиента. ");
+}
+//---------------------------------------------------------------------------
 

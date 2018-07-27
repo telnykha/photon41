@@ -31,6 +31,7 @@
 #include <IdComponent.hpp>
 #include <IdCustomTCPServer.hpp>
 #include <IdTCPServer.hpp>
+#include <IdContext.hpp>
 
 //---------------------------------------------------------------------------
 class TPhMediaSource;
@@ -51,7 +52,6 @@ __published:	// IDE-managed Components
 	TAction *modeAutoAnalysisAction;
 	TAction *modeHandAction;
 	TMenuItem *N4;
-	TMenuItem *N5;
 	TMenuItem *N6;
 	TMenuItem *N7;
 	TMenuItem *N8;
@@ -130,6 +130,8 @@ __published:	// IDE-managed Components
 	TFastLineSeries *Series1;
 	TPanel *Panel4;
 	TIdTCPServer *IdTCPServer1;
+	TSpeedButton *SpeedButton5;
+	TMemo *Memo1;
 	void __fastcall fileExitActionExecute(TObject *Sender);
 	void __fastcall modeExperimentActionExecute(TObject *Sender);
 	void __fastcall modeExperimentActionUpdate(TObject *Sender);
@@ -181,6 +183,9 @@ __published:	// IDE-managed Components
 	void __fastcall Timer1Timer(TObject *Sender);
 	void __fastcall Button1Click(TObject *Sender);
 	void __fastcall Panel4Click(TObject *Sender);
+	void __fastcall IdTCPServer1Execute(TIdContext *AContext);
+	void __fastcall IdTCPServer1Connect(TIdContext *AContext);
+	void __fastcall IdTCPServer1Disconnect(TIdContext *AContext);
 
 
 
