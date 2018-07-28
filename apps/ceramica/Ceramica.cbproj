@@ -159,6 +159,10 @@ $(PostBuildEvent)]]></PostBuildEvent>
             <DependentOn>..\common\Bitmap2Dib.h</DependentOn>
             <BuildOrder>7</BuildOrder>
         </CppCompile>
+        <CppCompile Include="..\common\IpAddress.cpp">
+            <DependentOn>..\common\IpAddress.h</DependentOn>
+            <BuildOrder>10</BuildOrder>
+        </CppCompile>
         <CppCompile Include="..\common\SelDirUnit.cpp">
             <DependentOn>..\common\SelDirUnit.h</DependentOn>
             <BuildOrder>8</BuildOrder>

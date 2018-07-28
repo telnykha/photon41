@@ -2,7 +2,7 @@ object MainForm: TMainForm
   Left = 0
   Top = 0
   Caption = #1050#1077#1088#1072#1084#1080#1082#1072' '
-  ClientHeight = 550
+  ClientHeight = 562
   ClientWidth = 835
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -20,7 +20,7 @@ object MainForm: TMainForm
   TextHeight = 13
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 531
+    Top = 543
     Width = 835
     Height = 19
     Panels = <
@@ -42,24 +42,24 @@ object MainForm: TMainForm
         Text = #1048#1079#1086#1073#1088#1072#1078#1077#1085#1080#1077':'
         Width = 50
       end>
-    ExplicitTop = 526
+    ExplicitTop = 531
   end
   object Panel2: TPanel
     Left = 0
     Top = 0
     Width = 572
-    Height = 531
+    Height = 543
     Align = alClient
     TabOrder = 1
-    ExplicitHeight = 526
+    ExplicitHeight = 531
     object Panel3: TPanel
       Left = 1
-      Top = 472
+      Top = 484
       Width = 570
       Height = 58
       Align = alBottom
       TabOrder = 0
-      ExplicitTop = 467
+      ExplicitTop = 472
       object SpeedButton4: TSpeedButton
         Left = 241
         Top = 1
@@ -324,7 +324,7 @@ object MainForm: TMainForm
       Left = 1
       Top = 1
       Width = 570
-      Height = 471
+      Height = 483
       ThumbWidht = 128
       ThumbHeight = 128
       SlideShowInterval = 500
@@ -333,17 +333,17 @@ object MainForm: TMainForm
       OnMouseMove = PhImage1MouseMove
       AfterOpen = PhImage1AfterOpen
       OnFrameData = PhImage1FrameData
-      ExplicitHeight = 466
+      ExplicitHeight = 471
     end
   end
   object Panel1: TPanel
     Left = 572
     Top = 0
     Width = 256
-    Height = 531
+    Height = 543
     Align = alRight
     TabOrder = 2
-    ExplicitHeight = 526
+    ExplicitHeight = 531
     object GroupBox1: TGroupBox
       Left = 1
       Top = 1
@@ -483,15 +483,114 @@ object MainForm: TMainForm
         ParentFont = False
       end
     end
+    object Chart1: TChart
+      Left = 1
+      Top = 112
+      Width = 254
+      Height = 101
+      BackWall.Brush.Gradient.Direction = gdBottomTop
+      BackWall.Brush.Gradient.EndColor = clWhite
+      BackWall.Brush.Gradient.StartColor = 15395562
+      BackWall.Brush.Gradient.Visible = True
+      BackWall.Transparent = False
+      Foot.Font.Color = clBlue
+      Foot.Font.Name = 'Verdana'
+      Gradient.Direction = gdBottomTop
+      Gradient.EndColor = clWhite
+      Gradient.MidColor = 15395562
+      Gradient.StartColor = 15395562
+      Gradient.Visible = True
+      LeftWall.Color = 14745599
+      Legend.Font.Name = 'Verdana'
+      Legend.Shadow.Transparency = 0
+      Legend.Visible = False
+      RightWall.Color = 14745599
+      Title.Font.Name = 'Verdana'
+      Title.Text.Strings = (
+        'TChart')
+      Title.Visible = False
+      BottomAxis.Axis.Color = 4210752
+      BottomAxis.Grid.Color = 11119017
+      BottomAxis.LabelsFormat.Font.Name = 'Verdana'
+      BottomAxis.TicksInner.Color = 11119017
+      BottomAxis.Title.Caption = 'qq'
+      BottomAxis.Title.Font.Name = 'Verdana'
+      BottomAxis.Visible = False
+      DepthAxis.Axis.Color = 4210752
+      DepthAxis.Grid.Color = 11119017
+      DepthAxis.LabelsFormat.Font.Name = 'Verdana'
+      DepthAxis.TicksInner.Color = 11119017
+      DepthAxis.Title.Font.Name = 'Verdana'
+      DepthTopAxis.Axis.Color = 4210752
+      DepthTopAxis.Grid.Color = 11119017
+      DepthTopAxis.LabelsFormat.Font.Name = 'Verdana'
+      DepthTopAxis.TicksInner.Color = 11119017
+      DepthTopAxis.Title.Font.Name = 'Verdana'
+      LeftAxis.Automatic = False
+      LeftAxis.AutomaticMaximum = False
+      LeftAxis.AutomaticMinimum = False
+      LeftAxis.Axis.Color = 4210752
+      LeftAxis.Grid.Color = 11119017
+      LeftAxis.LabelsFormat.Font.Name = 'Verdana'
+      LeftAxis.Maximum = 15.000000000000000000
+      LeftAxis.Minimum = 5.000000000000000000
+      LeftAxis.TicksInner.Color = 11119017
+      LeftAxis.Title.Font.Name = 'Verdana'
+      RightAxis.Automatic = False
+      RightAxis.AutomaticMaximum = False
+      RightAxis.AutomaticMinimum = False
+      RightAxis.Axis.Color = 4210752
+      RightAxis.Grid.Color = 11119017
+      RightAxis.LabelsFormat.Font.Name = 'Verdana'
+      RightAxis.Maximum = 15.000000000000000000
+      RightAxis.TicksInner.Color = 11119017
+      RightAxis.Title.Font.Name = 'Verdana'
+      TopAxis.Automatic = False
+      TopAxis.AutomaticMaximum = False
+      TopAxis.AutomaticMinimum = False
+      TopAxis.Axis.Color = 4210752
+      TopAxis.Grid.Color = 11119017
+      TopAxis.LabelsFormat.Font.Name = 'Verdana'
+      TopAxis.TicksInner.Color = 11119017
+      TopAxis.Title.Font.Name = 'Verdana'
+      TopAxis.Visible = False
+      View3D = False
+      Zoom.Allow = False
+      Align = alTop
+      BevelOuter = bvNone
+      TabOrder = 1
+      DefaultCanvas = 'TGDIPlusCanvas'
+      PrintMargins = (
+        15
+        17
+        15
+        17)
+      ColorPaletteIndex = 13
+      object Series1: TFastLineSeries
+        Selected.Hover.Visible = True
+        Marks.Callout.Length = 20
+        SeriesColor = clRed
+        LinePen.Color = clRed
+        LinePen.Width = 4
+        LinePen.EndStyle = esRound
+        TreatNulls = tnDontPaint
+        XValues.Name = 'X'
+        XValues.Order = loAscending
+        YValues.Name = 'Y'
+        YValues.Order = loNone
+      end
+    end
     object GroupBox2: TGroupBox
       Left = 1
       Top = 213
       Width = 254
-      Height = 317
+      Height = 329
       Align = alClient
       Caption = #1055#1072#1088#1072#1084#1077#1090#1088#1099' '#1072#1083#1075#1086#1088#1080#1090#1084#1072
-      TabOrder = 1
-      ExplicitHeight = 312
+      TabOrder = 2
+      ExplicitLeft = 25
+      ExplicitTop = 208
+      ExplicitHeight = 317
       object Label12: TLabel
         Left = 4
         Top = 39
@@ -590,6 +689,20 @@ object MainForm: TMainForm
         Height = 13
         Caption = 'ms'
       end
+      object Bevel4: TBevel
+        Left = 5
+        Top = 227
+        Width = 221
+        Height = 9
+        Shape = bsTopLine
+      end
+      object Label23: TLabel
+        Left = 5
+        Top = 261
+        Width = 32
+        Height = 13
+        Caption = #1055#1086#1088#1090': '
+      end
       object Edit1: TEdit
         Left = 135
         Top = 36
@@ -662,113 +775,33 @@ object MainForm: TMainForm
       end
       object Memo1: TMemo
         Left = 2
-        Top = 226
+        Top = 285
         Width = 250
-        Height = 89
+        Height = 42
         Align = alBottom
         Lines.Strings = (
           'Memo1')
         TabOrder = 7
-        ExplicitLeft = 72
-        ExplicitTop = 272
-        ExplicitWidth = 185
+        Visible = False
       end
-    end
-    object Chart1: TChart
-      Left = 1
-      Top = 112
-      Width = 254
-      Height = 101
-      BackWall.Brush.Gradient.Direction = gdBottomTop
-      BackWall.Brush.Gradient.EndColor = clWhite
-      BackWall.Brush.Gradient.StartColor = 15395562
-      BackWall.Brush.Gradient.Visible = True
-      BackWall.Transparent = False
-      Foot.Font.Color = clBlue
-      Foot.Font.Name = 'Verdana'
-      Gradient.Direction = gdBottomTop
-      Gradient.EndColor = clWhite
-      Gradient.MidColor = 15395562
-      Gradient.StartColor = 15395562
-      Gradient.Visible = True
-      LeftWall.Color = 14745599
-      Legend.Font.Name = 'Verdana'
-      Legend.Shadow.Transparency = 0
-      Legend.Visible = False
-      RightWall.Color = 14745599
-      Title.Font.Name = 'Verdana'
-      Title.Text.Strings = (
-        'TChart')
-      Title.Visible = False
-      BottomAxis.Axis.Color = 4210752
-      BottomAxis.Grid.Color = 11119017
-      BottomAxis.LabelsFormat.Font.Name = 'Verdana'
-      BottomAxis.TicksInner.Color = 11119017
-      BottomAxis.Title.Caption = 'qq'
-      BottomAxis.Title.Font.Name = 'Verdana'
-      BottomAxis.Visible = False
-      DepthAxis.Axis.Color = 4210752
-      DepthAxis.Grid.Color = 11119017
-      DepthAxis.LabelsFormat.Font.Name = 'Verdana'
-      DepthAxis.TicksInner.Color = 11119017
-      DepthAxis.Title.Font.Name = 'Verdana'
-      DepthTopAxis.Axis.Color = 4210752
-      DepthTopAxis.Grid.Color = 11119017
-      DepthTopAxis.LabelsFormat.Font.Name = 'Verdana'
-      DepthTopAxis.TicksInner.Color = 11119017
-      DepthTopAxis.Title.Font.Name = 'Verdana'
-      LeftAxis.Automatic = False
-      LeftAxis.AutomaticMaximum = False
-      LeftAxis.AutomaticMinimum = False
-      LeftAxis.Axis.Color = 4210752
-      LeftAxis.Grid.Color = 11119017
-      LeftAxis.LabelsFormat.Font.Name = 'Verdana'
-      LeftAxis.Maximum = 15.000000000000000000
-      LeftAxis.Minimum = 5.000000000000000000
-      LeftAxis.TicksInner.Color = 11119017
-      LeftAxis.Title.Font.Name = 'Verdana'
-      RightAxis.Automatic = False
-      RightAxis.AutomaticMaximum = False
-      RightAxis.AutomaticMinimum = False
-      RightAxis.Axis.Color = 4210752
-      RightAxis.Grid.Color = 11119017
-      RightAxis.LabelsFormat.Font.Name = 'Verdana'
-      RightAxis.Maximum = 15.000000000000000000
-      RightAxis.TicksInner.Color = 11119017
-      RightAxis.Title.Font.Name = 'Verdana'
-      TopAxis.Automatic = False
-      TopAxis.AutomaticMaximum = False
-      TopAxis.AutomaticMinimum = False
-      TopAxis.Axis.Color = 4210752
-      TopAxis.Grid.Color = 11119017
-      TopAxis.LabelsFormat.Font.Name = 'Verdana'
-      TopAxis.TicksInner.Color = 11119017
-      TopAxis.Title.Font.Name = 'Verdana'
-      TopAxis.Visible = False
-      View3D = False
-      Zoom.Allow = False
-      Align = alTop
-      BevelOuter = bvNone
-      TabOrder = 2
-      DefaultCanvas = 'TGDIPlusCanvas'
-      PrintMargins = (
-        15
-        17
-        15
-        17)
-      ColorPaletteIndex = 13
-      object Series1: TFastLineSeries
-        Selected.Hover.Visible = True
-        Marks.Callout.Length = 20
-        SeriesColor = clRed
-        LinePen.Color = clRed
-        LinePen.Width = 4
-        LinePen.EndStyle = esRound
-        TreatNulls = tnDontPaint
-        XValues.Name = 'X'
-        XValues.Order = loAscending
-        YValues.Name = 'Y'
-        YValues.Order = loNone
+      object SpinEdit3: TSpinEdit
+        Left = 43
+        Top = 257
+        Width = 70
+        Height = 22
+        MaxValue = 10000
+        MinValue = 1024
+        TabOrder = 8
+        Value = 7000
+        OnChange = SpinEdit2Change
+      end
+      object ComboBox1: TComboBox
+        Left = 5
+        Top = 232
+        Width = 220
+        Height = 21
+        Style = csDropDownList
+        TabOrder = 9
       end
     end
   end
@@ -776,11 +809,11 @@ object MainForm: TMainForm
     Left = 828
     Top = 0
     Width = 7
-    Height = 531
+    Height = 543
     Align = alRight
     TabOrder = 3
     OnClick = Panel4Click
-    ExplicitHeight = 526
+    ExplicitHeight = 531
   end
   object ActionList1: TActionList
     Left = 56

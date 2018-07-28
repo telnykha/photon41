@@ -104,6 +104,11 @@ __published:	// IDE-managed Components
 	TLabel *Label8;
 	TLabel *Label9;
 	TLabel *Label10;
+	TChart *Chart1;
+	TFastLineSeries *Series1;
+	TPanel *Panel4;
+	TIdTCPServer *IdTCPServer1;
+	TSpeedButton *SpeedButton5;
 	TGroupBox *GroupBox2;
 	TLabel *Label12;
 	TLabel *Label13;
@@ -126,12 +131,11 @@ __published:	// IDE-managed Components
 	TEdit *Edit2;
 	TSpinEdit *SpinEdit2;
 	TEdit *Edit3;
-	TChart *Chart1;
-	TFastLineSeries *Series1;
-	TPanel *Panel4;
-	TIdTCPServer *IdTCPServer1;
-	TSpeedButton *SpeedButton5;
 	TMemo *Memo1;
+	TBevel *Bevel4;
+	TSpinEdit *SpinEdit3;
+	TLabel *Label23;
+	TComboBox *ComboBox1;
 	void __fastcall fileExitActionExecute(TObject *Sender);
 	void __fastcall modeExperimentActionExecute(TObject *Sender);
 	void __fastcall modeExperimentActionUpdate(TObject *Sender);

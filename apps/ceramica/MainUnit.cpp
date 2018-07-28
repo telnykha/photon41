@@ -8,6 +8,7 @@
 #include "PhVideo.h"
 #include "PhSlideShow.h"
 #include "SelDirUnit.h"
+#include "IpAddress.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -312,8 +313,18 @@ void __fastcall TMainForm::FormCreate(TObject *Sender)
     SetSource(NULL);
     LoadParams();
 
-  	IdTCPServer1->Bindings->Add()->IP =  L"127.0.0.1";
-  	IdTCPServer1->Bindings->Add()->Port = 6000;
+    TStringList* l = new TStringList();
+    GetMyIpAddressList(l);
+    this->ComboBox1->Items->Clear();
+    for (int i = 0; i < l->Count; i++)
+        this->ComboBox1->Items->Add(l->Strings[i]);
+    if (l->Count > 0)
+	    this->ComboBox1->ItemIndex = 0;
+    delete l;
+
+  	IdTCPServer1->Bindings->Add()->IP =  this->ComboBox1->Items->Strings[0];
+  	IdTCPServer1->Bindings->Add()->Port = this->SpinEdit3->Value;
+
 }
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::SetSource(TPhMediaSource* source)
