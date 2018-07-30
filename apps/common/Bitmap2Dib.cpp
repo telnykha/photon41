@@ -46,18 +46,18 @@ bool awpwinDrawStatusText(awpImage* img, const char* text, awpRect pos)
     if (awpRectInImage(img, &pos) != AWP_OK)
         return false;
 
-    int w = pos.right -1;
+    int w = pos.right;
     int h = pos.bottom;
 
     Graphics::TBitmap* bmp = new Graphics::TBitmap();
     if (bmp == NULL)
         return false;
 
-    bmp->Width   = 640;
-    bmp->Height  = 480;
+    bmp->Width   = w;
+    bmp->Height  = h;
 
     TCanvas* cnv = bmp->Canvas;
-
+    cnv->Font->Height = 32;
     UnicodeString str = text;
 
     int th = cnv->TextHeight(str);
@@ -69,7 +69,7 @@ bool awpwinDrawStatusText(awpImage* img, const char* text, awpRect pos)
         return false;
     }
 
-    cnv->TextOutW(50,5, str);
+    cnv->TextOutW(5,5, str);
 
     BITMAPINFO* info = NULL;
     unsigned char* data = NULL;

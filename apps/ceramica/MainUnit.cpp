@@ -542,8 +542,12 @@ void __fastcall TMainForm::DrawRuler(awpImage* img)
     r.top  = 0;
     r.right = img->sSizeX;
     r.bottom = 40;
-
-    awpwinDrawStatusText(img, "test", r);
+    AnsiString _str = DateToStr(Now());
+    _str += " ";
+    _str += TimeToStr(Now());
+    _str += " d=";
+    _str += FormatFloat("000.00  mm", m_c.ValueMM(m_engine.diam));
+    awpwinDrawStatusText(img, _str.c_str(), r);
 
 }
 void __fastcall TMainForm::FormResize(TObject *Sender)

@@ -42,7 +42,6 @@ object MainForm: TMainForm
         Text = #1048#1079#1086#1073#1088#1072#1078#1077#1085#1080#1077':'
         Width = 50
       end>
-    ExplicitTop = 531
   end
   object Panel2: TPanel
     Left = 0
@@ -51,7 +50,6 @@ object MainForm: TMainForm
     Height = 543
     Align = alClient
     TabOrder = 1
-    ExplicitHeight = 531
     object Panel3: TPanel
       Left = 1
       Top = 484
@@ -59,7 +57,6 @@ object MainForm: TMainForm
       Height = 58
       Align = alBottom
       TabOrder = 0
-      ExplicitTop = 472
       object SpeedButton4: TSpeedButton
         Left = 241
         Top = 1
@@ -333,7 +330,6 @@ object MainForm: TMainForm
       OnMouseMove = PhImage1MouseMove
       AfterOpen = PhImage1AfterOpen
       OnFrameData = PhImage1FrameData
-      ExplicitHeight = 471
     end
   end
   object Panel1: TPanel
@@ -343,7 +339,6 @@ object MainForm: TMainForm
     Height = 543
     Align = alRight
     TabOrder = 2
-    ExplicitHeight = 531
     object GroupBox1: TGroupBox
       Left = 1
       Top = 1
@@ -588,9 +583,6 @@ object MainForm: TMainForm
       Align = alClient
       Caption = #1055#1072#1088#1072#1084#1077#1090#1088#1099' '#1072#1083#1075#1086#1088#1080#1090#1084#1072
       TabOrder = 2
-      ExplicitLeft = 25
-      ExplicitTop = 208
-      ExplicitHeight = 317
       object Label12: TLabel
         Left = 4
         Top = 39
@@ -813,7 +805,6 @@ object MainForm: TMainForm
     Align = alRight
     TabOrder = 3
     OnClick = Panel4Click
-    ExplicitHeight = 531
   end
   object ActionList1: TActionList
     Left = 56
