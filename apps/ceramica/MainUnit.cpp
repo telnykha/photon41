@@ -9,6 +9,7 @@
 #include "PhSlideShow.h"
 #include "SelDirUnit.h"
 #include "IpAddress.h"
+#include "Bitmap2Dib.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -535,6 +536,15 @@ void __fastcall TMainForm::DrawRuler(awpImage* img)
     awpDrawCRect(img, &rect, 0,255,0, 3);
     rect.right = sx + _length / 2;
    	awpFillRect(img, &rect, 1, 255);
+
+    awpRect r;
+    r.left = 0;
+    r.top  = 0;
+    r.right = img->sSizeX;
+    r.bottom = 40;
+
+    awpwinDrawStatusText(img, "test", r);
+
 }
 void __fastcall TMainForm::FormResize(TObject *Sender)
 {
