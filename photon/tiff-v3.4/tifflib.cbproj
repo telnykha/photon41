@@ -45,7 +45,7 @@
         <VerInfo_Keys>CompanyName=;FileDescription=;FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProductName=;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <IncludePath>libtiff\;$(IncludePath)</IncludePath>
+        <IncludePath>libtiff\;$(ZLIB);$(IncludePath)</IncludePath>
         <FinalOutputDir>$(PHOTON)\lib\</FinalOutputDir>
         <DCC_AdditionalSwitches> -N0libtiff\ -M</DCC_AdditionalSwitches>
         <BCC_DisableOptimizations>true</BCC_DisableOptimizations>
@@ -66,6 +66,7 @@
         <BRCC_OutputDir>libtiff\</BRCC_OutputDir>
         <BCC_PCHCache>true</BCC_PCHCache>
         <DCC_CBuilderOutput>JPHNE</DCC_CBuilderOutput>
+        <Defines>ZIP_SUPPORT;$(Defines)</Defines>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <DCC_Namespace>Winapi;System.Win;Data.Win;Datasnap.Win;Web.Win;Soap.Win;Xml.Win;Bde;$(DCC_Namespace)</DCC_Namespace>

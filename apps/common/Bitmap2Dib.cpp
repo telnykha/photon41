@@ -86,7 +86,11 @@ bool awpwinDrawStatusText(awpImage* img, const char* text, awpRect pos)
         FreeDib(info, data);
         return false;
     }
+
+#ifdef _DEBUG
     awpSaveImage("tmp.jpg", tmp);
+#endif
+
     awpPoint p;
     p.X = 0;
     p.Y = 2;
@@ -103,3 +107,74 @@ bool awpwinDrawStatusText(awpImage* img, const char* text, awpRect pos)
     _AWP_SAFE_RELEASE_(tmp)
     return true;
 }
+
+bool awpwinDrawRuler(awpImage* img, awpRect rect, const char* text)
+{
+/*    if (img == NULL || text == NULL)
+        return false;
+    if (awpRectInImage(img, &rect) != AWP_OK)
+        return false;
+
+    int w = pos.right;
+    int h = pos.bottom;
+
+    Graphics::TBitmap* bmp = new Graphics::TBitmap();
+    if (bmp == NULL)
+        return false;
+
+    bmp->Width   = w;
+    bmp->Height  = h;
+
+    TCanvas* cnv = bmp->Canvas;
+    cnv->Font->Height = 32;
+    UnicodeString str = text;
+
+    int th = cnv->TextHeight(str);
+    int tw = cnv->TextWidth(str);
+
+    if (th > h || tw > w)
+    {
+        delete bmp;
+        return false;
+    }
+
+    cnv->TextOutW(5,5, str);
+
+    BITMAPINFO* info = NULL;
+    unsigned char* data = NULL;
+	if (!Bitmap2Dib(bmp, &info, &data))
+    {
+        delete bmp;
+        return false;
+    }
+
+    awpImage* tmp = NULL;
+    if (awpDIBToImage(info, data, &tmp) != AWP_OK)
+    {
+        delete bmp;
+        FreeDib(info, data);
+        return false;
+    }
+
+#ifdef _DEBUG
+    awpSaveImage("tmp.jpg", tmp);
+#endif
+
+    awpPoint p;
+    p.X = 0;
+    p.Y = 2;
+
+    if (awpPasteRect(tmp, img,  p) != AWP_OK)
+    {
+        delete bmp;
+        FreeDib(info, data);
+        return false;
+    }
+
+    FreeDib(info, data);
+	delete bmp;
+    _AWP_SAFE_RELEASE_(tmp)
+*/
+    return true;
+}
+

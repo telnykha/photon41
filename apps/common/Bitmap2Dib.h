@@ -8,5 +8,5 @@
 bool Bitmap2Dib(Graphics::TBitmap *bm, BITMAPINFO** info, int* InfoSize, unsigned char** data, int* DataSize);
 void FreeDib(BITMAPINFO* info, unsigned char* data);
 bool awpwinDrawStatusText(awpImage* img, const char* text, awpRect pos);
-
+bool awpwinDrawRuler(awpImage* img, awpRect rect, const char* text);
 #endif

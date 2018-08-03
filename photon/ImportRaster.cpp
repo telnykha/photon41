@@ -97,8 +97,6 @@ __fastcall TImportRaster::~TImportRaster()
 ---------------------------------------------------------------------------*/
 void __fastcall TImportRaster::Execute()
 {
-  // DONE: implement TImportRaster::Execute()
-
   // инциализируем объект FBitmap
   __try
   {

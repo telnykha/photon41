@@ -2,7 +2,7 @@ object MainForm: TMainForm
   Left = 0
   Top = 0
   Caption = #1050#1077#1088#1072#1084#1080#1082#1072' '
-  ClientHeight = 562
+  ClientHeight = 592
   ClientWidth = 835
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -20,7 +20,7 @@ object MainForm: TMainForm
   TextHeight = 13
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 543
+    Top = 573
     Width = 835
     Height = 19
     Panels = <
@@ -47,12 +47,12 @@ object MainForm: TMainForm
     Left = 0
     Top = 0
     Width = 572
-    Height = 543
+    Height = 573
     Align = alClient
     TabOrder = 1
     object Panel3: TPanel
       Left = 1
-      Top = 484
+      Top = 514
       Width = 570
       Height = 58
       Align = alBottom
@@ -321,7 +321,7 @@ object MainForm: TMainForm
       Left = 1
       Top = 1
       Width = 570
-      Height = 483
+      Height = 513
       ThumbWidht = 128
       ThumbHeight = 128
       SlideShowInterval = 500
@@ -336,7 +336,7 @@ object MainForm: TMainForm
     Left = 572
     Top = 0
     Width = 256
-    Height = 543
+    Height = 573
     Align = alRight
     TabOrder = 2
     object GroupBox1: TGroupBox
@@ -482,7 +482,7 @@ object MainForm: TMainForm
       Left = 1
       Top = 112
       Width = 254
-      Height = 101
+      Height = 129
       BackWall.Brush.Gradient.Direction = gdBottomTop
       BackWall.Brush.Gradient.EndColor = clWhite
       BackWall.Brush.Gradient.StartColor = 15395562
@@ -508,9 +508,8 @@ object MainForm: TMainForm
       BottomAxis.Grid.Color = 11119017
       BottomAxis.LabelsFormat.Font.Name = 'Verdana'
       BottomAxis.TicksInner.Color = 11119017
-      BottomAxis.Title.Caption = 'qq'
+      BottomAxis.Title.Caption = #1074#1088#1077#1084#1103' '#1085#1072#1073#1083#1102#1076#1077#1085#1080#1103
       BottomAxis.Title.Font.Name = 'Verdana'
-      BottomAxis.Visible = False
       DepthAxis.Axis.Color = 4210752
       DepthAxis.Grid.Color = 11119017
       DepthAxis.LabelsFormat.Font.Name = 'Verdana'
@@ -530,6 +529,7 @@ object MainForm: TMainForm
       LeftAxis.Maximum = 15.000000000000000000
       LeftAxis.Minimum = 5.000000000000000000
       LeftAxis.TicksInner.Color = 11119017
+      LeftAxis.Title.Caption = #1044#1080#1072#1084#1077#1090#1088' ('#1084#1084')'
       LeftAxis.Title.Font.Name = 'Verdana'
       RightAxis.Automatic = False
       RightAxis.AutomaticMaximum = False
@@ -577,9 +577,9 @@ object MainForm: TMainForm
     end
     object GroupBox2: TGroupBox
       Left = 1
-      Top = 213
+      Top = 241
       Width = 254
-      Height = 329
+      Height = 331
       Align = alClient
       Caption = #1055#1072#1088#1072#1084#1077#1090#1088#1099' '#1072#1083#1075#1086#1088#1080#1090#1084#1072
       TabOrder = 2
@@ -767,7 +767,7 @@ object MainForm: TMainForm
       end
       object Memo1: TMemo
         Left = 2
-        Top = 285
+        Top = 287
         Width = 250
         Height = 42
         Align = alBottom
@@ -801,7 +801,7 @@ object MainForm: TMainForm
     Left = 828
     Top = 0
     Width = 7
-    Height = 543
+    Height = 573
     Align = alRight
     TabOrder = 3
     OnClick = Panel4Click
@@ -931,6 +931,16 @@ object MainForm: TMainForm
       OnExecute = viewBinaryActionExecute
       OnUpdate = viewBinaryActionUpdate
     end
+    object fileClientAction: TAction
+      Category = 'File'
+      Caption = #1047#1072#1087#1091#1089#1090#1080#1090#1100' '#1082#1083#1080#1077#1085#1090
+      OnExecute = fileClientActionExecute
+    end
+    object helpAboutAction: TAction
+      Category = 'Help'
+      Caption = #1054' '#1087#1088#1086#1075#1088#1072#1084#1084#1077'... '
+      OnExecute = helpAboutActionExecute
+    end
   end
   object MainMenu1: TMainMenu
     Left = 16
@@ -946,11 +956,17 @@ object MainForm: TMainForm
       object N17: TMenuItem
         Action = fileConnectToCameraAction
       end
-      object N18: TMenuItem
+      object N5: TMenuItem
         Caption = '-'
       end
       object N19: TMenuItem
         Action = fileCloseAction
+      end
+      object N18: TMenuItem
+        Caption = '-'
+      end
+      object N21: TMenuItem
+        Action = fileClientAction
       end
       object N3: TMenuItem
         Caption = '-'
@@ -992,6 +1008,12 @@ object MainForm: TMainForm
         Action = modeAutoAnalysisAction
       end
     end
+    object N22: TMenuItem
+      Caption = #1055#1086#1084#1086#1097#1100
+      object N23: TMenuItem
+        Action = helpAboutAction
+      end
+    end
   end
   object OpenDialog1: TOpenDialog
     Options = [ofHideReadOnly, ofAllowMultiSelect, ofFileMustExist, ofEnableSizing]
@@ -1023,7 +1045,7 @@ object MainForm: TMainForm
     OnConnect = IdTCPServer1Connect
     OnDisconnect = IdTCPServer1Disconnect
     OnExecute = IdTCPServer1Execute
-    Left = 160
+    Left = 144
     Top = 16
   end
 end

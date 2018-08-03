@@ -136,6 +136,12 @@ __published:	// IDE-managed Components
 	TSpinEdit *SpinEdit3;
 	TLabel *Label23;
 	TComboBox *ComboBox1;
+	TAction *fileClientAction;
+	TMenuItem *N5;
+	TMenuItem *N21;
+	TAction *helpAboutAction;
+	TMenuItem *N22;
+	TMenuItem *N23;
 	void __fastcall fileExitActionExecute(TObject *Sender);
 	void __fastcall modeExperimentActionExecute(TObject *Sender);
 	void __fastcall modeExperimentActionUpdate(TObject *Sender);
@@ -190,6 +196,8 @@ __published:	// IDE-managed Components
 	void __fastcall IdTCPServer1Execute(TIdContext *AContext);
 	void __fastcall IdTCPServer1Connect(TIdContext *AContext);
 	void __fastcall IdTCPServer1Disconnect(TIdContext *AContext);
+	void __fastcall fileClientActionExecute(TObject *Sender);
+	void __fastcall helpAboutActionExecute(TObject *Sender);
 
 
 

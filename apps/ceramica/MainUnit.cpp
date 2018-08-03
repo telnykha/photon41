@@ -10,6 +10,8 @@
 #include "SelDirUnit.h"
 #include "IpAddress.h"
 #include "Bitmap2Dib.h"
+#include "VerInfoUnit.h"
+#include "AboutUnit.h"
 
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
@@ -32,7 +34,7 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
 {
     m_videoSource = NULL;
     m_modeAction  = NULL;
-    m_buffer = new TLFBuffer(32, 0);
+    m_buffer = new TLFBuffer(256, 0);
     m_archive = NULL;
 }
 
@@ -460,7 +462,7 @@ void __fastcall TMainForm::DrawEllipce(awpImage* img)
     p.X = m_engine.center.X;
     p.Y = m_engine.center.Y;
 
-    awpDrawCEllipse(img, p, m_engine.major/2, m_engine.minor/2, m_engine.angle, 255,0,255, 3);
+    awpDrawCEllipse2(img, p, m_engine.major/2, m_engine.minor/2, -AWP_PI*m_engine.angle/180., 255,0,255, 1);
 }
 
 void __fastcall TMainForm::DrawAxis(awpImage* img)
@@ -472,7 +474,7 @@ void __fastcall TMainForm::DrawAxis(awpImage* img)
     p.X = m_engine.center.X;
     p.Y = m_engine.center.Y;
 
-	awpDrawCEllipseCross(img, p, m_engine.major, m_engine.minor, m_engine.angle, 255,0,0, 3);
+	awpDrawCEllipseCross(img, p, m_engine.major, m_engine.minor, m_engine.angle, 255,0,0, 1);
 }
 
 void __fastcall TMainForm::DrawBinary(awpImage* img)
@@ -533,7 +535,7 @@ void __fastcall TMainForm::DrawRuler(awpImage* img)
     rect.right = sx + _length;
     rect.bottom = h - sy;
 
-    awpDrawCRect(img, &rect, 0,255,0, 3);
+    awpDrawCRect(img, &rect, 0,255,0, 1);
     rect.right = sx + _length / 2;
    	awpFillRect(img, &rect, 1, 255);
 
@@ -863,6 +865,24 @@ void __fastcall TMainForm::IdTCPServer1Connect(TIdContext *AContext)
 void __fastcall TMainForm::IdTCPServer1Disconnect(TIdContext *AContext)
 {
     Memo1->Lines->Add("отключение клиента. ");
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::fileClientActionExecute(TObject *Sender)
+{
+   WinExec("CeramClient.exe", SW_SHOWNORMAL);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::helpAboutActionExecute(TObject *Sender)
+{
+  TVersionInfo* vi = new TVersionInfo(NULL);
+  AboutBox->ProductName->Caption = vi->ProductName;
+  AboutBox->Version->Caption = vi->FileVersion;
+  AboutBox->Copyright->Caption = vi->LegalCopyright;
+  AboutBox->Comments->Caption = vi->Comments;
+  AboutBox->ShowModal();
+  delete vi;
 }
 //---------------------------------------------------------------------------
 

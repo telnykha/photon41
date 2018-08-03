@@ -59,11 +59,11 @@
         <Icon_MainIcon>$(BDS)\bin\cbuilder_PROJECTICON.ico</Icon_MainIcon>
         <UWP_CppLogo44>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_44.png</UWP_CppLogo44>
         <UWP_CppLogo150>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_150.png</UWP_CppLogo150>
-        <IncludePath>..\photon41\photon\;$(PHOTON41);$(AWP);$(TIFF);$(PNG);$(ZLIB);$(LF);$(TINY);$(IncludePath)</IncludePath>
+        <IncludePath>..\common\;..\photon41\photon\;$(PHOTON41);$(AWP);$(TIFF);$(PNG);$(ZLIB);$(LF);$(TINY);$(IncludePath)</IncludePath>
         <VerInfo_Locale>1049</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <SanitizedProjectName>Blood41</SanitizedProjectName>
-        <ILINK_LibraryPath>..\photon41\photon\;$(PHOTON41)\lib\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+        <ILINK_LibraryPath>..\common\;..\photon41\photon\;$(PHOTON41)\lib\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <PackageImports>appanalytics;bcbsmp;bindcomp;bindcompfmx;bindcompvcl;bindengine;CustomIPTransport;dbrtl;dsnap;fmx;fmxase;fmxdae;fmxobj;FMXTee925;FMXTeeDB925;FMXTeeImport925;FMXTeeLanguage925;FMXTeePro925;FmxTeeUI925;FMXTree25;IndyCore;IndyProtocols;IndySystem;photon;photon41;rtl;svn;Tee925;TeeDB925;TeeGL925;TeeImage925;TeeImport925;TeeLanguage925;TeeMaker125;TeePro925;TeeTree2D25Tee9;TeeUI925;TeeWorld925;tethering;vcl;vclactnband;vcldb;vcldsnap;vclie;vclimg;VclSmp;vcltouch;vclwinx;vclx;xmlrtl;$(PackageImports)</PackageImports>
@@ -73,7 +73,6 @@
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Manifest_File>$(BDS)\bin\default_app.manifest</Manifest_File>
-        <BCC_PCHName_Clang>Blood41PCH1.h</BCC_PCHName_Clang>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_1)'!=''">
         <BCC_OptimizeForSpeed>false</BCC_OptimizeForSpeed>
@@ -112,15 +111,15 @@
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppEnableHighDPI>true</AppEnableHighDPI>
-        <BCC_PCHName_Clang>Blood41PCH1.h</BCC_PCHName_Clang>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Icon_MainIcon>Blood41_Icon1.ico</Icon_MainIcon>
         <LinkPackageStatics>rtl.lib;vcl.lib;Tee925.lib;vclimg.lib;photon41.lib;VclSmp.lib;vclx.lib</LinkPackageStatics>
         <UsePackages>false</UsePackages>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
-        <VerInfo_Keys>CompanyName=nn-videolab.net;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.7;InternalName=blood41;LegalCopyright=Copyright (c) 2018 nn-videolab.net;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=Версия для испытаний (beta)</VerInfo_Keys>
-        <VerInfo_Build>7</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=nn-videolab.net;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.9;InternalName=blood41;LegalCopyright=Copyright (c) 2018 nn-videolab.net;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=Версия для испытаний (beta)</VerInfo_Keys>
+        <VerInfo_Build>9</VerInfo_Build>
+        <FinalOutputDir>..\bin\</FinalOutputDir>
     </PropertyGroup>
     <ItemGroup>
         <CppCompile Include="AboutUnit.cpp">
@@ -147,29 +146,9 @@
             <DependentOn>MainUnit.h</DependentOn>
             <BuildOrder>2</BuildOrder>
         </CppCompile>
-        <CppCompile Include="VerInfoUnit.cpp">
-            <DependentOn>VerInfoUnit.h</DependentOn>
-            <BuildOrder>11</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="..\photon41\photon\DIBImage41.cpp">
-            <DependentOn>..\photon41\photon\DIBImage41.h</DependentOn>
-            <BuildOrder>4</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="..\photon41\photon\ExportRaster.cpp">
-            <DependentOn>..\photon41\photon\ExportRaster.h</DependentOn>
-            <BuildOrder>8</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="..\photon41\photon\ImportRaster.cpp">
-            <DependentOn>..\photon41\photon\ImportRaster.h</DependentOn>
-            <BuildOrder>5</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="..\photon41\photon\pnglibio.cpp">
-            <DependentOn>..\photon41\photon\pnglibio.h</DependentOn>
+        <CppCompile Include="..\common\VerInfoUnit.cpp">
+            <DependentOn>..\common\VerInfoUnit.h</DependentOn>
             <BuildOrder>6</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="..\photon41\photon\tifflibio.cpp">
-            <DependentOn>..\photon41\photon\tifflibio.h</DependentOn>
-            <BuildOrder>7</BuildOrder>
         </CppCompile>
         <FormResources Include="AboutUnit.dfm"/>
         <FormResources Include="MainUnit.dfm"/>
