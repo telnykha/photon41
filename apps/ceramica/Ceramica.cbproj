@@ -165,6 +165,10 @@ $(PostBuildEvent)]]></PostBuildEvent>
             <DependentOn>PhVideo.h</DependentOn>
             <BuildOrder>4</BuildOrder>
         </CppCompile>
+        <CppCompile Include="PhVideoThread.cpp">
+            <DependentOn>PhVideoThread.h</DependentOn>
+            <BuildOrder>13</BuildOrder>
+        </CppCompile>
         <CppCompile Include="..\common\Bitmap2Dib.cpp">
             <DependentOn>..\common\Bitmap2Dib.h</DependentOn>
             <BuildOrder>7</BuildOrder>
@@ -181,8 +185,8 @@ $(PostBuildEvent)]]></PostBuildEvent>
             <DependentOn>..\common\VerInfoUnit.h</DependentOn>
             <BuildOrder>12</BuildOrder>
         </CppCompile>
-        <FormResources Include="MainUnit.dfm"/>
         <FormResources Include="AboutUnit.dfm"/>
+        <FormResources Include="MainUnit.dfm"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
