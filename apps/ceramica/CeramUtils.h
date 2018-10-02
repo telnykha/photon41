@@ -3,15 +3,19 @@
 #define CeramUtilsH
 #include "awpipl.h"
 #include "_LF.h"
+
+
 //---------------------------------------------------------------------------
+
+////////////////////////////////////////
 class TCeramCalibration
 {
 protected:
-    double m_alfa;
+	double m_alfa;
 public:
-    TCeramCalibration();
-    TCeramCalibration(double alfa);
-    TCeramCalibration(double lenght_pix, double lenght_mm);
+	TCeramCalibration();
+	TCeramCalibration(double alfa);
+	TCeramCalibration(double lenght_pix, double lenght_mm);
 
     ~TCeramCalibration();
     void __fastcall Init(double lenght_pix, double lenght_mm);

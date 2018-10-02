@@ -4,6 +4,12 @@
 #include "CeramUtils.h"
 #include "awpcvvideo.h"
 #include <math.h>
+extern "C"
+{
+	#include "pgf_wrapper.h"
+}
+
+	#pragma link "pgf_wrapper.lib"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 TCeramCalibration::TCeramCalibration()
@@ -145,8 +151,25 @@ bool __fastcall TCeramImageProcessor::FindCircle(awpImage* img, int &r, awpPoint
                 else
                     result = false;
             }
-    }
-    _AWP_SAFE_RELEASE_(crls)
+	}
+	awp2DPoint points[4];
+	awp2DPoint c;
+	double r0;
+	points[0].X = 1;
+	points[0].Y = 0;
+
+	points[1].X = 0;
+	points[1].Y = 1;
+
+	points[2].X = -1;
+	points[2].Y = 0;
+
+	points[3].X = 0;
+	points[3].Y = -1;
+
+	pgfGetCircle(points, 4, &c, &r0, 1);
+
+	_AWP_SAFE_RELEASE_(crls)
     return result;
 }
 
@@ -286,20 +309,22 @@ void __fastcall TCeramImageProcessor::Reset()
 
 void __fastcall TCeramImageProcessor::SetUseBuffer(bool value)
 {
-    this->m_useBuffer = value;
-    this->Reset();
+	this->m_useBuffer = value;
+	this->Reset();
 
 }
 void __fastcall TCeramImageProcessor::SetBufferSize(int value)
 {
-    this->m_bufferSize = value;
-    this->Reset();
+	this->m_bufferSize = value;
+	this->Reset();
 }
 
 int  __fastcall TCeramImageProcessor::GetBufferSize()
 {
-    return m_useBuffer ? m_bufferSize:1;
+	return m_useBuffer ? m_bufferSize:1;
 }
+
+
 
 
 

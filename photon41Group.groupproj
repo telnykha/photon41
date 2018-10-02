@@ -3,6 +3,9 @@
         <ProjectGuid>{01FF183D-C41D-4BB5-B325-F4AE3EFC9F72}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
+        <Projects Include="..\awpipl2\borland\awpipl2b.cbproj">
+            <Dependencies/>
+        </Projects>
         <Projects Include="photon\zlib\zlib.cbproj">
             <Dependencies/>
         </Projects>
@@ -27,7 +30,7 @@
         <Projects Include="apps\ceramica_client\CeramClient.cbproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="..\awpipl2\borland\awpipl2b.cbproj">
+        <Projects Include="apps\ceramica\PROGRAFIX\ProGraFix.cbproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -38,6 +41,15 @@
             <Default.Personality/>
         </BorlandProject>
     </ProjectExtensions>
+    <Target Name="awpipl2b">
+        <MSBuild Projects="..\awpipl2\borland\awpipl2b.cbproj"/>
+    </Target>
+    <Target Name="awpipl2b:Clean">
+        <MSBuild Projects="..\awpipl2\borland\awpipl2b.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="awpipl2b:Make">
+        <MSBuild Projects="..\awpipl2\borland\awpipl2b.cbproj" Targets="Make"/>
+    </Target>
     <Target Name="zlib">
         <MSBuild Projects="photon\zlib\zlib.cbproj"/>
     </Target>
@@ -110,23 +122,23 @@
     <Target Name="CeramClient:Make">
         <MSBuild Projects="apps\ceramica_client\CeramClient.cbproj" Targets="Make"/>
     </Target>
-    <Target Name="awpipl2b">
-        <MSBuild Projects="..\awpipl2\borland\awpipl2b.cbproj"/>
+    <Target Name="ProGraFix">
+        <MSBuild Projects="apps\ceramica\PROGRAFIX\ProGraFix.cbproj"/>
     </Target>
-    <Target Name="awpipl2b:Clean">
-        <MSBuild Projects="..\awpipl2\borland\awpipl2b.cbproj" Targets="Clean"/>
+    <Target Name="ProGraFix:Clean">
+        <MSBuild Projects="apps\ceramica\PROGRAFIX\ProGraFix.cbproj" Targets="Clean"/>
     </Target>
-    <Target Name="awpipl2b:Make">
-        <MSBuild Projects="..\awpipl2\borland\awpipl2b.cbproj" Targets="Make"/>
+    <Target Name="ProGraFix:Make">
+        <MSBuild Projects="apps\ceramica\PROGRAFIX\ProGraFix.cbproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="zlib;libpng;tifflib;photon41;PhotonDemo;Blood41;Ceramica;CeramClient;awpipl2b"/>
+        <CallTarget Targets="awpipl2b;zlib;libpng;tifflib;photon41;PhotonDemo;Blood41;Ceramica;CeramClient;ProGraFix"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="zlib:Clean;libpng:Clean;tifflib:Clean;photon41:Clean;PhotonDemo:Clean;Blood41:Clean;Ceramica:Clean;CeramClient:Clean;awpipl2b:Clean"/>
+        <CallTarget Targets="awpipl2b:Clean;zlib:Clean;libpng:Clean;tifflib:Clean;photon41:Clean;PhotonDemo:Clean;Blood41:Clean;Ceramica:Clean;CeramClient:Clean;ProGraFix:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="zlib:Make;libpng:Make;tifflib:Make;photon41:Make;PhotonDemo:Make;Blood41:Make;Ceramica:Make;CeramClient:Make;awpipl2b:Make"/>
+        <CallTarget Targets="awpipl2b:Make;zlib:Make;libpng:Make;tifflib:Make;photon41:Make;PhotonDemo:Make;Blood41:Make;Ceramica:Make;CeramClient:Make;ProGraFix:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

@@ -6,7 +6,7 @@
         <AppType>Application</AppType>
         <MainSource>Ceramica.cpp</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>1</TargetedPlatforms>
     </PropertyGroup>
@@ -59,10 +59,10 @@
         <UWP_CppLogo44>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_44.png</UWP_CppLogo44>
         <UWP_CppLogo150>$(BDS)\bin\Artwork\Windows\UWP\cppreg_UwpDefault_150.png</UWP_CppLogo150>
         <SanitizedProjectName>Ceramica</SanitizedProjectName>
-        <IncludePath>..\common\;..\photon41\photon\;$(PHOTON41);$(AWP);$(TIFF);$(PNG);$(ZLIB);$(LF);$(TINY);..\photon41\photon\awpcvvideo\;$(IncludePath)</IncludePath>
+        <IncludePath>PROGRAFIX\;..\common\;..\photon41\photon\;$(PHOTON41);$(AWP);$(TIFF);$(PNG);$(ZLIB);$(LF);$(TINY);..\photon41\photon\awpcvvideo\;$(IncludePath)</IncludePath>
         <VerInfo_Locale>1049</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-        <ILINK_LibraryPath>..\common\;..\photon41\photon\;C:\_alt\photon41\photon\awpcvvideo;$(PHOTON41)\lib\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+        <ILINK_LibraryPath>PROGRAFIX\;..\common\;$(PHOTON41)\lib\;$(AWPCVVIDEO);$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <PostBuildEvent><![CDATA[copy awpcvvideo.dll ..\bin\awpcvvideo.dll
 $(PostBuildEvent)]]></PostBuildEvent>
     </PropertyGroup>
@@ -100,15 +100,15 @@ $(PostBuildEvent)]]></PostBuildEvent>
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppEnableHighDPI>true</AppEnableHighDPI>
-        <LinkPackageImports>rtl.bpi;vcl.bpi;photon41.bpi;VclSmp.bpi;vclx.bpi;Tee925.bpi;vclimg.bpi;IndyCore.bpi;IndySystem.bpi</LinkPackageImports>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <PostBuildEvent><![CDATA[copy awpcvvideo.dll .\$(Platform)\$(Config)\awpcvvideo.dll
 $(PostBuildEvent)]]></PostBuildEvent>
         <Debugger_DebugSourcePath>C:\_alt\awpipl2\src\;$(Debugger_DebugSourcePath)</Debugger_DebugSourcePath>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
-        <VerInfo_Keys>CompanyName=NN-VideoLab.net;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.1;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
-        <VerInfo_Build>1</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=NN-VideoLab.net;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.2;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <LinkPackageStatics>rtl.lib;vcl.lib;photon41.lib;VclSmp.lib;vclx.lib;Tee925.lib;vclimg.lib;IndyCore.lib;IndySystem.lib</LinkPackageStatics>
+        <VerInfo_Build>2</VerInfo_Build>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <Defines>NDEBUG;$(Defines)</Defines>
@@ -227,7 +227,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>copy awpcvvideo.dll .\$(Platform)\$(Config)\awpcvvideo.dll&amp;&amp;copy awpcvvideo.dll ..\bin\awpcvvideo.dll</PostBuildEvent>
+        <PostBuildEvent>copy awpcvvideo.dll .\$(Platform)\$(Config)\awpcvvideo.dll&amp;&amp;copy awpcvvideo.dll ..\bin\awpcvvideo.dll</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='Win32'">
@@ -235,7 +235,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>copy awpcvvideo.dll ..\bin\awpcvvideo.dll</PostBuildEvent>
+        <PostBuildEvent>copy awpcvvideo.dll ..\bin\awpcvvideo.dll</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
 </Project>

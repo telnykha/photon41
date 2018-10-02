@@ -81,3 +81,14 @@ OCRDemo/__recovery/
 Demo/__recovery/__recovery.ini
 Demo/Win32/Release/PhotonDemo.exe
 tiff-4.0.9.zip
+apps/bin/Blood41.exe
+apps/bin/CeramClient.exe
+apps/bin/Ceramica.exe
+apps/bin/pgf_wrapper.dll
+apps/bin/tmp.jpg
+apps/ceramica/pgf_wrapper.dll
+apps/ceramica/pgf_wrapper.lib
+photon/prografix/wrapper/pgf_wrapper/pgf_wrapper.v12.suo
+photon/prografix/wrapper/pgf_wrapper/pgf_wrapper.sdf
+photon/prografix/wrapper/pgf_wrapper/pgf_wrapper.vcxproj.filters
+photon/prografix/wrapper/pgf_wrapper/pgf_wrapper.vcxproj.user
