@@ -121,7 +121,6 @@ __published:	// IDE-managed Components
 	TLabel *Label19;
 	TLabel *Label20;
 	TBevel *Bevel2;
-	TBevel *Bevel3;
 	TLabel *Label11;
 	TLabel *Label21;
 	TEdit *Edit1;
@@ -142,6 +141,7 @@ __published:	// IDE-managed Components
 	TAction *helpAboutAction;
 	TMenuItem *N22;
 	TMenuItem *N23;
+	TCheckBox *CheckBox2;
 	void __fastcall fileExitActionExecute(TObject *Sender);
 	void __fastcall modeExperimentActionExecute(TObject *Sender);
 	void __fastcall modeExperimentActionUpdate(TObject *Sender);
@@ -198,6 +198,7 @@ __published:	// IDE-managed Components
 	void __fastcall IdTCPServer1Disconnect(TIdContext *AContext);
 	void __fastcall fileClientActionExecute(TObject *Sender);
 	void __fastcall helpAboutActionExecute(TObject *Sender);
+	void __fastcall CheckBox2Click(TObject *Sender);
 
 
 

@@ -450,7 +450,32 @@ void __fastcall TMainForm::DrawObject(awpImage* img)
     p.X = m_engine.center.X;
     p.Y = m_engine.center.Y;
 
+#if 0
+    for (int alfa = 45; alfa <= 135; alfa += 10)
+    {
+        p.X = m_engine.center.X - r*cos(AWP_PI*alfa/180.);
+        p.Y = m_engine.center.Y - r*sin(AWP_PI*alfa/180.);
+	    awpDrawCEllipse(img, p, 5, 5, 0, 0,0,255, 1);
+        if (m_engine.contour != NULL)
+        {
+            double min_dist = img->sSizeX*img->sSizeX;
+            int    min_idx = -1;
+            for (int i = 0; i < m_engine.contour->NumPoints; i++)
+            {
+                double d;
+                awpDistancePoints(p, m_engine.contour->Points[i], &d);
+                if (d < min_dist)
+                {
+                    min_dist = d;
+                    min_idx = i;
+                }
+            }
+		    awpDrawCEllipse(img, m_engine.contour->Points[min_idx], 5, 5, 0, 255,0,0, 1);
+        }
+    }
+#else
     awpDrawCEllipse(img, p, r, r, 0, 0,0,255, 3);
+#endif
 }
 
 void __fastcall TMainForm::DrawEllipce(awpImage* img)
@@ -474,7 +499,11 @@ void __fastcall TMainForm::DrawAxis(awpImage* img)
     p.X = m_engine.center.X;
     p.Y = m_engine.center.Y;
 
-	awpDrawCEllipseCross(img, p, m_engine.major, m_engine.minor, m_engine.angle, 255,0,0, 1);
+   //	awpDrawCEllipseCross(img, p, m_engine.major, m_engine.minor, m_engine.angle, 255,0,0, 1);
+   if (m_engine.contour != NULL)
+	awpDrawCPolygon(img, m_engine.contour, 0, 255, 0, 1);
+
+
 }
 
 void __fastcall TMainForm::DrawBinary(awpImage* img)
@@ -594,6 +623,11 @@ void  __fastcall TMainForm::SaveParams()
     // размер буфера
     iv = SpinEdit1->Value;
     fprintf(f, "%i\n", iv);
+
+    // использовать ли апроксимацию
+     iv = (int)CheckBox2->Checked;
+    fprintf(f, "%i\n", iv);
+
     // путь для записи архива
     _ansi = Edit2->Text;
     fprintf(f, "%s\n", _ansi.c_str());
@@ -632,6 +666,9 @@ void  __fastcall TMainForm::LoadParams()
             // размер буфера
             fscanf(f, "%i\n", &iv);
             SpinEdit1->Value = iv;
+            // использование апроксимации
+            fscanf(f, "%i\n",&iv);
+            CheckBox2->Checked = (bool)iv;
             // путь к архиву
             char buf[1024];
             fscanf(f, "%s\n", buf);
@@ -883,6 +920,13 @@ void __fastcall TMainForm::helpAboutActionExecute(TObject *Sender)
   AboutBox->Comments->Caption = vi->Comments;
   AboutBox->ShowModal();
   delete vi;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::CheckBox2Click(TObject *Sender)
+{
+    SaveParams();
+    this->m_engine.useAprox = CheckBox2->Checked;
 }
 //---------------------------------------------------------------------------
 

@@ -69,6 +69,8 @@ TCeramImageProcessor::TCeramImageProcessor()
     m_by = new TLFBuffer(m_bufferSize, 0);
     m_bd = new TLFBuffer(m_bufferSize, 0);
     m_count = 0;
+    m_contour = NULL;
+    m_useAprox = false;
 }
 
 TCeramImageProcessor::~TCeramImageProcessor()
@@ -76,6 +78,9 @@ TCeramImageProcessor::~TCeramImageProcessor()
     _AWP_SAFE_RELEASE_(this->m_copy)
     _AWP_SAFE_RELEASE_(this->m_mask)
     _AWP_SAFE_RELEASE_(this->m_process)
+
+     if (m_contour != NULL)
+        awpFreeContour(&m_contour);
 
     delete m_bx;
     delete m_by;
@@ -109,6 +114,57 @@ bool __fastcall TCeramImageProcessor::Process(awpImage* img)
     this->m_diam *= coef;
     this->m_major *= coef;
     this->m_minor *= coef;
+
+    if (this->m_contour != NULL)
+    {
+        for (int i = 0; i < this->m_contour->NumPoints; i++)
+        {
+            this->m_contour->Points[i].X *= coef;
+            this->m_contour->Points[i].Y *= coef;
+        }
+    }
+    awpPoint p;
+    if (!m_useAprox)
+        return true;
+	awp2DPoint points[10];
+	awp2DPoint c;
+	double r = m_diam / 2;
+    int count = 0;
+    for (int alfa = 45; alfa <= 135; alfa += 10)
+    {
+        p.X = center.X - r*cos(AWP_PI*alfa/180.);
+        p.Y = center.Y - r*sin(AWP_PI*alfa/180.);
+        if (contour != NULL)
+        {
+            double min_dist = 10*m_diam;
+            int    min_idx = -1;
+            for (int i = 0; i < contour->NumPoints; i++)
+            {
+                double d;
+                awpDistancePoints(p, contour->Points[i], &d);
+                if (d < min_dist)
+                {
+                    min_dist = d;
+                    min_idx = i;
+                }
+            }
+
+            if (min_idx >=0 )
+    	    {
+                points[count].X = contour->Points[min_idx].X;
+                points[count].Y = contour->Points[min_idx].Y;
+                count++;
+            }
+        }
+    }
+    if (count > 0)
+    {
+		pgfGetCircle(points, count, &c, &r, 2);
+	    this->m_center.X = c.X;
+    	this->m_center.Y = c.Y;
+        this->m_diam = 2*r;
+    }
+
 
   //  if (m_mask != NULL)
   //      awpResize(m_mask, coef*m_mask->sSizeX, coef*m_mask->sSizeY);
@@ -264,12 +320,24 @@ void __fastcall TCeramImageProcessor::Analysis()
          AWPDOUBLE theta = 0;
          AWPDOUBLE mi = 0;
          AWPDOUBLE ma = 0;
-         // самый большой объект
+
+         // анализируем самый большой объект.
+         // вычисл€ютс€ характеристики объекта.
+         // центр масс и его полуоси.
          awpGetObjCentroid(m_process, &obj[maxIdx], &c);
          awpGetObjOrientation(m_process, &obj[maxIdx], &theta, &mi, &ma);
 
+         if (m_contour != NULL)
+            awpFreeContour(&m_contour);
+
+        awpCreateContour(&m_contour, 2*obj[maxIdx].Num, true);
+        awpGetObjCountour(&obj[maxIdx], m_contour);
+
+
+
          m_bx->Push(c.X);
          m_by->Push(c.Y);
+
          m_bd->Push(2*sqrt(double(maxS) / AWP_PI));
          m_count++;
          if (m_count <= this->bufferSize)

@@ -38,6 +38,7 @@ private:
     bool       m_useBuffer;
     int        m_bufferSize;
 protected:
+    bool       m_useAprox;
     awpImage*   m_process;
     awpImage*   m_copy;
     awp2DPoint  m_center;
@@ -46,6 +47,7 @@ protected:
     double    m_major;
     double    m_minor;
     awpImage* m_mask;
+    awpContour* m_contour;
     void __fastcall CreateMask(awpPoint p, double r, int w, int h);
     void __fastcall MakeMaskImage();
     void __fastcall ProcessHelper();
@@ -69,9 +71,11 @@ public:
     __property double    angle  = {read = m_angle};
     __property double    major  = {read = m_major};
     __property double    minor  = {read = m_minor};
+    __property awpContour*    contour = {read = m_contour};
 
     // управл€ющие параметры.
     __property bool useBuffer   = {read = m_useBuffer, write = SetUseBuffer};
     __property int  bufferSize  = {read = GetBufferSize, write = SetBufferSize};
+    __property bool useAprox    = {read = m_useAprox, write = m_useAprox};
 };
 #endif

@@ -30,9 +30,6 @@
         <Projects Include="apps\ceramica_client\CeramClient.cbproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="apps\ceramica\PROGRAFIX\ProGraFix.cbproj">
-            <Dependencies/>
-        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -122,23 +119,14 @@
     <Target Name="CeramClient:Make">
         <MSBuild Projects="apps\ceramica_client\CeramClient.cbproj" Targets="Make"/>
     </Target>
-    <Target Name="ProGraFix">
-        <MSBuild Projects="apps\ceramica\PROGRAFIX\ProGraFix.cbproj"/>
-    </Target>
-    <Target Name="ProGraFix:Clean">
-        <MSBuild Projects="apps\ceramica\PROGRAFIX\ProGraFix.cbproj" Targets="Clean"/>
-    </Target>
-    <Target Name="ProGraFix:Make">
-        <MSBuild Projects="apps\ceramica\PROGRAFIX\ProGraFix.cbproj" Targets="Make"/>
-    </Target>
     <Target Name="Build">
-        <CallTarget Targets="awpipl2b;zlib;libpng;tifflib;photon41;PhotonDemo;Blood41;Ceramica;CeramClient;ProGraFix"/>
+        <CallTarget Targets="awpipl2b;zlib;libpng;tifflib;photon41;PhotonDemo;Blood41;Ceramica;CeramClient"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="awpipl2b:Clean;zlib:Clean;libpng:Clean;tifflib:Clean;photon41:Clean;PhotonDemo:Clean;Blood41:Clean;Ceramica:Clean;CeramClient:Clean;ProGraFix:Clean"/>
+        <CallTarget Targets="awpipl2b:Clean;zlib:Clean;libpng:Clean;tifflib:Clean;photon41:Clean;PhotonDemo:Clean;Blood41:Clean;Ceramica:Clean;CeramClient:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="awpipl2b:Make;zlib:Make;libpng:Make;tifflib:Make;photon41:Make;PhotonDemo:Make;Blood41:Make;Ceramica:Make;CeramClient:Make;ProGraFix:Make"/>
+        <CallTarget Targets="awpipl2b:Make;zlib:Make;libpng:Make;tifflib:Make;photon41:Make;PhotonDemo:Make;Blood41:Make;Ceramica:Make;CeramClient:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

@@ -92,3 +92,8 @@ photon/prografix/wrapper/pgf_wrapper/pgf_wrapper.v12.suo
 photon/prografix/wrapper/pgf_wrapper/pgf_wrapper.sdf
 photon/prografix/wrapper/pgf_wrapper/pgf_wrapper.vcxproj.filters
 photon/prografix/wrapper/pgf_wrapper/pgf_wrapper.vcxproj.user
+apps/ceramica/Win32/Debug/*.*
+photon/prografix/wrapper/pgf_wrapper/Debug/*.*
+photon/prografix/wrapper/pgf_wrapper/Release/*.*
+apps/bin/*.*
+lib/*.*

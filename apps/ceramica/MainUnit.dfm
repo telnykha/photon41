@@ -132,7 +132,7 @@ object MainForm: TMainForm
         ExplicitHeight = 412
       end
       object SpeedButton3: TSpeedButton
-        Left = 1
+        Left = 77
         Top = 1
         Width = 84
         Height = 56
@@ -164,11 +164,12 @@ object MainForm: TMainForm
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
         Layout = blGlyphTop
         NumGlyphs = 2
+        ExplicitLeft = 1
         ExplicitTop = -6
         ExplicitHeight = 524
       end
       object SpeedButton2: TSpeedButton
-        Left = 85
+        Left = 1
         Top = 1
         Width = 76
         Height = 56
@@ -200,9 +201,8 @@ object MainForm: TMainForm
           FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
         Layout = blGlyphTop
         NumGlyphs = 2
-        ExplicitLeft = 3
-        ExplicitTop = 9
-        ExplicitHeight = 77
+        ExplicitLeft = -1
+        ExplicitTop = 6
       end
       object SpeedButton9: TSpeedButton
         Left = 161
@@ -660,13 +660,6 @@ object MainForm: TMainForm
         Height = 9
         Shape = bsTopLine
       end
-      object Bevel3: TBevel
-        Left = 5
-        Top = 67
-        Width = 221
-        Height = 9
-        Shape = bsTopLine
-      end
       object Label11: TLabel
         Left = 5
         Top = 202
@@ -706,8 +699,8 @@ object MainForm: TMainForm
         OnExit = Edit1Change
       end
       object CheckBox1: TCheckBox
-        Left = 5
-        Top = 80
+        Left = 4
+        Top = 81
         Width = 180
         Height = 17
         Caption = #1048#1089#1087#1086#1083#1100#1079#1086#1074#1072#1090#1100' '#1073#1091#1092#1077#1088#1080#1079#1072#1094#1080#1102
@@ -794,6 +787,15 @@ object MainForm: TMainForm
         Height = 21
         Style = csDropDownList
         TabOrder = 9
+      end
+      object CheckBox2: TCheckBox
+        Left = 4
+        Top = 61
+        Width = 180
+        Height = 17
+        Caption = #1048#1089#1087#1086#1083#1100#1079#1086#1074#1072#1090#1100' '#1072#1087#1088#1086#1082#1089#1080#1084#1072#1094#1080#1102
+        TabOrder = 10
+        OnClick = CheckBox2Click
       end
     end
   end

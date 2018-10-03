@@ -41,11 +41,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\_alt\awpipl2\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\..\..\..\..\awpipl2\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>D:\_alt\awpipl2\include;$(IncludePath)</IncludePath>
+    <IncludePath>..\..\..\..\..\awpipl2\include;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -84,7 +84,7 @@ copy ..\pgf_wrapper.h ..\..\..\..\apps\ceramica\pgf_wrapper.h </Command>
       <ModuleDefinitionFile>pgf_wrapper.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>copy $(OutDir)$(TargetName)$(TargetExt) ..\..\..\..\apps\ceramica\$(TargetName)$(TargetExt)
+      <Command>copy $(OutDir)$(TargetName)$(TargetExt) ..\..\..\..\..\bin\$(TargetName)$(TargetExt)
 implib -a  ..\..\..\..\apps\ceramica\$(TargetName).lib  ..\..\..\..\apps\ceramica\$(TargetName)$(TargetExt) 
 copy ..\pgf_wrapper.h ..\..\..\..\apps\ceramica\pgf_wrapper.h </Command>
     </PostBuildEvent>
