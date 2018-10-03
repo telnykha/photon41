@@ -126,11 +126,11 @@ bool __fastcall TCeramImageProcessor::Process(awpImage* img)
     awpPoint p;
     if (!m_useAprox)
         return true;
-	awp2DPoint points[10];
+	awp2DPoint points[250];
 	awp2DPoint c;
 	double r = m_diam / 2;
     int count = 0;
-    for (int alfa = 45; alfa <= 135; alfa += 10)
+    for (int alfa = 30; alfa <= 150; alfa += 1)
     {
         p.X = center.X - r*cos(AWP_PI*alfa/180.);
         p.Y = center.Y - r*sin(AWP_PI*alfa/180.);

@@ -566,7 +566,7 @@ object MainForm: TMainForm
         Marks.Callout.Length = 20
         SeriesColor = clRed
         LinePen.Color = clRed
-        LinePen.Width = 4
+        LinePen.Width = 2
         LinePen.EndStyle = esRound
         TreatNulls = tnDontPaint
         XValues.Name = 'X'
@@ -840,6 +840,7 @@ object MainForm: TMainForm
     object viewSourceImageAction: TAction
       Category = 'view'
       Caption = #1048#1089#1093#1086#1076#1085#1086#1077' '#1080#1079#1086#1073#1088#1072#1078#1077#1085#1080#1077
+      Checked = True
       GroupIndex = 2
       Visible = False
       OnExecute = viewSourceImageActionExecute
@@ -854,24 +855,28 @@ object MainForm: TMainForm
     object viewObjectContourAction: TAction
       Category = 'view'
       Caption = #1050#1086#1085#1090#1091#1088' '#1079#1072#1075#1086#1090#1086#1074#1082#1080
+      Checked = True
       OnExecute = viewObjectContourActionExecute
       OnUpdate = viewObjectContourActionUpdate
     end
     object viewCenterAction: TAction
       Category = 'view'
       Caption = #1062#1077#1085#1090#1088' '#1084#1072#1089#1089' '#1079#1072#1075#1086#1090#1086#1074#1082#1080
+      Checked = True
       OnExecute = viewCenterActionExecute
       OnUpdate = viewCenterActionUpdate
     end
     object viewAxisAction: TAction
       Category = 'view'
       Caption = #1053#1072#1081#1076#1077#1085#1085#1099#1077' '#1087#1086#1083#1091#1086#1089#1080'  '#1101#1083#1083#1080#1087#1089#1072
+      Checked = True
       OnExecute = viewAxisActionExecute
       OnUpdate = viewAxisActionUpdate
     end
     object viewEllipseAction: TAction
       Category = 'view'
       Caption = #1040#1087#1087#1088#1086#1082#1089#1080#1084#1080#1088#1091#1102#1097#1080#1081' '#1101#1083#1083#1080#1087#1089
+      Checked = True
       OnExecute = viewEllipseActionExecute
       OnUpdate = viewEllipseActionUpdate
     end
