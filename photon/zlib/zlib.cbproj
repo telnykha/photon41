@@ -85,6 +85,7 @@
         <BCC_UserSuppliedOptions> -tWM -Vx -r- -k -Ve -k</BCC_UserSuppliedOptions>
         <Manifest_File>(None)</Manifest_File>
         <TLIB_PageSize>64</TLIB_PageSize>
+        <FinalOutputDir>$(PHOTON41)\lib\</FinalOutputDir>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <BCC_OptimizationLevel>Level2</BCC_OptimizationLevel>

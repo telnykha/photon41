@@ -117,9 +117,9 @@
         <LinkPackageStatics>rtl.lib;vcl.lib;Tee925.lib;vclimg.lib;photon41.lib;VclSmp.lib;vclx.lib</LinkPackageStatics>
         <UsePackages>false</UsePackages>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
-        <VerInfo_Keys>CompanyName=nn-videolab.net;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.9;InternalName=blood41;LegalCopyright=Copyright (c) 2018 nn-videolab.net;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=Версия для испытаний (beta)</VerInfo_Keys>
-        <VerInfo_Build>9</VerInfo_Build>
-        <FinalOutputDir>..\bin\</FinalOutputDir>
+        <VerInfo_Keys>CompanyName=nn-videolab.net;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.12;InternalName=blood41;LegalCopyright=Copyright (c) 2018 nn-videolab.net;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=Версия для испытаний (beta)</VerInfo_Keys>
+        <VerInfo_Build>12</VerInfo_Build>
+        <FinalOutputDir>..\..\..\..\bin\</FinalOutputDir>
     </PropertyGroup>
     <ItemGroup>
         <CppCompile Include="AboutUnit.cpp">
@@ -150,8 +150,8 @@
             <DependentOn>..\common\VerInfoUnit.h</DependentOn>
             <BuildOrder>6</BuildOrder>
         </CppCompile>
-        <FormResources Include="AboutUnit.dfm"/>
         <FormResources Include="MainUnit.dfm"/>
+        <FormResources Include="AboutUnit.dfm"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -178,6 +178,9 @@
                 <Source>
                     <Source Name="MainSource">Blood41.cpp</Source>
                 </Source>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\19.0\BPL\photon41.bpl">photon41</Excluded_Packages>
+                </Excluded_Packages>
             </CPlusPlusBuilder.Personality>
             <Platforms>
                 <Platform value="Win32">True</Platform>

@@ -210,7 +210,6 @@ private:	// User declarations
     void __fastcall StartExperiment();
     void __fastcall StopExperiment();
 
-
     TPhMediaSource* m_videoSource;
     TAction*        m_modeAction;
 

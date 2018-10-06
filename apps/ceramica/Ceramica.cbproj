@@ -44,7 +44,7 @@
         <DCC_CBuilderOutput>JPHNE</DCC_CBuilderOutput>
         <DynamicRTL>true</DynamicRTL>
         <IntermediateOutputDir>.\$(Platform)\$(Config)</IntermediateOutputDir>
-        <FinalOutputDir>..\..\..\bin\</FinalOutputDir>
+        <FinalOutputDir>..\..\..\..\bin\</FinalOutputDir>
         <BCC_wpar>false</BCC_wpar>
         <BCC_OptimizeForSpeed>true</BCC_OptimizeForSpeed>
         <BCC_ExtendedErrorInfo>true</BCC_ExtendedErrorInfo>
@@ -63,6 +63,7 @@
         <VerInfo_Locale>1049</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <ILINK_LibraryPath>..\common\;$(PHOTON41)\lib\;..\..\lib\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+        <Custom_Styles>Carbon|VCLSTYLE|$(BDSCOMMONDIR)\Styles\Carbon.vsf</Custom_Styles>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <PackageImports>appanalytics;bcbsmp;bindcomp;bindcompfmx;bindcompvcl;bindengine;CustomIPTransport;dbrtl;dsnap;fmx;fmxase;fmxdae;fmxobj;FMXTee925;FMXTeeDB925;FMXTeeImport925;FMXTeeLanguage925;FMXTeePro925;FmxTeeUI925;FMXTree25;IndyCore;IndyProtocols;IndySystem;photon;photon41;rtl;svn;Tee925;TeeDB925;TeeGL925;TeeImage925;TeeImport925;TeeLanguage925;TeeMaker125;TeePro925;TeeTree2D25Tee9;TeeUI925;TeeWorld925;tethering;vcl;vclactnband;vcldb;vcldsnap;vclie;vclimg;VclSmp;vcltouch;vclwinx;vclx;xmlrtl;$(PackageImports)</PackageImports>
@@ -104,9 +105,10 @@
 $(PostBuildEvent)]]></PostBuildEvent>
         <Debugger_DebugSourcePath>C:\_alt\awpipl2\src\;$(Debugger_DebugSourcePath)</Debugger_DebugSourcePath>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
-        <VerInfo_Keys>CompanyName=NN-VideoLab.net;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.2;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=NN-VideoLab.net;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.4;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <LinkPackageStatics>rtl.lib;vcl.lib;photon41.lib;VclSmp.lib;vclx.lib;Tee925.lib;vclimg.lib;IndyCore.lib;IndySystem.lib</LinkPackageStatics>
-        <VerInfo_Build>2</VerInfo_Build>
+        <VerInfo_Build>4</VerInfo_Build>
+        <Icon_MainIcon>Ceramica_Icon1.ico</Icon_MainIcon>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <Defines>NDEBUG;$(Defines)</Defines>
@@ -151,22 +153,6 @@ $(PostBuildEvent)]]></PostBuildEvent>
             <DependentOn>MainUnit.h</DependentOn>
             <BuildOrder>2</BuildOrder>
         </CppCompile>
-        <CppCompile Include="PhMediaSource.cpp">
-            <DependentOn>PhMediaSource.h</DependentOn>
-            <BuildOrder>5</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="PhSlideShow.cpp">
-            <DependentOn>PhSlideShow.h</DependentOn>
-            <BuildOrder>6</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="PhVideo.cpp">
-            <DependentOn>PhVideo.h</DependentOn>
-            <BuildOrder>4</BuildOrder>
-        </CppCompile>
-        <CppCompile Include="PhVideoThread.cpp">
-            <DependentOn>PhVideoThread.h</DependentOn>
-            <BuildOrder>13</BuildOrder>
-        </CppCompile>
         <CppCompile Include="..\common\Bitmap2Dib.cpp">
             <DependentOn>..\common\Bitmap2Dib.h</DependentOn>
             <BuildOrder>7</BuildOrder>
@@ -174,6 +160,22 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <CppCompile Include="..\common\IpAddress.cpp">
             <DependentOn>..\common\IpAddress.h</DependentOn>
             <BuildOrder>10</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\common\PhMediaSource.cpp">
+            <DependentOn>..\common\PhMediaSource.h</DependentOn>
+            <BuildOrder>10</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\common\PhSlideShow.cpp">
+            <DependentOn>..\common\PhSlideShow.h</DependentOn>
+            <BuildOrder>11</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\common\PhVideo.cpp">
+            <DependentOn>..\common\PhVideo.h</DependentOn>
+            <BuildOrder>12</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\common\PhVideoThread.cpp">
+            <DependentOn>..\common\PhVideoThread.h</DependentOn>
+            <BuildOrder>13</BuildOrder>
         </CppCompile>
         <CppCompile Include="..\common\SelDirUnit.cpp">
             <DependentOn>..\common\SelDirUnit.h</DependentOn>
@@ -211,6 +213,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
                 <Source>
                     <Source Name="MainSource">Ceramica.cpp</Source>
                 </Source>
+                <Excluded_Packages/>
             </CPlusPlusBuilder.Personality>
             <Platforms>
                 <Platform value="Win32">True</Platform>

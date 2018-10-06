@@ -14,6 +14,11 @@
 #pragma link "EventsIndicator"
 #pragma resource "*.dfm"
 
+#pragma link "awplflibb.lib"
+#pragma link "TinyXML.lib"
+#pragma link "awpipl2b.lib"
+#pragma link "JPEGLIB.LIB"
+
 const AnsiString cstrImages = "Jpeg images|*.jpeg;*.jpg|AWP images|*.awp";
 const AnsiString cstrVideos = "Videos |*.avi;*.mp4;*.mpg;|Avi videos|*.avi;|MP4 videos|*.mp4|mpeg files|*.mpg";
 const AnsiString cstrXml    = "Xml Files | *.xml";
@@ -27,13 +32,13 @@ __fastcall TmainForm::TmainForm(TComponent* Owner)
 	m_videoSource = vsNone;
     SetDefaultZones();
     num_cross = 0;
-    m_trains = NULL;
+//todo:    m_trains = NULL;
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::CloseActionExecute(TObject *Sender)
 {
-    if (m_trains != NULL)
-        delete m_trains;
+//todo:    if (m_trains != NULL)
+//        delete m_trains;
     Close();
 }
 //---------------------------------------------------------------------------
@@ -424,8 +429,8 @@ void __fastcall TmainForm::FImage1Frame(TObject *Sender, int widht,
 
    awpImage* tmp = NULL;
    awpCopyImage(&img, &tmp);
-   if (m_trains != NULL && tmp != NULL &&  this->CheckBox5->Checked)
-   {
+//todo:   if (m_trains != NULL && tmp != NULL &&  this->CheckBox5->Checked)
+/*   {
        awpRect result;
        char number[32];
        awpConvert(tmp, AWP_CONVERT_3TO1_BYTE);
@@ -453,7 +458,7 @@ void __fastcall TmainForm::FImage1Frame(TObject *Sender, int widht,
             AnsiString str = number;
             Label1->Caption = str;
        }
-   }
+   }*/
 
 
    if (CheckBox1->Checked)
@@ -497,10 +502,10 @@ void __fastcall TmainForm::FImage1AfterOpen(TObject *Sender)
     {
     	SetDefaultZones();
     }
-    if (m_trains != NULL)
-        delete m_trains;
-	m_trains = new TLFTrains(m_zones);
-    TLFDetectEngine* engine = m_trains->GetDetector();
+//todo:    if (m_trains != NULL)
+//        delete m_trains;
+//	m_trains = new TLFTrains(m_zones);
+//    TLFDetectEngine* engine = m_trains->GetDetector();
 
     // Load Engine
     UnicodeString strExeName = Application->ExeName;
@@ -508,10 +513,10 @@ void __fastcall TmainForm::FImage1AfterOpen(TObject *Sender)
 	strExePath += L"\\trains\\";
 
 	AnsiString _ansi = strExePath;
-	m_trains->InitOCR(_ansi.c_str());
+//	m_trains->InitOCR(_ansi.c_str());
 
-    m_trains->GetDetector()->SetResize(true);
-	m_trains->GetDetector()->SetBaseImageWidth(640);
+//    m_trains->GetDetector()->SetResize(true);
+//	m_trains->GetDetector()->SetBaseImageWidth(640);
 
     ListView1->Items->Clear();
     for (int i = 0; i < FImage1->NumVideoEvents; i++)

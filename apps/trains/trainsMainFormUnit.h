@@ -19,7 +19,7 @@
 #include "EventsIndicator.h"
 #include <Vcl.Grids.hpp>
 #include <Vcl.ValEdit.hpp>
-#include "LFTrainsModule.h"
+//#include "LFTrainsModule.h"
 extern "C"
 {
 	#include "vautils.h"
@@ -186,7 +186,7 @@ private:	// User declarations
     EVideoSource m_videoSource;
     TLFZones     m_zones;
     TLFImage     m_copy;
-    TLFTrains*   m_trains;
+  //  TLFTrains*   m_trains;
     int num_cross;
     awpRect crect;
 

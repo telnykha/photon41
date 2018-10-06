@@ -89,6 +89,7 @@
         <BCC_Defines>_DEBUG;$(BCC_Defines);$(BCC_Defines)</BCC_Defines>
         <Manifest_File>(None)</Manifest_File>
         <TLIB_PageSize>64</TLIB_PageSize>
+        <FinalOutputDir>$(PHOTON41)\lib\</FinalOutputDir>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <DCC_AdditionalSwitches> -N0libtiff\ -M -$O+</DCC_AdditionalSwitches>
