@@ -58,7 +58,7 @@ void __fastcall TmainForm::UpdateImage()
 {
         // установка размеров изображения.
         // если размер изображения больше размеров окна -
-        // выполняем операцию BestFit
+		// выполняем операцию BestFit
         // иначе выполняем операцию ActualSize
 
         int w = FImage1->Width;
@@ -80,7 +80,7 @@ void __fastcall TmainForm::FormResize(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::ModePaneActionExecute(TObject *Sender)
 {
-    SetZones();
+	SetZones();
     FImage1->CurrentTool = ftPane;
     FImage1->Frame(FImage1->CurrentFrame);
 }
@@ -92,7 +92,7 @@ void __fastcall TmainForm::ModePaneActionUpdate(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::ModeSelRectActionExecute(TObject *Sender)
 {
-    FImage1->CurrentTool = ftZones;
+	FImage1->CurrentTool = ftZones;
     TZonesTool* tool = (TZonesTool*)FImage1->Tool;
     tool->OnDelete = ToolDelete;
     //todo:
@@ -238,7 +238,7 @@ void __fastcall TmainForm::PlayActionUpdate(TObject *Sender)
     PlayAction->Checked   = !FImage1->IsPaused ;
     if (PlayAction->Checked)
     {
-       SpeedButton9->Caption = "пауза";
+	   SpeedButton9->Caption = "пауза";
        SpeedButton9->Font->Color = clBlue;
     }
     else
@@ -328,7 +328,7 @@ static awp2DPoint awp2DNormVector(awp2DPoint p, double l = 1)
     if (L == 0)
     	return res;
     res.X = l*p.X / L;
-    res.Y = l*p.Y / L;
+	res.Y = l*p.Y / L;
     return res;
 }
 
@@ -358,7 +358,7 @@ static awp2DPoint FindCrossPoint(awp2DLineSegment s1, awp2DLineSegment s2)
     result.X = detx / det;
     result.Y = dety / det;
 
-    return result;
+	return result;
 
 }
 
@@ -388,7 +388,7 @@ static double awp2DSegmentsAngle(awp2DLineSegment s1, awp2DLineSegment s2)
     p2.X = s2.end.X - s2.strat.X;
     p2.Y = s2.end.Y - s2.strat.Y;
 
-    double scalar = (p1.X*p2.X + p1.Y*p2.Y) / norm;
+	double scalar = (p1.X*p2.X + p1.Y*p2.Y) / norm;
 	double res;
     if (p1.X*p2.Y - p2.X*p1.Y >= 0)
     	res = -180*acos(scalar)/ AWP_PI;
@@ -448,7 +448,7 @@ void __fastcall TmainForm::FImage1Frame(TObject *Sender, int widht,
             TVideoEvent*  e = FImage1->VideoEvent[FImage1->NumVideoEvents-1];
             ListView1->SetFocus();
 
-            TListItem* item = ListView1->Items->Add();
+			TListItem* item = ListView1->Items->Add();
             item->Caption = IntToStr(FImage1->NumVideoEvents);
             item->SubItems->Add(FImage1->TimeMsToString(e->Frame));
             item->SubItems->Add("1");
@@ -508,7 +508,7 @@ void __fastcall TmainForm::FImage1AfterOpen(TObject *Sender)
 //    TLFDetectEngine* engine = m_trains->GetDetector();
 
     // Load Engine
-    UnicodeString strExeName = Application->ExeName;
+	UnicodeString strExeName = Application->ExeName;
 	UnicodeString strExePath = ExtractFilePath(strExeName);
 	strExePath += L"\\trains\\";
 
@@ -598,7 +598,7 @@ void __fastcall TmainForm::SetDefaultZones()
     /*
     if (m_counter != NULL)
     {
-    	m_counter->SetZones(m_zones, FImage1->Bitmap->Width, FImage1->Bitmap->Height);
+		m_counter->SetZones(m_zones, FImage1->Bitmap->Width, FImage1->Bitmap->Height);
     }
     */
 }
@@ -628,7 +628,7 @@ void __fastcall TmainForm::RenderZone(awpImage* image, TLFZone* z)
     if (z->GetZoneType() == ZTRect)
     {
       	RenderRect(image, z);
-    }
+	}
     else if (z->GetZoneType() == ZTContour)
     {
        RenderContour(image, z);
@@ -658,7 +658,7 @@ void __fastcall TmainForm::RenderOpenPolygon(awpImage* image,TLFZone* z)
     {
     	TLF2DLineSegment* ls = op->GetSegment(i);
         if (ls != NULL)
-        {
+		{
         	int x1,x2,y1,y2;
             x1 = ls->GetStart().X*w / 100.;
             y1 = ls->GetStart().Y*h / 100.;
@@ -688,7 +688,7 @@ void __fastcall TmainForm::RenderLineSegment(awpImage* image,TLFZone* z)
     {
         int x1,x2,y1,y2;
         x1 = ls->GetStart().X*w / 100.;
-        y1 = ls->GetStart().Y*h / 100.;
+		y1 = ls->GetStart().Y*h / 100.;
         x2 = ls->GetFinish().X*w / 100.;
         y2 = ls->GetFinish().Y*h / 100.;
         awpPoint p1;
@@ -718,7 +718,7 @@ void __fastcall TmainForm::RenderLineSegment(awpImage* image,TLFZone* z)
 
         p1.X = mp.X*w / 100.;
         p1.Y = mp.Y*h / 100.;
-        p2.X = norm.X*w / 100.;
+		p2.X = norm.X*w / 100.;
         p2.Y = norm.Y*h / 100.;
         awpDrawCLine(image, p1,p2,m_color.bRed, m_color.bGreen, m_color.bBlue, 2);
     }
@@ -748,7 +748,7 @@ void __fastcall TmainForm::RenderContour(awpImage* image,TLFZone* z)
        p1.Y = _p1.Y*h / 100.;
        p2.X = _p2.X*w / 100.;
        p2.Y = _p2.Y*h / 100.;
-       awpDrawCLine(image, p1,p2,m_color.bRed, m_color.bGreen, m_color.bBlue, 2);
+	   awpDrawCLine(image, p1,p2,m_color.bRed, m_color.bGreen, m_color.bBlue, 2);
     }
 
    _p1 = c->GetPoint(c->GetNumPoints() - 1);
@@ -778,7 +778,7 @@ void __fastcall TmainForm::RenderRect(awpImage* image,TLFZone* z)
 
     r.left = _r->GetLeftTop().X*w/100.;
     r.top  = _r->GetLeftTop().Y*h/100.;
-    r.right = _r->GetRightBottom().X*w/100.;
+	r.right = _r->GetRightBottom().X*w/100.;
     r.bottom = _r->GetRightBottom().Y*h/100.;
 
     awpDrawCRect(image, &r, m_color.bRed, m_color.bGreen, m_color.bBlue, 2);
@@ -790,7 +790,7 @@ void __fastcall TmainForm::DrawZones()
    {
         awpImage* img = NULL;
         awpCopyImage(m_copy.GetImage(), &img);
- 	RenderZones(img);
+		RenderZones(img);
         //todo:
 
         FImage1->Bitmap->SetAWPImage(img);
@@ -838,7 +838,7 @@ void __fastcall TmainForm::FormShow(TObject *Sender)
 	Button1Click(NULL);
     GroupBox2->Caption = "Чувствительность = " + FormatFloat("0.00", (double)TrackBar1->Position/100.);
     TVersionInfo* vi = new TVersionInfo(NULL);
-    Caption = L"Обнаружение и распознавание номеров вагонов.  v " + vi->FileVersion;
+	Caption = L"Обнаружение и распознавание номеров вагонов.  v " + vi->FileVersion;
     delete vi;
 }
 //---------------------------------------------------------------------------
@@ -928,7 +928,7 @@ void __fastcall TmainForm::videoHalfSizeActionExecute(TObject *Sender)
 	FImage1->Rescale = 2;
 	FImage1->Frame(FImage1->CurrentFrame);
     //todo: create mask
-    //m_counter->CreateMask(FImage1->Bitmap->Width, FImage1->Bitmap->Height);
+	//m_counter->CreateMask(FImage1->Bitmap->Width, FImage1->Bitmap->Height);
 }
 //---------------------------------------------------------------------------
 
@@ -958,7 +958,7 @@ void __fastcall TmainForm::ListView1SelectItem(TObject *Sender, TListItem *Item,
         if (!FImage1->IsPaused)
         	return;
 
-        if (ListView1->Selected != NULL)
+		if (ListView1->Selected != NULL)
         {
             int idx = ListView1->Selected->Index;
             TVideoEvent* e = FImage1->VideoEvent[idx];
@@ -1018,7 +1018,7 @@ static AnsiString TimeMsToTimeStr(double _time)
 
 bool __fastcall TmainForm::SaveEventsToTxtFile(UnicodeString& FileName)
 {
-    AnsiString _ansi = FileName;
+	AnsiString _ansi = FileName;
     FILE* f = fopen(_ansi.c_str(), "w+t");
     if (f == NULL)
     	return false;
@@ -1048,7 +1048,7 @@ bool __fastcall TmainForm::LoadEventsFromTxtFile(UnicodeString& FileName)
 {
  	AnsiString _ansi = FileName;
 	FILE* f = fopen(_ansi.c_str(), "r+t");
-    if (f == NULL)
+	if (f == NULL)
     	return false;
     double  h,m,s;
     int i,o;
@@ -1077,7 +1077,7 @@ bool __fastcall TmainForm::LoadEventsFromTxtFile(UnicodeString& FileName)
         FImage1->AddVideoEvent(video_event, false);
         delete video_event;
     }
-    fclose(f);
+	fclose(f);
 
 	return true;
 }
@@ -1138,7 +1138,7 @@ void __fastcall TmainForm::logOpenActionExecute(TObject *Sender)
         UnicodeString strFileName = OpenDialog1->FileName;
         FImage1->ClearEvents();
 		switch(OpenDialog1->FilterIndex)
-        {
+		{
         	case 1:
             	res = LoadEventsFromXmlFile(strFileName);
             break;
@@ -1198,7 +1198,7 @@ void __fastcall TmainForm::logSaveActionExecute(TObject *Sender)
             }
         }
 		switch(SaveDialog1->FilterIndex)
-        {
+		{
         	case 1:
             	res = SaveEventsToXmlFile(FileName);
             break;

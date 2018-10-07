@@ -6,10 +6,10 @@
         <Projects Include="..\..\jpeg-6b\borland\JPEGLIB.cbproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="..\..\TinyXML\borland\TinyXML.cbproj">
+        <Projects Include="..\..\awpipl2\borland\awpipl2b.cbproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="..\..\awpipl2\borland\awpipl2b.cbproj">
+        <Projects Include="..\..\TinyXML\borland\TinyXML.cbproj">
             <Dependencies/>
         </Projects>
         <Projects Include="..\..\awplflib\borland\awplflibb.cbproj">
@@ -59,15 +59,6 @@
     <Target Name="JPEGLIB:Make">
         <MSBuild Projects="..\..\jpeg-6b\borland\JPEGLIB.cbproj" Targets="Make"/>
     </Target>
-    <Target Name="TinyXML">
-        <MSBuild Projects="..\..\TinyXML\borland\TinyXML.cbproj"/>
-    </Target>
-    <Target Name="TinyXML:Clean">
-        <MSBuild Projects="..\..\TinyXML\borland\TinyXML.cbproj" Targets="Clean"/>
-    </Target>
-    <Target Name="TinyXML:Make">
-        <MSBuild Projects="..\..\TinyXML\borland\TinyXML.cbproj" Targets="Make"/>
-    </Target>
     <Target Name="awpipl2b">
         <MSBuild Projects="..\..\awpipl2\borland\awpipl2b.cbproj"/>
     </Target>
@@ -76,6 +67,15 @@
     </Target>
     <Target Name="awpipl2b:Make">
         <MSBuild Projects="..\..\awpipl2\borland\awpipl2b.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="TinyXML">
+        <MSBuild Projects="..\..\TinyXML\borland\TinyXML.cbproj"/>
+    </Target>
+    <Target Name="TinyXML:Clean">
+        <MSBuild Projects="..\..\TinyXML\borland\TinyXML.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="TinyXML:Make">
+        <MSBuild Projects="..\..\TinyXML\borland\TinyXML.cbproj" Targets="Make"/>
     </Target>
     <Target Name="awplflibb">
         <MSBuild Projects="..\..\awplflib\borland\awplflibb.cbproj"/>
@@ -168,13 +168,13 @@
         <MSBuild Projects="apps\trains\trains.cbproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="JPEGLIB;TinyXML;awpipl2b;awplflibb;zlib;libpng;tifflib;photon41;PhotonDemo;Blood41;Ceramica;CeramClient;trains"/>
+        <CallTarget Targets="JPEGLIB;awpipl2b;TinyXML;awplflibb;zlib;libpng;tifflib;photon41;PhotonDemo;Blood41;Ceramica;CeramClient;trains"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="JPEGLIB:Clean;TinyXML:Clean;awpipl2b:Clean;awplflibb:Clean;zlib:Clean;libpng:Clean;tifflib:Clean;photon41:Clean;PhotonDemo:Clean;Blood41:Clean;Ceramica:Clean;CeramClient:Clean;trains:Clean"/>
+        <CallTarget Targets="JPEGLIB:Clean;awpipl2b:Clean;TinyXML:Clean;awplflibb:Clean;zlib:Clean;libpng:Clean;tifflib:Clean;photon41:Clean;PhotonDemo:Clean;Blood41:Clean;Ceramica:Clean;CeramClient:Clean;trains:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="JPEGLIB:Make;TinyXML:Make;awpipl2b:Make;awplflibb:Make;zlib:Make;libpng:Make;tifflib:Make;photon41:Make;PhotonDemo:Make;Blood41:Make;Ceramica:Make;CeramClient:Make;trains:Make"/>
+        <CallTarget Targets="JPEGLIB:Make;awpipl2b:Make;TinyXML:Make;awplflibb:Make;zlib:Make;libpng:Make;tifflib:Make;photon41:Make;PhotonDemo:Make;Blood41:Make;Ceramica:Make;CeramClient:Make;trains:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

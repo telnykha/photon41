@@ -117,8 +117,8 @@
         <LinkPackageStatics>rtl.lib;vcl.lib;Tee925.lib;vclimg.lib;photon41.lib;VclSmp.lib;vclx.lib</LinkPackageStatics>
         <UsePackages>false</UsePackages>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
-        <VerInfo_Keys>CompanyName=nn-videolab.net;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.12;InternalName=blood41;LegalCopyright=Copyright (c) 2018 nn-videolab.net;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=Версия для испытаний (beta)</VerInfo_Keys>
-        <VerInfo_Build>12</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=nn-videolab.net;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.13;InternalName=blood41;LegalCopyright=Copyright (c) 2018 nn-videolab.net;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=Версия для испытаний (beta)</VerInfo_Keys>
+        <VerInfo_Build>13</VerInfo_Build>
         <FinalOutputDir>..\..\..\..\bin\</FinalOutputDir>
     </PropertyGroup>
     <ItemGroup>
