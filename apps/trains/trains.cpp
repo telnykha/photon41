@@ -6,9 +6,9 @@
 //---------------------------------------------------------------------------
 #include <Vcl.Styles.hpp>
 #include <Vcl.Themes.hpp>
-USEFORM("NewEventUnit.cpp", NewEventDlg);
 USEFORM("trainsMainFormUnit.cpp", mainForm);
 USEFORM("aboutUnit.cpp", AboutBox);
+USEFORM("NewEventUnit.cpp", NewEventDlg);
 //---------------------------------------------------------------------------
 int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 {

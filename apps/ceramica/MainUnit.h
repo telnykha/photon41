@@ -142,6 +142,9 @@ __published:	// IDE-managed Components
 	TMenuItem *N22;
 	TMenuItem *N23;
 	TCheckBox *CheckBox2;
+	TAction *viewVideoControlAction;
+	TMenuItem *N24;
+	TMenuItem *viewVideoControlAction1;
 	void __fastcall fileExitActionExecute(TObject *Sender);
 	void __fastcall modeExperimentActionExecute(TObject *Sender);
 	void __fastcall modeExperimentActionUpdate(TObject *Sender);
@@ -199,6 +202,8 @@ __published:	// IDE-managed Components
 	void __fastcall fileClientActionExecute(TObject *Sender);
 	void __fastcall helpAboutActionExecute(TObject *Sender);
 	void __fastcall CheckBox2Click(TObject *Sender);
+	void __fastcall viewVideoControlActionExecute(TObject *Sender);
+	void __fastcall viewVideoControlActionUpdate(TObject *Sender);
 
 
 
@@ -246,6 +251,8 @@ private:	// User declarations
 
 public:		// User declarations
 	__fastcall TMainForm(TComponent* Owner);
+
+	__property TPhMediaSource* videoSource = {read = m_videoSource};
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMainForm *MainForm;

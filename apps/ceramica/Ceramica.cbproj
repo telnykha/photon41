@@ -63,7 +63,6 @@
         <VerInfo_Locale>1049</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <ILINK_LibraryPath>..\common\;$(PHOTON41)\lib\;..\..\lib\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
-        <Custom_Styles>Carbon|VCLSTYLE|$(BDSCOMMONDIR)\Styles\Carbon.vsf</Custom_Styles>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <PackageImports>appanalytics;bcbsmp;bindcomp;bindcompfmx;bindcompvcl;bindengine;CustomIPTransport;dbrtl;dsnap;fmx;fmxase;fmxdae;fmxobj;FMXTee925;FMXTeeDB925;FMXTeeImport925;FMXTeeLanguage925;FMXTeePro925;FmxTeeUI925;FMXTree25;IndyCore;IndyProtocols;IndySystem;photon;photon41;rtl;svn;Tee925;TeeDB925;TeeGL925;TeeImage925;TeeImport925;TeeLanguage925;TeeMaker125;TeePro925;TeeTree2D25Tee9;TeeUI925;TeeWorld925;tethering;vcl;vclactnband;vcldb;vcldsnap;vclie;vclimg;VclSmp;vcltouch;vclwinx;vclx;xmlrtl;$(PackageImports)</PackageImports>
@@ -105,9 +104,9 @@
 $(PostBuildEvent)]]></PostBuildEvent>
         <Debugger_DebugSourcePath>C:\_alt\awpipl2\src\;$(Debugger_DebugSourcePath)</Debugger_DebugSourcePath>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
-        <VerInfo_Keys>CompanyName=NN-VideoLab.net;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.4;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=NN-VideoLab.net;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.5;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <LinkPackageStatics>rtl.lib;vcl.lib;photon41.lib;VclSmp.lib;vclx.lib;Tee925.lib;vclimg.lib;IndyCore.lib;IndySystem.lib</LinkPackageStatics>
-        <VerInfo_Build>4</VerInfo_Build>
+        <VerInfo_Build>5</VerInfo_Build>
         <Icon_MainIcon>Ceramica_Icon1.ico</Icon_MainIcon>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
@@ -153,6 +152,15 @@ $(PostBuildEvent)]]></PostBuildEvent>
             <DependentOn>MainUnit.h</DependentOn>
             <BuildOrder>2</BuildOrder>
         </CppCompile>
+        <CppCompile Include="NET_ICube_API.cpp">
+            <BuildOrder>15</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="VideoControlUnit.cpp">
+            <Form>VideoControlDlg</Form>
+            <FormType>dfm</FormType>
+            <DependentOn>VideoControlUnit.h</DependentOn>
+            <BuildOrder>16</BuildOrder>
+        </CppCompile>
         <CppCompile Include="..\common\Bitmap2Dib.cpp">
             <DependentOn>..\common\Bitmap2Dib.h</DependentOn>
             <BuildOrder>7</BuildOrder>
@@ -160,6 +168,10 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <CppCompile Include="..\common\IpAddress.cpp">
             <DependentOn>..\common\IpAddress.h</DependentOn>
             <BuildOrder>10</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="..\common\Ph3iCube.cpp">
+            <DependentOn>..\common\Ph3iCube.h</DependentOn>
+            <BuildOrder>14</BuildOrder>
         </CppCompile>
         <CppCompile Include="..\common\PhMediaSource.cpp">
             <DependentOn>..\common\PhMediaSource.h</DependentOn>
@@ -186,6 +198,7 @@ $(PostBuildEvent)]]></PostBuildEvent>
             <BuildOrder>12</BuildOrder>
         </CppCompile>
         <FormResources Include="AboutUnit.dfm"/>
+        <FormResources Include="VideoControlUnit.dfm"/>
         <FormResources Include="MainUnit.dfm"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>

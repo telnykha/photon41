@@ -2,43 +2,51 @@
 #pragma hdrstop
 #include "PhVideo.h"
 #include "awpcvvideo.h"
+#include "PhVideoThread.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link  "awpcvvideo.lib"
 TPhVideoSource::TPhVideoSource(TPhImage* display):TPhMediaSource(display)
 {
     m_videoSource = NULL;
-    m_pTimer = new TTimer(NULL);
-    m_pTimer->Enabled = false;
-    m_pTimer->Interval = 50;
+	m_pTimer = new TTimer(NULL);
+	m_pTimer->Enabled = false;
+	m_pTimer->Interval = 50;
     m_pTimer->OnTimer = TimerEventHandler;
-    m_SourceStr = L"Видеофайл";
+	m_SourceStr = L"Видеофайл";
+    m_videoThread = NULL;
 }
 TPhVideoSource::~TPhVideoSource()
 {
+   m_pTimer->Enabled = false;
+   delete m_pTimer;
    if (m_videoSource != NULL)
-   Close();
+			Close();
 }
 
 void  TPhVideoSource::Open(TStrings* Names)
 {
- 	Close();
+	Close();
     AnsiString _ansi = Names->Strings[0];
     m_videoSource = awpcvConnect(_ansi.c_str());
     if (m_videoSource != NULL)
     {
         awpcvNumFrames((HCVVIDEO)m_videoSource, &m_NumFrames);
     }
-    First();
+	First();
+	this->m_videoThread = new TPhVideoThread(true, this);
+	this->m_videoThread->FreeOnTerminate = true;
 }
 void  TPhVideoSource::Close()
 {
    if (m_pImage != NULL)
    {
-       Stop();
-       awpcvDisconnect((HCVVIDEO)m_videoSource);
-       m_CurrentFrame = 0;
+	   Stop();
+	   awpcvDisconnect((HCVVIDEO)m_videoSource);
+	   m_CurrentFrame = 0;
    }
+   if (this->m_videoThread != NULL)
+   	this->m_videoThread->Terminate();
 }
 
 void  __fastcall TPhVideoSource::DecodePicture()
@@ -49,7 +57,7 @@ void  __fastcall TPhVideoSource::DecodePicture()
       awpImage* img = NULL;
       if (awpcvQueryImagePos(h, &img, m_CurrentFrame) == S_OK && img != NULL)
       {
-          m_pImage->SetImageData(img->sSizeX, img->sSizeY, img->bChannels, (unsigned char*)img->pPixels);
+		  m_pImage->SetImageData(img->sSizeX, img->sSizeY, img->bChannels, (unsigned char*)img->pPixels);
           awpcvFreeImage(img);
       }
    }
@@ -98,36 +106,41 @@ int __fastcall  TPhVideoSource::GetCurrentFrame()
 
 bool __fastcall TPhVideoSource::GetIsPlaying()
 {
-    return this->m_pTimer != NULL && this->m_pTimer->Enabled;
+	return this->m_videoThread != NULL && !this->m_videoThread->Suspended;
 }
 
 void  TPhVideoSource::Play()
 {
     if (m_videoSource != NULL)
     {
-        m_pTimer->Enabled = true;
-    }
+	   // m_pTimer->Enabled = true;
+	   this->m_videoThread->Resume();
+	}
 }
 
 void  TPhVideoSource::Stop()
 {
-    this->m_pTimer->Enabled = false;
+   //	this->m_pTimer->Enabled = false;
+	if (this->m_videoThread != NULL)
+	  this->m_videoThread->Suspend();
 }
 
 void __fastcall TPhVideoSource::TimerEventHandler(TObject *Sender)
 {
    if (m_pImage != NULL && m_videoSource != NULL)
    {
-      HCVVIDEO h = (HCVVIDEO)m_videoSource;
-      awpImage* img = NULL;
-      if (awpcvQueryImage(h, &img) == S_OK && img != NULL)
-      {
-          m_pImage->SetImageData(img->sSizeX, img->sSizeY, img->bChannels, (unsigned char*)img->pPixels);
-           m_CurrentFrame++;
-          awpcvFreeImage(img);
-      }
-      else
-        Stop();
+	  HCVVIDEO h = (HCVVIDEO)m_videoSource;
+	  awpImage* img = NULL;
+	  if (awpcvQueryImage(h, &img) == S_OK && img != NULL)
+	  {
+		  m_pImage->SetImageData(img->sSizeX, img->sSizeY, img->bChannels, (unsigned char*)img->pPixels);
+		  m_CurrentFrame++;
+		  awpcvFreeImage(img);
+	  }
+	  else
+		Stop();
+
+	  Application->ProcessMessages();
    }
 }
 

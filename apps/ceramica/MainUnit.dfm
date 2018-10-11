@@ -562,6 +562,7 @@ object MainForm: TMainForm
         17)
       ColorPaletteIndex = 13
       object Series1: TFastLineSeries
+        HoverElement = []
         Selected.Hover.Visible = True
         Marks.Callout.Length = 20
         SeriesColor = clRed
@@ -861,7 +862,7 @@ object MainForm: TMainForm
     end
     object viewCenterAction: TAction
       Category = 'view'
-      Caption = #1062#1077#1085#1090#1088' '#1084#1072#1089#1089' '#1079#1072#1075#1086#1090#1086#1074#1082#1080
+      Caption = #1062#1077#1085#1090#1088' '#1084#1072#1089#1089' '#1079#1072#1075#1086#1090#1086#1074#1082#1080' 7'
       Checked = True
       OnExecute = viewCenterActionExecute
       OnUpdate = viewCenterActionUpdate
@@ -948,6 +949,12 @@ object MainForm: TMainForm
       Caption = #1054' '#1087#1088#1086#1075#1088#1072#1084#1084#1077'... '
       OnExecute = helpAboutActionExecute
     end
+    object viewVideoControlAction: TAction
+      Category = 'view'
+      Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1072' '#1074#1080#1076#1077#1086'...'
+      OnExecute = viewVideoControlActionExecute
+      OnUpdate = viewVideoControlActionUpdate
+    end
   end
   object MainMenu1: TMainMenu
     Left = 16
@@ -1004,6 +1011,12 @@ object MainForm: TMainForm
       end
       object N14: TMenuItem
         Action = viewEllipseAction
+      end
+      object N24: TMenuItem
+        Caption = '-'
+      end
+      object viewVideoControlAction1: TMenuItem
+        Action = viewVideoControlAction
       end
     end
     object N4: TMenuItem

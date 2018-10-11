@@ -3,11 +3,14 @@
 #define PhVideoH
 #include "PhMediaSource.h"
 //---------------------------------------------------------------------------
+class TPhVideoThread;
 class TPhVideoSource : public TPhMediaSource
 {
+friend class TPhVideoThread;
 private:
-    HANDLE    m_videoSource;
-    TTimer*   m_pTimer;
+	HANDLE    m_videoSource;
+	TTimer*   m_pTimer;
+	TPhVideoThread* m_videoThread;
 protected:
     virtual int __fastcall  GetNumFrames();
     virtual int __fastcall  GetCurrentFrame();

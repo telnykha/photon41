@@ -20,13 +20,25 @@
 //      }
 //---------------------------------------------------------------------------
 
-__fastcall TPhVideoThread::TPhVideoThread(bool CreateSuspended)
+__fastcall TPhVideoThread::TPhVideoThread(bool CreateSuspended, TPhVideoSource* s)
 	: TThread(CreateSuspended)
 {
+	this->m_source = s;
+	m_cancel = false;
 }
 //---------------------------------------------------------------------------
 void __fastcall TPhVideoThread::Execute()
 {
 	//---- Place thread code here ----
+	if (m_source == NULL)
+		return;
+	while (!this->Terminated)
+	{
+		Synchronize(&DecodeHelper);
+	}
 }
 //---------------------------------------------------------------------------
+void __fastcall TPhVideoThread::DecodeHelper()
+{
+	 this->m_source->TimerEventHandler(NULL);
+}

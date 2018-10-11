@@ -7,9 +7,11 @@
 #include "CeramUtils.h"
 #include "PhVideo.h"
 #include "PhSlideShow.h"
+#include "Ph3iCube.h"
 #include "SelDirUnit.h"
 #include "IpAddress.h"
 #include "Bitmap2Dib.h"
+#include "VideoControlUnit.h"
 #include "VerInfoUnit.h"
 #include "AboutUnit.h"
 
@@ -45,7 +47,7 @@ void __fastcall TMainForm::fileExitActionExecute(TObject *Sender)
     Close();
 }
 #define _MODE_ENABLED_(v) \
-    v->Enabled = m_videoSource != NULL && m_videoSource->NumFrames > 0;
+    v->Enabled = m_videoSource != NULL && m_videoSource->NumFrames >= 0;
 
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::modeExperimentActionExecute(TObject *Sender)
@@ -159,22 +161,31 @@ void __fastcall TMainForm::fileOpenVideoActionExecute(TObject *Sender)
         }
         else
         {
-            SetSource(videoSource);
-	        m_videoSource->First();
+			SetSource(videoSource);
+			m_videoSource->First();
 			SetMode(modeHandAction);
-        }
+		}
     }
 }
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::fileConnectToCameraActionExecute(TObject *Sender)
 {
-//
+		TPhMediaSource* videoSource= new TPh3iCubeSource(PhImage1);
+		videoSource->Open(NULL);
+		if (videoSource->NumFrames == 0)
+			SetSource(videoSource);
+		else
+		{
+			SetSource(NULL);
+            fileCloseActionExecute(NULL);
+		}
+		SetMode(modeHandAction);
 }
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::fileCloseActionExecute(TObject *Sender)
 {
     PhImage1->Close();
-    PhImage1->Refresh();
+	PhImage1->Refresh();
     this->m_videoSource = NULL;
 	SetMode(modeHandAction);
 }
@@ -270,7 +281,7 @@ void __fastcall TMainForm::viewPlayActionExecute(TObject *Sender)
 
 void __fastcall TMainForm::viewPlayActionUpdate(TObject *Sender)
 {
-    viewPlayAction->Enabled = m_videoSource != NULL && m_videoSource->NumFrames > 1;
+    viewPlayAction->Enabled = m_videoSource != NULL && (m_videoSource->NumFrames > 1 || m_videoSource->NumFrames == 0);
 }
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::SetMode(TAction* action)
@@ -927,6 +938,19 @@ void __fastcall TMainForm::CheckBox2Click(TObject *Sender)
 {
     SaveParams();
     this->m_engine.useAprox = CheckBox2->Checked;
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TMainForm::viewVideoControlActionExecute(TObject *Sender)
+{
+	VideoControlDlg->Visible = !VideoControlDlg->Visible;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::viewVideoControlActionUpdate(TObject *Sender)
+{
+	viewVideoControlAction->Checked = VideoControlDlg->Visible;
 }
 //---------------------------------------------------------------------------
 
