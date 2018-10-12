@@ -40,17 +40,17 @@ object mainForm: TmainForm
   end
   object Panel1: TPanel
     Left = 0
-    Top = 510
+    Top = 552
     Width = 885
-    Height = 117
+    Height = 75
     Align = alBottom
     BevelOuter = bvLowered
     TabOrder = 1
     object SpeedButton2: TSpeedButton
       Left = 1
-      Top = 62
+      Top = 1
       Width = 64
-      Height = 54
+      Height = 73
       Action = FirstFrameAction
       Align = alLeft
       Caption = #1074' '#1085#1072#1095#1072#1083#1086
@@ -86,9 +86,9 @@ object mainForm: TmainForm
     end
     object SpeedButton3: TSpeedButton
       Left = 65
-      Top = 62
+      Top = 1
       Width = 64
-      Height = 54
+      Height = 73
       Action = PrevFrameAction
       Align = alLeft
       Flat = True
@@ -123,9 +123,9 @@ object mainForm: TmainForm
     end
     object SpeedButton9: TSpeedButton
       Left = 129
-      Top = 62
+      Top = 1
       Width = 64
-      Height = 54
+      Height = 73
       Action = PlayAction
       Align = alLeft
       AllowAllUp = True
@@ -180,9 +180,9 @@ object mainForm: TmainForm
     end
     object SpeedButton4: TSpeedButton
       Left = 193
-      Top = 62
+      Top = 1
       Width = 64
-      Height = 54
+      Height = 73
       Action = NextFrameAction
       Align = alLeft
       Flat = True
@@ -217,9 +217,9 @@ object mainForm: TmainForm
     end
     object SpeedButton5: TSpeedButton
       Left = 257
-      Top = 62
+      Top = 1
       Width = 64
-      Height = 54
+      Height = 73
       Action = LastFrameAction
       Align = alLeft
       Flat = True
@@ -252,285 +252,21 @@ object mainForm: TmainForm
       ExplicitTop = 3
       ExplicitHeight = 48
     end
-    object EventsIndicator1: TEventsIndicator
-      Left = 1
-      Top = 1
-      Width = 883
-      Height = 16
-      Align = alTop
-      Color = clBackground
-      ParentColor = False
-      ExplicitLeft = -1
-      ExplicitTop = -2
-      ExplicitWidth = 971
-    end
-    object TrackBarEx1: TTrackBarEx2
-      Left = 1
-      Top = 17
-      Width = 883
-      Height = 45
-      Align = alTop
-      ShowSelRange = False
-      TabOrder = 0
-      TickMarks = tmBoth
-      OnMouseUp = TrackBarEx1MouseUp
-    end
   end
-  object FImage1: TFVideoCapture
+  object FImage1: TPhImage
     Left = 0
     Top = 0
-    Width = 664
-    Height = 510
-    Cursor = 1
-    BorderStyle = bsFSingle
+    Width = 885
+    Height = 552
+    ThumbWidht = 128
+    ThumbHeight = 128
+    SlideShowInterval = 500
     Align = alClient
-    Color = clBlack
     ParentColor = False
-    PopupMenu = PopupMenu1
-    OnResize = FImage1Resize
-    BeforeOpen = FImage1BeforeOpen
-    AfterOpen = FImage1AfterOpen
-    Rescale = 1
-    Skip = 1
-    Indicator = EventsIndicator1
-    OnFrame = FImage1Frame
-  end
-  object Panel2: TPanel
-    Left = 664
-    Top = 0
-    Width = 221
-    Height = 510
-    Align = alRight
-    TabOrder = 3
-    object CheckBox1: TCheckBox
-      Left = 1
-      Top = 1
-      Width = 219
-      Height = 24
-      Align = alTop
-      Caption = #1054#1090#1086#1073#1088#1072#1078#1072#1090#1100' '#1079#1086#1085#1091' '#1085#1072#1073#1083#1102#1076#1077#1085#1080#1103
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      TabOrder = 0
-      OnClick = CheckBox1Click
-    end
-    object GroupBox1: TGroupBox
-      Left = 1
-      Top = 110
-      Width = 219
-      Height = 47
-      Align = alTop
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -19
-      Font.Name = 'MS Sans Serif'
-      Font.Style = []
-      ParentFont = False
-      TabOrder = 1
-      object Label1: TLabel
-        Left = 2
-        Top = 26
-        Width = 215
-        Height = 16
-        Align = alTop
-        Alignment = taCenter
-        Font.Charset = DEFAULT_CHARSET
-        Font.Color = clBlue
-        Font.Height = -13
-        Font.Name = 'MS Sans Serif'
-        Font.Style = []
-        ParentFont = False
-        ExplicitWidth = 3
-      end
-    end
-    object ListView1: TListView
-      Left = 1
-      Top = 196
-      Width = 219
-      Height = 313
-      Align = alClient
-      Columns = <
-        item
-          Caption = #8470' '#1089#1086#1073#1099#1090#1080#1103
-        end
-        item
-          Caption = #1042#1088#1077#1084#1103
-          Width = 150
-        end
-        item
-          Caption = #1063#1080#1089#1083#1086
-        end
-        item
-          Caption = #1055#1083#1086#1097#1072#1076#1100
-        end>
-      GridLines = True
-      ReadOnly = True
-      RowSelect = True
-      TabOrder = 2
-      ViewStyle = vsReport
-      OnChange = ListView1Change
-      OnSelectItem = ListView1SelectItem
-    end
-    object Panel3: TPanel
-      Left = 1
-      Top = 157
-      Width = 219
-      Height = 39
-      Align = alTop
-      TabOrder = 3
-      object SpeedButton1: TSpeedButton
-        Left = 2
-        Top = 7
-        Width = 23
-        Height = 22
-        Action = logOpenAction
-        Glyph.Data = {
-          76010000424D7601000000000000760000002800000020000000100000000100
-          04000000000000010000120B0000120B00001000000000000000000000000000
-          800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
-          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00555555555555
-          5555555555555555555555555555555555555555555555555555555555555555
-          555555555555555555555555555555555555555FFFFFFFFFF555550000000000
-          55555577777777775F55500B8B8B8B8B05555775F555555575F550F0B8B8B8B8
-          B05557F75F555555575F50BF0B8B8B8B8B0557F575FFFFFFFF7F50FBF0000000
-          000557F557777777777550BFBFBFBFB0555557F555555557F55550FBFBFBFBF0
-          555557F555555FF7555550BFBFBF00055555575F555577755555550BFBF05555
-          55555575FFF75555555555700007555555555557777555555555555555555555
-          5555555555555555555555555555555555555555555555555555}
-        NumGlyphs = 2
-      end
-      object SpeedButton6: TSpeedButton
-        Left = 23
-        Top = 7
-        Width = 23
-        Height = 22
-        Action = logSaveAction
-        Glyph.Data = {
-          76010000424D7601000000000000760000002800000020000000100000000100
-          04000000000000010000120B0000120B00001000000000000000000000000000
-          800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
-          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
-          333333FFFFFFFFFFFFF33000077777770033377777777777773F000007888888
-          00037F3337F3FF37F37F00000780088800037F3337F77F37F37F000007800888
-          00037F3337F77FF7F37F00000788888800037F3337777777337F000000000000
-          00037F3FFFFFFFFFFF7F00000000000000037F77777777777F7F000FFFFFFFFF
-          00037F7F333333337F7F000FFFFFFFFF00037F7F333333337F7F000FFFFFFFFF
-          00037F7F333333337F7F000FFFFFFFFF00037F7F333333337F7F000FFFFFFFFF
-          00037F7F333333337F7F000FFFFFFFFF07037F7F33333333777F000FFFFFFFFF
-          0003737FFFFFFFFF7F7330099999999900333777777777777733}
-        NumGlyphs = 2
-      end
-      object SpeedButton7: TSpeedButton
-        Left = 44
-        Top = 7
-        Width = 23
-        Height = 22
-        Action = logClearAction
-        Glyph.Data = {
-          F6000000424DF600000000000000760000002800000010000000100000000100
-          0400000000008000000000000000000000001000000000000000000000000000
-          8000008000000080800080000000800080008080000080808000C0C0C0000000
-          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00FFFFFFFFFFFF
-          FFFFFFF0FFFFFFFFFF0FFF000FFFFFFFFFFFFF0000FFFFFFF0FFFFF000FFFFFF
-          0FFFFFFF000FFFF00FFFFFFFF000FF00FFFFFFFFFF00000FFFFFFFFFFFF000FF
-          FFFFFFFFFF00000FFFFFFFFFF000FF00FFFFFFF0000FFFF00FFFFF0000FFFFFF
-          00FFFF000FFFFFFFFF0FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
-      end
-      object SpeedButton8: TSpeedButton
-        Left = 65
-        Top = 7
-        Width = 23
-        Height = 22
-        Action = logInsertAction
-        Glyph.Data = {
-          76010000424D7601000000000000760000002800000020000000100000000100
-          04000000000000010000130B0000130B00001000000000000000000000000000
-          800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
-          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
-          33333333FF33333333FF333993333333300033377F3333333777333993333333
-          300033F77FFF3333377739999993333333333777777F3333333F399999933333
-          33003777777333333377333993333333330033377F3333333377333993333333
-          3333333773333333333F333333333333330033333333F33333773333333C3333
-          330033333337FF3333773333333CC333333333FFFFF77FFF3FF33CCCCCCCCCC3
-          993337777777777F77F33CCCCCCCCCC3993337777777777377333333333CC333
-          333333333337733333FF3333333C333330003333333733333777333333333333
-          3000333333333333377733333333333333333333333333333333}
-        NumGlyphs = 2
-      end
-      object SpeedButton10: TSpeedButton
-        Left = 86
-        Top = 7
-        Width = 23
-        Height = 22
-        Action = logDeleteAction
-        Glyph.Data = {
-          76010000424D7601000000000000760000002800000020000000100000000100
-          04000000000000010000130B0000130B00001000000000000000000000000000
-          800000800000008080008000000080008000808000007F7F7F00BFBFBF000000
-          FF0000FF000000FFFF00FF000000FF00FF00FFFF0000FFFFFF00333333333333
-          333333333333333333FF33333333333330003333333333333777333333333333
-          300033FFFFFF3333377739999993333333333777777F3333333F399999933333
-          3300377777733333337733333333333333003333333333333377333333333333
-          3333333333333333333F333333333333330033333F33333333773333C3333333
-          330033337F3333333377333CC3333333333333F77FFFFFFF3FF33CCCCCCCCCC3
-          993337777777777F77F33CCCCCCCCCC399333777777777737733333CC3333333
-          333333377F33333333FF3333C333333330003333733333333777333333333333
-          3000333333333333377733333333333333333333333333333333}
-        NumGlyphs = 2
-      end
-    end
-    object GroupBox2: TGroupBox
-      Left = 1
-      Top = 46
-      Width = 219
-      Height = 64
-      Align = alTop
-      Caption = #1063#1091#1074#1089#1090#1074#1080#1090#1077#1083#1100#1085#1086#1089#1090#1100
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clWindowText
-      Font.Height = -13
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentFont = False
-      TabOrder = 4
-      object TrackBar1: TTrackBar
-        Left = 2
-        Top = 18
-        Width = 215
-        Height = 40
-        Align = alTop
-        Max = 100
-        Min = 1
-        Frequency = 10
-        Position = 50
-        ShowSelRange = False
-        TabOrder = 0
-        TickMarks = tmBoth
-        OnChange = TrackBar1Change
-      end
-    end
-    object CheckBox5: TCheckBox
-      Left = 1
-      Top = 25
-      Width = 219
-      Height = 21
-      Align = alTop
-      Caption = #1042#1082#1083#1102#1095#1080#1090#1100' '#1076#1077#1090#1077#1082#1090#1086#1088
-      Color = clRed
-      Font.Charset = DEFAULT_CHARSET
-      Font.Color = clRed
-      Font.Height = -13
-      Font.Name = 'Tahoma'
-      Font.Style = []
-      ParentColor = False
-      ParentFont = False
-      TabOrder = 5
-      OnClick = CheckBox5Click
-    end
+    ExplicitLeft = 496
+    ExplicitTop = 288
+    ExplicitWidth = 100
+    ExplicitHeight = 100
   end
   object ActionList1: TActionList
     Left = 56
@@ -618,43 +354,27 @@ object mainForm: TmainForm
     end
     object videoSourceSizeAction: TAction
       Caption = #1048#1089#1093#1086#1076#1085#1099#1081' '#1088#1072#1079#1084#1077#1088
-      OnExecute = videoSourceSizeActionExecute
-      OnUpdate = videoSourceSizeActionUpdate
     end
     object videoHalfSizeAction: TAction
       Caption = #1055#1086#1083#1086#1074#1080#1085#1072' '#1088#1072#1079#1084#1077#1088#1072
-      OnExecute = videoHalfSizeActionExecute
-      OnUpdate = videoHalfSizeActionUpdate
     end
     object videoQuarterSizeAction: TAction
       Caption = #1063#1077#1090#1074#1077#1088#1090#1100' '#1088#1072#1079#1084#1077#1088#1072
-      OnExecute = videoQuarterSizeActionExecute
-      OnUpdate = videoQuarterSizeActionUpdate
     end
     object logOpenAction: TAction
       Hint = #1047#1072#1075#1088#1091#1079#1080#1090#1100' log '#1092#1072#1081#1083
-      OnExecute = logOpenActionExecute
-      OnUpdate = logOpenActionUpdate
     end
     object logSaveAction: TAction
       Hint = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1083#1086#1075' '#1092#1072#1081#1083
-      OnExecute = logSaveActionExecute
-      OnUpdate = logSaveActionUpdate
     end
     object logClearAction: TAction
       Hint = #1054#1095#1080#1089#1090#1080#1090#1100' '#1083#1086#1075' '#1092#1072#1081#1083
-      OnExecute = logClearActionExecute
-      OnUpdate = logClearActionUpdate
     end
     object logInsertAction: TAction
       Hint = #1044#1086#1073#1072#1074#1080#1090#1100' '#1085#1086#1074#1086#1077' '#1089#1086#1073#1099#1090#1080#1077' '#1074' '#1083#1086#1075' '#1092#1072#1081#1083
-      OnExecute = logInsertActionExecute
-      OnUpdate = logInsertActionUpdate
     end
     object logDeleteAction: TAction
       Hint = #1059#1076#1072#1083#1080#1090#1100' '#1089#1086#1073#1099#1090#1080#1077' '#1080#1079' '#1083#1086#1075' '#1092#1072#1081#1083#1072
-      OnExecute = logDeleteActionExecute
-      OnUpdate = logDeleteActionUpdate
     end
   end
   object PopupMenu1: TPopupMenu

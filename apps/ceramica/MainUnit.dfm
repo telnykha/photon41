@@ -562,7 +562,6 @@ object MainForm: TMainForm
         17)
       ColorPaletteIndex = 13
       object Series1: TFastLineSeries
-        HoverElement = []
         Selected.Hover.Visible = True
         Marks.Callout.Length = 20
         SeriesColor = clRed
