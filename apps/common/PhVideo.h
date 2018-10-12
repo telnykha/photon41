@@ -9,7 +9,6 @@ class TPhVideoSource : public TPhMediaSource
 friend class TPhVideoThread;
 private:
 	HANDLE    m_videoSource;
-	TTimer*   m_pTimer;
 	TPhVideoThread* m_videoThread;
 protected:
     virtual int __fastcall  GetNumFrames();
@@ -21,7 +20,7 @@ protected:
 	void __fastcall TimerEventHandler(TObject *Sender);
 public:
    TPhVideoSource(TPhImage* display);
-   ~TPhVideoSource();
+   virtual ~TPhVideoSource();
 
    virtual void Open(TStrings* Names);
    virtual void Close();

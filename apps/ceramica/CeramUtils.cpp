@@ -373,6 +373,20 @@ void __fastcall TCeramImageProcessor::Reset()
     m_by = new TLFBuffer(size, 0);
     m_bd = new TLFBuffer(size, 0);
 
+    m_center;
+    m_angle = 0;
+    m_diam = 0;
+    m_major = 0;
+    m_minor = 0;
+    m_mask = NULL;
+    m_process = NULL;
+    m_oldc.X = 0;
+    m_oldc.Y = 0;
+    m_oldr = 0;
+    m_useBuffer = true;
+    m_count = 0;
+    m_contour = NULL;
+
 }
 
 void __fastcall TCeramImageProcessor::SetUseBuffer(bool value)

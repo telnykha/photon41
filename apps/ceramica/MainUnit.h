@@ -32,6 +32,9 @@
 #include <IdCustomTCPServer.hpp>
 #include <IdTCPServer.hpp>
 #include <IdContext.hpp>
+#include <Vcl.ToolWin.hpp>
+#include <System.ImageList.hpp>
+#include <Vcl.ImgList.hpp>
 
 //---------------------------------------------------------------------------
 class TPhMediaSource;
@@ -120,18 +123,13 @@ __published:	// IDE-managed Components
 	TBevel *Bevel1;
 	TLabel *Label19;
 	TLabel *Label20;
-	TBevel *Bevel2;
-	TLabel *Label11;
-	TLabel *Label21;
 	TEdit *Edit1;
 	TCheckBox *CheckBox1;
 	TSpinEdit *SpinEdit1;
 	TButton *Button1;
 	TEdit *Edit2;
 	TSpinEdit *SpinEdit2;
-	TEdit *Edit3;
 	TMemo *Memo1;
-	TBevel *Bevel4;
 	TSpinEdit *SpinEdit3;
 	TLabel *Label23;
 	TComboBox *ComboBox1;
@@ -145,6 +143,18 @@ __published:	// IDE-managed Components
 	TAction *viewVideoControlAction;
 	TMenuItem *N24;
 	TMenuItem *viewVideoControlAction1;
+	TCheckBox *CheckBox3;
+	TAction *viewRawContourAction;
+	TMenuItem *N25;
+	TPanel *Panel5;
+	TImageList *ImageList1;
+	TSpeedButton *SpeedButton6;
+	TSpeedButton *SpeedButton7;
+	TSpeedButton *SpeedButton8;
+	TSpeedButton *SpeedButton10;
+	TSpeedButton *SpeedButton11;
+	TSpeedButton *SpeedButton12;
+	TSpeedButton *SpeedButton13;
 	void __fastcall fileExitActionExecute(TObject *Sender);
 	void __fastcall modeExperimentActionExecute(TObject *Sender);
 	void __fastcall modeExperimentActionUpdate(TObject *Sender);
@@ -187,8 +197,6 @@ __published:	// IDE-managed Components
 	void __fastcall SpinEdit1Change(TObject *Sender);
 	void __fastcall Edit2Change(TObject *Sender);
 	void __fastcall SpinEdit2Change(TObject *Sender);
-	void __fastcall Edit3Change(TObject *Sender);
-	void __fastcall Edit3Enter(TObject *Sender);
 	void __fastcall viewBinaryActionExecute(TObject *Sender);
 	void __fastcall viewBinaryActionUpdate(TObject *Sender);
 	void __fastcall Edit1Change(TObject *Sender);
@@ -204,6 +212,8 @@ __published:	// IDE-managed Components
 	void __fastcall CheckBox2Click(TObject *Sender);
 	void __fastcall viewVideoControlActionExecute(TObject *Sender);
 	void __fastcall viewVideoControlActionUpdate(TObject *Sender);
+	void __fastcall viewRawContourActionExecute(TObject *Sender);
+	void __fastcall viewRawContourActionUpdate(TObject *Sender);
 
 
 
@@ -228,6 +238,7 @@ private:	// User declarations
     void __fastcall DrawEllipce(awpImage* img);
     void __fastcall DrawAxis(awpImage* img);
     void __fastcall DrawBinary(awpImage* img);
+    void __fastcall DrawRawContour(awpImage* img);
     // processing
     TCeramImageProcessor m_engine;
     TCeramCalibration    m_c;
@@ -236,7 +247,7 @@ private:	// User declarations
     TLFImage             m_copy;
     // result
     void __fastcall ShowResult();
-
+    void __fastcall Reset();
     // params
     void  __fastcall SaveParams();
     void  __fastcall LoadParams();

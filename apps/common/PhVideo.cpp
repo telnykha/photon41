@@ -9,17 +9,12 @@
 TPhVideoSource::TPhVideoSource(TPhImage* display):TPhMediaSource(display)
 {
     m_videoSource = NULL;
-	m_pTimer = new TTimer(NULL);
-	m_pTimer->Enabled = false;
-	m_pTimer->Interval = 50;
-    m_pTimer->OnTimer = TimerEventHandler;
-	m_SourceStr = L"Видеофайл";
+	m_SourceStr = L"";
+    m_SourceName = "Видеофайл";
     m_videoThread = NULL;
 }
 TPhVideoSource::~TPhVideoSource()
 {
-   m_pTimer->Enabled = false;
-   delete m_pTimer;
    if (m_videoSource != NULL)
 			Close();
 }
@@ -33,7 +28,11 @@ void  TPhVideoSource::Open(TStrings* Names)
     {
         awpcvNumFrames((HCVVIDEO)m_videoSource, &m_NumFrames);
     }
+    else
+        return;
+    this->m_SourceStr = Names->Strings[0];
 	First();
+    this->m_pImage->AfterOpen(NULL);
 	this->m_videoThread = new TPhVideoThread(true, this);
 	this->m_videoThread->FreeOnTerminate = true;
 }

@@ -57,7 +57,11 @@ bool awpwinDrawStatusText(awpImage* img, const char* text, awpRect pos)
     bmp->Height  = h;
 
     TCanvas* cnv = bmp->Canvas;
+    cnv->Brush->Color = clBlack;
+    TRect rect(0,0,w,h);
+    cnv->FillRect(rect);
     cnv->Font->Height = 32;
+    cnv->Font->Color = clLime;
     UnicodeString str = text;
 
     int th = cnv->TextHeight(str);

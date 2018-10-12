@@ -24,7 +24,7 @@ long CALLBACK MyCallbackFunc(BYTE * pBuffer, long lBufferSize,PVOID pContext)
 TPh3iCubeSource::TPh3iCubeSource(TPhImage* display):TPhMediaSource(display)
 {
  h_iCurrentCam = 0;
- m_SourceStr = L"3iCube";
+ m_SourceName = L"3iCube";
  m_NumFrames = -1;
  m_CurrentFrame -1;
 	m_pTimer = new TTimer(NULL);
@@ -37,6 +37,7 @@ TPh3iCubeSource::TPh3iCubeSource(TPhImage* display):TPhMediaSource(display)
 	{
 		ShowMessage("Не могу найти файл ICubeSDK.dll");
 	}
+    throw 0;
 }
 TPh3iCubeSource::~TPh3iCubeSource()
 {

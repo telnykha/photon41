@@ -12,7 +12,7 @@ if (this->m_pImage == NULL) \
 
 TPhSlideShowSource::TPhSlideShowSource(TPhImage* display): TPhMediaSource(display)
 {
-    m_SourceStr = L"Фотографии";
+    m_SourceName = L"Фотографии";
 }
 TPhSlideShowSource::~TPhSlideShowSource()
 {

@@ -135,6 +135,7 @@ void __fastcall TMainForm::viewEllipseActionUpdate(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::fileOpenImagesActionExecute(TObject *Sender)
 {
+    Reset();
 	AnsiString cstrImages = "Jpeg images|*.jpeg;*.jpg|AWP images|*.awp";
     OpenDialog1->Filter = cstrImages;
     if (OpenDialog1->Execute())
@@ -147,6 +148,8 @@ void __fastcall TMainForm::fileOpenImagesActionExecute(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::fileOpenVideoActionExecute(TObject *Sender)
 {
+    Reset();
+    SetMode(modeHandAction);
 	AnsiString cstrVideos = "Videos |*.avi;*.mp4;*.mpg;|Avi videos|*.avi;|MP4 videos|*.mp4|mpeg files|*.mpg";
     OpenDialog1->Filter = cstrVideos;
     if (OpenDialog1->Execute())
@@ -162,7 +165,6 @@ void __fastcall TMainForm::fileOpenVideoActionExecute(TObject *Sender)
         else
         {
 			SetSource(videoSource);
-			m_videoSource->First();
 			SetMode(modeHandAction);
 		}
     }
@@ -170,23 +172,35 @@ void __fastcall TMainForm::fileOpenVideoActionExecute(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::fileConnectToCameraActionExecute(TObject *Sender)
 {
-		TPhMediaSource* videoSource= new TPh3iCubeSource(PhImage1);
-		videoSource->Open(NULL);
-		if (videoSource->NumFrames == 0)
-			SetSource(videoSource);
-		else
-		{
-			SetSource(NULL);
+      Reset();
+      TPhMediaSource* videoSource = NULL;
+      try
+      {
+		videoSource= new TPh3iCubeSource(PhImage1);
+        videoSource->Open(NULL);
+        if (videoSource->NumFrames == 0)
+            SetSource(videoSource);
+        else
+        {
+            SetSource(NULL);
             fileCloseActionExecute(NULL);
-		}
-		SetMode(modeHandAction);
+        }
+
+      }
+      catch(...)
+      {
+            SetSource(NULL);
+            fileCloseActionExecute(NULL);
+      }
+ 	  SetMode(modeHandAction);
 }
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::fileCloseActionExecute(TObject *Sender)
 {
     PhImage1->Close();
 	PhImage1->Refresh();
-    this->m_videoSource = NULL;
+    this->SetSource(NULL);
+//    this->m_videoSource = NULL;
 	SetMode(modeHandAction);
 }
 //---------------------------------------------------------------------------
@@ -265,16 +279,12 @@ void __fastcall TMainForm::viewPlayActionExecute(TObject *Sender)
 	    m_videoSource->Play();
         viewPlayAction->Caption = L"Стоп";
         SpeedButton9->Down = true;
- //       Panel1->Visible = false;
-//        PhImage1->BestFit();
     }
     else
     {
         m_videoSource->Stop();
         viewPlayAction->Caption = L"Воспроизвести";
         SpeedButton9->Down = false;
-//        Panel1->Visible = true;
-  //      PhImage1->BestFit();
     }
 }
 //---------------------------------------------------------------------------
@@ -286,6 +296,7 @@ void __fastcall TMainForm::viewPlayActionUpdate(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::SetMode(TAction* action)
 {
+   Reset();
    if (m_modeAction == modeExperimentAction)
     this->StopExperiment();
 
@@ -311,6 +322,8 @@ void __fastcall TMainForm::SetMode(TAction* action)
 
    if (m_modeAction == modeHandAction)
    {
+      Reset();
+      this->ShowResult();
       PhImage1->SelectPhTool(PhRulerTool1);
       IdTCPServer1->Active = false;
    }
@@ -343,6 +356,7 @@ void __fastcall TMainForm::FormCreate(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::SetSource(TPhMediaSource* source)
 {
+   Reset();
    if (m_videoSource != NULL)
    {
       delete m_videoSource;
@@ -351,11 +365,18 @@ void __fastcall TMainForm::SetSource(TPhMediaSource* source)
 
    m_videoSource = source;
    if (m_videoSource  != NULL)
-	   StatusBar1->Panels->Items[2]->Text = L"Источник данных: " + m_videoSource->Source;
+   {
+	   StatusBar1->Panels->Items[2]->Text = L"Источник данных: " + m_videoSource->SourceName;
+       UnicodeString cap = L"Ceramica [";
+       cap += m_videoSource->Source;
+       cap  += L"]";
+       this->Caption = cap;
+   }
    else
    {
 	   StatusBar1->Panels->Items[1]->Text = L"";
 	   StatusBar1->Panels->Items[2]->Text = L"Источник данных: NULL";
+       this->Caption = L"Ceramica";
    }
 }
 
@@ -420,6 +441,7 @@ void __fastcall TMainForm::RenderScene(awpImage* img)
    DrawAxis(img);
    DrawCenter(img);
    DrawObject(img);
+   DrawRawContour(img);
    DrawEllipce(img);
 }
 //---------------------------------------------------------------------------
@@ -510,12 +532,18 @@ void __fastcall TMainForm::DrawAxis(awpImage* img)
     p.X = m_engine.center.X;
     p.Y = m_engine.center.Y;
 
-   //	awpDrawCEllipseCross(img, p, m_engine.major, m_engine.minor, m_engine.angle, 255,0,0, 1);
+   awpDrawCEllipseCross(img, p, m_engine.major, m_engine.minor, m_engine.angle, 255,0,0, 1);
+}
+
+void __fastcall TMainForm::DrawRawContour(awpImage* img)
+{
+   if (!viewRawContourAction->Checked)
+    return;
+
    if (m_engine.contour != NULL)
 	awpDrawCPolygon(img, m_engine.contour, 0, 255, 0, 1);
-
-
 }
+
 
 void __fastcall TMainForm::DrawBinary(awpImage* img)
 {
@@ -646,8 +674,8 @@ void  __fastcall TMainForm::SaveParams()
     iv = SpinEdit2->Value;
     fprintf(f, "%i\n", iv);
     // время экспозиции
-    iv = StrToInt(Edit3->Text);
-    fprintf(f, "%i\n", iv);
+    //iv = StrToInt(Edit3->Text);
+    //fprintf(f, "%i\n", iv);
 
     fclose(f);
     LoadParams();
@@ -689,8 +717,8 @@ void  __fastcall TMainForm::LoadParams()
             fscanf(f, "%i\n", &iv);
             SpinEdit2->Value = iv;
             // время экспозиции
-            fscanf(f, "%i\n", &iv);
-            Edit3->Text = IntToStr(iv);
+            //fscanf(f, "%i\n", &iv);
+            //Edit3->Text = IntToStr(iv);
             fclose(f);
         }
         else
@@ -727,21 +755,7 @@ void __fastcall TMainForm::SpinEdit2Change(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TMainForm::Edit3Change(TObject *Sender)
-{
-    int v;
-    if (TryStrToInt(Edit3->Text, v))
-	    SaveParams();
-    else
-        Edit3->Text = m_e3ov;
-}
-//---------------------------------------------------------------------------
 
-void __fastcall TMainForm::Edit3Enter(TObject *Sender)
-{
-    m_e3ov = StrToInt(Edit3->Text);
-}
-//---------------------------------------------------------------------------
 
 void __fastcall TMainForm::viewBinaryActionExecute(TObject *Sender)
 {
@@ -829,8 +843,6 @@ void __fastcall TMainForm::StartExperiment()
     header.alfa = m_c.alfa;
     header.bufferSize = m_engine.bufferSize;
     header.dutyRatio  = SpinEdit2->Value;
-    header.exposure   = StrToInt(Edit3->Text);
-
     if (!m_archive->Create(header))
     {
         ShowMessage("Не могу создать архив: " + Edit2->Text);
@@ -953,4 +965,30 @@ void __fastcall TMainForm::viewVideoControlActionUpdate(TObject *Sender)
 	viewVideoControlAction->Checked = VideoControlDlg->Visible;
 }
 //---------------------------------------------------------------------------
+
+void __fastcall TMainForm::viewRawContourActionExecute(TObject *Sender)
+{
+    viewRawContourAction->Checked = !viewRawContourAction->Checked;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::viewRawContourActionUpdate(TObject *Sender)
+{
+//
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::Reset()
+{
+    m_engine.Reset();
+    if (m_buffer != NULL)
+	    m_buffer->Clear();
+	ShowResult();
+
+    //todo:
+    if (m_videoSource != NULL)
+    {
+	    m_videoSource->Next();
+	    m_videoSource->Prev();
+    }
+}
 
