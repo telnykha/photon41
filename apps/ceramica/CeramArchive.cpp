@@ -52,6 +52,18 @@ bool TCeramArchive::Create(TCeramArchiveHeader& header)
     fprintf(m_pLog, "%i\n", header.dutyRatio);
     fprintf(m_pLog, "%i\n", header.exposure);
 
+
+   fprintf(m_pLog, "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
+    "Date-time",
+    "Diam",
+    "x-pos",
+    "y-pos",
+    "minor",
+    "major",
+    "angle",
+    "image"
+    );
+    fprintf(m_pLog, "%s\n", "====================================================================");
     return true;
 }
 
