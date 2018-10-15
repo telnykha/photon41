@@ -24,17 +24,21 @@ object mainForm: TmainForm
     Panels = <
       item
         Alignment = taCenter
+        Text = #1056#1077#1078#1080#1084':'
         Width = 150
       end
       item
         Alignment = taCenter
-        Width = 250
+        Text = #1050#1072#1076#1088' 999999 '#1080#1079' 1000000'
+        Width = 150
       end
       item
         Alignment = taCenter
-        Width = 120
+        Text = #1048#1089#1090#1086#1095#1085#1080#1082' '#1076#1072#1085#1085#1099#1093': '
+        Width = 200
       end
       item
+        Text = #1048#1079#1086#1073#1088#1072#1078#1077#1085#1080#1077':'
         Width = 150
       end>
   end
@@ -263,20 +267,14 @@ object mainForm: TmainForm
     SlideShowInterval = 500
     Align = alClient
     ParentColor = False
-    ExplicitLeft = 496
-    ExplicitTop = 288
-    ExplicitWidth = 100
-    ExplicitHeight = 100
+    AfterOpen = FImage1AfterOpen
+    OnFrameData = FImage1FrameData
   end
   object ActionList1: TActionList
     Left = 56
     Top = 24
-    object OpneImageAction: TAction
-      Caption = #1054#1090#1082#1088#1099#1090#1100' '#1080#1079#1086#1073#1088#1072#1078#1077#1085#1080#1077'...'
-      Visible = False
-      OnExecute = OpneImageActionExecute
-    end
     object CloseAction: TAction
+      Category = 'Files'
       Caption = #1042#1099#1093#1086#1076
       OnExecute = CloseActionExecute
     end
@@ -291,75 +289,70 @@ object mainForm: TmainForm
       OnUpdate = ModeSelRectActionUpdate
     end
     object ActualSizeAction: TAction
+      Category = 'View'
       Caption = #1048#1089#1093#1086#1076#1085#1099#1081' '#1088#1072#1079#1084#1077#1088
       OnExecute = ActualSizeActionExecute
       OnUpdate = ActualSizeActionUpdate
     end
     object BestFitAction: TAction
+      Category = 'View'
       Caption = #1042#1087#1080#1089#1072#1090#1100' '#1074' '#1086#1082#1085#1086
       OnExecute = BestFitActionExecute
       OnUpdate = BestFitActionUpdate
     end
     object AboutAction: TAction
+      Category = 'Help'
       Caption = #1054' '#1087#1088#1086#1075#1088#1072#1084#1084#1077'...'
     end
     object OpenVideoAction: TAction
+      Category = 'Files'
       Caption = #1054#1090#1082#1088#1099#1090#1100' '#1074#1080#1076#1077#1086#1092#1072#1081#1083'...'
       OnExecute = OpenVideoActionExecute
     end
-    object OpenSlideShowAction: TAction
-      Caption = #1054#1090#1082#1088#1099#1090#1100' '#1089#1083#1072#1081#1076'-'#1096#1086#1091'...'
-      Visible = False
-      OnExecute = OpenSlideShowActionExecute
-    end
     object SaveImageAction: TAction
+      Category = 'Files'
       Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1080#1079#1086#1073#1088#1072#1078#1077#1085#1080#1077'...'
       Visible = False
     end
     object CloseVideoAction: TAction
+      Category = 'Files'
       Caption = #1047#1072#1082#1088#1099#1090#1100' '#1074#1080#1076#1077#1086#1080#1089#1090#1086#1095#1085#1080#1082
-      Visible = False
       OnExecute = CloseVideoActionExecute
       OnUpdate = CloseVideoActionUpdate
     end
     object PlayAction: TAction
+      Category = 'Video'
       Caption = #1042#1086#1089#1087#1088#1086#1080#1079#1074#1077#1089#1090#1080
       OnExecute = PlayActionExecute
       OnUpdate = PlayActionUpdate
     end
     object FirstFrameAction: TAction
+      Category = 'Video'
       Caption = 'FirstFrameAction'
       OnExecute = FirstFrameActionExecute
       OnUpdate = FirstFrameActionUpdate
     end
     object PrevFrameAction: TAction
+      Category = 'Video'
       Caption = #1087#1088#1077#1076#1099#1076#1091#1097'.'
       OnExecute = PrevFrameActionExecute
       OnUpdate = PrevFrameActionUpdate
     end
     object NextFrameAction: TAction
+      Category = 'Video'
       Caption = #1089#1083#1077#1076#1091#1102#1097'.'
       OnExecute = NextFrameActionExecute
       OnUpdate = NextFrameActionUpdate
     end
     object LastFrameAction: TAction
+      Category = 'Video'
       Caption = #1074' '#1082#1086#1085#1077#1094
       OnExecute = LastFrameActionExecute
       OnUpdate = LastFrameActionUpdate
     end
     object OptionsAction: TAction
+      Category = 'Tools'
       Caption = #1055#1077#1088#1077#1093#1086#1076' '#1085#1072' '#1082#1072#1076#1088'...'
-      OnExecute = OptionsActionExecute
-      OnUpdate = OptionsActionUpdate
-    end
-    object videoSourceSizeAction: TAction
-      Caption = #1048#1089#1093#1086#1076#1085#1099#1081' '#1088#1072#1079#1084#1077#1088
-    end
-    object videoHalfSizeAction: TAction
-      Caption = #1055#1086#1083#1086#1074#1080#1085#1072' '#1088#1072#1079#1084#1077#1088#1072
-    end
-    object videoQuarterSizeAction: TAction
-      Caption = #1063#1077#1090#1074#1077#1088#1090#1100' '#1088#1072#1079#1084#1077#1088#1072
     end
     object logOpenAction: TAction
       Hint = #1047#1072#1075#1088#1091#1079#1080#1090#1100' log '#1092#1072#1081#1083
@@ -376,12 +369,34 @@ object mainForm: TmainForm
     object logDeleteAction: TAction
       Hint = #1059#1076#1072#1083#1080#1090#1100' '#1089#1086#1073#1099#1090#1080#1077' '#1080#1079' '#1083#1086#1075' '#1092#1072#1081#1083#1072
     end
+    object GotoFrameAction: TAction
+      Category = 'Video'
+      Caption = #1055#1077#1088#1077#1081#1090#1080' '#1085#1072' '#1082#1072#1076#1088'...'
+      OnExecute = GotoFrameActionExecute
+      OnUpdate = GotoFrameActionUpdate
+    end
+    object modeAnalysisAction: TAction
+      Category = 'Mode'
+      Caption = #1053#1072#1073#1083#1102#1076#1077#1085#1080#1077
+      GroupIndex = 4
+      OnExecute = modeAnalysisActionExecute
+      OnUpdate = modeAnalysisActionUpdate
+    end
+    object modeTuningAction: TAction
+      Category = 'Mode'
+      Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1072
+      Checked = True
+      GroupIndex = 4
+      OnExecute = modeTuningActionExecute
+      OnUpdate = modeTuningActionUpdate
+    end
   end
   object PopupMenu1: TPopupMenu
     Left = 88
     Top = 24
     object N1: TMenuItem
-      Action = OpneImageAction
+      Caption = #1054#1090#1082#1088#1099#1090#1100' '#1080#1079#1086#1073#1088#1072#1078#1077#1085#1080#1077'...'
+      Visible = False
     end
     object N4: TMenuItem
       Caption = '-'
@@ -422,10 +437,12 @@ object mainForm: TmainForm
     object N11: TMenuItem
       Caption = #1060#1072#1081#1083#1099
       object N14: TMenuItem
-        Action = OpneImageAction
+        Caption = #1054#1090#1082#1088#1099#1090#1100' '#1080#1079#1086#1073#1088#1072#1078#1077#1085#1080#1077'...'
+        Visible = False
       end
       object N17: TMenuItem
-        Action = OpenSlideShowAction
+        Caption = #1054#1090#1082#1088#1099#1090#1100' '#1089#1083#1072#1081#1076'-'#1096#1086#1091'...'
+        Visible = False
       end
       object N18: TMenuItem
         Action = OpenVideoAction
@@ -457,22 +474,46 @@ object mainForm: TmainForm
         Action = CloseAction
       end
     end
+    object N25: TMenuItem
+      Caption = #1042#1080#1076#1077#1086
+      object FirstFrameAction1: TMenuItem
+        Action = FirstFrameAction
+      end
+      object N26: TMenuItem
+        Action = PrevFrameAction
+      end
+      object N27: TMenuItem
+        Action = NextFrameAction
+      end
+      object N28: TMenuItem
+        Action = LastFrameAction
+      end
+      object N29: TMenuItem
+        Caption = '-'
+      end
+      object N30: TMenuItem
+        Action = PlayAction
+      end
+      object N31: TMenuItem
+        Caption = '-'
+      end
+      object N32: TMenuItem
+        Action = GotoFrameAction
+      end
+    end
+    object N33: TMenuItem
+      Caption = #1056#1077#1078#1080#1084
+      object N34: TMenuItem
+        Action = modeTuningAction
+      end
+      object N35: TMenuItem
+        Action = modeAnalysisAction
+      end
+    end
     object N23: TMenuItem
       Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1072
       object N24: TMenuItem
         Action = OptionsAction
-      end
-      object N25: TMenuItem
-        Caption = '-'
-      end
-      object N26: TMenuItem
-        Action = videoSourceSizeAction
-      end
-      object N27: TMenuItem
-        Action = videoHalfSizeAction
-      end
-      object N28: TMenuItem
-        Action = videoQuarterSizeAction
       end
     end
     object N15: TMenuItem

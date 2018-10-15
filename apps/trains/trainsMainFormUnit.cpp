@@ -4,14 +4,12 @@
 #pragma hdrstop
 
 #include "trainsMainFormUnit.h"
-#include "NewEventUnit.h"
 #include "VerInfoUnit.h"
 #include "aboutUnit.h"
+#include "PhVideo.h"
+#include "TuningUnit.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-#pragma link "FImage"
-#pragma link "TrackBarEx"
-#pragma link "EventsIndicator"
 #pragma link "FImage41"
 #pragma resource "*.dfm"
 
@@ -19,35 +17,35 @@
 #pragma link "TinyXML.lib"
 #pragma link "awpipl2b.lib"
 #pragma link "JPEGLIB.LIB"
-
-const AnsiString cstrImages = "Jpeg images|*.jpeg;*.jpg|AWP images|*.awp";
-const AnsiString cstrVideos = "Videos |*.avi;*.mp4;*.mpg;|Avi videos|*.avi;|MP4 videos|*.mp4|mpeg files|*.mpg";
-const AnsiString cstrXml    = "Xml Files | *.xml";
-const UnicodeString cstrEventsFilter = "Events files|*.events|Text files|*.txt";
+#pragma link "trains.lib"
 
 TmainForm *mainForm;
+
+#define _CHECK_SOURCE_     \
+if (m_videoSource == NULL) \
+    return;                \
+
+#define _NAV_ENABLED_(v) \
+    v->Enabled = m_videoSource != NULL && m_videoSource->NumFrames > 1 && !this->m_videoSource->IsPlaying;
+
+#define _MODE_ENABLED_(v) \
+    v->Enabled = m_videoSource != NULL && m_videoSource->NumFrames >= 0;
+
 //---------------------------------------------------------------------------
 __fastcall TmainForm::TmainForm(TComponent* Owner)
 	: TForm(Owner)
 {
+    m_videoSource = NULL;
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::CloseActionExecute(TObject *Sender)
 {
+    if (m_videoSource != NULL)
+        delete m_videoSource;
+
     Close();
 }
 //---------------------------------------------------------------------------
-void __fastcall TmainForm::OpneImageActionExecute(TObject *Sender)
-{
-    OpenDialog1->Options >> ofAllowMultiSelect;
-	OpenDialog1->Filter = cstrImages;
-    if (OpenDialog1->Execute())
-    {
-        FImage1->Init(OpenDialog1->Files);
-        UpdateImage();
-        StatusBar1->Panels->Items[0]->Text = "";
-    }
-}
 void __fastcall TmainForm::UpdateImage()
 {
         // установка размеров изображения.
@@ -126,8 +124,15 @@ void __fastcall TmainForm::AboutActionExecute(TObject *Sender)
 void __fastcall TmainForm::CloseVideoActionExecute(TObject *Sender)
 {
    // Закрыть видеоисточник
-   //
-   StatusBar1->Panels->Items[0]->Text = "";
+   if (m_videoSource != NULL)
+   {
+      delete m_videoSource;
+      m_videoSource = NULL;
+   }
+   FImage1->Close();
+   FImage1->Refresh();
+   SetSource(NULL);
+   this->SetMode(NULL);
 }
 //---------------------------------------------------------------------------
 
@@ -139,20 +144,6 @@ void __fastcall TmainForm::CloseVideoActionUpdate(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TmainForm::OpenSlideShowActionExecute(TObject *Sender)
-{
-    //Открывает слайд шоу
-    OpenDialog1->Options << ofAllowMultiSelect;
-    OpenDialog1->Filter = cstrImages;
-    if (OpenDialog1->Execute())
-    {
-        if (!this->FImage1->Init(OpenDialog1->Files))
-        {
-            ShowMessage("Не могу открыть слайд-шоу.");
-        }
-    }
-}
-//---------------------------------------------------------------------------
 
 void __fastcall TmainForm::FImage1BeforeOpen(TObject *Sender)
 {
@@ -163,8 +154,22 @@ void __fastcall TmainForm::FImage1BeforeOpen(TObject *Sender)
 
 void __fastcall TmainForm::OpenVideoActionExecute(TObject *Sender)
 {
+	AnsiString cstrVideos = "Videos |*.avi;*.mp4;*.mpg;|Avi videos|*.avi;|MP4 videos|*.mp4|mpeg files|*.mpg";
     OpenDialog1->Filter = cstrVideos;
-    //
+
+    if (OpenDialog1->Execute())
+    {
+        TPhMediaSource* videoSource= new TPhVideoSource(FImage1);
+        videoSource->Open(OpenDialog1->Files);
+        if (videoSource->NumFrames == 0)
+        {
+            ShowMessage(L"Не могу открыть файл: " + OpenDialog1->FileName);
+            return;
+        }
+        SetSource(videoSource);
+        SetMode(modeTuningAction);
+    }
+
 }
 //---------------------------------------------------------------------------
 
@@ -182,69 +187,77 @@ void __fastcall TmainForm::OpenIPCameraActionExecute(TObject *Sender)
 
 void __fastcall TmainForm::PlayActionExecute(TObject *Sender)
 {
-	//
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TmainForm::PlayActionUpdate(TObject *Sender)
-{
-    if (PlayAction->Checked)
+	_CHECK_SOURCE_
+    if (!m_videoSource->IsPlaying)
     {
-	   SpeedButton9->Caption = "пауза";
-       SpeedButton9->Font->Color = clBlue;
+	    m_videoSource->Play();
+		SpeedButton9->Caption = "пауза";
+        SpeedButton9->Font->Color = clBlue;
+        SpeedButton9->Down = true;
     }
     else
     {
+        m_videoSource->Stop();
        SpeedButton9->Caption = "воспр.";
        SpeedButton9->Font->Color = clBlack;
     }
 }
 //---------------------------------------------------------------------------
 
+void __fastcall TmainForm::PlayActionUpdate(TObject *Sender)
+{
+ PlayAction->Enabled = m_videoSource != NULL && (m_videoSource->NumFrames > 1 || m_videoSource->NumFrames == 0);
+}
+//---------------------------------------------------------------------------
+
 void __fastcall TmainForm::FirstFrameActionExecute(TObject *Sender)
 {
-//
+	_CHECK_SOURCE_
+    m_videoSource->First();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TmainForm::FirstFrameActionUpdate(TObject *Sender)
 {
-//
+ 	_NAV_ENABLED_(FirstFrameAction)
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TmainForm::PrevFrameActionExecute(TObject *Sender)
 {
-//
+	_CHECK_SOURCE_
+    m_videoSource->Prev();
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::PrevFrameActionUpdate(TObject *Sender)
 {
-//
+ 	_NAV_ENABLED_(PrevFrameAction)
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TmainForm::NextFrameActionExecute(TObject *Sender)
 {
-//
+	_CHECK_SOURCE_
+    m_videoSource->Next();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TmainForm::NextFrameActionUpdate(TObject *Sender)
 {
-//
+ 	_NAV_ENABLED_(NextFrameAction)
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TmainForm::LastFrameActionExecute(TObject *Sender)
 {
-//
+	_CHECK_SOURCE_
+    m_videoSource->Last();
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TmainForm::LastFrameActionUpdate(TObject *Sender)
 {
-//
+	 _NAV_ENABLED_(LastFrameAction)
 }
 
 
@@ -309,11 +322,6 @@ void __fastcall TmainForm::FImage1AfterOpen(TObject *Sender)
     else
     {
     }
-
-
-    TVersionInfo* vi = new TVersionInfo(NULL);
-    Caption = L"Обнаружение и распознавание номеров вагонов.  v " + vi->FileVersion + L" [" + FImage1->AFileName + L" ]";
-    delete vi;
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::RenderZones(awpImage* image)
@@ -336,34 +344,7 @@ void __fastcall TmainForm::FormShow(TObject *Sender)
     delete vi;
 }
 //---------------------------------------------------------------------------
-void __fastcall TmainForm::OptionsActionExecute(TObject *Sender)
-{
-  UnicodeString InputString = InputBox(L"CF Counter demo", L"Переход на кадр", IntToStr(FImage1->Frames->CurrentFrame));
-  if (InputString != IntToStr(FImage1->Frames->CurrentFrame))
-  {
-  	 try
-     {
-     	int f = StrToInt(InputString);
-        if (f < 0 || f > FImage1->Frames->Count)
-        {
-        	ShowMessage("Недопустимый номер кадра.");
-            return;
-        }
-       //todo: FImage1->Frames->CurrentFrame = f;
-     }
-     catch(EConvertError& e)
-     {
 
-     }
-  }
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TmainForm::OptionsActionUpdate(TObject *Sender)
-{
-//
-}
-//---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 
 static AnsiString TimeMsToTimeStr(double _time)
@@ -383,10 +364,13 @@ static AnsiString TimeMsToTimeStr(double _time)
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::N16Click(TObject *Sender)
 {
-    TVersionInfo* vi = new TVersionInfo(NULL);
-    AboutBox->Version->Caption = vi->FileVersion;
-	AboutBox->ShowModal();
-    delete vi;
+  TVersionInfo* vi = new TVersionInfo(NULL);
+  AboutBox->ProductName->Caption = vi->ProductName;
+  AboutBox->Version->Caption = vi->FileVersion;
+  AboutBox->Copyright->Caption = vi->LegalCopyright;
+  AboutBox->Comments->Caption = vi->Comments;
+  AboutBox->ShowModal();
+  delete vi;
 }
 //---------------------------------------------------------------------------
 
@@ -396,4 +380,127 @@ void __fastcall TmainForm::FImage1Resize(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+
+void __fastcall TmainForm::GotoFrameActionExecute(TObject *Sender)
+{
+  _CHECK_SOURCE_
+
+  UnicodeString InputString = InputBox(L"Trains demo", L"Переход на кадр", IntToStr(FImage1->Frames->CurrentFrame));
+  if (InputString != IntToStr(FImage1->Frames->CurrentFrame))
+  {
+  	 try
+     {
+     	int f = StrToInt(InputString);
+        if (f < 0 || f > m_videoSource->NumFrames)
+        {
+        	ShowMessage("Недопустимый номер кадра.");
+            return;
+        }
+       this->m_videoSource->CurrentFrame = f;
+
+     }
+     catch(EConvertError& e)
+     {
+
+     }
+  }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::GotoFrameActionUpdate(TObject *Sender)
+{
+	_NAV_ENABLED_(GotoFrameAction)
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::FImage1FrameData(TObject *Sender, int w, int h, int c,
+          BYTE *data)
+{
+    if (m_videoSource != NULL)
+    {
+		StatusBar1->Panels->Items[1]->Text = L"Кадр "  + IntToStr( m_videoSource->CurrentFrame) +
+   		" of " + IntToStr(m_videoSource->NumFrames);
+	    StatusBar1->Panels->Items[3]->Text = L"Изображение: " + IntToStr(w) + L":" + IntToStr(h) + L":" + IntToStr(c);
+    }
+    else
+		StatusBar1->Panels->Items[1]->Text = L" ";
+}
+//---------------------------------------------------------------------------
+void __fastcall TmainForm::SetSource(TPhMediaSource* source)
+{
+   if (m_videoSource != NULL)
+   {
+      delete m_videoSource;
+      m_videoSource = NULL;
+   }
+
+   m_videoSource = source;
+   if (m_videoSource  != NULL)
+   {
+        m_videoSource->First();
+		StatusBar1->Panels->Items[1]->Text = L"Кадр "  + IntToStr( m_videoSource->CurrentFrame) +
+   		" of " + IntToStr(m_videoSource->NumFrames);
+	   StatusBar1->Panels->Items[2]->Text = L"Источник данных: " + m_videoSource->SourceName;
+       //StatusBar1->Panels->Items[3]->Text = L"Изображение: " + IntToStr(w) + L":" + IntToStr(h) + L":" + IntToStr(c);
+       UnicodeString cap = L"Обнаружение и распознавание номеров вагонов.  [";
+       cap += m_videoSource->Source;
+       cap  += L"]";
+       this->Caption = cap;
+   }
+   else
+   {
+	   StatusBar1->Panels->Items[1]->Text = L"";
+	   StatusBar1->Panels->Items[2]->Text = L"Источник данных: NULL";
+       this->Caption = L"Обнаружение и распознавание номеров вагонов.";
+  	   StatusBar1->Panels->Items[3]->Text = L"";
+
+   }
+
+}
+
+void __fastcall TmainForm::SetMode(TAction* action)
+{
+	m_modeAction = action;
+    if (m_modeAction != NULL)
+    {
+        action->Checked = true;
+        StatusBar1->Panels->Items[0]->Text = L"Режим: " + action->Caption;
+        TuningForm->Visible = m_modeAction == modeTuningAction;
+        if (m_modeAction != modeTuningAction)
+        {
+            m_engine.Init(&m_trains_params, &m_target_params);
+        }
+
+    }
+    else
+    {
+        StatusBar1->Panels->Items[0]->Text = L"Режим: ";
+        TuningForm->Visible = false;
+    }
+}
+
+
+void __fastcall TmainForm::modeAnalysisActionExecute(TObject *Sender)
+{
+    SetMode(modeAnalysisAction);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::modeAnalysisActionUpdate(TObject *Sender)
+{
+	_MODE_ENABLED_(modeAnalysisAction)
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::modeTuningActionExecute(TObject *Sender)
+{
+    SetMode(modeTuningAction);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::modeTuningActionUpdate(TObject *Sender)
+{
+	_MODE_ENABLED_(modeTuningAction)
+}
+//---------------------------------------------------------------------------
 

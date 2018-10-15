@@ -707,8 +707,6 @@ object MainForm: TMainForm
       Align = alClient
       Caption = #1055#1072#1088#1072#1084#1077#1090#1088#1099' '#1072#1083#1075#1086#1088#1080#1090#1084#1072
       TabOrder = 2
-      ExplicitLeft = 5
-      ExplicitTop = 236
       object Label12: TLabel
         Left = 4
         Top = 39
@@ -1309,14 +1307,14 @@ object MainForm: TMainForm
     OnConnect = IdTCPServer1Connect
     OnDisconnect = IdTCPServer1Disconnect
     OnExecute = IdTCPServer1Execute
-    Left = 144
+    Left = 128
     Top = 88
   end
   object ImageList1: TImageList
-    Left = 176
+    Left = 152
     Top = 152
     Bitmap = {
-      494C0101080018003C0010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010108001800400010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
@@ -1721,7 +1719,7 @@ object MainForm: TMainForm
   end
   object PhSelRectTool1: TPhSelRectTool
     PhImage = PhImage1
-    Left = 24
-    Top = 208
+    Left = 168
+    Top = 88
   end
 end

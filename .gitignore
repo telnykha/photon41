@@ -98,3 +98,5 @@ photon/prografix/wrapper/pgf_wrapper/Release/*.*
 apps/bin/*.*
 lib/*.*
 apps/setup_output/setup_ceramica10177.exe
+apps/trains/vautils.lib
+apps/trains/trains.lib

@@ -8,7 +8,7 @@
 #include <Vcl.Themes.hpp>
 USEFORM("trainsMainFormUnit.cpp", mainForm);
 USEFORM("aboutUnit.cpp", AboutBox);
-USEFORM("NewEventUnit.cpp", NewEventDlg);
+USEFORM("TuningUnit.cpp", TuningForm);
 //---------------------------------------------------------------------------
 int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 {
@@ -17,8 +17,8 @@ int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 		Application->Initialize();
 		Application->MainFormOnTaskBar = true;
 		Application->CreateForm(__classid(TmainForm), &mainForm);
-		Application->CreateForm(__classid(TNewEventDlg), &NewEventDlg);
 		Application->CreateForm(__classid(TAboutBox), &AboutBox);
+		Application->CreateForm(__classid(TTuningForm), &TuningForm);
 		Application->Run();
 	}
 	catch (Exception &exception)

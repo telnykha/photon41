@@ -202,7 +202,6 @@ void __fastcall TMainForm::fileCloseActionExecute(TObject *Sender)
     PhImage1->Close();
 	PhImage1->Refresh();
     this->SetSource(NULL);
-//    this->m_videoSource = NULL;
 	SetMode(modeHandAction);
 }
 //---------------------------------------------------------------------------

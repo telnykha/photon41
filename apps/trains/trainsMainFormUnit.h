@@ -17,6 +17,7 @@
 #include <Vcl.Grids.hpp>
 #include <Vcl.ValEdit.hpp>
 #include "FImage41.h"
+#include "TrainsUtils.h"
 extern "C"
 {
 	#include "vautils.h"
@@ -25,6 +26,7 @@ extern "C"
 #include "_LF.h"
 
 //---------------------------------------------------------------------------
+class TPhMediaSource;
 class TmainForm : public TForm
 {
 __published:	// IDE-managed Components
@@ -36,7 +38,6 @@ __published:	// IDE-managed Components
 	TSpeedButton *SpeedButton4;
 	TSpeedButton *SpeedButton5;
 	TActionList *ActionList1;
-	TAction *OpneImageAction;
 	TAction *CloseAction;
 	TAction *ModePaneAction;
 	TAction *ModeSelRectAction;
@@ -44,7 +45,6 @@ __published:	// IDE-managed Components
 	TAction *BestFitAction;
 	TAction *AboutAction;
 	TAction *OpenVideoAction;
-	TAction *OpenSlideShowAction;
 	TAction *SaveImageAction;
 	TAction *CloseVideoAction;
 	TAction *PlayAction;
@@ -82,13 +82,6 @@ __published:	// IDE-managed Components
 	TMenuItem *N24;
 	TMenuItem *N15;
 	TMenuItem *N16;
-	TAction *videoSourceSizeAction;
-	TAction *videoHalfSizeAction;
-	TAction *videoQuarterSizeAction;
-	TMenuItem *N25;
-	TMenuItem *N26;
-	TMenuItem *N27;
-	TMenuItem *N28;
 	TSaveDialog *SaveDialog1;
 	TAction *logOpenAction;
 	TAction *logSaveAction;
@@ -96,9 +89,23 @@ __published:	// IDE-managed Components
 	TAction *logInsertAction;
 	TAction *logDeleteAction;
 	TPhImage *FImage1;
+	TMenuItem *N25;
+	TMenuItem *FirstFrameAction1;
+	TMenuItem *N26;
+	TMenuItem *N27;
+	TMenuItem *N28;
+	TMenuItem *N29;
+	TMenuItem *N30;
+	TMenuItem *N31;
+	TMenuItem *N32;
+	TAction *GotoFrameAction;
+	TAction *modeAnalysisAction;
+	TAction *modeTuningAction;
+	TMenuItem *N33;
+	TMenuItem *N34;
+	TMenuItem *N35;
 
     void __fastcall CloseActionExecute(TObject *Sender);
-    void __fastcall OpneImageActionExecute(TObject *Sender);
     void __fastcall FormResize(TObject *Sender);
     void __fastcall ModePaneActionExecute(TObject *Sender);
     void __fastcall ModePaneActionUpdate(TObject *Sender);
@@ -111,7 +118,6 @@ __published:	// IDE-managed Components
     void __fastcall AboutActionExecute(TObject *Sender);
     void __fastcall CloseVideoActionExecute(TObject *Sender);
     void __fastcall CloseVideoActionUpdate(TObject *Sender);
-    void __fastcall OpenSlideShowActionExecute(TObject *Sender);
     void __fastcall FImage1BeforeOpen(TObject *Sender);
     void __fastcall OpenVideoActionExecute(TObject *Sender);
     void __fastcall OpenUSBCameraActionExecute(TObject *Sender);
@@ -130,15 +136,32 @@ __published:	// IDE-managed Components
           int bpp, char *data);
 	void __fastcall FImage1AfterOpen(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
-	void __fastcall OptionsActionExecute(TObject *Sender);
-	void __fastcall OptionsActionUpdate(TObject *Sender);
 	void __fastcall N16Click(TObject *Sender);
 	void __fastcall FImage1Resize(TObject *Sender);
+	void __fastcall GotoFrameActionExecute(TObject *Sender);
+	void __fastcall GotoFrameActionUpdate(TObject *Sender);
+	void __fastcall FImage1FrameData(TObject *Sender, int w, int h, int c, BYTE *data);
+	void __fastcall modeAnalysisActionExecute(TObject *Sender);
+	void __fastcall modeAnalysisActionUpdate(TObject *Sender);
+	void __fastcall modeTuningActionExecute(TObject *Sender);
+	void __fastcall modeTuningActionUpdate(TObject *Sender);
+
 
 
 
 private:	// User declarations
     TLFImage     m_copy;
+    TPhMediaSource* m_videoSource;
+    TAction*        m_modeAction;
+
+    TVAInitParams   m_trains_params;
+    TVAInitParams   m_target_params;
+
+
+    TTrainsAnalysisEngine m_engine;
+
+    void __fastcall SetSource(TPhMediaSource* source);
+	void __fastcall SetMode(TAction* action);
 
     void __fastcall RenderZones(awpImage* image);
     void __fastcall DrawZones();

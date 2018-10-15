@@ -32,7 +32,9 @@ void  TPhVideoSource::Open(TStrings* Names)
         return;
     this->m_SourceStr = Names->Strings[0];
 	First();
-    this->m_pImage->AfterOpen(NULL);
+    if (this->m_pImage->AfterOpen != NULL)
+	    this->m_pImage->AfterOpen(NULL);
+
 	this->m_videoThread = new TPhVideoThread(true, this);
 	this->m_videoThread->FreeOnTerminate = true;
 }
