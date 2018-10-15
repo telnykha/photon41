@@ -48,6 +48,9 @@ protected:
     double    m_minor;
     awpImage* m_mask;
     awpContour* m_contour;
+    int       m_mask_radius;
+    awpPoint  m_mask_center;
+
     void __fastcall CreateMask(awpPoint p, double r, int w, int h);
     void __fastcall MakeMaskImage();
     void __fastcall ProcessHelper();
@@ -77,5 +80,7 @@ public:
     __property bool useBuffer   = {read = m_useBuffer, write = SetUseBuffer};
     __property int  bufferSize  = {read = GetBufferSize, write = SetBufferSize};
     __property bool useAprox    = {read = m_useAprox, write = m_useAprox};
+    __property int  maskRadius  = {read = m_mask_radius, write = m_mask_radius};
+    __property awpPoint maskCener = {read = m_mask_center, write = m_mask_center};
 };
 #endif

@@ -5,7 +5,7 @@
         <FrameworkType>None</FrameworkType>
         <MainSource>photon41.cpp</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>1</TargetedPlatforms>
         <AppType>Package</AppType>
@@ -55,7 +55,7 @@
         <ILINK_GenerateImportLibrary>true</ILINK_GenerateImportLibrary>
         <_TCHARMapping>char</_TCHARMapping>
         <Multithreaded>true</Multithreaded>
-        <IncludePath>photon\;C:\_alt\photon41\;$(AWP);$(LF);$(TINY);$(JPEG);$(FFMPEG);$(SDL);$(ZLIB);$(PNG);$(TIFF);$(IncludePath)</IncludePath>
+        <IncludePath>photon\;$(AWP);$(LF);$(TINY);$(JPEG);$(FFMPEG);$(SDL);$(ZLIB);$(PNG);$(TIFF);$(IncludePath)</IncludePath>
         <ILINK_LibraryPath>photon\;C:\_alt\photon41\;$(PHOTON41)\lib\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <SanitizedProjectName>photon41</SanitizedProjectName>
         <VerInfo_Locale>1049</VerInfo_Locale>
@@ -218,7 +218,9 @@
                 <Source>
                     <Source Name="MainSource">photon41.cpp</Source>
                 </Source>
-                <Excluded_Packages/>
+                <Excluded_Packages>
+                    <Excluded_Packages Name="C:\Users\Public\Documents\Embarcadero\Studio\19.0\BPL\photon41.bpl">File C:\Users\Public\Documents\Embarcadero\Studio\19.0\BPL\photon41.bpl not found</Excluded_Packages>
+                </Excluded_Packages>
             </CPlusPlusBuilder.Personality>
             <Platforms>
                 <Platform value="Win32">True</Platform>

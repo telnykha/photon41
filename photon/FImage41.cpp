@@ -793,7 +793,7 @@ void   TPhCustomImage::DrawSelRect(Graphics::TBitmap *bm)
    TPenStyle style = bm->Canvas->Pen->Style;
    TColor color = bm->Canvas->Pen->Color;
    TPenMode mode = bm->Canvas->Pen->Mode;
-
+   int pwidth = bm->Canvas->Pen->Width;
    bm->Canvas->Pen->Style = psDot;
    bm->Canvas->Pen->Width = 4;
    bm->Canvas->Pen->Color = clRed;
@@ -808,6 +808,7 @@ void   TPhCustomImage::DrawSelRect(Graphics::TBitmap *bm)
    bm->Canvas->Pen->Style = style;
    bm->Canvas->Pen->Color = color;
    bm->Canvas->Pen->Mode = mode;
+   bm->Canvas->Pen->Width = pwidth;
 }
 
 void __fastcall 	TPhCustomImage::ClearSelection()

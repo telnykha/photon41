@@ -3,7 +3,7 @@ object AboutBox: TAboutBox
   Top = 108
   BorderStyle = bsDialog
   Caption = #1054' '#1087#1088#1086#1075#1088#1072#1084#1084#1077
-  ClientHeight = 159
+  ClientHeight = 162
   ClientWidth = 232
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -25,16 +25,22 @@ object AboutBox: TAboutBox
     ParentColor = True
     TabOrder = 0
     object ProductName: TLabel
-      Left = 88
-      Top = 8
-      Width = 68
-      Height = 13
+      Left = 74
+      Top = 2
+      Width = 134
+      Height = 24
       Caption = 'Product Name'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clWindowText
+      Font.Height = -19
+      Font.Name = 'MS Sans Serif'
+      Font.Style = [fsBold]
+      ParentFont = False
       IsControl = True
     end
     object Version: TLabel
-      Left = 88
-      Top = 27
+      Left = 74
+      Top = 25
       Width = 35
       Height = 13
       Caption = 'Version'
@@ -42,7 +48,7 @@ object AboutBox: TAboutBox
     end
     object Copyright: TLabel
       Left = 4
-      Top = 72
+      Top = 74
       Width = 44
       Height = 13
       Caption = 'Copyright'
@@ -50,11 +56,17 @@ object AboutBox: TAboutBox
     end
     object Comments: TLabel
       Left = 4
-      Top = 89
+      Top = 93
       Width = 201
       Height = 15
       AutoSize = False
       Caption = 'Comments'
+      Font.Charset = DEFAULT_CHARSET
+      Font.Color = clRed
+      Font.Height = -11
+      Font.Name = 'MS Sans Serif'
+      Font.Style = []
+      ParentFont = False
       IsControl = True
     end
     object Image1: TImage
@@ -255,10 +267,24 @@ object AboutBox: TAboutBox
         17FF2F1927F59DE2E60000000049454E44AE426082}
       Stretch = True
     end
+    object Label1: TLabel
+      Left = 74
+      Top = 39
+      Width = 137
+      Height = 13
+      Caption = 'E-mail: telnykha@yahoo.com'
+    end
+    object Label2: TLabel
+      Left = 74
+      Top = 55
+      Width = 105
+      Height = 13
+      Caption = 'Tel: +7 960 198 05 88'
+    end
   end
   object OKButton: TButton
-    Left = 79
-    Top = 127
+    Left = 74
+    Top = 129
     Width = 75
     Height = 25
     Caption = 'OK'

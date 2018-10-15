@@ -21,6 +21,7 @@
 #pragma link "PhImageTool"
 #pragma link "PhRulerTool"
 #pragma link "PhPaneTool"
+#pragma link "PhSelectRectTool"
 #pragma resource "*.dfm"
 TMainForm *MainForm;
 extern "C"
@@ -65,6 +66,7 @@ void __fastcall TMainForm::modeExperimentActionUpdate(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::modeAutoAnalysisActionExecute(TObject *Sender)
 {
+    if (this->m_modeAction)
 	SetMode(modeAutoAnalysisAction);
 }
 //---------------------------------------------------------------------------
@@ -296,13 +298,44 @@ void __fastcall TMainForm::viewPlayActionUpdate(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::SetMode(TAction* action)
 {
+    if (this->CheckBox3->Checked && action != modeHandAction)
+    {
+        TRect r = PhImage1->GetSelRect();
+        if (r.Width() == 0)
+        {
+            ShowMessage(L"¬ыбран режим измерений с областью наблюдени€, но область наблюдени€ не задана. «адайте область наблюдени€!");
+            //m_modeAction = modeHandAction;
+            SetMode(modeHandAction);
+            return;
+        }
+
+        awpPoint p;
+        p.X = r.Left + r.Width() / 2;
+        p.Y = r.Top  + r.Height() / 2;
+        int rd = AWP_MIN(r.Width(), r.Height()) / 2;
+        this->m_engine.maskRadius = rd;
+        this->m_engine.maskCener = p;
+    }
+    else
+    {
+        this->m_engine.maskRadius = 0;
+    }
+
    Reset();
    if (m_modeAction == modeExperimentAction)
     this->StopExperiment();
 
    m_modeAction = action;
+
    if (m_modeAction == modeExperimentAction)
+   try
+   {
     this->StartExperiment();
+   }
+   catch(...)
+   {
+      SetMode(modeHandAction);
+   }
 
 
    action->Checked = true;
@@ -318,19 +351,23 @@ void __fastcall TMainForm::SetMode(TAction* action)
         TControl* c = GroupBox2->Controls[i];
         if (c != NULL)
             c->Enabled = m_modeAction == modeHandAction && m_videoSource != NULL;
+            if (c->Name == L"SpeedButton8")
+                c->Enabled = this->CheckBox3->Checked && m_modeAction == modeHandAction && m_videoSource != NULL;
     }
 
    if (m_modeAction == modeHandAction)
    {
       Reset();
       this->ShowResult();
-      PhImage1->SelectPhTool(PhRulerTool1);
       IdTCPServer1->Active = false;
+      this->SpeedButton12->Down = true;
+      this->SpeedButton13->Down = false;
    }
    else
    {
-      PhImage1->SelectPhTool(PhPaneTool1);
       IdTCPServer1->Active = true;
+      this->SpeedButton13->Down = true;
+      this->SpeedButton12->Down = false;
    }
 }
 //---------------------------------------------------------------------------
@@ -846,7 +883,7 @@ void __fastcall TMainForm::StartExperiment()
     if (!m_archive->Create(header))
     {
         ShowMessage("Ќе могу создать архив: " + Edit2->Text);
-        return;
+        throw 0;
     }
     this->Timer1->Interval = SpinEdit2->Value;
     this->Timer1->Enabled  = true;
@@ -991,4 +1028,61 @@ void __fastcall TMainForm::Reset()
 	    m_videoSource->Prev();
     }
 }
+
+void __fastcall TMainForm::helpManualActionExecute(TObject *Sender)
+{
+    UnicodeString adr = ExtractFilePath(Application->ExeName);
+    adr+= "\\manual.pdf";
+	ShellExecute(this->WindowHandle,L"open",adr.c_str() ,NULL,NULL, SW_SHOWNORMAL);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::toolPaneActionExecute(TObject *Sender)
+{
+	PhImage1->SelectPhTool(PhPaneTool1);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::toolPaneActionUpdate(TObject *Sender)
+{
+    toolPaneAction->Checked =  dynamic_cast< TPhPaneTool*>(PhImage1->PhTool) != NULL;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::toolRulerActionExecute(TObject *Sender)
+{
+	PhImage1->SelectPhTool(PhRulerTool1);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::toolRulerActionUpdate(TObject *Sender)
+{
+    toolRulerAction->Checked =  dynamic_cast< TPhRulerTool*>(PhImage1->PhTool) != NULL;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::toolSelRectActionExecute(TObject *Sender)
+{
+	PhImage1->SelectPhTool(PhSelRectTool1);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::toolSelRectActionUpdate(TObject *Sender)
+{
+    toolSelRectAction->Enabled = this->CheckBox3->Checked;
+    toolSelRectAction->Checked = dynamic_cast< TPhSelRectTool*>(PhImage1->PhTool) != NULL;
+}
+//---------------------------------------------------------------------------
+
+
+
+void __fastcall TMainForm::CheckBox3Click(TObject *Sender)
+{
+	if (!this->CheckBox3->Checked)
+    {
+        TRect r(0,0,0,0);
+        PhImage1->SetSelRect(r);
+    }
+}
+//---------------------------------------------------------------------------
 

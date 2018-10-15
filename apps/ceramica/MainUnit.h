@@ -35,6 +35,7 @@
 #include <Vcl.ToolWin.hpp>
 #include <System.ImageList.hpp>
 #include <Vcl.ImgList.hpp>
+#include "PhSelectRectTool.h"
 
 //---------------------------------------------------------------------------
 class TPhMediaSource;
@@ -111,7 +112,6 @@ __published:	// IDE-managed Components
 	TFastLineSeries *Series1;
 	TPanel *Panel4;
 	TIdTCPServer *IdTCPServer1;
-	TSpeedButton *SpeedButton5;
 	TGroupBox *GroupBox2;
 	TLabel *Label12;
 	TLabel *Label13;
@@ -155,6 +155,14 @@ __published:	// IDE-managed Components
 	TSpeedButton *SpeedButton11;
 	TSpeedButton *SpeedButton12;
 	TSpeedButton *SpeedButton13;
+	TAction *helpManualAction;
+	TMenuItem *N26;
+	TAction *toolPaneAction;
+	TAction *toolRulerAction;
+	TAction *toolSelRectAction;
+	TPhSelRectTool *PhSelRectTool1;
+	TSpeedButton *SpeedButton5;
+	TBevel *Bevel2;
 	void __fastcall fileExitActionExecute(TObject *Sender);
 	void __fastcall modeExperimentActionExecute(TObject *Sender);
 	void __fastcall modeExperimentActionUpdate(TObject *Sender);
@@ -214,6 +222,14 @@ __published:	// IDE-managed Components
 	void __fastcall viewVideoControlActionUpdate(TObject *Sender);
 	void __fastcall viewRawContourActionExecute(TObject *Sender);
 	void __fastcall viewRawContourActionUpdate(TObject *Sender);
+	void __fastcall helpManualActionExecute(TObject *Sender);
+	void __fastcall toolPaneActionExecute(TObject *Sender);
+	void __fastcall toolPaneActionUpdate(TObject *Sender);
+	void __fastcall toolRulerActionExecute(TObject *Sender);
+	void __fastcall toolRulerActionUpdate(TObject *Sender);
+	void __fastcall toolSelRectActionExecute(TObject *Sender);
+	void __fastcall toolSelRectActionUpdate(TObject *Sender);
+	void __fastcall CheckBox3Click(TObject *Sender);
 
 
 

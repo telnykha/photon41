@@ -41,11 +41,12 @@ void  TPhVideoSource::Close()
    if (m_pImage != NULL)
    {
 	   Stop();
+       if (this->m_videoThread != NULL)
+        this->m_videoThread->Terminate();
+
 	   awpcvDisconnect((HCVVIDEO)m_videoSource);
 	   m_CurrentFrame = 0;
    }
-   if (this->m_videoThread != NULL)
-   	this->m_videoThread->Terminate();
 }
 
 void  __fastcall TPhVideoSource::DecodePicture()

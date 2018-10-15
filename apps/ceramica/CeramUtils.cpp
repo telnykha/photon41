@@ -9,7 +9,9 @@ extern "C"
 	#include "pgf_wrapper.h"
 }
 
-	#pragma link "pgf_wrapper.lib"
+#pragma link "pgf_wrapper.lib"
+const     double    coef = 4;
+
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 TCeramCalibration::TCeramCalibration()
@@ -98,7 +100,6 @@ bool __fastcall TCeramImageProcessor::Process(awpImage* img)
     if (awpCopyImage(img, &m_copy) != AWP_OK)
         return false;
 
-    double    coef = 4;
     awpCopyImage(m_copy, &m_process);
     awpResize(m_process, m_process->sSizeX / coef, m_process->sSizeY / coef);
  	awpConvert(m_process, AWP_CONVERT_3TO1_BYTE);
@@ -237,17 +238,28 @@ void __fastcall TCeramImageProcessor::MakeMaskImage()
         return;
 
     _AWP_SAFE_RELEASE_(this->m_mask)
+
     awpPoint p;
     int      r = 0;
-    if (FindCircle(m_process,r , p))
+
+    if (this->m_mask_radius == 0)
     {
-        this->m_oldr = r;
-        this->m_oldc = p;
+        if (FindCircle(m_process,r , p))
+        {
+            this->m_oldr = r;
+            this->m_oldc = p;
+        }
+        else
+        {
+            r = m_oldr;
+            p = m_oldc;
+        }
     }
     else
     {
-        r = m_oldr;
-        p = m_oldc;
+        p.X = this->m_mask_center.X /coef;
+        p.Y = this->m_mask_center.Y /coef;
+        r = this->m_mask_radius / coef;
     }
     CreateMask(p, 1.05*r, m_process->sSizeX, m_process->sSizeY);
 }
