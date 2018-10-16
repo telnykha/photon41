@@ -18,6 +18,9 @@
 #include <Vcl.ValEdit.hpp>
 #include "FImage41.h"
 #include "TrainsUtils.h"
+#include "PhTrainsTool.h"
+#include "PhImageTool.h"
+#include "PhPaneTool.h"
 extern "C"
 {
 	#include "vautils.h"
@@ -104,6 +107,7 @@ __published:	// IDE-managed Components
 	TMenuItem *N33;
 	TMenuItem *N34;
 	TMenuItem *N35;
+	TPhPaneTool *PhPaneTool1;
 
     void __fastcall CloseActionExecute(TObject *Sender);
     void __fastcall FormResize(TObject *Sender);
@@ -134,7 +138,6 @@ __published:	// IDE-managed Components
     void __fastcall LastFrameActionUpdate(TObject *Sender);
     void __fastcall FImage1Frame(TObject *Sender, int widht, int height,
           int bpp, char *data);
-	void __fastcall FImage1AfterOpen(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall N16Click(TObject *Sender);
 	void __fastcall FImage1Resize(TObject *Sender);
@@ -153,9 +156,14 @@ private:	// User declarations
     TLFImage     m_copy;
     TPhMediaSource* m_videoSource;
     TAction*        m_modeAction;
+    // параметры инициализации модуля.
+    TVAInitParams*   m_trains_params;
+    TVAInitParams*   m_target_params;
 
-    TVAInitParams   m_trains_params;
-    TVAInitParams   m_target_params;
+    TPhTrainsTool*   m_trainsTool;
+
+    bool __fastcall InitParams();
+    bool __fastcall CreateDefaultParams(UnicodeString& strSourceName);
 
 
     TTrainsAnalysisEngine m_engine;

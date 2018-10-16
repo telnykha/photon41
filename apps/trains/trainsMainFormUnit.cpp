@@ -8,9 +8,12 @@
 #include "aboutUnit.h"
 #include "PhVideo.h"
 #include "TuningUnit.h"
+
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "FImage41"
+#pragma link "PhImageTool"
+#pragma link "PhPaneTool"
 #pragma resource "*.dfm"
 
 #pragma link "awplflibb.lib"
@@ -18,6 +21,7 @@
 #pragma link "awpipl2b.lib"
 #pragma link "JPEGLIB.LIB"
 #pragma link "trains.lib"
+#pragma link "vautils.lib"
 
 TmainForm *mainForm;
 
@@ -36,12 +40,21 @@ __fastcall TmainForm::TmainForm(TComponent* Owner)
 	: TForm(Owner)
 {
     m_videoSource = NULL;
+    m_trains_params = NULL;
+    m_target_params = NULL;
+    m_trainsTool = NULL;
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::CloseActionExecute(TObject *Sender)
 {
     if (m_videoSource != NULL)
         delete m_videoSource;
+    if (m_trains_params != NULL)
+        FreeParams(&m_trains_params);
+    if (m_target_params != NULL)
+        FreeParams(&m_target_params);
+    if (m_trainsTool != NULL)
+        delete m_trainsTool;
 
     Close();
 }
@@ -311,19 +324,6 @@ void __fastcall TmainForm::FImage1Frame(TObject *Sender, int widht,
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TmainForm::FImage1AfterOpen(TObject *Sender)
-{
-   	UnicodeString str = FImage1->AFileName;
-    str = ChangeFileExt(str, ".trains");
-    if (FileExists(str, true))
-    {
-    	AnsiString _ansi = str;
-    }
-    else
-    {
-    }
-}
-//---------------------------------------------------------------------------
 void __fastcall TmainForm::RenderZones(awpImage* image)
 {
     if (image == NULL)
@@ -435,6 +435,15 @@ void __fastcall TmainForm::SetSource(TPhMediaSource* source)
    }
 
    m_videoSource = source;
+   if (!this->InitParams())
+   {
+      delete m_videoSource;
+      m_videoSource = NULL;
+      ShowMessage("Невозможно инициализировать параметры!");
+      return;
+   }
+
+
    if (m_videoSource  != NULL)
    {
         m_videoSource->First();
@@ -446,6 +455,7 @@ void __fastcall TmainForm::SetSource(TPhMediaSource* source)
        cap += m_videoSource->Source;
        cap  += L"]";
        this->Caption = cap;
+
    }
    else
    {
@@ -468,12 +478,25 @@ void __fastcall TmainForm::SetMode(TAction* action)
         TuningForm->Visible = m_modeAction == modeTuningAction;
         if (m_modeAction != modeTuningAction)
         {
-            m_engine.Init(&m_trains_params, &m_target_params);
+            FImage1->SelectPhTool(PhPaneTool1);
+            m_engine.Init(m_trains_params, m_target_params);
+        }
+        else
+        {
+            if (m_trainsTool)
+                delete m_trainsTool;
+            m_trainsTool = new TPhTrainsTool(NULL);
+            m_trainsTool->PhImage = this->FImage1;
+            m_trainsTool->modelRect = m_target_params->Zones[0].Rect;
+            m_trainsTool->numberRect = m_trains_params->Zones[0].Rect;
+            FImage1->SelectPhTool(m_trainsTool);
+            FImage1->Paint();
         }
 
     }
     else
     {
+        FImage1->SelectPhTool(PhPaneTool1);
         StatusBar1->Panels->Items[0]->Text = L"Режим: ";
         TuningForm->Visible = false;
     }
@@ -489,6 +512,9 @@ void __fastcall TmainForm::modeAnalysisActionExecute(TObject *Sender)
 void __fastcall TmainForm::modeAnalysisActionUpdate(TObject *Sender)
 {
 	_MODE_ENABLED_(modeAnalysisAction)
+    modeAnalysisAction->Enabled = modeAnalysisAction->Enabled && (TuningForm->CheckBox1->Checked || TuningForm->CheckBox2->Checked);
+    if (TuningForm->CheckBox2->Checked)
+        modeAnalysisAction->Enabled = modeAnalysisAction->Enabled && TuningForm->IsModelAvailable;
 }
 //---------------------------------------------------------------------------
 
@@ -503,4 +529,101 @@ void __fastcall TmainForm::modeTuningActionUpdate(TObject *Sender)
 	_MODE_ENABLED_(modeTuningAction)
 }
 //---------------------------------------------------------------------------
+bool __fastcall TmainForm::CreateDefaultParams(UnicodeString& strSourceName)
+{
+    AnsiString    _ansi = "";
+
+
+    TVAInitParams params;
+    memset(&params, 0, sizeof(params));
+
+    params.SaveLog = false;
+    params.NumZones = 1;
+    params.Zones = new TVAZone[1];
+    params.Zones[0].IsRect = true;
+    params.Zones[0].Rect.LeftTop.X = 30;
+    params.Zones[0].Rect.LeftTop.Y = 30;
+    params.Zones[0].Rect.RightBottom.X = 60;
+    params.Zones[0].Rect.RightBottom.Y = 60;
+    params.EventSens = 0.5;
+
+    if (!CopyParams(&params, &m_trains_params))
+    {
+        delete params.Zones;
+        return false;
+    }
+    UnicodeString strFileName = ChangeFileExt(strSourceName, ".trains");
+    _ansi = strFileName;
+    if (!SaveInitParams(_ansi.c_str(), m_trains_params))
+    {
+        FreeParams(&m_trains_params);
+        delete params.Zones;
+        return false;
+    }
+
+    params.Zones[0].Rect.LeftTop.X = 45;
+    params.Zones[0].Rect.LeftTop.Y = 45;
+    params.Zones[0].Rect.RightBottom.X = 55;
+    params.Zones[0].Rect.RightBottom.Y = 55;
+    params.EventSens = 0.5;
+
+    //
+    UnicodeString strDmpName = ChangeFileExt(strSourceName, ".model");
+    _ansi = strDmpName;
+    params.Path = _ansi.c_str();
+
+    if (!CopyParams(&params, &m_target_params))
+    {
+        FreeParams(&m_trains_params);
+        delete params.Zones;
+        return false;
+    }
+    strFileName = ChangeFileExt(strSourceName, ".target");
+    _ansi = strFileName;
+    if (!SaveInitParams(_ansi.c_str(), m_target_params))
+    {
+        FreeParams(&m_trains_params);
+        FreeParams(&m_target_params);
+        delete params.Zones;
+        return false;
+    }
+
+    return true;
+}
+
+bool __fastcall TmainForm::InitParams()
+{
+
+   if (m_videoSource == NULL)
+    return true;
+
+   	UnicodeString str = this->m_videoSource->Source;
+
+    UnicodeString str_trains = ChangeFileExt(str, ".trains");
+    UnicodeString str_target = ChangeFileExt(str, ".target");
+
+    if (m_trains_params != NULL)
+        FreeParams(&m_trains_params);
+    if (m_target_params != NULL)
+        FreeParams(&m_target_params);
+
+
+    if (FileExists(str_trains, true) && FileExists(str_target, true))
+    {
+
+
+    	AnsiString _ansi_trins  = str_trains;
+    	AnsiString _ansi_target = str_target;
+        if (LoadInitParams(_ansi_trins.c_str(), &m_trains_params) && LoadInitParams(_ansi_target.c_str(), &m_target_params))
+            return true;
+        else
+	        return this->CreateDefaultParams(str);
+    }
+    else
+    {
+        return this->CreateDefaultParams(str);
+    }
+    return true;
+}
+
 

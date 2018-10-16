@@ -267,8 +267,9 @@ object mainForm: TmainForm
     SlideShowInterval = 500
     Align = alClient
     ParentColor = False
-    AfterOpen = FImage1AfterOpen
     OnFrameData = FImage1FrameData
+    ExplicitLeft = 1
+    ExplicitTop = -5
   end
   object ActionList1: TActionList
     Left = 56
@@ -526,6 +527,11 @@ object mainForm: TmainForm
   end
   object SaveDialog1: TSaveDialog
     Left = 184
+    Top = 24
+  end
+  object PhPaneTool1: TPhPaneTool
+    PhImage = FImage1
+    Left = 224
     Top = 24
   end
 end

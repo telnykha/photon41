@@ -7,8 +7,8 @@
 #include <Vcl.Styles.hpp>
 #include <Vcl.Themes.hpp>
 USEFORM("trainsMainFormUnit.cpp", mainForm);
-USEFORM("aboutUnit.cpp", AboutBox);
 USEFORM("TuningUnit.cpp", TuningForm);
+USEFORM("aboutUnit.cpp", AboutBox);
 //---------------------------------------------------------------------------
 int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 {
