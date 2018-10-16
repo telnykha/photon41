@@ -12,7 +12,8 @@ TCeramArchive::TCeramArchive(const char* path)
 {
     this->m_path = path;
     m_pLog       = NULL;
-    m_archive    = "";
+	m_archive    = "";
+	m_counter = 0;
 }
 
 TCeramArchive::~TCeramArchive()
@@ -53,7 +54,7 @@ bool TCeramArchive::Create(TCeramArchiveHeader& header)
     fprintf(m_pLog, "%i\n", header.exposure);
 
 
-   fprintf(m_pLog, "%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
+   fprintf(m_pLog, "%s\t\t%s\t\t%s\t\t%s\t\t%s\t\t%s\t\t%s\t\t%s\n",
     "Date-time",
     "Diam",
     "x-pos",
@@ -63,8 +64,9 @@ bool TCeramArchive::Create(TCeramArchiveHeader& header)
     "angle",
     "image"
     );
-    fprintf(m_pLog, "%s\n", "====================================================================");
-    return true;
+	fprintf(m_pLog, "%s\n", "=========");
+	m_counter = 0;
+	return true;
 }
 
 void TCeramArchive::Close()
@@ -76,17 +78,20 @@ void TCeramArchive::Close()
 bool TCeramArchive::AddRecord(TCeramArchiveRecord& record)
 {
     if (m_pLog == NULL)
-        return false;
+		return false;
+	m_counter++;
     UnicodeString s = DateTimeToStr(Now());
     AnsiString _ansi = s;
-    UUID _id;
-    LF_UUID_CREATE(_id)
-    std::string _fn =  LFGUIDToString(&_id);
+ //   UUID _id;
+ //   LF_UUID_CREATE(_id)
+	char buf[32];
+	sprintf(buf, "%06d", m_counter);
+	std::string _fn =  buf;//LFGUIDToString(&_id);
     _fn += ".jpg";
     std::string _ifn = m_archive.c_str();
     _ifn += "\\";
     _ifn += _fn;
-    // запись в файл архива
+	// запись в файл архива
     fprintf(m_pLog, "%s\t%f\t%f\t%f\t%f\t%f\t%f\t%s\n",
     _ansi.c_str(),
     record.diam,

@@ -696,19 +696,19 @@ $(PostBuildEvent)]]></PostBuildEvent>
     <Import Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj" Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')"/>
     <Import Project="$(MSBuildProjectName).deployproj" Condition="Exists('$(MSBuildProjectName).deployproj')"/>
     <PropertyGroup Condition="'$(Config)'=='Debug' And '$(Platform)'=='Win32'">
-        <PreBuildEvent>implib -a trains.lib ..\..\..\..\bin\win32\trains.dll&amp;&amp;implib -a vautils.lib ..\..\..\..\bin\win32\vautils.dll</PreBuildEvent>
+        <PreBuildEvent>implib -a trains.lib ..\..\..\..\bin\win32\trains.dll&amp;&amp;implib -a vautils.lib ..\..\..\..\bin\win32\vautils.dll</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>copy  ..\..\..\..\bin\win32\trains.dll ..\..\..\..\bin\trains.dll&amp;&amp;copy  ..\..\..\..\bin\win32\vautils.dll ..\..\..\..\bin\vautils.dll</PostBuildEvent>
+        <PostBuildEvent>copy  ..\..\..\..\bin\win32\trains.dll ..\..\..\..\bin\trains.dll&amp;&amp;copy  ..\..\..\..\bin\win32\vautils.dll ..\..\..\..\bin\vautils.dll</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Release' And '$(Platform)'=='Win32'">
-        <PreBuildEvent>implib -a trains.lib ..\..\..\..\bin\win32\trains.dll&amp;&amp;implib -a vautils.lib ..\..\..\..\bin\win32\vautils.dll</PreBuildEvent>
+        <PreBuildEvent>implib -a trains.lib ..\..\..\..\bin\win32\trains.dll&amp;&amp;implib -a vautils.lib ..\..\..\..\bin\win32\vautils.dll</PreBuildEvent>
         <PreBuildEventIgnoreExitCode>False</PreBuildEventIgnoreExitCode>
         <PreLinkEvent/>
         <PreLinkEventIgnoreExitCode>False</PreLinkEventIgnoreExitCode>
-        <PostBuildEvent>copy  ..\..\..\..\bin\win32\trains.dll ..\..\..\..\bin\trains.dll&amp;&amp;copy  ..\..\..\..\bin\win32\vautils.dll ..\..\..\..\bin\vautils.dll</PostBuildEvent>
+        <PostBuildEvent>copy  ..\..\..\..\bin\win32\trains.dll ..\..\..\..\bin\trains.dll&amp;&amp;copy  ..\..\..\..\bin\win32\vautils.dll ..\..\..\..\bin\vautils.dll</PostBuildEvent>
         <PostBuildEventIgnoreExitCode>False</PostBuildEventIgnoreExitCode>
     </PropertyGroup>
 </Project>

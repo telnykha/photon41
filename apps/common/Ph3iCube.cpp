@@ -30,14 +30,14 @@ TPh3iCubeSource::TPh3iCubeSource(TPhImage* display):TPhMediaSource(display)
 	m_pTimer = new TTimer(NULL);
 	m_pTimer->Enabled = false;
 	m_event = new TEvent(true);
-	m_pTimer->Interval = 50;
+	m_pTimer->Interval = 1000;
 	m_pTimer->OnTimer = TimerEventHandler;
     m_frame = NULL;
  	if ( LoadICubeApi("ICubeSDK.dll") != IC_SUCCESS )
 	{
 		ShowMessage("Не могу найти файл ICubeSDK.dll");
+		throw 0;
 	}
-    throw 0;
 }
 TPh3iCubeSource::~TPh3iCubeSource()
 {

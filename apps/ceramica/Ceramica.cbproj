@@ -6,7 +6,7 @@
         <AppType>Application</AppType>
         <MainSource>Ceramica.cpp</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>1</TargetedPlatforms>
     </PropertyGroup>
@@ -118,8 +118,8 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <AppEnableHighDPI>true</AppEnableHighDPI>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
-        <VerInfo_Build>80</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=NN-VideoLab.net;FileDescription=$(MSBuildProjectName);FileVersion=1.0.1.80;InternalName=;LegalCopyright=Copyright (c) 2004-2018 NN-VideoLab.net;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=Версия для испытаний </VerInfo_Keys>
+        <VerInfo_Build>83</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=NN-VideoLab.net;FileDescription=$(MSBuildProjectName);FileVersion=1.0.1.83;InternalName=;LegalCopyright=Copyright (c) 2004-2018 NN-VideoLab.net;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=Версия для испытаний </VerInfo_Keys>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
         <LinkPackageStatics>rtl.lib;vcl.lib;photon41.lib;VclSmp.lib;vclx.lib;Tee925.lib;vclimg.lib;IndyCore.lib;IndySystem.lib</LinkPackageStatics>
         <Icon_MainIcon>Ceramica_Icon.ico</Icon_MainIcon>
