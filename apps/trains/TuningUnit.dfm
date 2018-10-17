@@ -1,9 +1,10 @@
 object TuningForm: TTuningForm
   Left = 0
   Top = 0
+  BorderIcons = [biMinimize, biMaximize]
   BorderStyle = bsToolWindow
   Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1072' '#1084#1086#1076#1091#1083#1103
-  ClientHeight = 284
+  ClientHeight = 320
   ClientWidth = 250
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -14,7 +15,6 @@ object TuningForm: TTuningForm
   FormStyle = fsStayOnTop
   OldCreateOrder = False
   Position = poMainFormCenter
-  OnCreate = FormCreate
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
@@ -42,20 +42,6 @@ object TuningForm: TTuningForm
       Caption = #1052#1072#1089#1096#1090#1072#1073' '#1085#1086#1084#1077#1088#1072
       Enabled = False
     end
-    object TrackBar1: TTrackBar
-      Left = 13
-      Top = 36
-      Width = 168
-      Height = 24
-      Max = 100
-      Position = 50
-      ShowSelRange = False
-      TabOrder = 0
-      ThumbLength = 15
-      TickMarks = tmBoth
-      TickStyle = tsNone
-      OnChange = TrackBar1Change
-    end
     object Edit1: TEdit
       Left = 187
       Top = 36
@@ -63,7 +49,7 @@ object TuningForm: TTuningForm
       Height = 21
       Alignment = taCenter
       Enabled = False
-      TabOrder = 1
+      TabOrder = 0
       Text = '50'
     end
     object CSpinEdit1: TCSpinEdit
@@ -72,7 +58,22 @@ object TuningForm: TTuningForm
       Width = 38
       Height = 22
       Enabled = False
+      TabOrder = 1
+    end
+    object PhTrackBar1: TPhTrackBar
+      Left = 13
+      Top = 35
+      Width = 150
+      Height = 31
+      Max = 100
+      Position = 50
+      ShowSelRange = False
       TabOrder = 2
+      ThumbLength = 15
+      TickMarks = tmBoth
+      TickStyle = tsNone
+      OnChange = PhTrackBar1Change
+      OnMouseUp = PhTrackBar1MouseUp
     end
   end
   object CheckBox1: TCheckBox
@@ -91,7 +92,7 @@ object TuningForm: TTuningForm
     Left = 3
     Top = 126
     Width = 244
-    Height = 150
+    Height = 186
     Margins.Top = 10
     Align = alTop
     TabOrder = 2
@@ -127,27 +128,13 @@ object TuningForm: TTuningForm
       TabOrder = 0
       Text = '50'
     end
-    object TrackBar2: TTrackBar
-      Left = 16
-      Top = 36
-      Width = 168
-      Height = 24
-      Max = 100
-      Position = 50
-      ShowSelRange = False
-      TabOrder = 1
-      ThumbLength = 15
-      TickMarks = tmBoth
-      TickStyle = tsNone
-      OnChange = TrackBar2Change
-    end
     object Button1: TButton
       Left = 19
       Top = 66
       Width = 162
       Height = 25
       Caption = #1057#1086#1079#1076#1072#1090#1100' '#1084#1086#1076#1077#1083#1100
-      TabOrder = 2
+      TabOrder = 1
       OnClick = Button1Click
     end
     object Button2: TButton
@@ -156,8 +143,32 @@ object TuningForm: TTuningForm
       Width = 162
       Height = 25
       Caption = #1059#1076#1072#1083#1080#1090#1100' '#1084#1086#1076#1077#1083#1100
-      TabOrder = 3
+      TabOrder = 2
       OnClick = Button2Click
+    end
+    object PhTrackBar2: TPhTrackBar
+      Left = 16
+      Top = 33
+      Width = 153
+      Height = 31
+      Max = 100
+      Position = 50
+      ShowSelRange = False
+      TabOrder = 3
+      ThumbLength = 15
+      TickMarks = tmBoth
+      TickStyle = tsNone
+      OnChange = PhTrackBar2Change
+      OnMouseUp = PhTrackBar2MouseUp
+    end
+    object Button3: TButton
+      Left = 19
+      Top = 147
+      Width = 162
+      Height = 25
+      Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1087#1072#1088#1072#1084#1077#1090#1088#1099
+      TabOrder = 4
+      OnClick = Button3Click
     end
   end
   object CheckBox2: TCheckBox

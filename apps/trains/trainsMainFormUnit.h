@@ -21,6 +21,7 @@
 #include "PhTrainsTool.h"
 #include "PhImageTool.h"
 #include "PhPaneTool.h"
+#include "PhTrackBar.h"
 extern "C"
 {
 	#include "vautils.h"
@@ -108,6 +109,7 @@ __published:	// IDE-managed Components
 	TMenuItem *N34;
 	TMenuItem *N35;
 	TPhPaneTool *PhPaneTool1;
+	TPhTrackBar *PhTrackBar1;
 
     void __fastcall CloseActionExecute(TObject *Sender);
     void __fastcall FormResize(TObject *Sender);
@@ -161,13 +163,13 @@ private:	// User declarations
     TVAInitParams*   m_target_params;
 
     TPhTrainsTool*   m_trainsTool;
+	void __fastcall ToolChange(TObject *Sender);
 
     bool __fastcall InitParams();
     bool __fastcall CreateDefaultParams(UnicodeString& strSourceName);
 
-
     TTrainsAnalysisEngine m_engine;
-
+    TTrainsAnalysisEngine* __fastcall GetEngine();
     void __fastcall SetSource(TPhMediaSource* source);
 	void __fastcall SetMode(TAction* action);
 
@@ -177,6 +179,13 @@ private:	// User declarations
 public:		// User declarations
 	__fastcall TmainForm(TComponent* Owner);
     void __fastcall UpdateImage();
+    void __fastcall UpdateParams();
+    bool __fastcall CreateModel();
+
+    // Параметры
+    __property TVAInitParams* trainsParams = {read = m_trains_params};
+    __property TVAInitParams* targetParams = {read = m_target_params};
+    __property TTrainsAnalysisEngine* engine = {read = GetEngine};
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TmainForm *mainForm;

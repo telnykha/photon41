@@ -24,6 +24,7 @@ public:
     bool __fastcall Init(TVAInitParams* trains, TVAInitParams* target);
     bool __fastcall Process(awpImage* img);
     void __fastcall Reset();
+    bool __fastcall CreateModel(awpImage* img);
 
 };
 #endif

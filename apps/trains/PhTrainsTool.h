@@ -11,9 +11,18 @@ class PACKAGE TPhTrainsTool : public TPhImageTool
 private:
     TVARect m_modelRect;
     TVARect m_numberRect;
+    TVAPoint m_vertex[8];
+    int      m_edit_vertex;
+    double _2D_Dist(double x1,double y1,double x2,double y2);
+    void __fastcall SetVertex(TVAPoint p, int idx);
+    TVAPoint __fastcall GetVAPoint(TPoint p);
+    TNotifyEvent m_OnChange;
 protected:
 
-    double __fastcall GetLenght();
+    void __fastcall SetModelRect(TVARect rect);
+    void __fastcall SetNumberRect(TVARect rect);
+
+    bool __fastcall IsPointNearVertex(TPoint p, bool edit = false);
 public:
     __fastcall TPhTrainsTool(TComponent* Owner);
    virtual __fastcall ~TPhTrainsTool();
@@ -24,9 +33,9 @@ public:
     virtual void MouseMove(int X, int Y, TShiftState Shift);
 	virtual void Reset();
 
-    __property TVARect modelRect = {read = m_modelRect, write = m_modelRect};
-    __property TVARect numberRect = {read = m_numberRect, write = m_numberRect};
-
+    __property TVARect modelRect = {read = m_modelRect, write = SetModelRect};
+    __property TVARect numberRect = {read = m_numberRect, write = SetNumberRect};
+    __property TNotifyEvent OnChange= {read = m_OnChange, write = m_OnChange};
 };
 
 #endif

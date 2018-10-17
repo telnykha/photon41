@@ -7,6 +7,7 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "cspin"
+#pragma link "PhTrackBar"
 #pragma resource "*.dfm"
 TTuningForm *TuningForm;
 //---------------------------------------------------------------------------
@@ -14,28 +15,18 @@ __fastcall TTuningForm::TTuningForm(TComponent* Owner)
 	: TForm(Owner)
 {
         m_IsModelAvailable = false;
+        m_ParamsEdited     = false;
 }
 //---------------------------------------------------------------------------
 void __fastcall TTuningForm::ApplicationEvents1Idle(TObject *Sender, bool &Done)
 {
       Button2->Enabled = m_IsModelAvailable;
+      Button3->Enabled = m_ParamsEdited;
       Label4->Caption =  m_IsModelAvailable ? L"Модель мишени готова к использованию" : L"Модель мишени не существует";
       Label4->Font->Color = m_IsModelAvailable ? clBlue : clRed;
 }
 //---------------------------------------------------------------------------
 
-
-void __fastcall TTuningForm::TrackBar2Change(TObject *Sender)
-{
-	Edit2->Text = IntToStr(this->TrackBar2->Position);
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TTuningForm::TrackBar1Change(TObject *Sender)
-{
-	Edit1->Text = IntToStr(this->TrackBar1->Position);
-}
-//---------------------------------------------------------------------------
 
 void __fastcall TTuningForm::CheckBox1Click(TObject *Sender)
 {
@@ -63,28 +54,95 @@ void __fastcall TTuningForm::CheckBox2Click(TObject *Sender)
     }
 }
 //---------------------------------------------------------------------------
-
-void __fastcall TTuningForm::FormCreate(TObject *Sender)
-{
- // try to find model file
-}
-//---------------------------------------------------------------------------
-
 void __fastcall TTuningForm::Button1Click(TObject *Sender)
 {
-    m_IsModelAvailable = true;
+    if (mainForm->targetParams != NULL)
+    {
+    	m_IsModelAvailable = mainForm->CreateModel();
+    }
+    else
+        ShowMessage("Не могу создать модель!");
 }
 //---------------------------------------------------------------------------
 
 void __fastcall TTuningForm::Button2Click(TObject *Sender)
 {
-    m_IsModelAvailable = false;
+    if (mainForm->targetParams != NULL)
+    {
+        UnicodeString str = mainForm->targetParams->Path;
+        DeleteFile(str);
+	    m_IsModelAvailable = false;
+    }
+    else
+        ShowMessage("Модуль не инициализирован.");
 }
 //---------------------------------------------------------------------------
 //
 void __fastcall TTuningForm::FormShow(TObject *Sender)
 {
-   // установливаем два прямоугольника
+    if (mainForm->targetParams != NULL)
+    {
+          PhTrackBar2->Position = int(100.*mainForm->targetParams->EventSens);
+          if (mainForm->targetParams->Path != NULL)
+          {
+             UnicodeString str = mainForm->targetParams->Path;
+             if (FileExists(str, false))
+			   m_IsModelAvailable = true;
+             else
+               m_IsModelAvailable = false;
+          }
+          else
+            m_IsModelAvailable = false;
+    }
+
+    if (mainForm->trainsParams != NULL)
+    {
+          PhTrackBar1->Position = int(100.*mainForm->trainsParams->EventSens);
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TTuningForm::PhTrackBar1Change(TObject *Sender)
+{
+	Edit1->Text = IntToStr(PhTrackBar1->Position);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TTuningForm::PhTrackBar1MouseUp(TObject *Sender, TMouseButton Button,
+          TShiftState Shift, int X, int Y)
+{
+    double value = (double)PhTrackBar1->Position / 100.;
+
+    if (mainForm->trainsParams != NULL)
+    {
+	    mainForm->trainsParams->EventSens = value;
+        m_ParamsEdited = true;
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TTuningForm::PhTrackBar2Change(TObject *Sender)
+{
+	Edit2->Text = IntToStr(PhTrackBar2->Position);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TTuningForm::PhTrackBar2MouseUp(TObject *Sender, TMouseButton Button,
+          TShiftState Shift, int X, int Y)
+{
+    double value = (double)PhTrackBar2->Position / 100.;
+    if (mainForm->targetParams != NULL)
+    {
+	    mainForm->targetParams->EventSens = value;
+        m_ParamsEdited = true;
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TTuningForm::Button3Click(TObject *Sender)
+{
+    mainForm->UpdateParams();
+    m_ParamsEdited = false;
 }
 //---------------------------------------------------------------------------
 

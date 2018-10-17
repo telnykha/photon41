@@ -261,15 +261,25 @@ object mainForm: TmainForm
     Left = 0
     Top = 0
     Width = 885
-    Height = 552
+    Height = 528
     ThumbWidht = 128
     ThumbHeight = 128
     SlideShowInterval = 500
     Align = alClient
     ParentColor = False
     OnFrameData = FImage1FrameData
-    ExplicitLeft = 1
-    ExplicitTop = -5
+    ExplicitHeight = 489
+  end
+  object PhTrackBar1: TPhTrackBar
+    Left = 0
+    Top = 528
+    Width = 885
+    Height = 24
+    Align = alBottom
+    ShowSelRange = False
+    TabOrder = 3
+    TickMarks = tmBoth
+    TickStyle = tsNone
   end
   object ActionList1: TActionList
     Left = 56

@@ -8,12 +8,13 @@
 #include "aboutUnit.h"
 #include "PhVideo.h"
 #include "TuningUnit.h"
-
+#include "DIBImage41.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 #pragma link "FImage41"
 #pragma link "PhImageTool"
 #pragma link "PhPaneTool"
+#pragma link "PhTrackBar"
 #pragma resource "*.dfm"
 
 #pragma link "awplflibb.lib"
@@ -489,6 +490,7 @@ void __fastcall TmainForm::SetMode(TAction* action)
             m_trainsTool->PhImage = this->FImage1;
             m_trainsTool->modelRect = m_target_params->Zones[0].Rect;
             m_trainsTool->numberRect = m_trains_params->Zones[0].Rect;
+            m_trainsTool->OnChange = ToolChange;
             FImage1->SelectPhTool(m_trainsTool);
             FImage1->Paint();
         }
@@ -588,6 +590,7 @@ bool __fastcall TmainForm::CreateDefaultParams(UnicodeString& strSourceName)
         return false;
     }
 
+    m_engine.Init(m_trains_params, m_target_params);
     return true;
 }
 
@@ -615,7 +618,10 @@ bool __fastcall TmainForm::InitParams()
     	AnsiString _ansi_trins  = str_trains;
     	AnsiString _ansi_target = str_target;
         if (LoadInitParams(_ansi_trins.c_str(), &m_trains_params) && LoadInitParams(_ansi_target.c_str(), &m_target_params))
+        {
+		    m_engine.Init(m_trains_params, m_target_params);
             return true;
+        }
         else
 	        return this->CreateDefaultParams(str);
     }
@@ -624,6 +630,59 @@ bool __fastcall TmainForm::InitParams()
         return this->CreateDefaultParams(str);
     }
     return true;
+}
+
+void __fastcall TmainForm::UpdateParams()
+{
+    if (m_videoSource == NULL)
+	    return;
+
+   	UnicodeString str = this->m_videoSource->Source;
+
+    UnicodeString str_trains = ChangeFileExt(str, ".trains");
+    UnicodeString str_target = ChangeFileExt(str, ".target");
+
+    AnsiString _ansi_trins  = str_trains;
+    AnsiString _ansi_target = str_target;
+
+    SaveInitParams(_ansi_trins.c_str(), m_trains_params);
+    SaveInitParams(_ansi_target.c_str(), m_target_params);
+
+    m_engine.Init(m_trains_params, m_target_params);
+
+}
+
+TTrainsAnalysisEngine* __fastcall TmainForm::GetEngine()
+{
+     return &m_engine;
+}
+
+bool __fastcall TmainForm::CreateModel()
+{
+    awpImage* img = NULL;
+    bool res = false;
+
+    TDIBImage* dib = (TDIBImage*) FImage1->Bitmap;
+    if (dib == NULL)
+        return false;
+    dib->GetAWPImage(&img);
+    if (img != NULL)
+    {
+        res = m_engine.CreateModel(img);
+        _AWP_SAFE_RELEASE_(img)
+    }
+
+    return res;
+}
+
+void __fastcall TmainForm::ToolChange(TObject *Sender)
+{
+    //
+    TPhTrainsTool* tool = (TPhTrainsTool*)Sender;
+    this->m_target_params->Zones[0].Rect = tool->modelRect;
+    this->m_trains_params->Zones[0].Rect = tool->numberRect;
+    //UpdateParams();
+    TuningForm->IsParamsEdited = true;
 }
 
 
