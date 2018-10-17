@@ -999,6 +999,7 @@ void __fastcall TMainForm::viewVideoControlActionExecute(TObject *Sender)
 
 void __fastcall TMainForm::viewVideoControlActionUpdate(TObject *Sender)
 {
+	viewVideoControlAction->Enabled = dynamic_cast<TPh3iCubeSource* >(m_videoSource) != NULL;
 	viewVideoControlAction->Checked = VideoControlDlg->Visible;
 }
 //---------------------------------------------------------------------------
@@ -1083,6 +1084,18 @@ void __fastcall TMainForm::CheckBox3Click(TObject *Sender)
         TRect r(0,0,0,0);
         PhImage1->SetSelRect(r);
     }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::ApplicationEvents1Idle(TObject *Sender, bool &Done)
+{
+	if (VideoControlDlg->Visible && VideoControlDlg->CheckBox1->Checked )
+	{
+		//iCube SDK_GetExposure
+		TPh3iCubeSource* c = dynamic_cast<TPh3iCubeSource* >(m_videoSource);
+		if (c != NULL)
+			  VideoControlDlg->Edit8->Text = FormatFloat("###.#", c->ExploshureTime);
+	}
 }
 //---------------------------------------------------------------------------
 

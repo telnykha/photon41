@@ -76,6 +76,12 @@ void __fastcall TVideoControlDlg::FormShow(TObject *Sender)
 	TrackBar2Change(NULL);
 	TrackBar7Change(NULL);
 	TrackBar5Change(NULL);
+
+	TPh3iCubeSource* src = dynamic_cast<TPh3iCubeSource*>(MainForm->videoSource);
+
+
+
+    TrackBar3Change(NULL);
 }
 //---------------------------------------------------------------------------
 void __fastcall TVideoControlDlg::CheckBox1Click(TObject *Sender)

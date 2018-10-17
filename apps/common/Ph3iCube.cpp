@@ -155,7 +155,7 @@ void __fastcall TPh3iCubeSource::SetAutoExploshure(bool value)
 }
 void __fastcall TPh3iCubeSource::SetExploshureTarget(long value)
 {
-     ICubeSDK_SetCamParameter(h_iCurrentCam, REG_EXPOSURE_TARGET, value);
+	 ICubeSDK_SetCamParameter(h_iCurrentCam, REG_EXPOSURE_TARGET, value);
 }
 
 void __fastcall TPh3iCubeSource::TimerEventHandler(TObject *Sender)
@@ -167,4 +167,11 @@ void __fastcall TPh3iCubeSource::TimerEventHandler(TObject *Sender)
 	SetData(m_frame->sSizeX,m_frame->sSizeY,m_frame->bChannels,(unsigned char*)m_frame->pPixels);
 	m_event->SetEvent();
   }
+}
+
+float __fastcall TPh3iCubeSource::GetExploshureTime()
+{
+	float res = 0;
+	ICubeSDK_GetExposure(h_iCurrentCam, &res);
+	return res;
 }

@@ -18,6 +18,7 @@ protected:
 	virtual void __fastcall SetCurrentFrame(int frame);
 	virtual bool __fastcall GetIsPlaying();
 
+	float __fastcall GetExploshureTime();
 	void __fastcall DecodePicture();
 	void __fastcall TimerEventHandler(TObject *Sender);
 public:
@@ -45,6 +46,9 @@ public:
    void __fastcall SetGamma(long value);
    void __fastcall SetAutoExploshure(bool value);
    void __fastcall SetExploshureTarget(long value);
+
+   __property float ExploshureTime= {read = GetExploshureTime};
+   __property int HCamera = {read = h_iCurrentCam};
 public:
 	TEvent*   m_event;
 	awpImage* m_frame;

@@ -36,6 +36,7 @@
 #include <System.ImageList.hpp>
 #include <Vcl.ImgList.hpp>
 #include "PhSelectRectTool.h"
+#include <Vcl.AppEvnts.hpp>
 
 //---------------------------------------------------------------------------
 class TPhMediaSource;
@@ -163,6 +164,7 @@ __published:	// IDE-managed Components
 	TPhSelRectTool *PhSelRectTool1;
 	TSpeedButton *SpeedButton5;
 	TBevel *Bevel2;
+	TApplicationEvents *ApplicationEvents1;
 	void __fastcall fileExitActionExecute(TObject *Sender);
 	void __fastcall modeExperimentActionExecute(TObject *Sender);
 	void __fastcall modeExperimentActionUpdate(TObject *Sender);
@@ -230,6 +232,7 @@ __published:	// IDE-managed Components
 	void __fastcall toolSelRectActionExecute(TObject *Sender);
 	void __fastcall toolSelRectActionUpdate(TObject *Sender);
 	void __fastcall CheckBox3Click(TObject *Sender);
+	void __fastcall ApplicationEvents1Idle(TObject *Sender, bool &Done);
 
 
 
