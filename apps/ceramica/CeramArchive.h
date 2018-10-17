@@ -30,7 +30,8 @@ class TCeramArchive
 protected:
     std::string m_path;
     std::string m_archive;
-    FILE* m_pLog;
+	FILE* m_pLog;
+    int m_counter;
 public:
     TCeramArchive(const char* path);
     ~TCeramArchive();

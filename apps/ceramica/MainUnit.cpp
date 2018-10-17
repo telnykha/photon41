@@ -178,7 +178,7 @@ void __fastcall TMainForm::fileConnectToCameraActionExecute(TObject *Sender)
       TPhMediaSource* videoSource = NULL;
       try
       {
-		videoSource= new TPh3iCubeSource(PhImage1);
+  		videoSource= new TPh3iCubeSource(PhImage1);
         videoSource->Open(NULL);
         if (videoSource->NumFrames == 0)
             SetSource(videoSource);
@@ -188,10 +188,11 @@ void __fastcall TMainForm::fileConnectToCameraActionExecute(TObject *Sender)
             fileCloseActionExecute(NULL);
         }
 
-      }
+	  }
       catch(...)
       {
-            SetSource(NULL);
+			ShowMessage("Не могу подключиться к 3iCube.");
+			SetSource(NULL);
             fileCloseActionExecute(NULL);
       }
  	  SetMode(modeHandAction);
