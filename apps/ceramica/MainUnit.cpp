@@ -22,6 +22,7 @@
 #pragma link "PhRulerTool"
 #pragma link "PhPaneTool"
 #pragma link "PhSelectRectTool"
+#pragma link "PhTrackBar"
 #pragma resource "*.dfm"
 TMainForm *MainForm;
 extern "C"

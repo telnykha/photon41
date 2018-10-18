@@ -110,6 +110,12 @@ __published:	// IDE-managed Components
 	TMenuItem *N35;
 	TPhPaneTool *PhPaneTool1;
 	TPhTrackBar *PhTrackBar1;
+	TGroupBox *GroupBox1;
+	TLabel *Label1;
+	TPanel *Panel2;
+	TLabel *Label2;
+	TGroupBox *GroupBox2;
+	TLabel *Label3;
 
     void __fastcall CloseActionExecute(TObject *Sender);
     void __fastcall FormResize(TObject *Sender);
@@ -186,6 +192,7 @@ public:		// User declarations
     __property TVAInitParams* trainsParams = {read = m_trains_params};
     __property TVAInitParams* targetParams = {read = m_target_params};
     __property TTrainsAnalysisEngine* engine = {read = GetEngine};
+    __property TAction* Mode = {read = m_modeAction};
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TmainForm *mainForm;

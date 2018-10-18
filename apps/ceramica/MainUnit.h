@@ -37,6 +37,7 @@
 #include <Vcl.ImgList.hpp>
 #include "PhSelectRectTool.h"
 #include <Vcl.AppEvnts.hpp>
+#include "PhTrackBar.h"
 
 //---------------------------------------------------------------------------
 class TPhMediaSource;
@@ -165,6 +166,7 @@ __published:	// IDE-managed Components
 	TSpeedButton *SpeedButton5;
 	TBevel *Bevel2;
 	TApplicationEvents *ApplicationEvents1;
+	TPhTrackBar *PhTrackBar1;
 	void __fastcall fileExitActionExecute(TObject *Sender);
 	void __fastcall modeExperimentActionExecute(TObject *Sender);
 	void __fastcall modeExperimentActionUpdate(TObject *Sender);

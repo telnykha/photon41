@@ -2,8 +2,8 @@ object mainForm: TmainForm
   Left = 0
   Top = 0
   Caption = #1054#1073#1085#1072#1088#1091#1078#1077#1085#1080#1077' '#1080' '#1088#1072#1089#1087#1086#1079#1085#1072#1074#1072#1085#1080#1077' '#1085#1086#1084#1077#1088#1086#1074' '#1074#1072#1075#1086#1085#1086#1074'. '
-  ClientHeight = 646
-  ClientWidth = 885
+  ClientHeight = 542
+  ClientWidth = 737
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
   Font.Color = clWindowText
@@ -18,8 +18,8 @@ object mainForm: TmainForm
   TextHeight = 13
   object StatusBar1: TStatusBar
     Left = 0
-    Top = 627
-    Width = 885
+    Top = 523
+    Width = 737
     Height = 19
     Panels = <
       item
@@ -41,15 +41,19 @@ object mainForm: TmainForm
         Text = #1048#1079#1086#1073#1088#1072#1078#1077#1085#1080#1077':'
         Width = 150
       end>
+    ExplicitTop = 627
+    ExplicitWidth = 885
   end
   object Panel1: TPanel
     Left = 0
-    Top = 552
-    Width = 885
+    Top = 448
+    Width = 737
     Height = 75
     Align = alBottom
     BevelOuter = bvLowered
     TabOrder = 1
+    ExplicitTop = 552
+    ExplicitWidth = 885
     object SpeedButton2: TSpeedButton
       Left = 1
       Top = 1
@@ -256,30 +260,91 @@ object mainForm: TmainForm
       ExplicitTop = 3
       ExplicitHeight = 48
     end
+    object GroupBox1: TGroupBox
+      Left = 321
+      Top = 1
+      Width = 160
+      Height = 73
+      Align = alLeft
+      TabOrder = 0
+      object Label1: TLabel
+        Left = 16
+        Top = 10
+        Width = 3
+        Height = 13
+      end
+      object Label2: TLabel
+        Left = 59
+        Top = 28
+        Width = 88
+        Height = 42
+        Caption = '0000'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGray
+        Font.Height = -35
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+      object Panel2: TPanel
+        Left = 12
+        Top = 35
+        Width = 41
+        Height = 33
+        BevelOuter = bvLowered
+        Color = clRed
+        ParentBackground = False
+        TabOrder = 0
+      end
+    end
+    object GroupBox2: TGroupBox
+      Left = 481
+      Top = 1
+      Width = 248
+      Height = 73
+      Align = alLeft
+      TabOrder = 1
+      object Label3: TLabel
+        Left = 6
+        Top = 28
+        Width = 232
+        Height = 42
+        Caption = '########'
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGray
+        Font.Height = -35
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
+    end
   end
   object FImage1: TPhImage
     Left = 0
     Top = 0
-    Width = 885
-    Height = 528
+    Width = 737
+    Height = 424
     ThumbWidht = 128
     ThumbHeight = 128
     SlideShowInterval = 500
     Align = alClient
     ParentColor = False
     OnFrameData = FImage1FrameData
-    ExplicitHeight = 489
+    ExplicitWidth = 885
+    ExplicitHeight = 528
   end
   object PhTrackBar1: TPhTrackBar
     Left = 0
-    Top = 528
-    Width = 885
+    Top = 424
+    Width = 737
     Height = 24
     Align = alBottom
     ShowSelRange = False
     TabOrder = 3
     TickMarks = tmBoth
     TickStyle = tsNone
+    ExplicitTop = 528
+    ExplicitWidth = 885
   end
   object ActionList1: TActionList
     Left = 56

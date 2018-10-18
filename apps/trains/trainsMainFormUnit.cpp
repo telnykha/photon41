@@ -425,6 +425,16 @@ void __fastcall TmainForm::FImage1FrameData(TObject *Sender, int w, int h, int c
     }
     else
 		StatusBar1->Panels->Items[1]->Text = L" ";
+
+   awpImage img;
+   img.nMagic = AWP_MAGIC2;
+   img.bChannels = c;
+   img.sSizeX =  w;
+   img.sSizeY = h;
+   img.dwType = AWP_BYTE;
+   img.pPixels = data;
+
+   m_engine.SetImage(&img);
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::SetSource(TPhMediaSource* source)

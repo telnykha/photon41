@@ -56,12 +56,13 @@ object MainForm: TMainForm
       Width = 553
       Height = 58
       Align = alBottom
+      BevelOuter = bvNone
       TabOrder = 0
       object SpeedButton4: TSpeedButton
-        Left = 241
-        Top = 1
+        Left = 240
+        Top = 0
         Width = 84
-        Height = 56
+        Height = 58
         Action = viewNextAction
         Align = alLeft
         Flat = True
@@ -95,10 +96,10 @@ object MainForm: TMainForm
         ExplicitHeight = 77
       end
       object SpeedButton1: TSpeedButton
-        Left = 325
-        Top = 1
+        Left = 324
+        Top = 0
         Width = 84
-        Height = 56
+        Height = 58
         Action = viewLastAction
         Align = alLeft
         Flat = True
@@ -132,10 +133,10 @@ object MainForm: TMainForm
         ExplicitHeight = 412
       end
       object SpeedButton3: TSpeedButton
-        Left = 77
-        Top = 1
+        Left = 76
+        Top = 0
         Width = 84
-        Height = 56
+        Height = 58
         Action = viewPrevAction
         Align = alLeft
         Flat = True
@@ -169,10 +170,10 @@ object MainForm: TMainForm
         ExplicitHeight = 524
       end
       object SpeedButton2: TSpeedButton
-        Left = 1
-        Top = 1
+        Left = 0
+        Top = 0
         Width = 76
-        Height = 56
+        Height = 58
         Action = viewFirstAction
         Align = alLeft
         Flat = True
@@ -203,12 +204,13 @@ object MainForm: TMainForm
         NumGlyphs = 2
         ExplicitLeft = -1
         ExplicitTop = 6
+        ExplicitHeight = 56
       end
       object SpeedButton9: TSpeedButton
-        Left = 161
-        Top = 1
+        Left = 160
+        Top = 0
         Width = 80
-        Height = 56
+        Height = 58
         Action = viewPlayAction
         Align = alLeft
         AllowAllUp = True
@@ -258,6 +260,7 @@ object MainForm: TMainForm
         Layout = blGlyphTop
         NumGlyphs = 4
         ExplicitLeft = 169
+        ExplicitTop = 1
         ExplicitHeight = 77
       end
     end
@@ -265,11 +268,10 @@ object MainForm: TMainForm
       Left = 1
       Top = 59
       Width = 553
-      Height = 455
+      Height = 430
       ThumbWidht = 128
       ThumbHeight = 128
       SlideShowInterval = 500
-      Align = alClient
       ParentColor = False
       OnMouseMove = PhImage1MouseMove
       AfterOpen = PhImage1AfterOpen
@@ -454,6 +456,24 @@ object MainForm: TMainForm
         Layout = blGlyphTop
         NumGlyphs = 4
       end
+    end
+    object PhTrackBar1: TPhTrackBar
+      Left = 1
+      Top = 488
+      Width = 553
+      Height = 26
+      Align = alBottom
+      Ctl3D = False
+      DoubleBuffered = True
+      LineSize = 2
+      Max = 1000
+      ParentCtl3D = False
+      ParentDoubleBuffered = False
+      Frequency = 100
+      ShowSelRange = False
+      TabOrder = 3
+      TickMarks = tmBoth
+      TickStyle = tsNone
     end
   end
   object Panel1: TPanel
@@ -686,7 +706,6 @@ object MainForm: TMainForm
         17)
       ColorPaletteIndex = 13
       object Series1: TFastLineSeries
-        HoverElement = []
         Selected.Hover.Visible = True
         Marks.Callout.Length = 20
         SeriesColor = clRed
@@ -1091,6 +1110,7 @@ object MainForm: TMainForm
     object fileOpenImagesAction: TAction
       Category = 'File'
       Caption = #1054#1090#1082#1088#1099#1090#1100' '#1080#1079#1086#1073#1088#1072#1078#1077#1085#1080#1103'...'
+      Visible = False
       OnExecute = fileOpenImagesActionExecute
     end
     object fileOpenVideoAction: TAction
@@ -1315,7 +1335,7 @@ object MainForm: TMainForm
     Left = 152
     Top = 152
     Bitmap = {
-      494C010108001800480010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
+      494C010108001800500010001000FFFFFFFFFF10FFFFFFFFFFFFFFFF424D3600
       0000000000003600000028000000400000003000000001002000000000000030
       0000000000000000000000000000000000000000000000000000000000000000
       0000000000000000000000000000000000000000000000000000000000000000
