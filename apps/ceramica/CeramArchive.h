@@ -15,6 +15,7 @@ typedef struct tagTCeramArchiveRecord
     float ma;
     float angle;
     awpImage* img;
+    int acceptable;
 }TCeramArchiveRecord;
 
 typedef struct tagTCeramArchiveHeader

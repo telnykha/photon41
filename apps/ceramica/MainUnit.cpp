@@ -409,6 +409,10 @@ void __fastcall TMainForm::SetSource(TPhMediaSource* source)
        cap += m_videoSource->Source;
        cap  += L"]";
        this->Caption = cap;
+
+        PhTrackBar1->Min = 0;
+        PhTrackBar1->Max = m_videoSource->NumFrames;
+
    }
    else
    {
@@ -467,13 +471,15 @@ void __fastcall TMainForm::PhImage1FrameData(TObject *Sender, int w, int h, int 
        RenderScene(&img);
        // отображение результатов обработки на
        // пользовательском интерфейсе
-
        ShowResult();
     }
 }
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::RenderScene(awpImage* img)
 {
+   if (!m_engine.acceptable)
+    return;
+
    DrawSource(img);
    DrawMask(img);
    DrawAxis(img);
@@ -838,6 +844,7 @@ void __fastcall TMainForm::Timer1Timer(TObject *Sender)
     if (m_archive != NULL)
     {
         TCeramArchiveRecord r;
+        r.acceptable = m_engine.acceptable ? 1:0;
         r.diam = m_c.ValueMM(m_engine.diam);
         r.xpos = m_c.ValueMM(m_engine.center.X);
         r.ypos = m_c.ValueMM(m_engine.center.Y);
@@ -1097,6 +1104,25 @@ void __fastcall TMainForm::ApplicationEvents1Idle(TObject *Sender, bool &Done)
 		if (c != NULL)
 			  VideoControlDlg->Edit8->Text = FormatFloat("###.#", c->ExploshureTime);
 	}
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::PhTrackBar1MouseUp(TObject *Sender, TMouseButton Button,
+          TShiftState Shift, int X, int Y)
+{
+    if (this->m_videoSource != NULL)
+        m_videoSource->CurrentFrame = PhTrackBar1->Position;
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TMainForm::PhTrackBar1Change(TObject *Sender)
+{
+    if (this->m_videoSource != NULL)
+    {
+		StatusBar1->Panels->Items[1]->Text = L"Кадр "  + IntToStr( PhTrackBar1->Position ) +
+   		" of " + IntToStr(m_videoSource->NumFrames);
+
+    }
 }
 //---------------------------------------------------------------------------
 

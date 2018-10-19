@@ -116,6 +116,7 @@ __published:	// IDE-managed Components
 	TLabel *Label2;
 	TGroupBox *GroupBox2;
 	TLabel *Label3;
+	TLabel *Label4;
 
     void __fastcall CloseActionExecute(TObject *Sender);
     void __fastcall FormResize(TObject *Sender);

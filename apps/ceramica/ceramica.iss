@@ -3,14 +3,14 @@
 
 [Setup]
 AppName=Ceramica
-AppVerName=Ceramica 1.0.1.80
+AppVerName=Ceramica 1.0.2.83
 AppPublisher=NN-VideoLab.net
 DefaultDirName={pf}\Ceramica
 DefaultGroupName=Ceramica
 AllowNoIcons=yes
 LicenseFile=license_ceramica.txt
 OutputDir=..\setup_output\
-OutputBaseFilename=setup_ceramica10180
+OutputBaseFilename=setup_ceramica10283
 Compression=lzma
 SolidCompression=yes
 

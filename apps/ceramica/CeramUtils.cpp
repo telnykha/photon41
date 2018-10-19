@@ -73,6 +73,7 @@ TCeramImageProcessor::TCeramImageProcessor()
     m_count = 0;
     m_contour = NULL;
     m_useAprox = false;
+    m_acceptable = false;
 }
 
 TCeramImageProcessor::~TCeramImageProcessor()
@@ -104,74 +105,72 @@ bool __fastcall TCeramImageProcessor::Process(awpImage* img)
     awpResize(m_process, m_process->sSizeX / coef, m_process->sSizeY / coef);
  	awpConvert(m_process, AWP_CONVERT_3TO1_BYTE);
 
-    // process on copy image
-    MakeMaskImage();
-    ProcessHelper();
-    Analysis();
-
-    this->m_center.X *= coef;
-    this->m_center.Y *= coef;
-
-    this->m_diam *= coef;
-    this->m_major *= coef;
-    this->m_minor *= coef;
-
-    if (this->m_contour != NULL)
+    // работаем, если ср. яркость изображения > 32
+    this->m_acceptable = this->CheckAcceptable(m_process);
+    if (this->m_acceptable)
     {
-        for (int i = 0; i < this->m_contour->NumPoints; i++)
+        // process on copy image
+        MakeMaskImage();
+        ProcessHelper();
+        Analysis();
+
+        this->m_center.X *= coef;
+        this->m_center.Y *= coef;
+
+        this->m_diam *= coef;
+        this->m_major *= coef;
+        this->m_minor *= coef;
+
+        if (this->m_contour != NULL)
         {
-            this->m_contour->Points[i].X *= coef;
-            this->m_contour->Points[i].Y *= coef;
-        }
-    }
-    awpPoint p;
-    if (!m_useAprox)
-        return true;
-	awp2DPoint points[250];
-	awp2DPoint c;
-	double r = m_diam / 2;
-    int count = 0;
-    for (int alfa = 30; alfa <= 150; alfa += 1)
-    {
-        p.X = center.X - r*cos(AWP_PI*alfa/180.);
-        p.Y = center.Y - r*sin(AWP_PI*alfa/180.);
-        if (contour != NULL)
-        {
-            double min_dist = 10*m_diam;
-            int    min_idx = -1;
-            for (int i = 0; i < contour->NumPoints; i++)
+            for (int i = 0; i < this->m_contour->NumPoints; i++)
             {
-                double d;
-                awpDistancePoints(p, contour->Points[i], &d);
-                if (d < min_dist)
+                this->m_contour->Points[i].X *= coef;
+                this->m_contour->Points[i].Y *= coef;
+            }
+        }
+        awpPoint p;
+        if (!m_useAprox)
+            return true;
+        awp2DPoint points[250];
+        awp2DPoint c;
+        double r = m_diam / 2;
+        int count = 0;
+        for (int alfa = 30; alfa <= 150; alfa += 1)
+        {
+            p.X = center.X - r*cos(AWP_PI*alfa/180.);
+            p.Y = center.Y - r*sin(AWP_PI*alfa/180.);
+            if (contour != NULL)
+            {
+                double min_dist = 10*m_diam;
+                int    min_idx = -1;
+                for (int i = 0; i < contour->NumPoints; i++)
                 {
-                    min_dist = d;
-                    min_idx = i;
+                    double d;
+                    awpDistancePoints(p, contour->Points[i], &d);
+                    if (d < min_dist)
+                    {
+                        min_dist = d;
+                        min_idx = i;
+                    }
+                }
+
+                if (min_idx >=0 )
+                {
+                    points[count].X = contour->Points[min_idx].X;
+                    points[count].Y = contour->Points[min_idx].Y;
+                    count++;
                 }
             }
-
-            if (min_idx >=0 )
-    	    {
-                points[count].X = contour->Points[min_idx].X;
-                points[count].Y = contour->Points[min_idx].Y;
-                count++;
-            }
+        }
+        if (count > 0)
+        {
+            pgfGetCircle(points, count, &c, &r, 2);
+            this->m_center.X = c.X;
+            this->m_center.Y = c.Y;
+            this->m_diam = 2*r;
         }
     }
-    if (count > 0)
-    {
-		pgfGetCircle(points, count, &c, &r, 2);
-	    this->m_center.X = c.X;
-    	this->m_center.Y = c.Y;
-        this->m_diam = 2*r;
-    }
-
-
-  //  if (m_mask != NULL)
-  //      awpResize(m_mask, coef*m_mask->sSizeX, coef*m_mask->sSizeY);
- //   if (m_process != NULL)
-  //      awpResize(m_process, coef*m_process->sSizeX, coef*m_process->sSizeY);
-
 }
 
 bool __fastcall TCeramImageProcessor::FindCircle(awpImage* img, int &r, awpPoint &p)
@@ -418,7 +417,24 @@ int  __fastcall TCeramImageProcessor::GetBufferSize()
 	return m_useBuffer ? m_bufferSize:1;
 }
 
+bool __fastcall TCeramImageProcessor::CheckAcceptable(awpImage* image)
+{
+    if (image == NULL)
+        return false;
+	awpImage* acc = NULL;
+    awpCopyImage(image, &acc);
+    if (acc == NULL)
+        return false;
+    int w = 32;
+    int h = 32;
+    awpResize(acc, w,h);
+    double sum = 0;
+    AWPBYTE* b = (AWPBYTE*)acc->pPixels;
+    for (int i = 0; i < w*h; i++)
+        sum += b[i];
+    sum /= (w*h);
 
-
-
+    _AWP_SAFE_RELEASE_(acc)
+    return sum > 32;
+}
 

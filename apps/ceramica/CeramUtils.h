@@ -50,6 +50,7 @@ protected:
     awpContour* m_contour;
     int       m_mask_radius;
     awpPoint  m_mask_center;
+    bool      m_acceptable;
 
     void __fastcall CreateMask(awpPoint p, double r, int w, int h);
     void __fastcall MakeMaskImage();
@@ -59,6 +60,8 @@ protected:
     void __fastcall SetUseBuffer(bool value);
     void __fastcall SetBufferSize(int value);
     int  __fastcall GetBufferSize();
+
+    bool __fastcall CheckAcceptable(awpImage* image);
 public:
     TCeramImageProcessor();
     ~TCeramImageProcessor();
@@ -82,5 +85,6 @@ public:
     __property bool useAprox    = {read = m_useAprox, write = m_useAprox};
     __property int  maskRadius  = {read = m_mask_radius, write = m_mask_radius};
     __property awpPoint maskCener = {read = m_mask_center, write = m_mask_center};
+    __property bool acceptable = {read = m_acceptable};
 };
 #endif

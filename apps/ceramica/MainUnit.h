@@ -235,6 +235,9 @@ __published:	// IDE-managed Components
 	void __fastcall toolSelRectActionUpdate(TObject *Sender);
 	void __fastcall CheckBox3Click(TObject *Sender);
 	void __fastcall ApplicationEvents1Idle(TObject *Sender, bool &Done);
+	void __fastcall PhTrackBar1MouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift,
+          int X, int Y);
+	void __fastcall PhTrackBar1Change(TObject *Sender);
 
 
 

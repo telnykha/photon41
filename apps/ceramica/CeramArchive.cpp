@@ -56,6 +56,7 @@ bool TCeramArchive::Create(TCeramArchiveHeader& header)
 
    fprintf(m_pLog, "%s\t\t%s\t\t%s\t\t%s\t\t%s\t\t%s\t\t%s\t\t%s\n",
     "Date-time",
+    "Accept",
     "Diam",
     "x-pos",
     "y-pos",
@@ -92,8 +93,9 @@ bool TCeramArchive::AddRecord(TCeramArchiveRecord& record)
     _ifn += "\\";
     _ifn += _fn;
 	// запись в файл архива
-    fprintf(m_pLog, "%s\t%f\t%f\t%f\t%f\t%f\t%f\t%s\n",
+    fprintf(m_pLog, "%s\t%i\t%f\t%f\t%f\t%f\t%f\t%f\t%s\n",
     _ansi.c_str(),
+    record.acceptable,
     record.diam,
     record.xpos,
     record.ypos,

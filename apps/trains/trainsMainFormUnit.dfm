@@ -41,8 +41,6 @@ object mainForm: TmainForm
         Text = #1048#1079#1086#1073#1088#1072#1078#1077#1085#1080#1077':'
         Width = 150
       end>
-    ExplicitTop = 627
-    ExplicitWidth = 885
   end
   object Panel1: TPanel
     Left = 0
@@ -52,8 +50,6 @@ object mainForm: TmainForm
     Align = alBottom
     BevelOuter = bvLowered
     TabOrder = 1
-    ExplicitTop = 552
-    ExplicitWidth = 885
     object SpeedButton2: TSpeedButton
       Left = 1
       Top = 1
@@ -286,6 +282,19 @@ object mainForm: TmainForm
         Font.Style = [fsBold]
         ParentFont = False
       end
+      object Label4: TLabel
+        Left = 12
+        Top = 3
+        Width = 128
+        Height = 25
+        Caption = 'v=200 '#1082#1084'/'#1095
+        Font.Charset = DEFAULT_CHARSET
+        Font.Color = clGray
+        Font.Height = -21
+        Font.Name = 'Tahoma'
+        Font.Style = [fsBold]
+        ParentFont = False
+      end
       object Panel2: TPanel
         Left = 12
         Top = 35
@@ -330,8 +339,6 @@ object mainForm: TmainForm
     Align = alClient
     ParentColor = False
     OnFrameData = FImage1FrameData
-    ExplicitWidth = 885
-    ExplicitHeight = 528
   end
   object PhTrackBar1: TPhTrackBar
     Left = 0
@@ -343,8 +350,6 @@ object mainForm: TmainForm
     TabOrder = 3
     TickMarks = tmBoth
     TickStyle = tsNone
-    ExplicitTop = 528
-    ExplicitWidth = 885
   end
   object ActionList1: TActionList
     Left = 56
