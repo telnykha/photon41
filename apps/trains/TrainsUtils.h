@@ -8,6 +8,8 @@
 #include "awpipl.h"
 #include "_LF.h"
 #include "TrainProcess.h"
+#include "TrainNumberProcess.h"
+
 
 class TTrainsAnalysisEngine
 {
@@ -18,11 +20,16 @@ private:
     TVAInitParams m_trains_params;
     TVAInitParams m_target_params;
 
-    TTrainProcess* m_process;
+    TTrainProcess* m_processTarget;
+    TTrainNumberProcess* m_processNumber;
+
     awpImage* m_pImage;
    	TMutex*   mutex;
     double    m_norm;
     double    m_old_norm;
+    bool      m_rect_visible;
+    TVARect   m_rect;
+    DWORD     m_old_time;
 protected:
     int count;
 public:
@@ -31,7 +38,8 @@ public:
     ~TTrainsAnalysisEngine();
 
     bool __fastcall Init(TVAInitParams* trains, TVAInitParams* target);
-    bool __fastcall Process(awpImage* img);
+    bool __fastcall ProcessTarget(awpImage* img);
+    bool __fastcall ProcessNumber(awpImage* img);
     void __fastcall Reset();
     bool __fastcall CreateModel(awpImage* img);
 

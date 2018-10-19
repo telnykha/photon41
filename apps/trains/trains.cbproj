@@ -130,8 +130,8 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-        <VerInfo_Build>59</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=NN-Videolab.net;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.59;InternalName=;LegalCopyright=Copyright (c) 2004-2018 NN-VideoLab.net;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=Trains Demo;ProductVersion=1.0.0.0;Comments=Версия для испытаний </VerInfo_Keys>
+        <VerInfo_Build>60</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=NN-Videolab.net;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.60;InternalName=;LegalCopyright=Copyright (c) 2004-2018 NN-VideoLab.net;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=Trains Demo;ProductVersion=1.0.0.0;Comments=Версия для испытаний </VerInfo_Keys>
         <BCC_IncludePath>$(PHOTON)\photon\;$(BCC_IncludePath)</BCC_IncludePath>
         <ILINK_LibraryPath>$(BDS)\lib\win32\release\;C:\Users\Public\Documents\Embarcadero\Studio\15.0\DCP\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
@@ -165,6 +165,10 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <CppCompile Include="PhTrainsTool.cpp">
             <DependentOn>PhTrainsTool.h</DependentOn>
             <BuildOrder>10</BuildOrder>
+        </CppCompile>
+        <CppCompile Include="TrainNumberProcess.cpp">
+            <DependentOn>TrainNumberProcess.h</DependentOn>
+            <BuildOrder>12</BuildOrder>
         </CppCompile>
         <CppCompile Include="TrainProcess.cpp">
             <DependentOn>TrainProcess.h</DependentOn>

@@ -44,6 +44,7 @@ __fastcall TmainForm::TmainForm(TComponent* Owner)
     m_trains_params = NULL;
     m_target_params = NULL;
     m_trainsTool = NULL;
+    m_rect_visible = false;
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::CloseActionExecute(TObject *Sender)
@@ -327,16 +328,69 @@ void __fastcall TmainForm::FImage1Frame(TObject *Sender, int widht,
 
 void __fastcall TmainForm::RenderZones(awpImage* image)
 {
+    if (!viewZonesAction->Checked)
+        return;
     if (image == NULL)
         return;
+    if (m_trains_params == NULL)
+        return;
+    if (m_trains_params->NumZones != 1)
+        return;
+    if (!m_trains_params->Zones[0].IsRect)
+        return;
+    if (m_target_params == NULL)
+        return;
+    if (m_target_params->NumZones != 1)
+        return;
+    if (!m_target_params->Zones[0].IsRect)
+        return;
+
+
     //todo: render VAInitParams
+    int w = image->sSizeX;
+    int h = image->sSizeY;
+
+    //
+    TVARect zone = m_trains_params->Zones[0].Rect;
+    awpRect rect;
+    rect.left = zone.LeftTop.X * w / 100.;
+    rect.top  = zone.LeftTop.Y * h / 100.;
+    rect.right = zone.RightBottom.X * w / 100.;
+    rect.bottom = zone.RightBottom.Y*h / 100.;
+
+    awpDrawCRect(image, &rect, 0,0,255,1);
+
+    zone = m_target_params->Zones[0].Rect;
+    rect;
+    rect.left = zone.LeftTop.X * w / 100.;
+    rect.top  = zone.LeftTop.Y * h / 100.;
+    rect.right = zone.RightBottom.X * w / 100.;
+    rect.bottom = zone.RightBottom.Y*h / 100.;
+
+    awpDrawCRect(image, &rect, 0,255,0,1);
 }
 
-
-void __fastcall TmainForm::DrawZones()
+void __fastcall TmainForm::RenderResult(awpImage* image)
 {
-    //todo: draw zones
+    if (!this->viewDetectRectAction->Checked)
+        return;
+    if (image == NULL)
+        return;
+    if (!this->m_rect_visible)
+        return;
+
+    int w = image->sSizeX;
+    int h = image->sSizeY;
+
+    awpRect rect;
+    rect.left = nrect.LeftTop.X * w / 100.;
+    rect.top  = nrect.LeftTop.Y * h / 100.;
+    rect.right = nrect.RightBottom.X * w / 100.;
+    rect.bottom = nrect.RightBottom.Y*h / 100.;
+
+    awpDrawCRect(image, &rect, 255,255,0,3);
 }
+
 
 void __fastcall TmainForm::FormShow(TObject *Sender)
 {
@@ -422,6 +476,8 @@ void __fastcall TmainForm::FImage1FrameData(TObject *Sender, int w, int h, int c
 		StatusBar1->Panels->Items[1]->Text = L"Кадр "  + IntToStr( m_videoSource->CurrentFrame) +
    		" of " + IntToStr(m_videoSource->NumFrames);
 	    StatusBar1->Panels->Items[3]->Text = L"Изображение: " + IntToStr(w) + L":" + IntToStr(h) + L":" + IntToStr(c);
+
+        PhTrackBar1->Position = m_videoSource->CurrentFrame;
     }
     else
 		StatusBar1->Panels->Items[1]->Text = L" ";
@@ -435,6 +491,9 @@ void __fastcall TmainForm::FImage1FrameData(TObject *Sender, int w, int h, int c
    img.pPixels = data;
 
    m_engine.SetImage(&img);
+
+   RenderZones(&img);
+   RenderResult(&img);
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::SetSource(TPhMediaSource* source)
@@ -467,6 +526,9 @@ void __fastcall TmainForm::SetSource(TPhMediaSource* source)
        cap  += L"]";
        this->Caption = cap;
 
+        PhTrackBar1->Min = 0;
+        PhTrackBar1->Max = m_videoSource->NumFrames;
+
    }
    else
    {
@@ -475,6 +537,8 @@ void __fastcall TmainForm::SetSource(TPhMediaSource* source)
        this->Caption = L"Обнаружение и распознавание номеров вагонов.";
   	   StatusBar1->Panels->Items[3]->Text = L"";
 
+       PhTrackBar1->Min = 0;
+       PhTrackBar1->Max = 0;
    }
 
 }
@@ -695,4 +759,44 @@ void __fastcall TmainForm::ToolChange(TObject *Sender)
     TuningForm->IsParamsEdited = true;
 }
 
+
+void __fastcall TmainForm::viewDetectRectActionExecute(TObject *Sender)
+{
+    viewDetectRectAction->Checked = !viewDetectRectAction->Checked;
+}
+//---------------------------------------------------------------------------
+void __fastcall TmainForm::viewZonesActionExecute(TObject *Sender)
+{
+    viewZonesAction->Checked = !viewZonesAction->Checked;
+}
+//---------------------------------------------------------------------------
+
+
+void __fastcall TmainForm::PhTrackBar1Change(TObject *Sender)
+{
+    if (this->m_videoSource != NULL)
+    {
+		StatusBar1->Panels->Items[1]->Text = L"Кадр "  + IntToStr( PhTrackBar1->Position ) +
+   		" of " + IntToStr(m_videoSource->NumFrames);
+
+    }
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::PhTrackBar1MouseUp(TObject *Sender, TMouseButton Button,
+          TShiftState Shift, int X, int Y)
+{
+    if (this->m_videoSource != NULL)
+        m_videoSource->CurrentFrame = PhTrackBar1->Position;
+
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::PhTrackBar1KeyUp(TObject *Sender, WORD &Key, TShiftState Shift)
+
+{
+    if (this->m_videoSource != NULL)
+        m_videoSource->CurrentFrame = PhTrackBar1->Position;
+}
+//---------------------------------------------------------------------------
 

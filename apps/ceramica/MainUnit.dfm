@@ -268,14 +268,16 @@ object MainForm: TMainForm
       Left = 1
       Top = 59
       Width = 553
-      Height = 430
+      Height = 429
       ThumbWidht = 128
       ThumbHeight = 128
       SlideShowInterval = 500
+      Align = alClient
       ParentColor = False
       OnMouseMove = PhImage1MouseMove
       AfterOpen = PhImage1AfterOpen
       OnFrameData = PhImage1FrameData
+      ExplicitHeight = 430
     end
     object Panel5: TPanel
       Left = 1

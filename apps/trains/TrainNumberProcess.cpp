@@ -3,7 +3,7 @@
 #include <System.hpp>
 #pragma hdrstop
 
-#include "TrainProcess.h"
+#include "TrainNumberProcess.h"
 #include "TrainsUtils.h"
 #pragma package(smart_init)
 //---------------------------------------------------------------------------
@@ -15,18 +15,18 @@
 //
 //   where UpdateCaption could look like:
 //
-//      void __fastcall TTrainProcess::UpdateCaption()
+//      void __fastcall TTrainNumberProcess::UpdateCaption()
 //      {
 //        Form1->Caption = "Updated in a thread";
 //      }
 //---------------------------------------------------------------------------
 
-__fastcall TTrainProcess::TTrainProcess(bool CreateSuspended)
+__fastcall TTrainNumberProcess::TTrainNumberProcess(bool CreateSuspended)
 	: TThread(CreateSuspended)
 {
 }
 //---------------------------------------------------------------------------
-void __fastcall TTrainProcess::Execute()
+void __fastcall TTrainNumberProcess::Execute()
 {
     awpImage* image = NULL;
 	//---- Place thread code here ----
@@ -39,12 +39,14 @@ void __fastcall TTrainProcess::Execute()
         // lock this operation
         awpCopyImage(check, &image);
         _AWP_SAFE_RELEASE_(check)
-        if (m_engine->ProcessTarget(image))
+        if (m_engine->ProcessNumber(image))
 	        Synchronize(&UpdateStatus);
     }
+
 }
 //---------------------------------------------------------------------------
-void __fastcall TTrainProcess::UpdateStatus()
+void __fastcall TTrainNumberProcess::UpdateStatus()
 {
      this->m_engine->UpdateStatus();
+
 }

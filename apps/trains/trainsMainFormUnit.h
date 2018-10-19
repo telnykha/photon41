@@ -82,8 +82,6 @@ __published:	// IDE-managed Components
 	TMenuItem *N20;
 	TMenuItem *N13;
 	TMenuItem *N12;
-	TMenuItem *N23;
-	TMenuItem *N24;
 	TMenuItem *N15;
 	TMenuItem *N16;
 	TSaveDialog *SaveDialog1;
@@ -111,12 +109,17 @@ __published:	// IDE-managed Components
 	TPhPaneTool *PhPaneTool1;
 	TPhTrackBar *PhTrackBar1;
 	TGroupBox *GroupBox1;
-	TLabel *Label1;
 	TPanel *Panel2;
 	TLabel *Label2;
 	TGroupBox *GroupBox2;
 	TLabel *Label3;
 	TLabel *Label4;
+	TMenuItem *N36;
+	TAction *viewZonesAction;
+	TAction *viewDetectRectAction;
+	TMenuItem *N37;
+	TMenuItem *N38;
+	TProgressBar *ProgressBar1;
 
     void __fastcall CloseActionExecute(TObject *Sender);
     void __fastcall FormResize(TObject *Sender);
@@ -157,6 +160,13 @@ __published:	// IDE-managed Components
 	void __fastcall modeAnalysisActionUpdate(TObject *Sender);
 	void __fastcall modeTuningActionExecute(TObject *Sender);
 	void __fastcall modeTuningActionUpdate(TObject *Sender);
+	void __fastcall viewDetectRectActionExecute(TObject *Sender);
+	void __fastcall viewZonesActionExecute(TObject *Sender);
+	void __fastcall PhTrackBar1Change(TObject *Sender);
+	void __fastcall PhTrackBar1MouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift,
+          int X, int Y);
+	void __fastcall PhTrackBar1KeyUp(TObject *Sender, WORD &Key, TShiftState Shift);
+
 
 
 
@@ -168,6 +178,8 @@ private:	// User declarations
     // параметры инициализации модуля.
     TVAInitParams*   m_trains_params;
     TVAInitParams*   m_target_params;
+    bool             m_rect_visible;
+    TVARect          m_nrect;
 
     TPhTrainsTool*   m_trainsTool;
 	void __fastcall ToolChange(TObject *Sender);
@@ -181,7 +193,7 @@ private:	// User declarations
 	void __fastcall SetMode(TAction* action);
 
     void __fastcall RenderZones(awpImage* image);
-    void __fastcall DrawZones();
+    void __fastcall RenderResult(awpImage* image);
 
 public:		// User declarations
 	__fastcall TmainForm(TComponent* Owner);
@@ -194,6 +206,8 @@ public:		// User declarations
     __property TVAInitParams* targetParams = {read = m_target_params};
     __property TTrainsAnalysisEngine* engine = {read = GetEngine};
     __property TAction* Mode = {read = m_modeAction};
+    __property bool rect_visible = {read = m_rect_visible, write = m_rect_visible};
+    __property TVARect  nrect = {read = m_nrect, write = m_nrect};
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TmainForm *mainForm;
