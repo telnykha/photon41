@@ -45,7 +45,7 @@ public:
 	virtual void __fastcall 	SaveToClipboardFormat(System::Word &AFormat, NativeUInt &AData, HPALETTE &APalette);
     void __fastcall             Clear();
     void __fastcall             GetAWPImage( awpImage **in_Image );
-    void __fastcall             SetAWPImage( const awpImage* pImage );
+    void __fastcall             SetAWPImage( awpImage* pImage );
 
     unsigned char*              OpenPixels();
     void __fastcall             ClosePixels();

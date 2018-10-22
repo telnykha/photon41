@@ -42,6 +42,8 @@ public:
     bool __fastcall ProcessNumber(awpImage* img);
     void __fastcall Reset();
     bool __fastcall CreateModel(awpImage* img);
+    bool __fastcall ClearModel();
+    bool __fastcall IsModelAvailable();
 
     awpImage* GetImage();
     void SetImage(awpImage* image);

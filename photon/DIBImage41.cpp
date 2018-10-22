@@ -115,7 +115,7 @@ void __fastcall TDIBImage::GetAWPImage( awpImage **in_Image )
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TDIBImage::SetAWPImage( const awpImage* pImage )
+void __fastcall TDIBImage::SetAWPImage(awpImage* pImage )
 {
     if ( pImage == NULL )
         return;

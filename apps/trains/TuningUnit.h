@@ -46,11 +46,11 @@ __published:	// IDE-managed Components
           int X, int Y);
 	void __fastcall Button3Click(TObject *Sender);
 private:	// User declarations
-    bool m_IsModelAvailable;
     bool m_ParamsEdited;
+    bool __fastcall GetIsModelAvailable();
 public:		// User declarations
 	__fastcall TTuningForm(TComponent* Owner);
-    __property bool IsModelAvailable = {read = m_IsModelAvailable};
+    __property bool IsModelAvailable = {read = GetIsModelAvailable};
     __property bool IsParamsEdited = {read = m_ParamsEdited, write = m_ParamsEdited};
 };
 //---------------------------------------------------------------------------

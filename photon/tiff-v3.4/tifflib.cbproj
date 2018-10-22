@@ -3,7 +3,7 @@
         <ProjectGuid>{026672E4-DB7D-4858-9DB6-A9C5AFBA967D}</ProjectGuid>
         <ProjectType>CppStaticLibrary</ProjectType>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Config Condition="'$(Config)'==''">Release</Config>
         <TargetedPlatforms>1</TargetedPlatforms>
         <AppType>StaticLibrary</AppType>
         <FrameworkType>None</FrameworkType>

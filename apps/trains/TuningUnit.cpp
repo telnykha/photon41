@@ -14,16 +14,15 @@ TTuningForm *TuningForm;
 __fastcall TTuningForm::TTuningForm(TComponent* Owner)
 	: TForm(Owner)
 {
-        m_IsModelAvailable = false;
         m_ParamsEdited     = false;
 }
 //---------------------------------------------------------------------------
 void __fastcall TTuningForm::ApplicationEvents1Idle(TObject *Sender, bool &Done)
 {
-      Button2->Enabled = m_IsModelAvailable;
+      Button2->Enabled = IsModelAvailable;
       Button3->Enabled = m_ParamsEdited;
-      Label4->Caption =  m_IsModelAvailable ? L"Модель мишени готова к использованию" : L"Модель мишени не существует";
-      Label4->Font->Color = m_IsModelAvailable ? clBlue : clRed;
+      Label4->Caption =  IsModelAvailable ? L"Модель мишени готова к использованию" : L"Модель мишени не существует";
+      Label4->Font->Color = IsModelAvailable ? clBlue : clRed;
 }
 //---------------------------------------------------------------------------
 
@@ -58,7 +57,7 @@ void __fastcall TTuningForm::Button1Click(TObject *Sender)
 {
     if (mainForm->targetParams != NULL)
     {
-    	m_IsModelAvailable = mainForm->CreateModel();
+    	mainForm->CreateModel();
     }
     else
         ShowMessage("Не могу создать модель!");
@@ -71,7 +70,7 @@ void __fastcall TTuningForm::Button2Click(TObject *Sender)
     {
         UnicodeString str = mainForm->targetParams->Path;
         DeleteFile(str);
-	    m_IsModelAvailable = false;
+        mainForm->engine->ClearModel();
     }
     else
         ShowMessage("Модуль не инициализирован.");
@@ -80,7 +79,7 @@ void __fastcall TTuningForm::Button2Click(TObject *Sender)
 //
 void __fastcall TTuningForm::FormShow(TObject *Sender)
 {
-    if (mainForm->targetParams != NULL)
+/*    if (mainForm->targetParams != NULL)
     {
           PhTrackBar2->Position = int(100.*mainForm->targetParams->EventSens);
           if (mainForm->targetParams->Path != NULL)
@@ -93,7 +92,7 @@ void __fastcall TTuningForm::FormShow(TObject *Sender)
           }
           else
             m_IsModelAvailable = false;
-    }
+    }*/
 
     if (mainForm->trainsParams != NULL)
     {
@@ -145,4 +144,11 @@ void __fastcall TTuningForm::Button3Click(TObject *Sender)
     m_ParamsEdited = false;
 }
 //---------------------------------------------------------------------------
+bool __fastcall TTuningForm::GetIsModelAvailable()
+{
+    if (mainForm->engine == NULL)
+        return false;
+
+    return mainForm->engine->IsModelAvailable();
+}
 

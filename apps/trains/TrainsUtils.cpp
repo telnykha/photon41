@@ -112,7 +112,10 @@ void __fastcall TTrainsAnalysisEngine::Reset()
     if (m_target != NULL)
 	    trainsTargetClose(m_target);
     m_old_norm = -1;
+    m_old_time = -1;
     count = 0;
+    m_rect_visible= false;
+    UpdateStatus();
 }
 
 
@@ -141,6 +144,11 @@ void __fastcall TTrainsAnalysisEngine::UpdateStatus()
     mainForm->Panel2->Color = m_norm > 0.70 ? clLime : clRed;
     mainForm->Label3->Font->Color = m_rect_visible ? clBlue : clGray;
     mainForm->ProgressBar1->Position = int(m_norm*100.);
+
+    if (m_old_time == -1)
+       mainForm->Label4->Caption = FormatFloat("000.00", 0) + L" κμ/χ";
+
+
     if (m_old_time != -1)
     {
         DWORD t = GetTickCount();
@@ -181,5 +189,23 @@ void __fastcall TTrainsAnalysisEngine::UpdateStatus()
     mainForm->rect_visible = m_rect_visible;
     mainForm->nrect = this->m_rect;
 }
+
+bool __fastcall TTrainsAnalysisEngine::ClearModel()
+{
+    if (m_target != NULL)
+        trainsTargetClearModel(m_target);
+}
+
+bool __fastcall TTrainsAnalysisEngine::IsModelAvailable()
+{
+    if (m_target != NULL)
+    {
+        bool res = false;
+        trainsTargetHasModel(m_target , &res);
+        return res;
+    }
+    return false;
+}
+
 
 #pragma package(smart_init)

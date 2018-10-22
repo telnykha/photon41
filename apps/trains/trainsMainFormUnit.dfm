@@ -41,7 +41,6 @@ object mainForm: TmainForm
         Text = #1048#1079#1086#1073#1088#1072#1078#1077#1085#1080#1077':'
         Width = 150
       end>
-    ExplicitWidth = 737
   end
   object Panel1: TPanel
     Left = 0
@@ -51,7 +50,6 @@ object mainForm: TmainForm
     Align = alBottom
     BevelOuter = bvLowered
     TabOrder = 1
-    ExplicitWidth = 737
     object SpeedButton2: TSpeedButton
       Left = 1
       Top = 1
@@ -265,7 +263,6 @@ object mainForm: TmainForm
       Height = 73
       Align = alLeft
       TabOrder = 0
-      ExplicitLeft = 321
       object Label2: TLabel
         Left = 59
         Top = 28
@@ -310,7 +307,6 @@ object mainForm: TmainForm
       Height = 73
       Align = alLeft
       TabOrder = 1
-      ExplicitLeft = 481
       object Label3: TLabel
         Left = 6
         Top = 28
@@ -354,7 +350,6 @@ object mainForm: TmainForm
     Align = alClient
     ParentColor = False
     OnFrameData = FImage1FrameData
-    ExplicitWidth = 737
   end
   object PhTrackBar1: TPhTrackBar
     Left = 0
@@ -370,7 +365,6 @@ object mainForm: TmainForm
     OnChange = PhTrackBar1Change
     OnKeyUp = PhTrackBar1KeyUp
     OnMouseUp = PhTrackBar1MouseUp
-    ExplicitWidth = 737
   end
   object ActionList1: TActionList
     Left = 56

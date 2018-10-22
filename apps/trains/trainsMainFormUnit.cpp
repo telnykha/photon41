@@ -147,7 +147,6 @@ void __fastcall TmainForm::CloseVideoActionExecute(TObject *Sender)
    FImage1->Close();
    FImage1->Refresh();
    SetSource(NULL);
-   this->SetMode(NULL);
 }
 //---------------------------------------------------------------------------
 
@@ -491,6 +490,7 @@ void __fastcall TmainForm::FImage1FrameData(TObject *Sender, int w, int h, int c
    img.pPixels = data;
 
    m_engine.SetImage(&img);
+   m_copy.SetImage(&img);
 
    RenderZones(&img);
    RenderResult(&img);
@@ -498,6 +498,8 @@ void __fastcall TmainForm::FImage1FrameData(TObject *Sender, int w, int h, int c
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::SetSource(TPhMediaSource* source)
 {
+   m_engine.Reset();
+
    if (m_videoSource != NULL)
    {
       delete m_videoSource;
@@ -558,6 +560,12 @@ void __fastcall TmainForm::SetMode(TAction* action)
         }
         else
         {
+            TDIBImage* dib = (TDIBImage*) FImage1->Bitmap;
+            if (dib == NULL)
+                return;
+            dib->SetAWPImage(m_copy.GetImage());
+
+
             if (m_trainsTool)
                 delete m_trainsTool;
             m_trainsTool = new TPhTrainsTool(NULL);
