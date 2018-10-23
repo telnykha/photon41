@@ -26,7 +26,6 @@ __published:	// IDE-managed Components
 	TEdit *Edit2;
 	TLabel *Label3;
 	TButton *Button1;
-	TButton *Button2;
 	TLabel *Label4;
 	TApplicationEvents *ApplicationEvents1;
 	TPhTrackBar *PhTrackBar1;
@@ -36,7 +35,6 @@ __published:	// IDE-managed Components
 	void __fastcall CheckBox1Click(TObject *Sender);
 	void __fastcall CheckBox2Click(TObject *Sender);
 	void __fastcall Button1Click(TObject *Sender);
-	void __fastcall Button2Click(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall PhTrackBar1Change(TObject *Sender);
 	void __fastcall PhTrackBar1MouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift,

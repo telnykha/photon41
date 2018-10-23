@@ -57,17 +57,6 @@ __published:	// IDE-managed Components
 	TAction *NextFrameAction;
 	TAction *LastFrameAction;
 	TAction *OptionsAction;
-	TPopupMenu *PopupMenu1;
-	TMenuItem *N1;
-	TMenuItem *N4;
-	TMenuItem *N5;
-	TMenuItem *N6;
-	TMenuItem *N7;
-	TMenuItem *N8;
-	TMenuItem *N9;
-	TMenuItem *N2;
-	TMenuItem *N10;
-	TMenuItem *N3;
 	TOpenDialog *OpenDialog1;
 	TMainMenu *MainMenu1;
 	TMenuItem *N11;
@@ -194,6 +183,8 @@ private:	// User declarations
 
     void __fastcall RenderZones(awpImage* image);
     void __fastcall RenderResult(awpImage* image);
+
+    awpImage* __fastcall GetModelImage(awpImage* image);
 
 public:		// User declarations
 	__fastcall TmainForm(TComponent* Owner);

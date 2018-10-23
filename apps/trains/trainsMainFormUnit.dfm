@@ -350,6 +350,8 @@ object mainForm: TmainForm
     Align = alClient
     ParentColor = False
     OnFrameData = FImage1FrameData
+    ExplicitLeft = 1
+    ExplicitTop = -6
   end
   object PhTrackBar1: TPhTrackBar
     Left = 0
@@ -497,41 +499,6 @@ object mainForm: TmainForm
       Caption = #1042#1099#1074#1086#1076' '#1076#1077#1090#1077#1082#1090#1086#1088#1072
       Checked = True
       OnExecute = viewDetectRectActionExecute
-    end
-  end
-  object PopupMenu1: TPopupMenu
-    Left = 88
-    Top = 24
-    object N1: TMenuItem
-      Caption = #1054#1090#1082#1088#1099#1090#1100' '#1080#1079#1086#1073#1088#1072#1078#1077#1085#1080#1077'...'
-      Visible = False
-    end
-    object N4: TMenuItem
-      Caption = '-'
-    end
-    object N5: TMenuItem
-      Action = ModePaneAction
-    end
-    object N6: TMenuItem
-      Action = ModeSelRectAction
-    end
-    object N7: TMenuItem
-      Caption = '-'
-    end
-    object N8: TMenuItem
-      Action = ActualSizeAction
-    end
-    object N9: TMenuItem
-      Action = BestFitAction
-    end
-    object N2: TMenuItem
-      Caption = '-'
-    end
-    object N10: TMenuItem
-      Action = AboutAction
-    end
-    object N3: TMenuItem
-      Action = CloseAction
     end
   end
   object OpenDialog1: TOpenDialog

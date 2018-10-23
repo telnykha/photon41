@@ -19,7 +19,6 @@ __fastcall TTuningForm::TTuningForm(TComponent* Owner)
 //---------------------------------------------------------------------------
 void __fastcall TTuningForm::ApplicationEvents1Idle(TObject *Sender, bool &Done)
 {
-      Button2->Enabled = IsModelAvailable;
       Button3->Enabled = m_ParamsEdited;
       Label4->Caption =  IsModelAvailable ? L"Модель мишени готова к использованию" : L"Модель мишени не существует";
       Label4->Font->Color = IsModelAvailable ? clBlue : clRed;
@@ -57,43 +56,17 @@ void __fastcall TTuningForm::Button1Click(TObject *Sender)
 {
     if (mainForm->targetParams != NULL)
     {
-    	mainForm->CreateModel();
+    	if (!mainForm->CreateModel())
+	        ShowMessage("Не могу обновить модель!");
     }
     else
         ShowMessage("Не могу создать модель!");
 }
 //---------------------------------------------------------------------------
 
-void __fastcall TTuningForm::Button2Click(TObject *Sender)
-{
-    if (mainForm->targetParams != NULL)
-    {
-        UnicodeString str = mainForm->targetParams->Path;
-        DeleteFile(str);
-        mainForm->engine->ClearModel();
-    }
-    else
-        ShowMessage("Модуль не инициализирован.");
-}
-//---------------------------------------------------------------------------
 //
 void __fastcall TTuningForm::FormShow(TObject *Sender)
 {
-/*    if (mainForm->targetParams != NULL)
-    {
-          PhTrackBar2->Position = int(100.*mainForm->targetParams->EventSens);
-          if (mainForm->targetParams->Path != NULL)
-          {
-             UnicodeString str = mainForm->targetParams->Path;
-             if (FileExists(str, false))
-			   m_IsModelAvailable = true;
-             else
-               m_IsModelAvailable = false;
-          }
-          else
-            m_IsModelAvailable = false;
-    }*/
-
     if (mainForm->trainsParams != NULL)
     {
           PhTrackBar1->Position = int(100.*mainForm->trainsParams->EventSens);

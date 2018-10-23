@@ -6,7 +6,7 @@
         <AppType>Application</AppType>
         <MainSource>trains.cpp</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>1</TargetedPlatforms>
     </PropertyGroup>
@@ -113,9 +113,9 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <BCC_MonitorInlinePtrAccess>true</BCC_MonitorInlinePtrAccess>
         <BCC_MonitorGlobalAndStackData>true</BCC_MonitorGlobalAndStackData>
         <BCC_AllCodeguardOptions>false</BCC_AllCodeguardOptions>
-        <VerInfo_Build>39</VerInfo_Build>
+        <VerInfo_Build>40</VerInfo_Build>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
-        <VerInfo_Keys>CompanyName=NN-Videolab.net;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.39;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=Trains Demo;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
+        <VerInfo_Keys>CompanyName=NN-Videolab.net;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.40;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=Trains Demo;ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <ILINK_LibraryPath>$(BDS)\lib\Win32\debug\;C:\Users\Public\Documents\Embarcadero\Studio\15.0\DCP\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <IncludePath>$(PHOTON)\photon\;$(IncludePath)</IncludePath>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
@@ -130,8 +130,8 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <VerInfo_AutoIncVersion>true</VerInfo_AutoIncVersion>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
-        <VerInfo_Build>63</VerInfo_Build>
-        <VerInfo_Keys>CompanyName=NN-Videolab.net;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.63;InternalName=;LegalCopyright=Copyright (c) 2004-2018 NN-VideoLab.net;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=Trains Demo;ProductVersion=1.0.0.0;Comments=Версия для испытаний </VerInfo_Keys>
+        <VerInfo_Build>69</VerInfo_Build>
+        <VerInfo_Keys>CompanyName=NN-Videolab.net;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.69;InternalName=;LegalCopyright=Copyright (c) 2004-2018 NN-VideoLab.net;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=Trains Demo;ProductVersion=1.0.0.0;Comments=Версия для испытаний </VerInfo_Keys>
         <BCC_IncludePath>$(PHOTON)\photon\;$(BCC_IncludePath)</BCC_IncludePath>
         <ILINK_LibraryPath>$(BDS)\lib\win32\release\;C:\Users\Public\Documents\Embarcadero\Studio\15.0\DCP\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>

@@ -4,7 +4,7 @@ object TuningForm: TTuningForm
   BorderIcons = [biMinimize, biMaximize]
   BorderStyle = bsToolWindow
   Caption = #1053#1072#1089#1090#1088#1086#1081#1082#1072' '#1084#1086#1076#1091#1083#1103
-  ClientHeight = 320
+  ClientHeight = 299
   ClientWidth = 250
   Color = clBtnFace
   Font.Charset = DEFAULT_CHARSET
@@ -92,7 +92,7 @@ object TuningForm: TTuningForm
     Left = 3
     Top = 126
     Width = 244
-    Height = 186
+    Height = 155
     Margins.Top = 10
     Align = alTop
     TabOrder = 2
@@ -104,8 +104,8 @@ object TuningForm: TTuningForm
       Caption = #1063#1091#1074#1089#1090#1074#1080#1090#1077#1083#1100#1085#1086#1089#1090#1100' '#1076#1077#1090#1077#1082#1090#1086#1088#1072
     end
     object Label4: TLabel
-      Left = 19
-      Top = 128
+      Left = 22
+      Top = 97
       Width = 159
       Height = 13
       Caption = #1052#1086#1076#1077#1083#1100' '#1084#1080#1096#1077#1085#1080' '#1085#1077' '#1089#1091#1097#1077#1089#1090#1074#1091#1077#1090
@@ -133,18 +133,9 @@ object TuningForm: TTuningForm
       Top = 66
       Width = 162
       Height = 25
-      Caption = #1057#1086#1079#1076#1072#1090#1100' '#1084#1086#1076#1077#1083#1100
+      Caption = #1054#1073#1085#1086#1074#1080#1090#1100' '#1084#1086#1076#1077#1083#1100
       TabOrder = 1
       OnClick = Button1Click
-    end
-    object Button2: TButton
-      Left = 19
-      Top = 97
-      Width = 162
-      Height = 25
-      Caption = #1059#1076#1072#1083#1080#1090#1100' '#1084#1086#1076#1077#1083#1100
-      TabOrder = 2
-      OnClick = Button2Click
     end
     object PhTrackBar2: TPhTrackBar
       Left = 16
@@ -154,7 +145,7 @@ object TuningForm: TTuningForm
       Max = 100
       Position = 50
       ShowSelRange = False
-      TabOrder = 3
+      TabOrder = 2
       ThumbLength = 15
       TickMarks = tmBoth
       TickStyle = tsNone
@@ -162,12 +153,12 @@ object TuningForm: TTuningForm
       OnMouseUp = PhTrackBar2MouseUp
     end
     object Button3: TButton
-      Left = 19
-      Top = 147
+      Left = 16
+      Top = 116
       Width = 162
       Height = 25
       Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1087#1072#1088#1072#1084#1077#1090#1088#1099
-      TabOrder = 4
+      TabOrder = 3
       OnClick = Button3Click
     end
   end

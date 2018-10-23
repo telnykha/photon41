@@ -750,7 +750,14 @@ bool __fastcall TmainForm::CreateModel()
     dib->GetAWPImage(&img);
     if (img != NULL)
     {
-        res = m_engine.CreateModel(img);
+
+        awpImage* model = this->GetModelImage(img);
+        if (model != NULL)
+        {
+            res = m_engine.CreateModel(model);
+	        _AWP_SAFE_RELEASE_(model)
+        }
+
         _AWP_SAFE_RELEASE_(img)
     }
 
@@ -761,8 +768,8 @@ void __fastcall TmainForm::ToolChange(TObject *Sender)
 {
     //
     TPhTrainsTool* tool = (TPhTrainsTool*)Sender;
-    this->m_target_params->Zones[0].Rect = tool->modelRect;
-    this->m_trains_params->Zones[0].Rect = tool->numberRect;
+    m_target_params->Zones[0].Rect = tool->modelRect;
+    m_trains_params->Zones[0].Rect = tool->numberRect;
     //UpdateParams();
     TuningForm->IsParamsEdited = true;
 }
@@ -807,4 +814,27 @@ void __fastcall TmainForm::PhTrackBar1KeyUp(TObject *Sender, WORD &Key, TShiftSt
         m_videoSource->CurrentFrame = PhTrackBar1->Position;
 }
 //---------------------------------------------------------------------------
+awpImage* __fastcall TmainForm::GetModelImage(awpImage* image)
+{
+    if (image == NULL || m_target_params == NULL || m_target_params->NumZones != 1 ||
+    !m_target_params->Zones[0].IsRect)
+        return NULL;
+
+    //
+    int w = image->sSizeX;
+    int h = image->sSizeY;
+    TVARect vr = m_target_params->Zones[0].Rect;
+
+    awpRect r;
+    r.left = vr.LeftTop.X* w / 100.;
+    r.right = vr.RightBottom.X*w / 100.;
+    r.top = vr.LeftTop.Y * h / 100.;
+    r.bottom = vr.RightBottom.Y * h / 100.;
+
+    awpImage* res = NULL;
+
+    if (awpCopyRect(image, &res, &r) != AWP_OK)
+        return NULL;
+    return res;
+}
 
