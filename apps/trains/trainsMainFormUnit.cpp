@@ -838,3 +838,5 @@ awpImage* __fastcall TmainForm::GetModelImage(awpImage* image)
     return res;
 }
 
+
+

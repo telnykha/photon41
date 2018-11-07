@@ -351,7 +351,6 @@ object mainForm: TmainForm
     ParentColor = False
     OnFrameData = FImage1FrameData
     ExplicitLeft = 1
-    ExplicitTop = -6
   end
   object PhTrackBar1: TPhTrackBar
     Left = 0
@@ -407,11 +406,6 @@ object mainForm: TmainForm
       Caption = #1054#1090#1082#1088#1099#1090#1100' '#1074#1080#1076#1077#1086#1092#1072#1081#1083'...'
       OnExecute = OpenVideoActionExecute
     end
-    object SaveImageAction: TAction
-      Category = 'Files'
-      Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1080#1079#1086#1073#1088#1072#1078#1077#1085#1080#1077'...'
-      Visible = False
-    end
     object CloseVideoAction: TAction
       Category = 'Files'
       Caption = #1047#1072#1082#1088#1099#1090#1100' '#1074#1080#1076#1077#1086#1080#1089#1090#1086#1095#1085#1080#1082
@@ -447,10 +441,6 @@ object mainForm: TmainForm
       Caption = #1074' '#1082#1086#1085#1077#1094
       OnExecute = LastFrameActionExecute
       OnUpdate = LastFrameActionUpdate
-    end
-    object OptionsAction: TAction
-      Category = 'Tools'
-      Caption = #1055#1077#1088#1077#1093#1086#1076' '#1085#1072' '#1082#1072#1076#1088'...'
     end
     object logOpenAction: TAction
       Hint = #1047#1072#1075#1088#1091#1079#1080#1090#1100' log '#1092#1072#1081#1083
@@ -540,7 +530,8 @@ object mainForm: TmainForm
         Caption = '-'
       end
       object N20: TMenuItem
-        Action = SaveImageAction
+        Caption = #1057#1086#1093#1088#1072#1085#1080#1090#1100' '#1080#1079#1086#1073#1088#1072#1078#1077#1085#1080#1077'...'
+        Visible = False
       end
       object N13: TMenuItem
         Caption = '-'

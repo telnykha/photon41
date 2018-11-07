@@ -49,14 +49,12 @@ __published:	// IDE-managed Components
 	TAction *BestFitAction;
 	TAction *AboutAction;
 	TAction *OpenVideoAction;
-	TAction *SaveImageAction;
 	TAction *CloseVideoAction;
 	TAction *PlayAction;
 	TAction *FirstFrameAction;
 	TAction *PrevFrameAction;
 	TAction *NextFrameAction;
 	TAction *LastFrameAction;
-	TAction *OptionsAction;
 	TOpenDialog *OpenDialog1;
 	TMainMenu *MainMenu1;
 	TMenuItem *N11;

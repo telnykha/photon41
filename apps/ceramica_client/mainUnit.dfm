@@ -22,8 +22,6 @@ object Form3: TForm3
     Align = alTop
     Caption = #1048#1079#1084#1077#1088#1077#1085#1085#1099#1077' '#1079#1085#1072#1095#1077#1085#1080#1103
     TabOrder = 0
-    ExplicitTop = 41
-    ExplicitWidth = 292
     object Label1: TLabel
       Left = 5
       Top = 23
@@ -254,10 +252,6 @@ object Form3: TForm3
     Lines.Strings = (
       'Memo1')
     TabOrder = 2
-    ExplicitLeft = 23
-    ExplicitTop = 353
-    ExplicitWidth = 292
-    ExplicitHeight = 121
   end
   object Panel1: TPanel
     Left = 0
@@ -267,8 +261,6 @@ object Form3: TForm3
     Align = alTop
     BevelOuter = bvNone
     TabOrder = 3
-    ExplicitTop = 152
-    ExplicitWidth = 292
     object Chart1: TChart
       Left = 0
       Top = 0
@@ -345,9 +337,6 @@ object Form3: TForm3
       Align = alClient
       BevelOuter = bvNone
       TabOrder = 0
-      ExplicitTop = 17
-      ExplicitWidth = 292
-      ExplicitHeight = 144
       DefaultCanvas = 'TGDIPlusCanvas'
       PrintMargins = (
         15
@@ -379,7 +368,6 @@ object Form3: TForm3
     Caption = #1055#1086#1076#1082#1083#1102#1095#1080#1090#1100#1089#1103
     TabOrder = 4
     OnClick = Button1Click
-    ExplicitTop = 47
   end
   object IdTCPClient1: TIdTCPClient
     OnDisconnected = IdTCPClient1Disconnected

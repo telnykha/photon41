@@ -59,7 +59,11 @@ void  __fastcall TPhVideoSource::DecodePicture()
       awpImage* img = NULL;
       if (awpcvQueryImagePos(h, &img, m_CurrentFrame) == S_OK && img != NULL)
       {
-		  m_pImage->SetImageData(img->sSizeX, img->sSizeY, img->bChannels, (unsigned char*)img->pPixels);
+          awpImage* img1 = NULL;
+          awpCopyImage(img, &img1);
+          awpResize(img1, img1->sSizeX / 3, img1->sSizeY / 3);
+		  m_pImage->SetImageData(img1->sSizeX, img1->sSizeY, img1->bChannels, (unsigned char*)img1->pPixels);
+          awpReleaseImage(&img1);
           awpcvFreeImage(img);
       }
    }
@@ -135,7 +139,13 @@ void __fastcall TPhVideoSource::TimerEventHandler(TObject *Sender)
 	  awpImage* img = NULL;
 	  if (awpcvQueryImage(h, &img) == S_OK && img != NULL)
 	  {
-		  m_pImage->SetImageData(img->sSizeX, img->sSizeY, img->bChannels, (unsigned char*)img->pPixels);
+          awpImage* img1 = NULL;
+          awpCopyImage(img, &img1);
+          awpResize(img1, img1->sSizeX / 3, img1->sSizeY / 3);
+
+		  m_pImage->SetImageData(img1->sSizeX, img1->sSizeY, img1->bChannels, (unsigned char*)img1->pPixels);
+
+          awpReleaseImage(&img1);
 		  m_CurrentFrame++;
 		  awpcvFreeImage(img);
 	  }

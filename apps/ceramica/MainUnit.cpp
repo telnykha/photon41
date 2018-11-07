@@ -209,6 +209,7 @@ void __fastcall TMainForm::fileCloseActionExecute(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::FormClose(TObject *Sender, TCloseAction &Action)
 {
+	IdTCPServer1->Active = false;
     if (m_videoSource != NULL)
         delete m_videoSource;
 }
@@ -360,13 +361,13 @@ void __fastcall TMainForm::SetMode(TAction* action)
    {
       Reset();
       this->ShowResult();
-      IdTCPServer1->Active = false;
+//      IdTCPServer1->Active = false;
       this->SpeedButton12->Down = true;
       this->SpeedButton13->Down = false;
    }
    else
    {
-      IdTCPServer1->Active = true;
+//
       this->SpeedButton13->Down = true;
       this->SpeedButton12->Down = false;
    }
@@ -389,6 +390,7 @@ void __fastcall TMainForm::FormCreate(TObject *Sender)
 
   	IdTCPServer1->Bindings->Add()->IP =  this->ComboBox1->Items->Strings[0];
   	IdTCPServer1->Bindings->Add()->Port = this->SpinEdit3->Value;
+    IdTCPServer1->Active = true;
 
 }
 //---------------------------------------------------------------------------
@@ -920,7 +922,7 @@ void __fastcall TMainForm::IdTCPServer1Execute(TIdContext *AContext)
     r.ma = m_c.ValueMM(m_engine.major);
     r.angle = m_engine.angle;
 
-
+/*
   AContext->Connection->IOHandler->WriteLn(IntToStr(1945) + " : " +
   IntToStr(year) + " : " +
   IntToStr(month) + " : " +
@@ -935,13 +937,35 @@ void __fastcall TMainForm::IdTCPServer1Execute(TIdContext *AContext)
   FormatFloat("000.00  mm", r.ypos) + " : " +
   FormatFloat("000.00  grad", r.angle)
   );
+
+  AContext->Connection->IOHandler->WriteLn(IntToStr(1945)+
+  IntToStr(year) +
+  IntToStr(month) +
+  IntToStr(day) +
+  IntToStr(hour) +
+  IntToStr(min) +
+  IntToStr(sec) +
+  FormatFloat("000.00", r.diam) +
+  FormatFloat("000.00", r.ma) +
+  FormatFloat("000.00", r.mi) +
+  FormatFloat("000.00", r.xpos)+
+  FormatFloat("000.00", r.ypos)+
+  FormatFloat("000.00", 90+r.angle)
+  );
+*/
+
   float array[14];
   // упаковка данных
   TByteDynArray a;
   a.set_length(66);
+  unsigned char status = 0;
   unsigned char* byte = &a[0];
   int* tmp = (int*)byte;
-  tmp[0] = 1945;
+  //tmp[0] = 0xFFDDAA00;
+  byte[0] = 0xFF;
+  byte[1] = 0xDD;
+  byte[2] = 0xAA;
+  byte[3] = status;
   tmp[1] = year;
   tmp[2] = month;
   tmp[3] = day;

@@ -41,8 +41,8 @@ void __fastcall TForm3::Timer1Timer(TObject *Sender)
     {
            IdTCPClient1->Connect();
            IdTCPClient1->IOHandler->WriteLn("Hello");
-           UnicodeString LLine = IdTCPClient1->IOHandler->ReadLn();
-           Memo1->Lines->Add(L"Server says: " + LLine);
+           //UnicodeString LLine = IdTCPClient1->IOHandler->ReadLn();
+           //Memo1->Lines->Add(L"Server says: " + LLine);
            TByteDynArray a;
            a.set_length(66);
            IdTCPClient1->IOHandler->ReadBytes(a,66,false);

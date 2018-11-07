@@ -35,6 +35,7 @@ void __fastcall TPhVideoThread::Execute()
 	while (!this->Terminated)
 	{
 		Synchronize(&DecodeHelper);
+        Sleep(10);
 	}
 }
 //---------------------------------------------------------------------------

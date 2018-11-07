@@ -67,9 +67,11 @@ bool __fastcall TTrainsAnalysisEngine::ProcessNumber(awpImage* img)
     {
             char number[10];
             TVARect rect;
+            m_strNum = "########";
             int res = trainsProcess(m_trains, (unsigned char*)img->pPixels, img->sSizeX, img->sSizeY, img->bChannels, number, rect);
             m_rect_visible = res == 0;
             m_rect = rect;
+            m_strNum = number;
             return true;
     }
 
@@ -136,7 +138,6 @@ void TTrainsAnalysisEngine::SetImage(awpImage* image)
     mutex->Acquire();
     awpCopyImage(image, &m_pImage);
     mutex->Release();
-
 }
 
 void __fastcall TTrainsAnalysisEngine::UpdateStatus()
@@ -188,6 +189,7 @@ void __fastcall TTrainsAnalysisEngine::UpdateStatus()
     m_old_norm = m_norm;
     mainForm->rect_visible = m_rect_visible;
     mainForm->nrect = this->m_rect;
+    mainForm->Label3->Caption = this->m_strNum;
 }
 
 bool __fastcall TTrainsAnalysisEngine::ClearModel()

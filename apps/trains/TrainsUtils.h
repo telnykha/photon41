@@ -30,6 +30,7 @@ private:
     bool      m_rect_visible;
     TVARect   m_rect;
     DWORD     m_old_time;
+    AnsiString m_strNum;
 protected:
     int count;
 public:
