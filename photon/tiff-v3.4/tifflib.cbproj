@@ -102,6 +102,7 @@
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
         <BCC_UserSuppliedOptions> -tWM -Vx -r- -k -Ve -r</BCC_UserSuppliedOptions>
         <BCC_Defines>NDEBUG;$(BCC_Defines);$(BCC_Defines)</BCC_Defines>
+        <Manifest_File>(None)</Manifest_File>
     </PropertyGroup>
     <ItemGroup>
         <CppCompile Include="libtiff\fax3sm.c">
