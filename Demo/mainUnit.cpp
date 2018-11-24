@@ -424,7 +424,7 @@ void __fastcall TmainForm::viewMosaicActionUpdate(TObject *Sender)
 void __fastcall TmainForm::TrackBar1Change(TObject *Sender)
 {
     PhImage1->SlideShowInterval = TrackBar1->Position;
-    Panel3->Caption = IntToStr((int)PhImage1->SlideShowInterval) + L" ms";
+    Panel3->Caption = L"Slideshow" + IntToStr((int)PhImage1->SlideShowInterval) + L" ms";
 }
 //---------------------------------------------------------------------------
 

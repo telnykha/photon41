@@ -1657,9 +1657,34 @@ void __fastcall TPhCustomImage::SetImageData(int w, int h, int c, unsigned char*
     }
 
     TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
-    dib->SetAWPImage(&img);
-    BestFit();
+    if (dib != NULL)
+    {
+        dib->SetAWPImage(&img);
+        BestFit();
+    }
 }
+
+bool __fastcall TPhCustomImage::GetAwpImage(awpImage** img)
+{
+    TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
+    if (dib == NULL)
+        return false;
+    dib->GetAWPImage(img);
+    return *img != NULL;
+}
+bool __fastcall TPhCustomImage::SetAwpImage(awpImage* img)
+{
+    TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
+    if (dib == NULL)
+        return false;
+    if (dib != NULL)
+    {
+        dib->SetAWPImage(img);
+        BestFit();
+    }
+    return true;
+}
+
 
 //=============================================================================
 __fastcall TPhImage::TPhImage(HWND Parent):TPhCustomImage(Parent)

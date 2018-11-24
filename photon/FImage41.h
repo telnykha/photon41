@@ -19,7 +19,10 @@ const int crHandCloseCursor = 2;
 const int crMagnifyCursor   = 3;
 const int crLenzCursor      = 4;
 const int crZoom2RectCursor = 5;
+
 #include "PhFrames.h"
+
+#include "awpipl.h"
 
 typedef enum {readJob, copyJob, moveJob, deleteJob, convertJob, processJob} EPhJobReason;
 typedef void __fastcall (__closure *TPhProgressEvent)(System::TObject* Sender, UnicodeString& strMessage, int Progress);
@@ -192,6 +195,9 @@ public:
     void __fastcall             Move(const LPWSTR lpwFolderName);
 
     void __fastcall             SetImageData(int w, int h, int c, unsigned char* data);
+
+    bool __fastcall             GetAwpImage(awpImage** img);
+    bool __fastcall             SetAwpImage(awpImage* img);
 
 	// Public properties
 	__property  AnsiString      AFileName = {read = FFileName, write = FFileName};
