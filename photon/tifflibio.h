@@ -16,8 +16,7 @@ class TTiffDecoder : public TImageDecoder
 protected:
     TIFF* tif;
     char* buf;
-    uint32 tiff_buf_size;
-    //uint32 w;
+	uint32 tiff_buf_size;
     uint16 planar;
     uint16 nsamples;
     uint32 depth;

@@ -55,7 +55,7 @@
         <ILINK_GenerateImportLibrary>true</ILINK_GenerateImportLibrary>
         <_TCHARMapping>char</_TCHARMapping>
         <Multithreaded>true</Multithreaded>
-        <IncludePath>photon\;$(AWP);$(LF);$(TINY);$(JPEG);$(FFMPEG);$(SDL);$(ZLIB);$(PNG);$(TIFF);$(IncludePath)</IncludePath>
+        <IncludePath>photon\;$(AWP);$(LF);$(TINY);$(JPEG);$(PHOTON41)\include;$(IncludePath)</IncludePath>
         <ILINK_LibraryPath>photon\;C:\_alt\photon41\;$(PHOTON41)\lib\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <SanitizedProjectName>photon41</SanitizedProjectName>
         <VerInfo_Locale>1049</VerInfo_Locale>
