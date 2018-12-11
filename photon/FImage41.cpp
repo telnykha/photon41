@@ -1541,18 +1541,29 @@ void            __fastcall TPhCustomImage::DrawSelectedItems(Graphics::TBitmap* 
 			y = i / w;
 			x *= m_tWidth;
 			y *= m_tHeight;
-/*
+
 			rect.init(x,y,x+m_tWidth,y+m_tHeight);
 			rect1 = GetScreenRect(rect);
-   			cnv->Pen->Width = 8;
-            cnv->Ellipse(rect1);
-            rect1.Inflate(-15, -15);
-			cnv->Pen->Width = 4;
-            cnv->Ellipse(rect1);
-            rect1.Inflate(-15, -15);
 			cnv->Pen->Width = 2;
-            cnv->Ellipse(rect1);
- 			cnv->Rectangle(rect1);*/
+			cnv->Pen->Color = clRed;
+			// draw dots
+			const int num = 16;
+			int _w = rect1.Width();
+			int _h = rect1.Height();
+			double _dx = (double)_w / num;
+			double _dy = (double)_h / num;
+			for (int j = 1; j < num; j++)
+			{
+				for (int k = 1; k < num; k++)
+				{
+				   double x1,x2,y1,y2;
+				   x1 = rect1.Left + k*_dx;
+				   x2 = x1 + 2;
+				   y1 = rect1.top + j*_dy;
+				   y2 = y1 + 2;
+				   cnv->Rectangle(x1,y1,x2,y2);
+				}
+			}
 		}
 	}
 

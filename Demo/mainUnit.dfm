@@ -44,8 +44,8 @@ object mainForm: TmainForm
     Top = 0
     Width = 700
     Height = 400
-    ThumbWidht = 240
-    ThumbHeight = 320
+    ThumbWidht = 128
+    ThumbHeight = 128
     SlideShowInterval = 500
     Align = alClient
     ParentColor = False
