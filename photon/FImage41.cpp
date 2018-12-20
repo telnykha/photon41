@@ -1027,13 +1027,24 @@ TRect __fastcall TPhCustomImage::GetImageRect(TRect ScreenR)
 
     return ImageR;
 }
+TPoint   __fastcall         TPhCustomImage::GetImagePoint(int x, int y)
+{
+	TPoint result;
+     result.x = 0;
+	 result.y = 0;
+	 if (Empty)
+		return result;
+	 result.x = this->GetImageX(x);
+     result.y = this->GetImageY(y);
+	 return result;
+}
 TPoint   __fastcall         TPhCustomImage::GetScreenPoint(int x, int y)
 {
      TPoint result;
-     result.x = 0;
-     result.y = 0;
-     if (Empty)
-        return result;
+	 result.x = 0;
+	 result.y = 0;
+	 if (Empty)
+		return result;
     int dx = 0;
     int dy = 0;
 

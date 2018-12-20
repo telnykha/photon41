@@ -185,6 +185,7 @@ public:
 	TRect    __fastcall         GetImageRect(TRect ScreenR);
 	TRect    __fastcall    		GetScreenRect(TRect ImageR);
 	TPoint   __fastcall         GetScreenPoint(int x, int y);
+	TPoint   __fastcall         GetImagePoint(int x, int y);
 
 	//tools
 	void __fastcall             SelectPhTool(TPhImageTool* tool);
