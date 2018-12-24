@@ -43,9 +43,9 @@ object mainForm: TmainForm
     Left = 0
     Top = 0
     Width = 700
-    Height = 400
-    ThumbWidht = 128
-    ThumbHeight = 128
+    Height = 355
+    ThumbWidht = 48
+    ThumbHeight = 48
     SlideShowInterval = 500
     Align = alClient
     ParentColor = False
@@ -58,6 +58,7 @@ object mainForm: TmainForm
     OnStart = PhImage1Start
     OnFinish = PhImage1Finish
     OnCancel = PhImage1Cancel
+    OnFrame = PhImage1Frame
   end
   object Panel1: TPanel
     Left = 0
@@ -339,6 +340,17 @@ object mainForm: TmainForm
         OnClick = Button1Click
       end
     end
+  end
+  object PhTrackBar1: TPhTrackBar
+    Left = 0
+    Top = 355
+    Width = 700
+    Height = 45
+    Align = alBottom
+    ShowSelRange = False
+    TabOrder = 3
+    TickMarks = tmBoth
+    OnMouseUp = PhTrackBar1MouseUp
   end
   object ActionList1: TActionList
     Left = 24

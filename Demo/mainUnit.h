@@ -23,6 +23,7 @@
 #include "PhZoomToRectTool.h"
 #include "PhSelectRectTool.h"
 #include <Vcl.Samples.Gauges.hpp>
+#include "PhTrackBar.h"
 //---------------------------------------------------------------------------
 class TmainForm : public TForm
 {
@@ -152,6 +153,7 @@ __published:	// IDE-managed Components
 	TButton *Button1;
 	TGauge *Gauge1;
 	TLabel *Label1;
+	TPhTrackBar *PhTrackBar1;
 	void __fastcall fileOpenActionExecute(TObject *Sender);
 	void __fastcall fileSaveActionExecute(TObject *Sender);
 	void __fastcall fileSaveActionUpdate(TObject *Sender);
@@ -242,6 +244,10 @@ __published:	// IDE-managed Components
 	void __fastcall PhImage1Start(TObject *Sender);
 	void __fastcall PhImage1Cancel(TObject *Sender);
 	void __fastcall PhImage1Finish(TObject *Sender, EPhJobReason reason, bool Cancel);
+	void __fastcall PhImage1Frame(TObject *Sender, TGraphic *data);
+	void __fastcall PhTrackBar1MouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift,
+          int X, int Y);
+
 
 
 
