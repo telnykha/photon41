@@ -44,8 +44,8 @@ object mainForm: TmainForm
     Top = 0
     Width = 700
     Height = 355
-    ThumbWidht = 48
-    ThumbHeight = 48
+    ThumbWidht = 256
+    ThumbHeight = 256
     SlideShowInterval = 500
     Align = alClient
     ParentColor = False
@@ -286,7 +286,7 @@ object mainForm: TmainForm
         Height = 47
         Align = alClient
         Max = 1000
-        Min = 100
+        Min = 50
         Frequency = 100
         Position = 100
         ShowSelRange = False
@@ -752,9 +752,9 @@ object mainForm: TmainForm
   object OpenDialog1: TOpenDialog
     Filter = 
       'All images| *.jpg;*.tga;*.png;*.awp;*.tiff;*.jpeg;*.tif;*.bmp;*.' +
-      'ppm|*.ppm|*.tga|*.gif|*.awp|*.png|*.tif|*.bmp|Jpeg images|*.jpg|' +
-      'PPM images|*.ppm|TGA images|*.tga|GIF images|*.gif|AWP images|*.' +
-      'awp|PNG images|*.png|TIFF images|*.tif|BMP images|*.bmp'
+      'ppm|TGA images|*.tga|AWP images|*.awp|TIFF images|*.tif|Jpeg ima' +
+      'ges|*.jpg|PPM images|*.ppm|GIF images|*.gif|PNG images|*.png|BMP' +
+      ' images|*.bmp'
     Options = [ofHideReadOnly, ofAllowMultiSelect, ofEnableSizing]
     Left = 24
     Top = 120

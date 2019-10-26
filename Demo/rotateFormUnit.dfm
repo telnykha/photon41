@@ -53,10 +53,11 @@ object rotateForm: TrotateForm
     TabOrder = 1
   end
   object RadioGroup1: TRadioGroup
-    Left = 13
-    Top = 8
-    Width = 172
-    Height = 153
+    AlignWithMargins = True
+    Left = 21
+    Top = 19
+    Width = 156
+    Height = 142
     Caption = 'Flip Image(s)'
     ItemIndex = 4
     Items.Strings = (

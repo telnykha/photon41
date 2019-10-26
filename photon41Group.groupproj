@@ -3,11 +3,17 @@
         <ProjectGuid>{01FF183D-C41D-4BB5-B325-F4AE3EFC9F72}</ProjectGuid>
     </PropertyGroup>
     <ItemGroup>
+        <Projects Include="..\..\awpipl2\borland\awpipl2b.cbproj">
+            <Dependencies/>
+        </Projects>
         <Projects Include="photon41.cbproj">
             <Dependencies/>
         </Projects>
         <Projects Include="Demo\PhotonDemo.cbproj">
             <Dependencies>photon41.cbproj</Dependencies>
+        </Projects>
+        <Projects Include="..\..\awplflib\borland\awplflibb.cbproj">
+            <Dependencies/>
         </Projects>
     </ItemGroup>
     <ProjectExtensions>
@@ -17,6 +23,15 @@
             <Default.Personality/>
         </BorlandProject>
     </ProjectExtensions>
+    <Target Name="awpipl2b">
+        <MSBuild Projects="..\..\awpipl2\borland\awpipl2b.cbproj"/>
+    </Target>
+    <Target Name="awpipl2b:Clean">
+        <MSBuild Projects="..\..\awpipl2\borland\awpipl2b.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="awpipl2b:Make">
+        <MSBuild Projects="..\..\awpipl2\borland\awpipl2b.cbproj" Targets="Make"/>
+    </Target>
     <Target Name="photon41">
         <MSBuild Projects="photon41.cbproj"/>
     </Target>
@@ -35,14 +50,23 @@
     <Target Name="PhotonDemo:Make" DependsOnTargets="photon41:Make">
         <MSBuild Projects="Demo\PhotonDemo.cbproj" Targets="Make"/>
     </Target>
+    <Target Name="awplflibb">
+        <MSBuild Projects="..\..\awplflib\borland\awplflibb.cbproj"/>
+    </Target>
+    <Target Name="awplflibb:Clean">
+        <MSBuild Projects="..\..\awplflib\borland\awplflibb.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="awplflibb:Make">
+        <MSBuild Projects="..\..\awplflib\borland\awplflibb.cbproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="photon41;PhotonDemo"/>
+        <CallTarget Targets="awpipl2b;photon41;PhotonDemo;awplflibb"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="photon41:Clean;PhotonDemo:Clean"/>
+        <CallTarget Targets="awpipl2b:Clean;photon41:Clean;PhotonDemo:Clean;awplflibb:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="photon41:Make;PhotonDemo:Make"/>
+        <CallTarget Targets="awpipl2b:Make;photon41:Make;PhotonDemo:Make;awplflibb:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
