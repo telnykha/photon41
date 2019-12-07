@@ -200,6 +200,8 @@ public:
     bool __fastcall             GetAwpImage(awpImage** img);
     bool __fastcall             SetAwpImage(awpImage* img);
 
+    bool __fastcall             GetSelectedImage(awpImage** img);
+
 	// Public properties
 	__property  AnsiString      AFileName = {read = FFileName, write = FFileName};
     __property  TPhFrames*      Frames = {read = m_Frames};

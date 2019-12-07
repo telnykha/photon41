@@ -1694,6 +1694,16 @@ bool __fastcall TPhCustomImage::GetAwpImage(awpImage** img)
     dib->GetAWPImage(img);
     return *img != NULL;
 }
+
+bool __fastcall   TPhCustomImage::GetSelectedImage(awpImage** img)
+{
+    TDIBImage* dib = dynamic_cast<TDIBImage*>(FSelectedBitmap);
+    if (dib == NULL)
+        return false;
+    dib->GetAWPImage(img);
+    return *img != NULL;
+}
+
 bool __fastcall TPhCustomImage::SetAwpImage(awpImage* img)
 {
     TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);

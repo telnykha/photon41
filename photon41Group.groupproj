@@ -15,6 +15,12 @@
         <Projects Include="..\..\awplflib\borland\awplflibb.cbproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="..\photon.apps\ceramica\Ceramica.cbproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="..\photon.apps\ceramica_client\CeramClient.cbproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -59,14 +65,32 @@
     <Target Name="awplflibb:Make">
         <MSBuild Projects="..\..\awplflib\borland\awplflibb.cbproj" Targets="Make"/>
     </Target>
+    <Target Name="Ceramica">
+        <MSBuild Projects="..\photon.apps\ceramica\Ceramica.cbproj"/>
+    </Target>
+    <Target Name="Ceramica:Clean">
+        <MSBuild Projects="..\photon.apps\ceramica\Ceramica.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="Ceramica:Make">
+        <MSBuild Projects="..\photon.apps\ceramica\Ceramica.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="CeramClient">
+        <MSBuild Projects="..\photon.apps\ceramica_client\CeramClient.cbproj"/>
+    </Target>
+    <Target Name="CeramClient:Clean">
+        <MSBuild Projects="..\photon.apps\ceramica_client\CeramClient.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="CeramClient:Make">
+        <MSBuild Projects="..\photon.apps\ceramica_client\CeramClient.cbproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="awpipl2b;photon41;PhotonDemo;awplflibb"/>
+        <CallTarget Targets="awpipl2b;photon41;PhotonDemo;awplflibb;Ceramica;CeramClient"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="awpipl2b:Clean;photon41:Clean;PhotonDemo:Clean;awplflibb:Clean"/>
+        <CallTarget Targets="awpipl2b:Clean;photon41:Clean;PhotonDemo:Clean;awplflibb:Clean;Ceramica:Clean;CeramClient:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="awpipl2b:Make;photon41:Make;PhotonDemo:Make;awplflibb:Make"/>
+        <CallTarget Targets="awpipl2b:Make;photon41:Make;PhotonDemo:Make;awplflibb:Make;Ceramica:Make;CeramClient:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
