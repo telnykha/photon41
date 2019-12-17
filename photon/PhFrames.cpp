@@ -18,7 +18,7 @@ virtual void __fastcall Notify(void * Ptr, TListNotification Action)
     if (Action == lnDeleted)
     {
 		SFrameItem* item = (SFrameItem*)Ptr;
-		delete item->image;
+		//delete item->image;
 		delete item;
     }
 }
@@ -58,8 +58,10 @@ bool TPhFrames::Init(TStrings* names)
 
 	if (names->Count > 0)
     {
-		First();
-        StartReadJobHelper();
+        if (names->Count > 1)
+	        StartReadJobHelper();
+        else
+            First();
     }
     else
         return false;

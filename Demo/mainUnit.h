@@ -248,9 +248,6 @@ __published:	// IDE-managed Components
 	void __fastcall PhTrackBar1MouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift,
           int X, int Y);
 
-
-
-
 private:	// User declarations
 	int m_UserChoise;
     TStringList* m_selected;

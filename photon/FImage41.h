@@ -14,11 +14,11 @@
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <ExtCtrls.hpp>
-const int crHandOpenCursor  = 1;
-const int crHandCloseCursor = 2;
-const int crMagnifyCursor   = 3;
-const int crLenzCursor      = 4;
-const int crZoom2RectCursor = 5;
+//const int crHandOpenCursor  = 1;
+//const int crHandCloseCursor = 2;
+//const int crMagnifyCursor   = 3;
+//const int crLenzCursor      = 4;
+//const int crZoom2RectCursor = 5;
 
 #include "PhFrames.h"
 
@@ -144,6 +144,7 @@ public:
 
 	// ====================operations========================================
 	virtual bool __fastcall         Init(TStrings* Names);
+    virtual bool __fastcall         InitFile(UnicodeString strFileName);
     void __fastcall Cancel();
 	// Close
 	virtual void __fastcall         Close();

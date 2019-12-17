@@ -5,7 +5,7 @@
         <FrameworkType>None</FrameworkType>
         <MainSource>photon41.cpp</MainSource>
         <Base>True</Base>
-        <Config Condition="'$(Config)'==''">Release</Config>
+        <Config Condition="'$(Config)'==''">Debug</Config>
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <TargetedPlatforms>1</TargetedPlatforms>
         <AppType>Package</AppType>
@@ -55,12 +55,14 @@
         <ILINK_GenerateImportLibrary>true</ILINK_GenerateImportLibrary>
         <_TCHARMapping>char</_TCHARMapping>
         <Multithreaded>true</Multithreaded>
-        <IncludePath>photon\;$(AWP);$(LF);$(PHOTON41)\include;$(IncludePath)</IncludePath>
+        <IncludePath>photon\;$(PHOTON41)\include;$(AWP)\include;$(LF)\include;$(IncludePath)</IncludePath>
         <ILINK_LibraryPath>photon\;$(PHOTON41)\lib\;$(AWP)\lib;$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <SanitizedProjectName>photon41</SanitizedProjectName>
         <VerInfo_Locale>1049</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=1.0.0.0;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
         <BCC_IncludePath>$(PHOTON41);$(BCC_IncludePath)</BCC_IncludePath>
+        <FinalOutputDir>$(PHOTON41)\lib</FinalOutputDir>
+        <BPILibOutputDir>$(PHOTON41)\lib</BPILibOutputDir>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <PackageImports>appanalytics;bcbsmp;bindcomp;bindcompfmx;bindcompvcl;bindengine;CustomIPTransport;dbrtl;dsnap;fmx;fmxase;fmxdae;fmxobj;IndyCore;IndyProtocols;IndySystem;rtl;svn;tethering;vcl;vclactnband;vcldb;vcldsnap;vclie;vclimg;VclSmp;vcltouch;vclwinx;vclx;xmlrtl;$(PackageImports)</PackageImports>

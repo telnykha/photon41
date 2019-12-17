@@ -116,6 +116,16 @@ bool  __fastcall TPhCustomImage::Init(TStrings* Names)
     Close();
     return this->m_Frames->Init(Names);
 }
+
+bool __fastcall         TPhCustomImage::InitFile(UnicodeString strFileName)
+{
+    TStringList* list = new TStringList();
+    list->Add(strFileName);
+    bool res = Init(list);
+    delete list;
+    return res;
+}
+
 /*---------------------------------------------------------------------------
     Function: TFCustomImage::Close()
     Purpose:  Освобождает растровые данные и данные selection
