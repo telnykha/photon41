@@ -25,7 +25,7 @@ virtual void __fastcall Notify(void * Ptr, TListNotification Action)
 };
 
 //---------------------------------------------------------------------------
-TPhFrames::TPhFrames(TPhCustomImage* display)
+TPhFrames::TPhFrames(TPhImage* display)
 {
     m_items = new TFramesList();
 	m_pDisplay = display;

@@ -6,7 +6,7 @@
 #define _FRAME_MIN_COUNT_ 3
 typedef enum {jpegFormat, pngFormat, tiffFormat, tgaFormat, bmpFormat, awpFormat, ppmFormat} EPhImageFormats;
 
-class TPhCustomImage;
+class TPhImage;
 class TPhJobThread;
 struct SFrameItem
 {
@@ -20,7 +20,7 @@ struct SFrameItem
 class PACKAGE TPhFrames : public TObject
 {
 private:
-	TPhCustomImage* 		m_pDisplay;
+	TPhImage* 			m_pDisplay;
     TList*                  m_items;
 	TGraphic*               m_pMosaic;
 	TPhJobThread* 			m_pReader;
@@ -30,7 +30,7 @@ protected:
 	int __fastcall GetCount();
 	void StartReadJobHelper();
 public:
-	TPhFrames(TPhCustomImage* display);
+	TPhFrames(TPhImage* display);
 	__fastcall virtual~TPhFrames();
 
 	// init

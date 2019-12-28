@@ -30,7 +30,7 @@ __fastcall TPhImageTool::TPhImageTool(TComponent* Owner)
 	m_AfterDeActivate = NULL;
 }
 //
-void __fastcall TPhImageTool::SetDisplay(TPhCustomImage* display)
+void __fastcall TPhImageTool::SetDisplay(TPhImage* display)
 {
 	if (m_pImage == display)
 		return;
@@ -45,7 +45,7 @@ void __fastcall TPhImageTool::SetDisplay(TPhCustomImage* display)
 	if (m_pImage != NULL)
 		m_pImage->AddPhTool(this);
 }
-TPhCustomImage* __fastcall TPhImageTool::GetDisplay(TPhCustomImage* display)
+TPhImage* __fastcall TPhImageTool::GetDisplay(TPhImage* display)
 {
 	return   m_pImage;
 }

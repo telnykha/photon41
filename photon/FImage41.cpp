@@ -37,35 +37,35 @@ extern "C"
               устанавливает для внутренних переменныех значения по умолчанию
     Comments:
 */
-__fastcall TPhCustomImage::TPhCustomImage(TComponent* Owner)
+__fastcall TPhImage::TPhImage(TComponent* Owner)
     : TCustomControl(Owner)
 {
-	FBitmap     = new TDIBImage();
-    FSelectedBitmap = NULL;
-	FScale      = 1;
+	m_Bitmap     = new TDIBImage();
+    m_SelectedBitmap = NULL;
+	m_Scale      = 1;
 
 	// установка наследуемых свойств по умолчанию
 	Color = clWindow;
 	ParentColor = false;
 	Width   = 100;
 	Height  = 100;
-	FFileName  = "";
-	FBeforeOpen = NULL;
-	FAfterOpen  = NULL;
-	FPosChange  = NULL;
-	FScaleChange = NULL;
-	FChange      = NULL;
+	m_FileName  = "";
+	m_BeforeOpen = NULL;
+	m_AfterOpen  = NULL;
+	m_PosChange  = NULL;
+	m_ScaleChange = NULL;
+	m_Change      = NULL;
 	m_OnCancel   = NULL;
 	m_OnFinish   = NULL;
     m_OnStart    = NULL;
     m_OnFrame    = NULL;
     m_OnFrameData = NULL;
-	FStartPoint.x = 0;
-	FStartPoint.y = 0;
-	FSelRect.Left = 0;
-	FSelRect.Top = 0;
-	FSelRect.Right = 0;
-	FSelRect.Bottom = 0;
+	m_StartPoint.x = 0;
+	m_StartPoint.y = 0;
+	m_SelRect.Left = 0;
+	m_SelRect.Top = 0;
+	m_SelRect.Right = 0;
+	m_SelRect.Bottom = 0;
 
 	m_modified = false;
 	m_ph_tools = new TList();
@@ -80,7 +80,7 @@ __fastcall TPhCustomImage::TPhCustomImage(TComponent* Owner)
     m_tHeight = 128;
 	m_mosaic = false;
 }
-__fastcall TPhCustomImage::TPhCustomImage(HWND Parent):TCustomControl(Parent)
+__fastcall TPhImage::TPhImage(HWND Parent):TCustomControl(Parent)
 {
 
 }
@@ -89,7 +89,7 @@ __fastcall TPhCustomImage::TPhCustomImage(HWND Parent):TCustomControl(Parent)
 	Purpose:   if we have raster data abs other objects delete them
 	Comments:
 ---------------------------------------------------------------------------*/
-__fastcall TPhCustomImage::~TPhCustomImage()
+__fastcall TPhImage::~TPhImage()
 {
 	Close();
     delete this->m_Frames;
@@ -103,7 +103,7 @@ __fastcall TPhCustomImage::~TPhCustomImage()
 	изображения. В случае аварии при загрузке нового изображения старое
 	восстанавливается из копии.
 ---------------------------------------------------------------------------*/
-bool  __fastcall TPhCustomImage::Init(TStrings* Names)
+bool  __fastcall TPhImage::Init(TStrings* Names)
 {
 
     if (Names == NULL || Names->Count == 0)
@@ -117,7 +117,7 @@ bool  __fastcall TPhCustomImage::Init(TStrings* Names)
     return this->m_Frames->Init(Names);
 }
 
-bool __fastcall         TPhCustomImage::InitFile(UnicodeString strFileName)
+bool __fastcall         TPhImage::InitFile(UnicodeString strFileName)
 {
     TStringList* list = new TStringList();
     list->Add(strFileName);
@@ -131,34 +131,34 @@ bool __fastcall         TPhCustomImage::InitFile(UnicodeString strFileName)
     Purpose:  Освобождает растровые данные и данные selection
     Comments:
 ---------------------------------------------------------------------------*/
-void __fastcall TPhCustomImage::Close()
+void __fastcall TPhImage::Close()
 {
-   FScale          = 1;
-   FStartPoint.x   = 0;
-   FStartPoint.y   = 0;
-   FSelRect.Left = 0;
-   FSelRect.Top = 0;
-   FSelRect.Right = 0;
-   FSelRect.Bottom = 0;
-   delete FBitmap;
-   FBitmap     = new TDIBImage();
+   m_Scale          = 1;
+   m_StartPoint.x   = 0;
+   m_StartPoint.y   = 0;
+   m_SelRect.Left = 0;
+   m_SelRect.Top = 0;
+   m_SelRect.Right = 0;
+   m_SelRect.Bottom = 0;
+   delete m_Bitmap;
+   m_Bitmap     = new TDIBImage();
 
-   if (FSelectedBitmap != NULL)
+   if (m_SelectedBitmap != NULL)
    {
-    delete FSelectedBitmap;
-    FSelectedBitmap = NULL;
+    delete m_SelectedBitmap;
+    m_SelectedBitmap = NULL;
    }
    m_Timer->Enabled = false;
    m_Frames->Close();
    m_mosaic = false;
 }
 
-bool __fastcall TPhCustomImage::GetSlideShow()
+bool __fastcall TPhImage::GetSlideShow()
 {
     return this->m_Timer->Enabled;
 }
 
-void __fastcall TPhCustomImage::SetSlideShow(bool Value)
+void __fastcall TPhImage::SetSlideShow(bool Value)
 {
     if (m_Timer->Enabled == Value)
         return;
@@ -173,16 +173,16 @@ void __fastcall TPhCustomImage::SetSlideShow(bool Value)
         this->m_Timer->Enabled = true;
 }
 
-unsigned int __fastcall TPhCustomImage::GetSlideShowInterval()
+unsigned int __fastcall TPhImage::GetSlideShowInterval()
 {
     return this->m_Timer->Interval;
 }
-void __fastcall TPhCustomImage::SetSlideShowInterval(unsigned int Value)
+void __fastcall TPhImage::SetSlideShowInterval(unsigned int Value)
 {
     this->m_Timer->Interval = Value;
 }
 
-void __fastcall   TPhCustomImage::SetMosaicSelected(int value)
+void __fastcall   TPhImage::SetMosaicSelected(int value)
 {
     if (!this->Mosaic)
         return;
@@ -201,13 +201,13 @@ void __fastcall   TPhCustomImage::SetMosaicSelected(int value)
 }
 
 
-bool __fastcall TPhCustomImage::GetMosaic()
+bool __fastcall TPhImage::GetMosaic()
 {
    return this->m_mosaic;
 }
-void __fastcall TPhCustomImage::SetMosaic(bool Value)
+void __fastcall TPhImage::SetMosaic(bool Value)
 {
-    if (this->FBitmap->Empty)
+    if (this->m_Bitmap->Empty)
         return;
 
     if (Value == m_mosaic)
@@ -219,7 +219,7 @@ void __fastcall TPhCustomImage::SetMosaic(bool Value)
 
     if (Value)
     {
-       this->FBitmap->Assign(this->m_Frames->Mosaic);
+       this->m_Bitmap->Assign(this->m_Frames->Mosaic);
        this->BestFit();
        m_mosaic = true;
     }
@@ -229,20 +229,20 @@ void __fastcall TPhCustomImage::SetMosaic(bool Value)
         m_mosaic = false;
     }
 
-    if (FMosaic)
-        FMosaic(this);
-    if (FChange)
-        FChange(this);
+    if (m_Mosaic)
+        m_Mosaic(this);
+    if (m_Change)
+        m_Change(this);
 }
 
 
-void __fastcall   TPhCustomImage::TimerEventHandler(TObject *Sender)
+void __fastcall   TPhImage::TimerEventHandler(TObject *Sender)
 {
     this->m_Frames->Next();
 }
 
 
-void __fastcall     TPhCustomImage::Resize(void)
+void __fastcall     TPhImage::Resize(void)
 {
         Paint();
 }
@@ -251,9 +251,9 @@ void __fastcall     TPhCustomImage::Resize(void)
     Purpose:  Возвращает масштаб отображаемого изображения
     Comments:
 ---------------------------------------------------------------------------*/
-float __fastcall TPhCustomImage::GetScale() const
+float __fastcall TPhImage::GetScale() const
 {
-    return RoundTo( FScale*100.0f, -2 );
+    return RoundTo( m_Scale*100.0f, -2 );
 }
 
 //------------------------- Fitting commands --------------------------------
@@ -265,28 +265,28 @@ float __fastcall TPhCustomImage::GetScale() const
               поместилось во внутренней области компонента
     Comments: При этом центр изображения совпадает с центром компонента
 */
-void __fastcall TPhCustomImage::BestFit()
+void __fastcall TPhImage::BestFit()
 {
    if (Empty)
       return;
 
-   FStartPoint.x = 0;
-   FStartPoint.y = 0;
+   m_StartPoint.x = 0;
+   m_StartPoint.y = 0;
 
    float alfa_c = (float)Width / (float)Height;
-   float alfa_i = (float)FBitmap->Width / (float)FBitmap->Height;
+   float alfa_i = (float)m_Bitmap->Width / (float)m_Bitmap->Height;
 
    if (alfa_c >= alfa_i)
-      FScale = (float)Height / (float)FBitmap->Height;
+      m_Scale = (float)Height / (float)m_Bitmap->Height;
    else
-      FScale = (float)Width / (float)FBitmap->Width;
+      m_Scale = (float)Width / (float)m_Bitmap->Width;
 
-   FScale = RoundTo( FScale, -2 );
+   m_Scale = RoundTo( m_Scale, -2 );
 
    Paint();
 
-   if (FScaleChange)
-      FScaleChange(this);
+   if (m_ScaleChange)
+      m_ScaleChange(this);
 }
 /*
     Function: TFCustomImage::FitWidth()
@@ -294,31 +294,31 @@ void __fastcall TPhCustomImage::BestFit()
               становится равной ширине клиентской области окна.
     Comments: При этом центр изображения совпадает с центром компонента
 */
-void __fastcall TPhCustomImage::FitWidth()
+void __fastcall TPhImage::FitWidth()
 {
     if (Empty)
        return;
 
     float alfa_c = (float)Width / (float)Height;
-    float alfa_i = (float)FBitmap->Width / (float)FBitmap->Height;
+    float alfa_i = (float)m_Bitmap->Width / (float)m_Bitmap->Height;
 
     if (alfa_c >= alfa_i)
     {
-       FStartPoint.x = 0;
-       FStartPoint.y = FBitmap->Height / 2 - FBitmap->Width / (2*alfa_c);
-       FScale = (float)Height * alfa_c / (float)FBitmap->Width;
+       m_StartPoint.x = 0;
+       m_StartPoint.y = m_Bitmap->Height / 2 - m_Bitmap->Width / (2*alfa_c);
+       m_Scale = (float)Height * alfa_c / (float)m_Bitmap->Width;
     }
     else
     {
-       FStartPoint.x = 0;
-       FStartPoint.y = 0;
-       FScale = (float)Width / (float)FBitmap->Width;
+       m_StartPoint.x = 0;
+       m_StartPoint.y = 0;
+       m_Scale = (float)Width / (float)m_Bitmap->Width;
     }
-    FScale = RoundTo( FScale, -2 );
+    m_Scale = RoundTo( m_Scale, -2 );
     Paint();
 
-   if (FScaleChange)
-      FScaleChange(this);
+   if (m_ScaleChange)
+      m_ScaleChange(this);
 }
 
 /*
@@ -327,32 +327,32 @@ void __fastcall TPhCustomImage::FitWidth()
                становится равной высоте клиентской области компонента
     Comments: При этом центр изображения совпадает с центром компонента
 */
-void __fastcall TPhCustomImage::FitHeight()
+void __fastcall TPhImage::FitHeight()
 {
    if (Empty)
       return;
 
    float alfa_c = (float)Width / (float)Height;
-   float alfa_i = (float)FBitmap->Width / (float)FBitmap->Height;
-   FScale       = (float)Height / (float)FBitmap->Height;
+   float alfa_i = (float)m_Bitmap->Width / (float)m_Bitmap->Height;
+   m_Scale       = (float)Height / (float)m_Bitmap->Height;
 
    if (alfa_c >= alfa_i) // картинка влезет целиком на Canvas
    {
-      FStartPoint.x = 0;
-      FStartPoint.y = 0;
+      m_StartPoint.x = 0;
+      m_StartPoint.y = 0;
    }
    else
    {
-      FStartPoint.x = FBitmap->Width / 2 - Width/(2*FScale);
-      FStartPoint.y = 0;
+      m_StartPoint.x = m_Bitmap->Width / 2 - Width/(2*m_Scale);
+      m_StartPoint.y = 0;
    }
 
-   FScale = RoundTo( FScale, -2 );
+   m_Scale = RoundTo( m_Scale, -2 );
 
    Paint();
 
-   if (FScaleChange)
-      FScaleChange(this);
+   if (m_ScaleChange)
+      m_ScaleChange(this);
 }
 
 //------------------------- Zoom commands ------------------------------------
@@ -360,22 +360,22 @@ void __fastcall TPhCustomImage::FitHeight()
 // макрос, сохраняющий центр видимой области.
 
 #define _VISIBLE_CENTER_      int Cx, Cy;      \
-   if ( FBitmap->Height * FScale >= Height )   \
-       Cy = int((float)FStartPoint.y + (float)Height / (2.0f*FScale) +0.5f);\
+   if ( m_Bitmap->Height * m_Scale >= Height )   \
+       Cy = int((float)m_StartPoint.y + (float)Height / (2.0f*m_Scale) +0.5f);\
    else                                         \
-       Cy = int ((float)FStartPoint.y + (float)FBitmap->Height / 2.0f +0.5f); \
+       Cy = int ((float)m_StartPoint.y + (float)m_Bitmap->Height / 2.0f +0.5f); \
                                             \
-   if ( FBitmap->Width * FScale >= Width )    \
-       Cx = int((float)FStartPoint.x + (float)Width / (2.0f*FScale) +0.5f); \
+   if ( m_Bitmap->Width * m_Scale >= Width )    \
+       Cx = int((float)m_StartPoint.x + (float)Width / (2.0f*m_Scale) +0.5f); \
    else                                       \
-       Cx = int((float)FStartPoint.x + (float)FBitmap->Width / 2.0f +0.5);
+       Cx = int((float)m_StartPoint.x + (float)m_Bitmap->Width / 2.0f +0.5);
 
 /*
     Function:  TFCustomImage::ActualSize()
     Purpose:   Устанавливает коэффициент масштабирования в 100%
     Comments:
 */
-void __fastcall TPhCustomImage::ActualSize()
+void __fastcall TPhImage::ActualSize()
 {
    if (Empty)
       return;
@@ -384,8 +384,8 @@ void __fastcall TPhCustomImage::ActualSize()
 
    Paint();
 
-   if (FScaleChange)
-      FScaleChange(this);
+   if (m_ScaleChange)
+      m_ScaleChange(this);
 }
 
 /*
@@ -394,54 +394,54 @@ void __fastcall TPhCustomImage::ActualSize()
                от текущего значения todo:
     Comments:
 */
-void __fastcall TPhCustomImage::ZoomIn()
+void __fastcall TPhImage::ZoomIn()
 {
-   if ( Empty || FScale > MAX_ZOOM - ZOOM_STEP )
+   if ( Empty || m_Scale > MAX_ZOOM - ZOOM_STEP )
       return;
 
    // Сохраним центр видимой области
    _VISIBLE_CENTER_
 
-   FScale = RoundTo( FScale + ZOOM_STEP, -2 );
+   m_Scale = RoundTo( m_Scale + ZOOM_STEP, -2 );
 
    // Сместим угол относительно центра
-   if ( FBitmap->Width * FScale > Width )
-      FStartPoint.x = Cx - Width / (2*FScale);
+   if ( m_Bitmap->Width * m_Scale > Width )
+      m_StartPoint.x = Cx - Width / (2*m_Scale);
    else
-      FStartPoint.x = 0;
+      m_StartPoint.x = 0;
 
-   if ( FBitmap->Height * FScale > Height )
-      FStartPoint.y = Cy - Height / (2*FScale);
+   if ( m_Bitmap->Height * m_Scale > Height )
+      m_StartPoint.y = Cy - Height / (2*m_Scale);
    else
-      FStartPoint.y = 0;
+      m_StartPoint.y = 0;
 
    //
    int Cx1, Cy1;
-   if ( FBitmap->Height * FScale >= Height )
-       Cy1 = FStartPoint.y + Height / (2*FScale);
+   if ( m_Bitmap->Height * m_Scale >= Height )
+       Cy1 = m_StartPoint.y + Height / (2*m_Scale);
    else
-       Cy1 = FStartPoint.y + FBitmap->Height / 2;
+       Cy1 = m_StartPoint.y + m_Bitmap->Height / 2;
 
-   if ( FBitmap->Width * FScale >= Width )
-       Cx1 = FStartPoint.x + Width / (2*FScale);
+   if ( m_Bitmap->Width * m_Scale >= Width )
+       Cx1 = m_StartPoint.x + Width / (2*m_Scale);
    else
-       Cx1 = FStartPoint.x + FBitmap->Width / 2;
+       Cx1 = m_StartPoint.x + m_Bitmap->Width / 2;
 
-   FStartPoint.x += Cx - Cx1;
-   FStartPoint.y += Cy - Cy1;
+   m_StartPoint.x += Cx - Cx1;
+   m_StartPoint.y += Cy - Cy1;
 
    // Скорректируем выходы за границы изображения
-   FStartPoint.y = ( FStartPoint.y < 0 ) ? 0 : FStartPoint.y;
-   FStartPoint.y = ( FStartPoint.y + GetHeightToDisplay()/FScale > FBitmap->Height ) ?
-                     FBitmap->Height - GetHeightToDisplay()/FScale : FStartPoint.y;
-   FStartPoint.x = ( FStartPoint.x < 0 ) ? 0 : FStartPoint.x;
-   FStartPoint.x = ( FStartPoint.x + GetWidthToDisplay()/FScale > FBitmap->Width ) ?
-                     FBitmap->Width - GetWidthToDisplay()/FScale : FStartPoint.x;
+   m_StartPoint.y = ( m_StartPoint.y < 0 ) ? 0 : m_StartPoint.y;
+   m_StartPoint.y = ( m_StartPoint.y + GetHeightToDisplay()/m_Scale > m_Bitmap->Height ) ?
+                     m_Bitmap->Height - GetHeightToDisplay()/m_Scale : m_StartPoint.y;
+   m_StartPoint.x = ( m_StartPoint.x < 0 ) ? 0 : m_StartPoint.x;
+   m_StartPoint.x = ( m_StartPoint.x + GetWidthToDisplay()/m_Scale > m_Bitmap->Width ) ?
+                     m_Bitmap->Width - GetWidthToDisplay()/m_Scale : m_StartPoint.x;
 
    Paint();
 
-   if (FScaleChange)
-      FScaleChange(this);
+   if (m_ScaleChange)
+      m_ScaleChange(this);
 }
 
 /*
@@ -449,49 +449,49 @@ void __fastcall TPhCustomImage::ZoomIn()
     Purpose:
     Comments:
 */
-void __fastcall TPhCustomImage::ZoomOut()
+void __fastcall TPhImage::ZoomOut()
 {
-   if (Empty || FScale < MIN_ZOOM + ZOOM_STEP)
+   if (Empty || m_Scale < MIN_ZOOM + ZOOM_STEP)
       return;
 
     _VISIBLE_CENTER_
 
-   FScale = RoundTo( FScale - ZOOM_STEP, -2 );
+   m_Scale = RoundTo( m_Scale - ZOOM_STEP, -2 );
    // Сместим угол относительно центра
-   if ( FBitmap->Height * FScale > Height )
-      FStartPoint.y = Cy - Height / (2*FScale);
+   if ( m_Bitmap->Height * m_Scale > Height )
+      m_StartPoint.y = Cy - Height / (2*m_Scale);
    else
-      FStartPoint.y = 0;
+      m_StartPoint.y = 0;
 
-   if ( FBitmap->Width * FScale > Width )
-      FStartPoint.x = Cx - Width / (2*FScale);
+   if ( m_Bitmap->Width * m_Scale > Width )
+      m_StartPoint.x = Cx - Width / (2*m_Scale);
    else
-      FStartPoint.x = 0;
+      m_StartPoint.x = 0;
 
    int Cx1, Cy1;
-   if ( FBitmap->Height * FScale >= Height )
-       Cy1 = FStartPoint.y + Height / (2*FScale);
+   if ( m_Bitmap->Height * m_Scale >= Height )
+       Cy1 = m_StartPoint.y + Height / (2*m_Scale);
    else
-       Cy1 = FStartPoint.y + FBitmap->Height / 2;
+       Cy1 = m_StartPoint.y + m_Bitmap->Height / 2;
 
-   if ( FBitmap->Width * FScale >= Width )
-       Cx1 = FStartPoint.x + Width / (2*FScale);
+   if ( m_Bitmap->Width * m_Scale >= Width )
+       Cx1 = m_StartPoint.x + Width / (2*m_Scale);
    else
-       Cx1 = FStartPoint.x + FBitmap->Width / 2;
-   FStartPoint.x += Cx - Cx1;
-   FStartPoint.y += Cy - Cy1;
+       Cx1 = m_StartPoint.x + m_Bitmap->Width / 2;
+   m_StartPoint.x += Cx - Cx1;
+   m_StartPoint.y += Cy - Cy1;
 
-   FStartPoint.y = ( FStartPoint.y < 0 ) ? 0 : FStartPoint.y;
-   FStartPoint.y = ( FStartPoint.y + GetHeightToDisplay()/FScale > FBitmap->Height ) ?
-                     FBitmap->Height - GetHeightToDisplay()/FScale : FStartPoint.y;
-   FStartPoint.x = ( FStartPoint.x < 0 ) ? 0 : FStartPoint.x;
-   FStartPoint.x = ( FStartPoint.x + GetWidthToDisplay()/FScale > FBitmap->Width ) ?
-                     FBitmap->Width - GetWidthToDisplay()/FScale : FStartPoint.x;
+   m_StartPoint.y = ( m_StartPoint.y < 0 ) ? 0 : m_StartPoint.y;
+   m_StartPoint.y = ( m_StartPoint.y + GetHeightToDisplay()/m_Scale > m_Bitmap->Height ) ?
+                     m_Bitmap->Height - GetHeightToDisplay()/m_Scale : m_StartPoint.y;
+   m_StartPoint.x = ( m_StartPoint.x < 0 ) ? 0 : m_StartPoint.x;
+   m_StartPoint.x = ( m_StartPoint.x + GetWidthToDisplay()/m_Scale > m_Bitmap->Width ) ?
+                     m_Bitmap->Width - GetWidthToDisplay()/m_Scale : m_StartPoint.x;
 
    Paint();
 
-   if (FScaleChange)
-      FScaleChange(this);
+   if (m_ScaleChange)
+      m_ScaleChange(this);
 }
 /*
     Function:  TFCustomImage::ZoomTo(int ZoomFactor)
@@ -500,14 +500,14 @@ void __fastcall TPhCustomImage::ZoomOut()
     Comments:  todo: определить допустимые пределы изменения переменной
                ZoomFactor
 */
-void __fastcall TPhCustomImage::ZoomTo(int in_ZoomFactor)
+void __fastcall TPhImage::ZoomTo(int in_ZoomFactor)
 {
    if (Empty)
       return;
 
    float ZoomFactor = (float)in_ZoomFactor/100.0f;
 
-   if (ZoomFactor == FScale ||
+   if (ZoomFactor == m_Scale ||
        ZoomFactor > MAX_ZOOM ||
        ZoomFactor < MIN_ZOOM)
       return;
@@ -516,42 +516,42 @@ void __fastcall TPhCustomImage::ZoomTo(int in_ZoomFactor)
 
     _VISIBLE_CENTER_
    // Изменим масштаб
-   FScale = ZoomFactor;
+   m_Scale = ZoomFactor;
 
-   if ( FBitmap->Height * FScale > Height )
-      FStartPoint.y = Cy - Height / (2*FScale);
+   if ( m_Bitmap->Height * m_Scale > Height )
+      m_StartPoint.y = Cy - Height / (2*m_Scale);
    else
-      FStartPoint.y = 0;
+      m_StartPoint.y = 0;
 
-   if ( FBitmap->Width * FScale > Width )
-      FStartPoint.x = Cx - Width / (2*FScale);
+   if ( m_Bitmap->Width * m_Scale > Width )
+      m_StartPoint.x = Cx - Width / (2*m_Scale);
    else
-      FStartPoint.x = 0;
+      m_StartPoint.x = 0;
 
    int Cx1, Cy1;
-   if ( FBitmap->Height * FScale >= Height )
-       Cy1 = FStartPoint.y + Height / (2*FScale);
+   if ( m_Bitmap->Height * m_Scale >= Height )
+       Cy1 = m_StartPoint.y + Height / (2*m_Scale);
    else
-       Cy1 = FStartPoint.y + FBitmap->Height / 2;
+       Cy1 = m_StartPoint.y + m_Bitmap->Height / 2;
 
-   if ( FBitmap->Width * FScale >= Width )
-       Cx1 = FStartPoint.x + Width / (2*FScale);
+   if ( m_Bitmap->Width * m_Scale >= Width )
+       Cx1 = m_StartPoint.x + Width / (2*m_Scale);
    else
-       Cx1 = FStartPoint.x + FBitmap->Width / 2;
-   FStartPoint.x += Cx - Cx1;
-   FStartPoint.y += Cy - Cy1;
+       Cx1 = m_StartPoint.x + m_Bitmap->Width / 2;
+   m_StartPoint.x += Cx - Cx1;
+   m_StartPoint.y += Cy - Cy1;
 
-   FStartPoint.y = ( FStartPoint.y < 0 ) ? 0 : FStartPoint.y;
-   FStartPoint.y = ( FStartPoint.y + GetHeightToDisplay()/FScale > FBitmap->Height ) ?
-                     FBitmap->Height - GetHeightToDisplay()/FScale : FStartPoint.y;
-   FStartPoint.x = ( FStartPoint.x < 0 ) ? 0 : FStartPoint.x;
-   FStartPoint.x = ( FStartPoint.x + GetWidthToDisplay()/FScale > FBitmap->Width ) ?
-                     FBitmap->Width - GetWidthToDisplay()/FScale : FStartPoint.x;
+   m_StartPoint.y = ( m_StartPoint.y < 0 ) ? 0 : m_StartPoint.y;
+   m_StartPoint.y = ( m_StartPoint.y + GetHeightToDisplay()/m_Scale > m_Bitmap->Height ) ?
+                     m_Bitmap->Height - GetHeightToDisplay()/m_Scale : m_StartPoint.y;
+   m_StartPoint.x = ( m_StartPoint.x < 0 ) ? 0 : m_StartPoint.x;
+   m_StartPoint.x = ( m_StartPoint.x + GetWidthToDisplay()/m_Scale > m_Bitmap->Width ) ?
+                     m_Bitmap->Width - GetWidthToDisplay()/m_Scale : m_StartPoint.x;
    Paint();
 
 
-   if (FScaleChange)
-      FScaleChange(this);
+   if (m_ScaleChange)
+      m_ScaleChange(this);
 }
 
 /*
@@ -561,7 +561,7 @@ void __fastcall TPhCustomImage::ZoomTo(int in_ZoomFactor)
               клиетской области компонента.
     Comments:
 */
-void __fastcall TPhCustomImage::ZoomToRect(const TRect Rect)
+void __fastcall TPhImage::ZoomToRect(const TRect Rect)
 {
    if ( Empty )
       return;
@@ -570,42 +570,42 @@ void __fastcall TPhCustomImage::ZoomToRect(const TRect Rect)
       return;
 
    /* Переместим центр */
-   int Cx = GetImageX( Rect.Left ) + Rect.Width()/(2*FScale);
-   int Cy = FBitmap->Height - GetImageY( Rect.Top ) - Rect.Height()/(2*FScale);
+   int Cx = GetImageX( Rect.Left ) + Rect.Width()/(2*m_Scale);
+   int Cy = m_Bitmap->Height - GetImageY( Rect.Top ) - Rect.Height()/(2*m_Scale);
 
    /* Новый масштаб */
    float alfa_c = (float)Width / (float)Height;
    float alfa_r = (float)Rect.Width() / (float)Rect.Height();
    
    if (alfa_c >= alfa_r)
-      FScale = (float)Height * FScale / Rect.Height();
+      m_Scale = (float)Height * m_Scale / Rect.Height();
    else
-      FScale = (float)Width * FScale / Rect.Width();
-   FScale = RoundTo( FScale, -2 );
+      m_Scale = (float)Width * m_Scale / Rect.Width();
+   m_Scale = RoundTo( m_Scale, -2 );
 
    /* Сместим угол относительно центра */
-   if ( FBitmap->Height * FScale > Height )
-      FStartPoint.y = Cy - Height / (2*FScale);
+   if ( m_Bitmap->Height * m_Scale > Height )
+      m_StartPoint.y = Cy - Height / (2*m_Scale);
    else
-      FStartPoint.y = 0;
+      m_StartPoint.y = 0;
 
-   if ( FBitmap->Width * FScale > Width )
-      FStartPoint.x = Cx - Width / (2*FScale);
+   if ( m_Bitmap->Width * m_Scale > Width )
+      m_StartPoint.x = Cx - Width / (2*m_Scale);
    else
-      FStartPoint.x = 0;
+      m_StartPoint.x = 0;
 
    /* Скорректируем выходы за границы */
-   FStartPoint.y = ( FStartPoint.y < 0 ) ? 0 : FStartPoint.y;
-   FStartPoint.y = ( FStartPoint.y + GetHeightToDisplay()/FScale > FBitmap->Height ) ?
-                     FBitmap->Height - GetHeightToDisplay()/FScale : FStartPoint.y;
-   FStartPoint.x = ( FStartPoint.x < 0 ) ? 0 : FStartPoint.x;
-   FStartPoint.x = ( FStartPoint.x + GetWidthToDisplay()/FScale > FBitmap->Width ) ?
-                     FBitmap->Width - GetWidthToDisplay()/FScale : FStartPoint.x;
+   m_StartPoint.y = ( m_StartPoint.y < 0 ) ? 0 : m_StartPoint.y;
+   m_StartPoint.y = ( m_StartPoint.y + GetHeightToDisplay()/m_Scale > m_Bitmap->Height ) ?
+                     m_Bitmap->Height - GetHeightToDisplay()/m_Scale : m_StartPoint.y;
+   m_StartPoint.x = ( m_StartPoint.x < 0 ) ? 0 : m_StartPoint.x;
+   m_StartPoint.x = ( m_StartPoint.x + GetWidthToDisplay()/m_Scale > m_Bitmap->Width ) ?
+                     m_Bitmap->Width - GetWidthToDisplay()/m_Scale : m_StartPoint.x;
 
    Paint();
 
-   if (FScaleChange)
-      FScaleChange(this);
+   if (m_ScaleChange)
+      m_ScaleChange(this);
 }
 
 //--------------------------------Pane support--------------------------------
@@ -614,19 +614,19 @@ void __fastcall TPhCustomImage::ZoomToRect(const TRect Rect)
     Purpose:   Совмещает центр изображения с центром компонента
     Comments:
 */
-void __fastcall TPhCustomImage::MoveToCenter()
+void __fastcall TPhImage::MoveToCenter()
 {
    if (Empty)
       return;
    if (GetHeightToDisplay() < Height && GetWidthToDisplay() < Width)
       return;
 
-   FStartPoint.x = FBitmap->Width/2 - Width/(2*FScale);
-   FStartPoint.y = FBitmap->Height/2 - Height/(2*FScale);
+   m_StartPoint.x = m_Bitmap->Width/2 - Width/(2*m_Scale);
+   m_StartPoint.y = m_Bitmap->Height/2 - Height/(2*m_Scale);
 
    Paint();
-   if (FPosChange)
-    FPosChange(this);
+   if (m_PosChange)
+    m_PosChange(this);
 }
 /*
     Function:   TFCustomImage::MoveToLeftTop()
@@ -635,18 +635,18 @@ void __fastcall TPhCustomImage::MoveToCenter()
     Comments:   Данная операция применима, если размеры изображения больше
                 размеров клинетской области компонента
 */
-void __fastcall TPhCustomImage::MoveToLeftTop()
+void __fastcall TPhImage::MoveToLeftTop()
 {
    if (Empty)
       return;
    if (GetHeightToDisplay() < Height && GetWidthToDisplay() < Width)
       return;
 
-   FStartPoint.x = 0;
-   FStartPoint.y = FBitmap->Height - Height/FScale;
+   m_StartPoint.x = 0;
+   m_StartPoint.y = m_Bitmap->Height - Height/m_Scale;
    Paint();
-   if (FPosChange)
-    FPosChange(this);
+   if (m_PosChange)
+    m_PosChange(this);
 }
 
 /*
@@ -656,19 +656,19 @@ void __fastcall TPhCustomImage::MoveToLeftTop()
     Comments: Данная операция применима, если размеры изображения больше
               размеров клинетской области компонента
 */
-void __fastcall TPhCustomImage::MoveToRightBottom()
+void __fastcall TPhImage::MoveToRightBottom()
 {
    if (Empty)
       return;
    if (GetHeightToDisplay() < Height && GetWidthToDisplay() < Width)
       return;
 
-   FStartPoint.x = FBitmap->Width - Width/FScale;
-   FStartPoint.y = 0;
+   m_StartPoint.x = m_Bitmap->Width - Width/m_Scale;
+   m_StartPoint.y = 0;
 
    Paint();
-   if (FPosChange)
-    FPosChange(this);
+   if (m_PosChange)
+    m_PosChange(this);
 }
 
 /*  ----------------------------------------------------------
@@ -676,37 +676,37 @@ void __fastcall TPhCustomImage::MoveToRightBottom()
     Purpose:    Смещает центр изображения на dX,dY
     Comments:
 */
-void __fastcall TPhCustomImage::MoveBy(int in_dX, int in_dY)
+void __fastcall TPhImage::MoveBy(int in_dX, int in_dY)
 {
    if (Empty)
       return;
 
-   double dX = RoundTo( (double)in_dX / RoundTo(FScale, -2), 0 );
-   double dY = RoundTo( (double)in_dY / RoundTo(FScale, -2), 0 );
+   double dX = RoundTo( (double)in_dX / RoundTo(m_Scale, -2), 0 );
+   double dY = RoundTo( (double)in_dY / RoundTo(m_Scale, -2), 0 );
    
-   if ( FBitmap->Width * FScale <= Width &&
-        FBitmap->Height * FScale <= Height )
+   if ( m_Bitmap->Width * m_Scale <= Width &&
+        m_Bitmap->Height * m_Scale <= Height )
       return;
 
-   if ( FBitmap->Width * FScale > Width )
-      if ( FStartPoint.x + dX > FBitmap->Width - Width/FScale )
-         FStartPoint.x = FBitmap->Width - Width/FScale;
-      else if (FStartPoint.x + dX < 0)
-         FStartPoint.x = 0;
+   if ( m_Bitmap->Width * m_Scale > Width )
+      if ( m_StartPoint.x + dX > m_Bitmap->Width - Width/m_Scale )
+         m_StartPoint.x = m_Bitmap->Width - Width/m_Scale;
+      else if (m_StartPoint.x + dX < 0)
+         m_StartPoint.x = 0;
       else
-         FStartPoint.x += dX;
+         m_StartPoint.x += dX;
          
-   if ( FBitmap->Height * FScale > Height )
-      if ( FStartPoint.y - dY > FBitmap->Height - Height/FScale )
-         FStartPoint.y = FBitmap->Height - Height/FScale;
-      else if (FStartPoint.y - dY < 0)
-         FStartPoint.y = 0;
+   if ( m_Bitmap->Height * m_Scale > Height )
+      if ( m_StartPoint.y - dY > m_Bitmap->Height - Height/m_Scale )
+         m_StartPoint.y = m_Bitmap->Height - Height/m_Scale;
+      else if (m_StartPoint.y - dY < 0)
+         m_StartPoint.y = 0;
       else
-         FStartPoint.y -= dY;
+         m_StartPoint.y -= dY;
 
    Paint();
-   if (FPosChange)
-    FPosChange(this);
+   if (m_PosChange)
+    m_PosChange(this);
 }
 
 /*  ----------------------------------------------------------
@@ -714,7 +714,7 @@ void __fastcall TPhCustomImage::MoveBy(int in_dX, int in_dY)
     Purpose:    Смещает центр изображения в точку (X,Y)
     Comments:
 */
-void __fastcall TPhCustomImage::MoveTo(int X, int Y)
+void __fastcall TPhImage::MoveTo(int X, int Y)
 {
    if (Empty)
       return;
@@ -725,24 +725,24 @@ void __fastcall TPhCustomImage::MoveTo(int X, int Y)
 
    unsigned int x,y; // внутренние координаты
    x = X;
-   y = FBitmap->Height - Y;
+   y = m_Bitmap->Height - Y;
 
-   FStartPoint.x = x - Width/(2*FScale);
-   FStartPoint.y = y - Height/(2*FScale);
+   m_StartPoint.x = x - Width/(2*m_Scale);
+   m_StartPoint.y = y - Height/(2*m_Scale);
 
-   if ( FStartPoint.x + Width/FScale > FBitmap->Width )
-      FStartPoint.x = FBitmap->Width - Width/FScale;
-   else if ( FStartPoint.x < 0 )
-      FStartPoint.x = 0;
+   if ( m_StartPoint.x + Width/m_Scale > m_Bitmap->Width )
+      m_StartPoint.x = m_Bitmap->Width - Width/m_Scale;
+   else if ( m_StartPoint.x < 0 )
+      m_StartPoint.x = 0;
 
-   if ( FStartPoint.y + Height/FScale > FBitmap->Height )
-      FStartPoint.y = FBitmap->Height - Height/FScale;
-   if ( FStartPoint.y < 0 )
-      FStartPoint.y = 0;
+   if ( m_StartPoint.y + Height/m_Scale > m_Bitmap->Height )
+      m_StartPoint.y = m_Bitmap->Height - Height/m_Scale;
+   if ( m_StartPoint.y < 0 )
+      m_StartPoint.y = 0;
       
    Paint();
-   if (FPosChange)
-    FPosChange(this);
+   if (m_PosChange)
+    m_PosChange(this);
 }
 
 /*  ----------------------------------------------------------
@@ -751,12 +751,12 @@ void __fastcall TPhCustomImage::MoveTo(int X, int Y)
                 масштабирования.
     Comments:
 */
-int TPhCustomImage::GetWidthToDisplay() const
+int TPhImage::GetWidthToDisplay() const
 {
-   if ( FBitmap->Width * FScale > Width )
+   if ( m_Bitmap->Width * m_Scale > Width )
       return Width;
    else
-      return (int)(FBitmap->Width * FScale);
+      return (int)(m_Bitmap->Width * m_Scale);
 }
 
 /*  ----------------------------------------------------------
@@ -765,12 +765,12 @@ int TPhCustomImage::GetWidthToDisplay() const
                 масштабирования.
     Comments:
 */
-int TPhCustomImage::GetHeightToDisplay() const
+int TPhImage::GetHeightToDisplay() const
 {
-   if ( FBitmap->Height * FScale > Height )
+   if ( m_Bitmap->Height * m_Scale > Height )
       return Height;
    else
-      return FBitmap->Height * FScale;
+      return m_Bitmap->Height * m_Scale;
 }
 
 /*  ----------------------------------------------------------
@@ -779,27 +779,27 @@ int TPhCustomImage::GetHeightToDisplay() const
                 представлении, т.е. перевернутую по Y
     Comments:
 */
-TRect __fastcall TPhCustomImage::GetInternalVisibleArea()
+TRect __fastcall TPhImage::GetInternalVisibleArea()
 {
     TRect area;
 
-    area.Top    = FStartPoint.y;
-    area.Bottom = RoundTo( area.Top + GetHeightToDisplay() / FScale, 0 );
+    area.Top    = m_StartPoint.y;
+    area.Bottom = RoundTo( area.Top + GetHeightToDisplay() / m_Scale, 0 );
 
-    area.Left   = FStartPoint.x;
-    area.Right  = RoundTo( area.Left + GetWidthToDisplay() / FScale, 0 );
+    area.Left   = m_StartPoint.x;
+    area.Right  = RoundTo( area.Left + GetWidthToDisplay() / m_Scale, 0 );
 
     return area;
 }
 
-void   TPhCustomImage::DrawSelRect(Graphics::TBitmap *bm)
+void   TPhImage::DrawSelRect(Graphics::TBitmap *bm)
 {
-   if (FSelRect.Width() == 0 || FSelRect.Height() == 0)
+   if (m_SelRect.Width() == 0 || m_SelRect.Height() == 0)
     return;
 
    if (bm == NULL)
         return;
-   TRect FSelRect1 = GetScreenRect(FSelRect);
+   TRect FSelRect1 = GetScreenRect(m_SelRect);
    TPenStyle style = bm->Canvas->Pen->Style;
    TColor color = bm->Canvas->Pen->Color;
    TPenMode mode = bm->Canvas->Pen->Mode;
@@ -821,51 +821,51 @@ void   TPhCustomImage::DrawSelRect(Graphics::TBitmap *bm)
    bm->Canvas->Pen->Width = pwidth;
 }
 
-void __fastcall 	TPhCustomImage::ClearSelection()
+void __fastcall 	TPhImage::ClearSelection()
 {
-    FSelRect.Left = 0;
-    FSelRect.Top = 0;
-    FSelRect.Right = 0;
-    FSelRect.Bottom = 0;
-    if (this->FSelectedBitmap != NULL)
+    m_SelRect.Left = 0;
+    m_SelRect.Top = 0;
+    m_SelRect.Right = 0;
+    m_SelRect.Bottom = 0;
+    if (this->m_SelectedBitmap != NULL)
     {
-        delete this->FSelectedBitmap;
-        this->FSelectedBitmap = NULL;
+        delete this->m_SelectedBitmap;
+        this->m_SelectedBitmap = NULL;
     }
     Paint();
 }
 
-bool __fastcall		   TPhCustomImage::HasSelection()
+bool __fastcall		   TPhImage::HasSelection()
 {
-	if (FSelRect.Width() == 0 && FSelRect.Height() == 0)
+	if (m_SelRect.Width() == 0 && m_SelRect.Height() == 0)
     	return false;
     else
     	return true;
 }
 
-TRect						TPhCustomImage::GetSelRect()
+TRect						TPhImage::GetSelRect()
 {
-	return FSelRect;
+	return m_SelRect;
 }
 
-void                        TPhCustomImage::SetSelRect(TRect r)
+void                        TPhImage::SetSelRect(TRect r)
 {
-     FSelRect = r;
-     TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
+     m_SelRect = r;
+     TDIBImage* dib = dynamic_cast<TDIBImage*>(m_Bitmap);
      if (dib != NULL)
      {
         // clear selected bitmap
-        if (this->FSelectedBitmap != NULL)
+        if (this->m_SelectedBitmap != NULL)
         {
-            delete this->FSelectedBitmap;
-            this->FSelectedBitmap = NULL;
+            delete this->m_SelectedBitmap;
+            this->m_SelectedBitmap = NULL;
         }
 
-        FSelectedBitmap = new TDIBImage();
+        m_SelectedBitmap = new TDIBImage();
 
         awpImage* src = NULL;
         awpImage* sel = NULL;
-        TRect sel_rect = FSelRect;//this->GetImageRect(FSelRect);
+        TRect sel_rect = m_SelRect;
         awpRect sel_awprect;
         sel_awprect.left = sel_rect.left;
         sel_awprect.top = sel_rect.top;
@@ -880,7 +880,7 @@ void                        TPhCustomImage::SetSelRect(TRect r)
             if (sel != NULL)
             {
 
-                TDIBImage* sel_image = dynamic_cast<TDIBImage*>(FSelectedBitmap);
+                TDIBImage* sel_image = dynamic_cast<TDIBImage*>(m_SelectedBitmap);
                 sel_image->SetAWPImage(sel);
 	            _AWP_SAFE_RELEASE_(sel)
             }
@@ -896,9 +896,9 @@ void                        TPhCustomImage::SetSelRect(TRect r)
 			  в клиентской области компонента
 	Comments:
 */
-void __fastcall TPhCustomImage::Paint(void)
+void __fastcall TPhImage::Paint(void)
 {
-	if (FBitmap != NULL)
+	if (m_Bitmap != NULL)
 	{
 	   Graphics::TBitmap *bm = new Graphics::TBitmap();
 	   bm->Width  = Width;
@@ -924,7 +924,7 @@ void __fastcall TPhCustomImage::Paint(void)
 	   }
 
 	   src_r = GetInternalVisibleArea();
-       TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
+       TDIBImage* dib = dynamic_cast<TDIBImage*>(m_Bitmap);
 	   unsigned char* pDIB = dib->OpenPixels();
 
 	   ::SetStretchBltMode(bm->Canvas->Handle, HALFTONE);
@@ -964,9 +964,9 @@ void __fastcall TPhCustomImage::Paint(void)
 
 /*  ----------------------------------------------------------
 */
-int __fastcall TPhCustomImage::GetImageX(int ScreenX)
+int __fastcall TPhImage::GetImageX(int ScreenX)
 {
-   if (FBitmap == NULL)
+   if (m_Bitmap == NULL)
     return -1;
 
    int display_w = GetWidthToDisplay();
@@ -986,16 +986,16 @@ int __fastcall TPhCustomImage::GetImageX(int ScreenX)
       right = display_w;
    }
 
-   double sx = RoundTo( FStartPoint.x + (double)(ScreenX - left) / FScale, 0 );
+   double sx = RoundTo( m_StartPoint.x + (double)(ScreenX - left) / m_Scale, 0 );
 
-   return ( sx >= 0 && sx <= FBitmap->Width ) ? sx : -1;
+   return ( sx >= 0 && sx <= m_Bitmap->Width ) ? sx : -1;
 }
 
 /*  ----------------------------------------------------------
 */
-int __fastcall TPhCustomImage::GetImageY( int ScreenY )
+int __fastcall TPhImage::GetImageY( int ScreenY )
 {
-   if (FBitmap == NULL)
+   if (m_Bitmap == NULL)
     return -1;
 
    int display_h = GetHeightToDisplay();
@@ -1016,14 +1016,14 @@ int __fastcall TPhCustomImage::GetImageY( int ScreenY )
       bottom = display_h;
    }
 
-   double sy  = RoundTo( FBitmap->Height - FStartPoint.y - (double)(sY - top) / FScale, 0 );
+   double sy  = RoundTo( m_Bitmap->Height - m_StartPoint.y - (double)(sY - top) / m_Scale, 0 );
 
-   return (sy >= 0 && sy <= FBitmap->Height) ? sy : -1;
+   return (sy >= 0 && sy <= m_Bitmap->Height) ? sy : -1;
 }
 
 /*  ----------------------------------------------------------
 */
-TRect __fastcall TPhCustomImage::GetImageRect(TRect ScreenR)
+TRect __fastcall TPhImage::GetImageRect(TRect ScreenR)
 {
     TRect ImageR = TRect(-1, -1, -1, -1);
 
@@ -1037,7 +1037,7 @@ TRect __fastcall TPhCustomImage::GetImageRect(TRect ScreenR)
 
     return ImageR;
 }
-TPoint   __fastcall         TPhCustomImage::GetImagePoint(int x, int y)
+TPoint   __fastcall         TPhImage::GetImagePoint(int x, int y)
 {
 	TPoint result;
      result.x = 0;
@@ -1048,7 +1048,7 @@ TPoint   __fastcall         TPhCustomImage::GetImagePoint(int x, int y)
      result.y = this->GetImageY(y);
 	 return result;
 }
-TPoint   __fastcall         TPhCustomImage::GetScreenPoint(int x, int y)
+TPoint   __fastcall         TPhImage::GetScreenPoint(int x, int y)
 {
      TPoint result;
 	 result.x = 0;
@@ -1064,12 +1064,12 @@ TPoint   __fastcall         TPhCustomImage::GetScreenPoint(int x, int y)
     if ( GetHeightToDisplay() < Height )
         dy = (Height - GetHeightToDisplay()) / 2;
 
-    result.x    =  (x - Corner.x)*FScale + dx;
-    result.y    =  (y - Corner.y)*FScale + dy;//FStartPoint.y + FScale*ImageR.Top;//GetImageY( ScreenR.Top );
+    result.x    =  (x - Corner.x)*m_Scale + dx;
+    result.y    =  (y - Corner.y)*m_Scale + dy;//m_StartPoint.y + m_Scale*ImageR.Top;//GetImageY( ScreenR.Top );
 
     return result;
 }
-TRect	 __fastcall  		TPhCustomImage::GetScreenRect(TRect ImageR)
+TRect	 __fastcall  		TPhImage::GetScreenRect(TRect ImageR)
 {
    TRect ScreenR = TRect(-1, -1, -1, -1);
 
@@ -1083,10 +1083,10 @@ TRect	 __fastcall  		TPhCustomImage::GetScreenRect(TRect ImageR)
 
     if ( !Empty )
     {
-        ScreenR.Left   = (ImageR.Left - Corner.x)*FScale + dx;
-        ScreenR.Right  = (ImageR.Right - Corner.x)*FScale + dx;//FStartPoint.x + FScale*ImageR.Right;//GetImageX( ScreenR.Right );
-        ScreenR.Top    = (ImageR.Top - Corner.y)*FScale + dy;//FStartPoint.y + FScale*ImageR.Top;//GetImageY( ScreenR.Top );
-        ScreenR.Bottom = (ImageR.Bottom - Corner.y)*FScale + dy;//GetImageY( ScreenR.Bottom );
+        ScreenR.Left   = (ImageR.Left - Corner.x)*m_Scale + dx;
+        ScreenR.Right  = (ImageR.Right - Corner.x)*m_Scale + dx;//m_StartPoint.x + m_Scale*ImageR.Right;//GetImageX( ScreenR.Right );
+        ScreenR.Top    = (ImageR.Top - Corner.y)*m_Scale + dy;//m_StartPoint.y + m_Scale*ImageR.Top;//GetImageY( ScreenR.Top );
+        ScreenR.Bottom = (ImageR.Bottom - Corner.y)*m_Scale + dy;//GetImageY( ScreenR.Bottom );
     }
     return ScreenR;
 }
@@ -1096,20 +1096,20 @@ TRect	 __fastcall  		TPhCustomImage::GetScreenRect(TRect ImageR)
     Purpose:    Вычисляет видимую область изображения
     Comments:
 */
-TRect __fastcall TPhCustomImage::GetVisibleArea() const
+TRect __fastcall TPhImage::GetVisibleArea() const
 {
     TRect area;
 
-    if ( FBitmap->Height * FScale > Height )
-        area.Top = FBitmap->Height - Height/FScale - FStartPoint.y;
+    if ( m_Bitmap->Height * m_Scale > Height )
+        area.Top = m_Bitmap->Height - Height/m_Scale - m_StartPoint.y;
     else
         area.Top = 0;
-    area.Bottom = area.Top + GetHeightToDisplay() / FScale;
-    if (FBitmap->Width * FScale > Width)
-        area.left = FBitmap->Width - Width/FScale - FStartPoint.x;
+    area.Bottom = area.Top + GetHeightToDisplay() / m_Scale;
+    if (m_Bitmap->Width * m_Scale > Width)
+        area.left = m_Bitmap->Width - Width/m_Scale - m_StartPoint.x;
     else
         area.left = 0;
-    area.Right  = area.Left + GetWidthToDisplay() / FScale;
+    area.Right  = area.Left + GetWidthToDisplay() / m_Scale;
 
     return area;
 }
@@ -1120,14 +1120,14 @@ TRect __fastcall TPhCustomImage::GetVisibleArea() const
               объект в состояние Loading.
     Comments:
 ---------------------------------------------------------------------------*/
-bool  __fastcall TPhCustomImage::LoadFromFile(const char* lpFileName)
+bool  __fastcall TPhImage::LoadFromFile(const char* lpFileName)
 {
 
-      if (FBeforeOpen)
-         FBeforeOpen(this);
+      if (m_BeforeOpen)
+         m_BeforeOpen(this);
       try
       {
-	      FBitmap->LoadFromFile(lpFileName);
+	      m_Bitmap->LoadFromFile(lpFileName);
       }
       catch(Exception& e)
       {
@@ -1136,17 +1136,17 @@ bool  __fastcall TPhCustomImage::LoadFromFile(const char* lpFileName)
       }
 
       // setup filename
-      FFileName = lpFileName;
+      m_FileName = lpFileName;
 
       if (m_OnFrame)
       {
-		  TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
+		  TDIBImage* dib = dynamic_cast<TDIBImage*>(m_Bitmap);
           m_OnFrame(this, dib);
       }
 
       if (m_OnFrameData)
       {
-		  TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
+		  TDIBImage* dib = dynamic_cast<TDIBImage*>(m_Bitmap);
           awpImage* img = NULL;
           dib->GetAWPImage(&img);
           if (img != NULL)
@@ -1158,10 +1158,10 @@ bool  __fastcall TPhCustomImage::LoadFromFile(const char* lpFileName)
           }
       }
 
-      if (FAfterOpen)
-          FAfterOpen(this);
-      if (FChange)
-          FChange(this);
+      if (m_AfterOpen)
+          m_AfterOpen(this);
+      if (m_Change)
+          m_Change(this);
 
       return true;
 }
@@ -1171,17 +1171,17 @@ bool  __fastcall TPhCustomImage::LoadFromFile(const char* lpFileName)
     Purpose:  Save image to file.
     Comments: Default save image in JPEG format
 ---------------------------------------------------------------------------*/
-void __fastcall TPhCustomImage::SaveToFile(const LPWSTR lpwFileName)
+void __fastcall TPhImage::SaveToFile(const LPWSTR lpwFileName)
 {
 	   UnicodeString FileName = lpwFileName;
 
-	   TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
+	   TDIBImage* dib = dynamic_cast<TDIBImage*>(m_Bitmap);
 	   dib->SaveToFile(FileName);
 
 	   this->m_modified = false;
-		FFileName = lpwFileName;
-		if (FChange)
-			FChange(this);
+		m_FileName = lpwFileName;
+		if (m_Change)
+			m_Change(this);
 
 	   return;
 }
@@ -1190,13 +1190,13 @@ void __fastcall TPhCustomImage::SaveToFile(const LPWSTR lpwFileName)
 	Purpose:  Импортирует изображение из буфера обмена.
 	Comments:
 ---------------------------------------------------------------------------*/
-void __fastcall TPhCustomImage::LoadFromClipboard()
+void __fastcall TPhImage::LoadFromClipboard()
 {
-   FBitmap->Assign(Clipboard());
+   m_Bitmap->Assign(Clipboard());
    this->m_modified = true;
-   FFileName = "";
-    if (FChange)
-        FChange(this);
+   m_FileName = "";
+    if (m_Change)
+        m_Change(this);
    Paint();
 }
 /*TFCustomImage--------------------------------------------------------------------
@@ -1204,14 +1204,14 @@ void __fastcall TPhCustomImage::LoadFromClipboard()
     Purpose: Записывает изображение в буфер обмена
     Comments:
 ---------------------------------------------------------------------------*/
-void __fastcall TPhCustomImage::SaveToClipBoard()
+void __fastcall TPhImage::SaveToClipBoard()
 {
    if (!Empty)
    {
       if (this->HasSelection())
           Clipboard()->Assign(this->SelectedBitmap);
       else
-	      Clipboard()->Assign(FBitmap);
+	      Clipboard()->Assign(m_Bitmap);
    }
 }
 /*TFCustomImage--------------------------------------------------------------------
@@ -1219,7 +1219,7 @@ void __fastcall TPhCustomImage::SaveToClipBoard()
     Purpose:
     Comments:
 ---------------------------------------------------------------------------*/
-bool __fastcall TPhCustomImage::GetModified()
+bool __fastcall TPhImage::GetModified()
 {
         return this->m_modified;
 }
@@ -1228,15 +1228,15 @@ bool __fastcall TPhCustomImage::GetModified()
     Purpose:    Смещение центра изображения относительно центра компонента.
     Comments:
 ---------------------------------------------------------------------------*/
-TPoint __fastcall TPhCustomImage::GetCorner() const
+TPoint __fastcall TPhImage::GetCorner() const
 {
    TPoint C( -1, -1 );
 
    if (!Empty)
    {
-      C.x = FStartPoint.x;
-      if ( FBitmap->Height * FScale > Height )
-          C.y = RoundTo( FBitmap->Height - Height/FScale - FStartPoint.y, 0 );
+      C.x = m_StartPoint.x;
+      if ( m_Bitmap->Height * m_Scale > Height )
+          C.y = RoundTo( m_Bitmap->Height - Height/m_Scale - m_StartPoint.y, 0 );
       else
           C.y = 0;
    }
@@ -1248,12 +1248,12 @@ TPoint __fastcall TPhCustomImage::GetCorner() const
     Purpose:
     Comments:
 ---------------------------------------------------------------------------*/
-bool __fastcall TPhCustomImage::GetEmpty() const
+bool __fastcall TPhImage::GetEmpty() const
 {
     try
     {
-       if (FBitmap != NULL)
-           return FBitmap->Empty;
+       if (m_Bitmap != NULL)
+           return m_Bitmap->Empty;
        else
            return true;
     }
@@ -1263,25 +1263,25 @@ bool __fastcall TPhCustomImage::GetEmpty() const
     }
 }
 
-void __fastcall  TPhCustomImage::SetEmpty(bool value)
+void __fastcall  TPhImage::SetEmpty(bool value)
 {
-    if (FBitmap != NULL)
+    if (m_Bitmap != NULL)
     {
-        FBitmap->Assign(NULL);
+        m_Bitmap->Assign(NULL);
         Paint();
         this->AFileName = "";
         m_modified = false;
-        if (FChange)
-	    FChange(this);
+        if (m_Change)
+	    	m_Change(this);
     }
 }
 //---------------------------------------------------------------------------
-void __fastcall TPhCustomImage::DlgMessage( TWMGetDlgCode &Message )
+void __fastcall TPhImage::DlgMessage( TWMGetDlgCode &Message )
 {
     Message.Result = DLGC_WANTARROWS;
 }
 //---------------------------------------------------------------------------
-void __fastcall TPhCustomImage::KeyDown(Word &Key, Classes::TShiftState Shift)
+void __fastcall TPhImage::KeyDown(Word &Key, Classes::TShiftState Shift)
 {
     int step = 3;
     if ( Shift.Contains( ssCtrl ) )
@@ -1334,7 +1334,7 @@ void __fastcall TPhCustomImage::KeyDown(Word &Key, Classes::TShiftState Shift)
     }
 
 }
-void __fastcall 	TPhCustomImage::DblClick(void)
+void __fastcall 	TPhImage::DblClick(void)
 {
 
    if (GetKeyState(VK_LSHIFT) < 0)
@@ -1351,7 +1351,7 @@ void __fastcall 	TPhCustomImage::DblClick(void)
   TCustomControl::DblClick();
 }
 //---------------------------------------------------------------------------
-bool __fastcall TPhCustomImage::DoMouseWheel(System::Classes::TShiftState Shift, int WheelDelta, const System::Types::TPoint &MousePos)
+bool __fastcall TPhImage::DoMouseWheel(System::Classes::TShiftState Shift, int WheelDelta, const System::Types::TPoint &MousePos)
 {
 	if (WheelDelta > 0)
     {
@@ -1363,7 +1363,7 @@ bool __fastcall TPhCustomImage::DoMouseWheel(System::Classes::TShiftState Shift,
     }
     return true;
 }
-bool  __fastcall TPhCustomImage::DoMouseWheelUp(TShiftState Shift, const TPoint &MousePos)
+bool  __fastcall TPhImage::DoMouseWheelUp(TShiftState Shift, const TPoint &MousePos)
 {
    ZoomIn();
 
@@ -1372,7 +1372,7 @@ bool  __fastcall TPhCustomImage::DoMouseWheelUp(TShiftState Shift, const TPoint 
 }
 //---------------------------------------------------------------------------
 
-bool  __fastcall TPhCustomImage::DoMouseWheelDown(TShiftState Shift, const TPoint &MousePos)
+bool  __fastcall TPhImage::DoMouseWheelDown(TShiftState Shift, const TPoint &MousePos)
 {
    ZoomOut();
 
@@ -1380,7 +1380,7 @@ bool  __fastcall TPhCustomImage::DoMouseWheelDown(TShiftState Shift, const TPoin
    return true;
 }
 //---------------------------------------------------------------------------
-void __fastcall TPhCustomImage::MouseDown(TMouseButton Button,  TShiftState Shift, Integer X, Integer Y)
+void __fastcall TPhImage::MouseDown(TMouseButton Button,  TShiftState Shift, Integer X, Integer Y)
 {
    SetFocus();
    TPhImageTool* t =    GetSelectedTool();
@@ -1389,14 +1389,14 @@ void __fastcall TPhCustomImage::MouseDown(TMouseButton Button,  TShiftState Shif
    TCustomControl::MouseDown(Button, Shift,X,Y);
 }
 //---------------------------------------------------------------------------
-void __fastcall TPhCustomImage::MouseMove( TShiftState Shift, Integer X, Integer Y)
+void __fastcall TPhImage::MouseMove( TShiftState Shift, Integer X, Integer Y)
 {
     if (this->Mosaic && Shift.Contains(ssShift))
     {
         // call mosaic helper
         int x = GetImageX(X);
         int y = GetImageY(Y);
-        if (x >= 0 && x < FBitmap->Width && y >= 0 && y < FBitmap->Height)
+        if (x >= 0 && x < m_Bitmap->Width && y >= 0 && y < m_Bitmap->Height)
         {
             x /= m_tWidth;
             y /= m_tHeight;
@@ -1419,7 +1419,7 @@ void __fastcall TPhCustomImage::MouseMove( TShiftState Shift, Integer X, Integer
     TCustomControl::MouseMove(Shift,X,Y);
 }
 //---------------------------------------------------------------------------
-void __fastcall TPhCustomImage::MouseUp(TMouseButton Button,  TShiftState Shift, Integer X, Integer Y)
+void __fastcall TPhImage::MouseUp(TMouseButton Button,  TShiftState Shift, Integer X, Integer Y)
 {
 
     if (this->Mosaic && Shift.Contains(ssShift))
@@ -1427,7 +1427,7 @@ void __fastcall TPhCustomImage::MouseUp(TMouseButton Button,  TShiftState Shift,
         // call mosaic helper
         int x = GetImageX(X);
         int y = GetImageY(Y);
-        if (x >= 0 && x < FBitmap->Width && y >= 0 && y < FBitmap->Height)
+        if (x >= 0 && x < m_Bitmap->Width && y >= 0 && y < m_Bitmap->Height)
         {
             x /= m_tWidth;
             y /= m_tHeight;
@@ -1453,20 +1453,20 @@ void __fastcall TPhCustomImage::MouseUp(TMouseButton Button,  TShiftState Shift,
 }
 
 //---------------------------------------------------------------------------
-void __fastcall TPhCustomImage::SetImage(TGraphic* aBitmap)
+void __fastcall TPhImage::SetImage(TGraphic* aBitmap)
 {
-    TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
+    TDIBImage* dib = dynamic_cast<TDIBImage*>(m_Bitmap);
     dib->Assign(aBitmap);
-    if (FChange)
-      FChange(this);
+    if (m_Change)
+      m_Change(this);
 }
 
-TGraphic* __fastcall   TPhCustomImage::GetSelectedBitmap()
+TGraphic* __fastcall   TPhImage::GetSelectedBitmap()
 {
-    return this->FSelectedBitmap;
+    return m_SelectedBitmap;
 }
 //todo: working with tools
-int	 __fastcall TPhCustomImage::GetSelectedIndex()
+int	 __fastcall TPhImage::GetSelectedIndex()
 {
  /*	TThumbSelectTool* tool = dynamic_cast<TThumbSelectTool*>(FTool);
 	if (tool != NULL)
@@ -1475,7 +1475,7 @@ int	 __fastcall TPhCustomImage::GetSelectedIndex()
 		return -1; */
 }
 
-void __fastcall  TPhCustomImage::AddPhTool(TPhImageTool* tool)
+void __fastcall  TPhImage::AddPhTool(TPhImageTool* tool)
 {
 	if (tool != NULL)
 	{
@@ -1483,12 +1483,12 @@ void __fastcall  TPhCustomImage::AddPhTool(TPhImageTool* tool)
             m_ph_tools->Add(tool);
 	}
 }
-void __fastcall  TPhCustomImage::RemovePhTool(TPhImageTool* tool)
+void __fastcall  TPhImage::RemovePhTool(TPhImageTool* tool)
 {
    if (m_ph_tools->IndexOf(tool) > 0)
 	m_ph_tools->Remove(tool);
 }
-void __fastcall   TPhCustomImage::SelectPhTool(TPhImageTool* tool)
+void __fastcall   TPhImage::SelectPhTool(TPhImageTool* tool)
 {
 	int old_selected_tool_index = m_selected_ph_tool;
 
@@ -1509,11 +1509,11 @@ void __fastcall   TPhCustomImage::SelectPhTool(TPhImageTool* tool)
 			t->SetActive(true);
 	}
 
-    if (FToolChange != NULL)
-        FToolChange(this);
+    if (m_ToolChange != NULL)
+        m_ToolChange(this);
 }
 
-TPhImageTool* __fastcall    TPhCustomImage::GetSelectedTool()
+TPhImageTool* __fastcall    TPhImage::GetSelectedTool()
 {
 	if (m_selected_ph_tool < m_ph_tools->Count)
 		return (TPhImageTool*)this->m_ph_tools->Items[m_selected_ph_tool];
@@ -1521,7 +1521,7 @@ TPhImageTool* __fastcall    TPhCustomImage::GetSelectedTool()
 		return NULL;
 }
 
-void            __fastcall TPhCustomImage::DrawSelectedItems(Graphics::TBitmap* bm, int xx, int yy)
+void            __fastcall TPhImage::DrawSelectedItems(Graphics::TBitmap* bm, int xx, int yy)
 {
     if (!Mosaic)
         return;
@@ -1549,8 +1549,6 @@ void            __fastcall TPhCustomImage::DrawSelectedItems(Graphics::TBitmap* 
 	cnv->Rectangle(rect1);
 
 	// draw selected
-  	cnv->Pen->Width = 8;
-	cnv->Pen->Color = clGreen;
   	int w = (int)floor(sqrt((float)Frames->Count) + 0.5);
 	for (int i = 0; i < Frames->Count; i++)
 	{
@@ -1593,7 +1591,7 @@ void            __fastcall TPhCustomImage::DrawSelectedItems(Graphics::TBitmap* 
 	cnv->Pen->Width = oldWidth;
 }
 
-void __fastcall TPhCustomImage::DoDeleteImage()
+void __fastcall TPhImage::DoDeleteImage()
 {
     if (Frames->Count > 1)
     {
@@ -1607,7 +1605,7 @@ void __fastcall TPhCustomImage::DoDeleteImage()
     }
 }
 
-void __fastcall TPhCustomImage::Delete()
+void __fastcall TPhImage::Delete()
 {
     SlideShow = false;
     if (Mosaic)
@@ -1616,7 +1614,7 @@ void __fastcall TPhCustomImage::Delete()
         DoDeleteImage();
 }
 
-void __fastcall     TPhCustomImage::Copy(const LPWSTR lpwFolderName)
+void __fastcall     TPhImage::Copy(const LPWSTR lpwFolderName)
 {
     SlideShow = false;
     UnicodeString FolderName = lpwFolderName;
@@ -1641,7 +1639,7 @@ void __fastcall     TPhCustomImage::Copy(const LPWSTR lpwFolderName)
     else
         ShowMessage(L"Target folder does not exists.");
 }
-void __fastcall     TPhCustomImage::Move(const LPWSTR lpwFolderName)
+void __fastcall     TPhImage::Move(const LPWSTR lpwFolderName)
 {
     SlideShow = false;
     UnicodeString FolderName = lpwFolderName;
@@ -1669,12 +1667,12 @@ void __fastcall     TPhCustomImage::Move(const LPWSTR lpwFolderName)
         ShowMessage(L"Target folder does not exists.");
 }
 
-void __fastcall TPhCustomImage::Cancel()
+void __fastcall TPhImage::Cancel()
 {
     Frames->Cancel();
 }
 
-void __fastcall TPhCustomImage::SetImageData(int w, int h, int c, unsigned char* data)
+void __fastcall TPhImage::SetImageData(int w, int h, int c, unsigned char* data)
 {
     awpImage img;
     img.nMagic = AWP_MAGIC2;
@@ -1688,7 +1686,7 @@ void __fastcall TPhCustomImage::SetImageData(int w, int h, int c, unsigned char*
         m_OnFrameData(this, w,h,c,data);
     }
 
-    TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
+    TDIBImage* dib = dynamic_cast<TDIBImage*>(m_Bitmap);
     if (dib != NULL)
     {
         dib->SetAWPImage(&img);
@@ -1696,27 +1694,27 @@ void __fastcall TPhCustomImage::SetImageData(int w, int h, int c, unsigned char*
     }
 }
 
-bool __fastcall TPhCustomImage::GetAwpImage(awpImage** img)
+bool __fastcall TPhImage::GetAwpImage(awpImage** img)
 {
-    TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
+    TDIBImage* dib = dynamic_cast<TDIBImage*>(m_Bitmap);
     if (dib == NULL)
         return false;
     dib->GetAWPImage(img);
     return *img != NULL;
 }
 
-bool __fastcall   TPhCustomImage::GetSelectedImage(awpImage** img)
+bool __fastcall   TPhImage::GetSelectedImage(awpImage** img)
 {
-    TDIBImage* dib = dynamic_cast<TDIBImage*>(FSelectedBitmap);
+    TDIBImage* dib = dynamic_cast<TDIBImage*>(m_SelectedBitmap);
     if (dib == NULL)
         return false;
     dib->GetAWPImage(img);
     return *img != NULL;
 }
 
-bool __fastcall TPhCustomImage::SetAwpImage(awpImage* img)
+bool __fastcall TPhImage::SetAwpImage(awpImage* img)
 {
-    TDIBImage* dib = dynamic_cast<TDIBImage*>(FBitmap);
+    TDIBImage* dib = dynamic_cast<TDIBImage*>(m_Bitmap);
     if (dib == NULL)
         return false;
     if (dib != NULL)
@@ -1725,13 +1723,6 @@ bool __fastcall TPhCustomImage::SetAwpImage(awpImage* img)
         BestFit();
     }
     return true;
-}
-
-
-//=============================================================================
-__fastcall TPhImage::TPhImage(HWND Parent):TPhCustomImage(Parent)
-{
-
 }
 //---------------------------------------------------------------------------
 namespace Fimage41

@@ -14,7 +14,7 @@ private:
     int  vertex;
     int  m_x;
     int  m_y;
-    TRect FSelRect;
+    TRect m_SelRect;
     void __fastcall SetVertexes(int x1, int x2, int y1, int y2);
 public:
     __fastcall TPhSelRectTool(TComponent* Owner);
@@ -24,7 +24,7 @@ public:
     virtual void MouseMove(int X, int Y, TShiftState Shift);
     virtual void Reset();
 
-    __property TRect SelectRect = {read = FSelRect};
+    __property TRect SelectRect = {read = m_SelRect};
 };
 //---------------------------------------------------------------------------
 #endif

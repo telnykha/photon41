@@ -9,7 +9,7 @@
 //---------------------------------------------------------------------------
 class PACKAGE TPhImageTool : public TComponent
 {
-friend class TPhCustomImage;
+friend class TPhImage;
 private:
 	TNotifyEvent    m_BeforeActivate;
 	TNotifyEvent    m_AfterActivate;
@@ -18,11 +18,11 @@ private:
 protected:
 	UnicodeString   m_strToolName;
 	bool            m_active;
-	TPhCustomImage* m_pImage;
+	TPhImage* m_pImage;
 
 	void __fastcall SetActive(bool value);
-	void __fastcall SetDisplay(TPhCustomImage* display);
-	TPhCustomImage* __fastcall GetDisplay(TPhCustomImage* display);
+	void __fastcall SetDisplay(TPhImage* display);
+	TPhImage* __fastcall GetDisplay(TPhImage* display);
 public:
 	__fastcall TPhImageTool(TComponent* Owner);
 
@@ -35,7 +35,7 @@ public:
 	__property bool Active = {read = m_active};
 	__property UnicodeString ToolName = {read = m_strToolName};
 __published:
-	__property TPhCustomImage* PhImage = {read = GetDisplay, write = SetDisplay};
+	__property TPhImage* PhImage = {read = GetDisplay, write = SetDisplay};
 
 	__property TNotifyEvent     BeforeActivate = {read = m_BeforeActivate, write = m_BeforeActivate};
 	__property TNotifyEvent     AfterActivate = {read = m_AfterActivate, write = m_AfterActivate};

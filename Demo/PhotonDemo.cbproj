@@ -101,11 +101,12 @@
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <AppEnableRuntimeThemes>true</AppEnableRuntimeThemes>
         <AppEnableHighDPI>true</AppEnableHighDPI>
-        <LinkPackageImports>rtl.bpi;vcl.bpi;photon41.bpi;vclx.bpi;VclSmp.bpi</LinkPackageImports>
         <VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Debugger_DebugSourcePath>C:\_alt\VideoA2\VideoA\VideoAnalytics\awpipl2\src\;C:\_alt\VideoA2\VideoA\VideoAnalytics\jpeg-6b\src\;$(Debugger_DebugSourcePath)</Debugger_DebugSourcePath>
         <Debugger_CWD>C:\Users\ALT\Pictures</Debugger_CWD>
+        <LinkPackageStatics>rtl.lib;vcl.lib;photon41.lib;vclx.lib;VclSmp.lib</LinkPackageStatics>
+        <UsePackages>false</UsePackages>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <Defines>NDEBUG;$(Defines)</Defines>

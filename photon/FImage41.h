@@ -14,14 +14,13 @@
 #include <Classes.hpp>
 #include <Controls.hpp>
 #include <ExtCtrls.hpp>
-//const int crHandOpenCursor  = 1;
-//const int crHandCloseCursor = 2;
-//const int crMagnifyCursor   = 3;
-//const int crLenzCursor      = 4;
-//const int crZoom2RectCursor = 5;
+const int crHandOpenCursor  = 1;
+const int crHandCloseCursor = 2;
+const int crMagnifyCursor   = 3;
+const int crLenzCursor      = 4;
+const int crZoom2RectCursor = 5;
 
 #include "PhFrames.h"
-
 #include "awpipl.h"
 
 typedef enum {readJob, copyJob, moveJob, deleteJob, convertJob, processJob} EPhJobReason;
@@ -34,19 +33,19 @@ typedef void __fastcall (__closure *TPhFrameDataEvent)(System::TObject* Sender, 
 class PACKAGE TPhImageTool;
 //TPhCustomImage--------------------------------------------------------------------
 //TPhCustomImage extends the TCustomControl component
-class PACKAGE TPhCustomImage : public TCustomControl
+class PACKAGE TPhImage : public TCustomControl
 {
 friend class TPhImageTool;
 friend class TPhSelRectTool;
 friend class TPhFrames;
 private:
-	TNotifyEvent                FBeforeOpen;
-	TNotifyEvent                FAfterOpen;
-	TNotifyEvent                FScaleChange;
-	TNotifyEvent                FPosChange;
-	TNotifyEvent                FChange;
-    TNotifyEvent                FMosaic;
-	TNotifyEvent            	FToolChange;
+	TNotifyEvent                m_BeforeOpen;
+	TNotifyEvent                m_AfterOpen;
+	TNotifyEvent                m_ScaleChange;
+	TNotifyEvent                m_PosChange;
+	TNotifyEvent                m_Change;
+    TNotifyEvent                m_Mosaic;
+	TNotifyEvent            	m_ToolChange;
     TPhProgressEvent  			m_OnProgress;
     TNotifyEvent       			m_OnStart;
     TPhJobEvent		       		m_OnFinish;
@@ -57,17 +56,17 @@ protected:
     TTimer*                     m_Timer;
 	TList*                  	m_ph_tools;
     TPhFrames*                  m_Frames;
-	TGraphic*                   FBitmap;
-	TGraphic*                   FSelectedBitmap;
-	double                      FScale;      // scale coefficient
-	TPoint                      FStartPoint; // Левый верхний угол отображаемой области * 100%
-	AnsiString                  FFileName;
+	TGraphic*                   m_Bitmap;
+	TGraphic*                   m_SelectedBitmap;
+	double                      m_Scale;      // scale coefficient
+	TPoint                      m_StartPoint; // Левый верхний угол отображаемой области * 100%
+	UnicodeString                m_FileName;
 
     int                         m_xx;
     int                         m_yy;
     int                         m_idx;
 	// selectoin
-	TRect			FSelRect;
+	TRect			m_SelRect;
 	void 			DrawSelRect(Graphics::TBitmap *bm);
     void            __fastcall DrawSelectedItems(Graphics::TBitmap* bm, int xx, int yy);
 	// thumbs support
@@ -75,14 +74,11 @@ protected:
 	int				m_tHeight;
 	// image was modified
 	bool                        m_modified;
-
     bool                        m_mosaic;
 	int				 __fastcall GetSelectedIndex();
 	void __fastcall         	TimerEventHandler(TObject *Sender);
 protected:
 	void         __fastcall     SetImage(TGraphic* aBitmap);
-
-
 	// Painting
 	int                         GetWidthToDisplay() const;
 	int                         GetHeightToDisplay() const;
@@ -138,9 +134,9 @@ protected:
 
     void __fastcall DoDeleteImage();
 public:
-	__fastcall                  TPhCustomImage(TComponent* Owner);
-	__fastcall                  TPhCustomImage(HWND Parent);
-	__fastcall virtual          ~TPhCustomImage();
+	__fastcall                  TPhImage(TComponent* Owner);
+	__fastcall                  TPhImage(HWND Parent);
+	__fastcall virtual          ~TPhImage();
 
 	// ====================operations========================================
 	virtual bool __fastcall         Init(TStrings* Names);
@@ -204,9 +200,9 @@ public:
     bool __fastcall             GetSelectedImage(awpImage** img);
 
 	// Public properties
-	__property  AnsiString      AFileName = {read = FFileName, write = FFileName};
+	__property  UnicodeString   AFileName = {read = m_FileName, write = m_FileName};
     __property  TPhFrames*      Frames = {read = m_Frames};
-	__property  TGraphic*       Bitmap = {read = FBitmap, write = SetImage};
+	__property  TGraphic*       Bitmap = {read = m_Bitmap, write = SetImage};
 	__property  TGraphic*       SelectedBitmap = {read = GetSelectedBitmap};
 
 	__property  bool            Modified = {read = GetModified};
@@ -218,8 +214,9 @@ public:
 	__property TPoint           Corner = {read = GetCorner};
 	__property TRect            VisibleArea = {read = GetVisibleArea};
     __property int              MosaicSelected = {read = m_idx, write = SetMosaicSelected};
-   // inherited properties
-   __property Canvas;
+
+    // inherited properties
+    __property Canvas;
 	__property TPhImageTool*   PhTool = {read = GetSelectedTool};
 __published:
    //
@@ -253,25 +250,18 @@ __published:
     __property OnResize;
 
     // собственные события
-    __property TNotifyEvent     BeforeOpen = {read = FBeforeOpen, write = FBeforeOpen};
-    __property TNotifyEvent     AfterOpen  = {read = FAfterOpen, write = FAfterOpen};
-    __property TNotifyEvent     OnScaleChange = {read = FScaleChange, write = FScaleChange};
-    __property TNotifyEvent     OnPane = {read = FPosChange, write = FPosChange};
-    __property TNotifyEvent     OnChange = {read = FChange, write = FChange};
-    __property TNotifyEvent     OnMosaic = {read = FMosaic, write = FMosaic};
-    __property TNotifyEvent     OnToolChange = {read = FToolChange, write = FToolChange};
+    __property TNotifyEvent     BeforeOpen = {read = m_BeforeOpen, write = m_BeforeOpen};
+    __property TNotifyEvent     AfterOpen  = {read = m_AfterOpen, write = m_AfterOpen};
+    __property TNotifyEvent     OnScaleChange = {read = m_ScaleChange, write = m_ScaleChange};
+    __property TNotifyEvent     OnPane = {read = m_PosChange, write = m_PosChange};
+    __property TNotifyEvent     OnChange = {read = m_Change, write = m_Change};
+    __property TNotifyEvent     OnMosaic = {read = m_Mosaic, write = m_Mosaic};
+    __property TNotifyEvent     OnToolChange = {read = m_ToolChange, write = m_ToolChange};
     __property TPhProgressEvent OnProgress = {read = m_OnProgress, write = m_OnProgress};
 	__property TNotifyEvent 	OnStart = {read = m_OnStart, write = m_OnStart};
 	__property TPhJobEvent	 	OnFinish = {read = m_OnFinish, write = m_OnFinish};
 	__property TNotifyEvent 	OnCancel = {read = m_OnCancel, write = m_OnCancel};
     __property TPhFrameEvent    OnFrame  = {read = m_OnFrame, write = m_OnFrame};
     __property TPhFrameDataEvent OnFrameData = {read = m_OnFrameData, write = m_OnFrameData};
-};
-//-------------------------- export TPhImage -------------------------------------
-class PACKAGE TPhImage : public TPhCustomImage
-{
-public:
-    __fastcall TPhImage(HWND Parent);
-__published:
 };
 #endif

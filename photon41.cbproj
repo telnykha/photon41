@@ -106,6 +106,7 @@
         <VerInfo_Locale>1033</VerInfo_Locale>
     </PropertyGroup>
     <ItemGroup>
+        <None Include="doc\description.txt"/>
         <CppCompile Include="photon41.cpp">
             <BuildOrder>0</BuildOrder>
         </CppCompile>

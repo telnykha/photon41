@@ -20,18 +20,18 @@ void TPhSelRectTool::MouseDown(int X, int Y, TMouseButton Button)
 
    if (Button == mbLeft)
    {
-      m_pImage->FSelRect.Top    = 0;
-      m_pImage->FSelRect.Bottom = 0;
-      m_pImage->FSelRect.Left   = 0;
-      m_pImage->FSelRect.Right  = 0;
+      m_pImage->m_SelRect.Top    = 0;
+      m_pImage->m_SelRect.Bottom = 0;
+      m_pImage->m_SelRect.Left   = 0;
+      m_pImage->m_SelRect.Right  = 0;
       m_pImage->Paint();
-      FSelRect.Top    = Y;
-      FSelRect.Bottom = Y;
-      FSelRect.Left   = X;
-      FSelRect.Right  = X;
+      m_SelRect.Top    = Y;
+      m_SelRect.Bottom = Y;
+      m_SelRect.Left   = X;
+      m_SelRect.Right  = X;
       m_x = X;
       m_y = Y;
-      m_pImage->FSelRect = m_pImage->GetImageRect(FSelRect);
+      m_pImage->m_SelRect = m_pImage->GetImageRect(m_SelRect);
       Pressed        = true;
    }
 }
@@ -43,14 +43,14 @@ void TPhSelRectTool::MouseUp(int X, int Y, TMouseButton Button)
 
    if (Button == mbLeft)
    {
-      FSelRect.Left = AWP_MIN(X, FSelRect.Left);
-      FSelRect.Top  = AWP_MIN(Y, FSelRect.Top);
-      FSelRect.Right = AWP_MAX(X, FSelRect.Right);
-      FSelRect.Bottom = AWP_MAX(Y, FSelRect.Bottom);
+      m_SelRect.Left = AWP_MIN(X, m_SelRect.Left);
+      m_SelRect.Top  = AWP_MIN(Y, m_SelRect.Top);
+      m_SelRect.Right = AWP_MAX(X, m_SelRect.Right);
+      m_SelRect.Bottom = AWP_MAX(Y, m_SelRect.Bottom);
 
       Pressed = false;
 
-      m_pImage->SetSelRect(m_pImage->GetImageRect(FSelRect));
+      m_pImage->SetSelRect(m_pImage->GetImageRect(m_SelRect));
       m_pImage->Paint();
    }
 }
@@ -82,11 +82,11 @@ void TPhSelRectTool::DrawSelRect()
    m_pImage->Canvas->Pen->Color = clBlack;
    m_pImage->Canvas->Pen->Mode = pmNotXor;
 
-   m_pImage->Canvas->MoveTo(FSelRect.Left, FSelRect.Top);
-   m_pImage->Canvas->LineTo(FSelRect.Right, FSelRect.Top);
-   m_pImage->Canvas->LineTo(FSelRect.Right, FSelRect.Bottom);
-   m_pImage->Canvas->LineTo(FSelRect.Left, FSelRect.Bottom);
-   m_pImage->Canvas->LineTo(FSelRect.Left, FSelRect.Top);
+   m_pImage->Canvas->MoveTo(m_SelRect.Left, m_SelRect.Top);
+   m_pImage->Canvas->LineTo(m_SelRect.Right, m_SelRect.Top);
+   m_pImage->Canvas->LineTo(m_SelRect.Right, m_SelRect.Bottom);
+   m_pImage->Canvas->LineTo(m_SelRect.Left, m_SelRect.Bottom);
+   m_pImage->Canvas->LineTo(m_SelRect.Left, m_SelRect.Top);
 
    m_pImage->Canvas->Pen->Style = style;
    m_pImage->Canvas->Pen->Color = color;
@@ -98,10 +98,10 @@ void TPhSelRectTool::Reset()
 
 void __fastcall TPhSelRectTool::SetVertexes(int x1, int x2, int y1, int y2)
 {
-    FSelRect.Left  = AWP_MIN(x1,x2);
-    FSelRect.Right = AWP_MAX(x1,x2);
-    FSelRect.Top   = AWP_MIN(y1,y2);
-    FSelRect.Bottom = AWP_MAX(y1,y2);
+    m_SelRect.Left  = AWP_MIN(x1,x2);
+    m_SelRect.Right = AWP_MAX(x1,x2);
+    m_SelRect.Top   = AWP_MIN(y1,y2);
+    m_SelRect.Bottom = AWP_MAX(y1,y2);
 }
 
 //---------------------------------------------------------------------------
