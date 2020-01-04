@@ -2,6 +2,7 @@
 #ifndef PhFramesH
 #define PhFramesH
 #include <System.Classes.hpp>
+#include "awpipl.h"
 //---------------------------------------------------------------------------
 #define _FRAME_MIN_COUNT_ 3
 typedef enum {jpegFormat, pngFormat, tiffFormat, tgaFormat, bmpFormat, awpFormat, ppmFormat} EPhImageFormats;
@@ -14,13 +15,13 @@ struct SFrameItem
     int           width;
     int           height;
 	bool          selected;
-    TGraphic*     image;
+    awpImage*     img;
 };
 
 class PACKAGE TPhFrames : public TObject
 {
 private:
-	TPhImage* 			m_pDisplay;
+	TPhImage* 				m_pDisplay;
     TList*                  m_items;
 	TGraphic*               m_pMosaic;
 	TPhJobThread* 			m_pReader;

@@ -44,8 +44,8 @@ object mainForm: TmainForm
     Top = 0
     Width = 700
     Height = 355
-    ThumbWidht = 320
-    ThumbHeight = 240
+    ThumbWidht = 192
+    ThumbHeight = 192
     SlideShowInterval = 500
     Align = alClient
     ParentColor = False
@@ -280,10 +280,11 @@ object mainForm: TmainForm
       BevelOuter = bvNone
       TabOrder = 0
       object TrackBar1: TTrackBar
-        Left = 0
-        Top = 25
-        Width = 185
-        Height = 47
+        AlignWithMargins = True
+        Left = 3
+        Top = 28
+        Width = 179
+        Height = 41
         Align = alClient
         Max = 1000
         Min = 50
@@ -293,6 +294,10 @@ object mainForm: TmainForm
         TabOrder = 0
         TickMarks = tmBoth
         OnChange = TrackBar1Change
+        ExplicitLeft = 0
+        ExplicitTop = 25
+        ExplicitWidth = 185
+        ExplicitHeight = 47
       end
       object Panel3: TPanel
         Left = 0
@@ -306,15 +311,19 @@ object mainForm: TmainForm
       end
     end
     object GroupBox1: TGroupBox
-      Left = 505
-      Top = 0
+      AlignWithMargins = True
+      Left = 508
+      Top = 3
       Width = 185
-      Height = 72
+      Height = 66
       Align = alLeft
       DoubleBuffered = True
       ParentDoubleBuffered = False
       TabOrder = 1
       Visible = False
+      ExplicitLeft = 505
+      ExplicitTop = 0
+      ExplicitHeight = 72
       object Gauge1: TGauge
         Left = 12
         Top = 25
@@ -332,9 +341,9 @@ object mainForm: TmainForm
       end
       object Button1: TButton
         Left = 11
-        Top = 45
+        Top = 43
         Width = 75
-        Height = 25
+        Height = 21
         Caption = 'Cancel'
         TabOrder = 0
         OnClick = Button1Click
@@ -347,6 +356,7 @@ object mainForm: TmainForm
     Width = 700
     Height = 45
     Align = alBottom
+    Frequency = 10
     ShowSelRange = False
     TabOrder = 3
     TickMarks = tmBoth

@@ -151,7 +151,7 @@ void __fastcall TPhJobThread::DoReadJob()
 	rect.top = 0;
 	rect.right = m_tmbWidth;
 	rect.bottom = m_tmbHeight;
-   int num = 0;
+    int num = 0;
 	for (int i = 0; i < m_items->Count; i++)
 	{
 		//
@@ -177,12 +177,13 @@ void __fastcall TPhJobThread::DoReadJob()
 				item->width = tmp->sSizeX;
 				item->height = tmp->sSizeY;
 				awpImage* fit = _awpFitImage(rect, tmp);
-				item->image = new TDIBImage();
-				TDIBImage* dibItemImage = dynamic_cast<TDIBImage* >(item->image);
-				dibItemImage->SetAWPImage(fit);
+				//item->image = new TDIBImage();
+                item->img = fit;
+				//TDIBImage* dibItemImage = dynamic_cast<TDIBImage* >(item->image);
+				//dibItemImage->SetAWPImage(fit);
 				if (fit != NULL)
 				{
-					_AWP_SAFE_RELEASE_(fit)
+					//_AWP_SAFE_RELEASE_(fit)
 					num++;
                 }
                 _AWP_SAFE_RELEASE_(tmp)
@@ -199,8 +200,8 @@ void __fastcall TPhJobThread::DoReadJob()
 		}
 	 }
 	delete dib;
-
-	this->DoMosaic();
+    if (!Terminated)
+		this->DoMosaic();
 }
 void __fastcall TPhJobThread::DoDeleteJob()
 {
@@ -434,12 +435,6 @@ void __fastcall TPhJobThread::DoMosaic()
 	 if (this->m_items == NULL)
 		return;
 
-	awpRect rect;
-	rect.left = 0;
-	rect.top = 0;
-	rect.right = m_tmbWidth;
-	rect.bottom = m_tmbHeight;
-
    int imgCount =  floor(sqrt((float)this->m_items->Count) + 0.5);
    int imgWidth  = m_tmbWidth*imgCount;
    int imgHeight = m_tmbHeight*imgCount;
@@ -448,18 +443,18 @@ void __fastcall TPhJobThread::DoMosaic()
    for (int i = 0; i < m_items->Count; i++)
    {
 		SFrameItem* item = (SFrameItem*)(m_items->Items[i]);
-		TDIBImage* dibItemImage = dynamic_cast<TDIBImage* >(item->image);
-		if (dibItemImage != NULL)
+		//TDIBImage* dibItemImage = dynamic_cast<TDIBImage* >(item->image);
+		//if (dibItemImage != NULL)
 		{
-			awpImage* img = NULL;
-			dibItemImage->GetAWPImage(&img);
+			awpImage* img = item->img;
+			//dibItemImage->GetAWPImage(&img);
 			if (img != NULL)
 			{
 				 awpPoint p;
 				 p.Y = (i / imgCount)*m_tmbHeight;
 				 p.X = (i % imgCount)*m_tmbWidth;
 				 awpPasteRect(img, result, p);
-				_AWP_SAFE_RELEASE_(img)
+				//_AWP_SAFE_RELEASE_(img)
 			}
 		}
    }

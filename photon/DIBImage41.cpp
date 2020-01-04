@@ -372,12 +372,6 @@ void __fastcall TDIBImage::SaveToFile(const UnicodeString FileName)
 		}
 		awpReleaseImage(&img);
 	 }
-
- /*   awpImage *image = NULL;
-	GetAWPImage( &image );
-	AnsiString _FileName = Filename;
-	awpSaveImage( _FileName.c_str(), image );
-	awpReleaseImage( &image );*/
 }
 
 //---------------------------------------------------------------------------

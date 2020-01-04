@@ -18,7 +18,7 @@ virtual void __fastcall Notify(void * Ptr, TListNotification Action)
     if (Action == lnDeleted)
     {
 		SFrameItem* item = (SFrameItem*)Ptr;
-		//delete item->image;
+        _AWP_SAFE_RELEASE_(item->img)
 		delete item;
     }
 }

@@ -715,6 +715,7 @@ void __fastcall TmainForm::PhImage1Finish(TObject *Sender, EPhJobReason reason, 
             break;
         }
 	}
+    PhTrackBar1->Frequency = PhImage1->Frames->Count / 20;
 }
 //---------------------------------------------------------------------------
 
