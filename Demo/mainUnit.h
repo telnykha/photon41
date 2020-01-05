@@ -247,6 +247,7 @@ __published:	// IDE-managed Components
 	void __fastcall PhImage1Frame(TObject *Sender, TGraphic *data);
 	void __fastcall PhTrackBar1MouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift,
           int X, int Y);
+	void __fastcall PhTrackBar1Change(TObject *Sender);
 
 private:	// User declarations
 	int m_UserChoise;

@@ -79,6 +79,7 @@ __fastcall TPhImage::TPhImage(TComponent* Owner)
     m_tWidth = 128;
     m_tHeight = 128;
 	m_mosaic = false;
+    m_autoMosaic = true;
 }
 __fastcall TPhImage::TPhImage(HWND Parent):TCustomControl(Parent)
 {
@@ -111,10 +112,8 @@ bool  __fastcall TPhImage::Init(TStrings* Names)
 
     // todo: check number of files in the source list
     // open list with limit 4096 files
-
-    AnsiString FileName;
     Close();
-    return this->m_Frames->Init(Names);
+    return m_Frames->Init(Names);
 }
 
 bool __fastcall         TPhImage::InitFile(UnicodeString strFileName)
@@ -1269,7 +1268,7 @@ void __fastcall  TPhImage::SetEmpty(bool value)
     {
         m_Bitmap->Assign(NULL);
         Paint();
-        this->AFileName = "";
+        FileName = "";
         m_modified = false;
         if (m_Change)
 	    	m_Change(this);
@@ -1600,7 +1599,7 @@ void __fastcall TPhImage::DoDeleteImage()
     }
     else
     {
-        DeleteFile(AFileName);
+        DeleteFile(FileName);
         Close();
     }
 }
@@ -1627,7 +1626,7 @@ void __fastcall     TPhImage::Copy(const LPWSTR lpwFolderName)
         }
         else
         {
-            AnsiString strSrcFile = this->AFileName;
+            AnsiString strSrcFile = FileName;
             AnsiString strDstFile = lpwFolderName;
             strDstFile += ExtractFileName(strSrcFile);
             if (!CopyFile(strSrcFile.c_str(), strDstFile.c_str(), false))
@@ -1652,7 +1651,7 @@ void __fastcall     TPhImage::Move(const LPWSTR lpwFolderName)
         }
         else
         {
-            AnsiString strSrcFile = this->AFileName;
+            AnsiString strSrcFile = FileName;
             AnsiString strDstFile = lpwFolderName;
             strDstFile += ExtractFileName(strSrcFile);
             if (!CopyFile(strSrcFile.c_str(), strDstFile.c_str(), false))

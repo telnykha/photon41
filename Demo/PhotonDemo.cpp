@@ -8,9 +8,9 @@
 #include <Vcl.Themes.hpp>
 USEFORM("resizeFormUnit.cpp", resizeForm);
 USEFORM("rotateFormUnit.cpp", rotateForm);
-USEFORM("mainUnit.cpp", mainForm);
-USEFORM("convertFormUnit.cpp", convertForm);
 USEFORM("copyFormUnit.cpp", copyForm);
+USEFORM("convertFormUnit.cpp", convertForm);
+USEFORM("mainUnit.cpp", mainForm);
 //---------------------------------------------------------------------------
 int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 {

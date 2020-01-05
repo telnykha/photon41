@@ -107,6 +107,7 @@
     </PropertyGroup>
     <ItemGroup>
         <None Include="doc\description.txt"/>
+        <None Include="doc\todo.txt"/>
         <CppCompile Include="photon41.cpp">
             <BuildOrder>0</BuildOrder>
         </CppCompile>

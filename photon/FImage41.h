@@ -5,7 +5,7 @@
 // verision 2.0
 // version 3.0
 // version 4.0
-// Alt-Soft.Net (c) 2004-2017
+// Alt-Soft.Net (c) 2004-2020
 #ifndef FImage41H
 #define FImage41H
 
@@ -65,6 +65,7 @@ protected:
     int                         m_xx;
     int                         m_yy;
     int                         m_idx;
+    bool                        m_autoMosaic;
 	// selectoin
 	TRect			m_SelRect;
 	void 			DrawSelRect(Graphics::TBitmap *bm);
@@ -200,7 +201,7 @@ public:
     bool __fastcall             GetSelectedImage(awpImage** img);
 
 	// Public properties
-	__property  UnicodeString   AFileName = {read = m_FileName, write = m_FileName};
+	__property  UnicodeString   FileName = {read = m_FileName, write = m_FileName};
     __property  TPhFrames*      Frames = {read = m_Frames};
 	__property  TGraphic*       Bitmap = {read = m_Bitmap, write = SetImage};
 	__property  TGraphic*       SelectedBitmap = {read = GetSelectedBitmap};
@@ -220,6 +221,7 @@ public:
 	__property TPhImageTool*   PhTool = {read = GetSelectedTool};
 __published:
    //
+    __property bool AutoMosaic         = {read = m_autoMosaic, write = m_autoMosaic};
 	__property int ThumbWidht      	   = {read  = m_tWidth,  write = m_tWidth};
 	__property int ThumbHeight     	   = {read = m_tHeight, write = m_tHeight};
     __property  unsigned  SlideShowInterval = {read = GetSlideShowInterval, write = SetSlideShowInterval};

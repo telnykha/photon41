@@ -81,6 +81,7 @@ void __fastcall TmainForm::PhImage1AfterOpen(TObject *Sender)
 {
         PhImage1->BestFit();
         PhTrackBar1->Max = PhImage1->Frames->Count;
+        PhTrackBar1->Frequency = PhImage1->Frames->Count / 20;
         if (!PhImage1->Empty)
         {
 	        StatusBar1->Panels->Items[1]->Text = IntToStr(PhImage1->Bitmap->Width) + L":" + IntToStr(PhImage1->Bitmap->Height);
@@ -110,7 +111,7 @@ void __fastcall TmainForm::editPasteActionUpdate(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::PhImage1Change(TObject *Sender)
 {
-        AnsiString _caption  = "Photon 4.1 demo  " + PhImage1->AFileName;
+        AnsiString _caption  = "Photon 4.1 demo  " + PhImage1->FileName;
 		_caption += PhImage1->Modified ? L"*":L"";
 		Caption = _caption;
         if (PhImage1->Empty)
@@ -715,7 +716,6 @@ void __fastcall TmainForm::PhImage1Finish(TObject *Sender, EPhJobReason reason, 
             break;
         }
 	}
-    PhTrackBar1->Frequency = PhImage1->Frames->Count / 20;
 }
 //---------------------------------------------------------------------------
 
@@ -732,4 +732,10 @@ void __fastcall TmainForm::PhTrackBar1MouseUp(TObject *Sender, TMouseButton Butt
 }
 //---------------------------------------------------------------------------
 
+
+void __fastcall TmainForm::PhTrackBar1Change(TObject *Sender)
+{
+    PhImage1->Frames->GoFrame(PhTrackBar1->Position);
+}
+//---------------------------------------------------------------------------
 

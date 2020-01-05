@@ -47,7 +47,7 @@ bool TPhFrames::Init(TStrings* names)
     if (names == NULL)
         return false;
     Close();
-    //
+    // create list of items. Copy filenames
     for (int i = 0; i < names->Count; i++)
     {
       SFrameItem* item = new SFrameItem();
@@ -58,10 +58,9 @@ bool TPhFrames::Init(TStrings* names)
 
 	if (names->Count > 0)
     {
-        if (names->Count > 1)
+        First();
+        if (m_pDisplay->AutoMosaic && names->Count >= _FRAME_MIN_COUNT_)
 	        StartReadJobHelper();
-        else
-            First();
     }
     else
         return false;

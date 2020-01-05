@@ -44,8 +44,8 @@ object mainForm: TmainForm
     Top = 0
     Width = 700
     Height = 355
-    ThumbWidht = 192
-    ThumbHeight = 192
+    ThumbWidht = 128
+    ThumbHeight = 128
     SlideShowInterval = 500
     Align = alClient
     ParentColor = False
@@ -294,10 +294,6 @@ object mainForm: TmainForm
         TabOrder = 0
         TickMarks = tmBoth
         OnChange = TrackBar1Change
-        ExplicitLeft = 0
-        ExplicitTop = 25
-        ExplicitWidth = 185
-        ExplicitHeight = 47
       end
       object Panel3: TPanel
         Left = 0
@@ -321,9 +317,6 @@ object mainForm: TmainForm
       ParentDoubleBuffered = False
       TabOrder = 1
       Visible = False
-      ExplicitLeft = 505
-      ExplicitTop = 0
-      ExplicitHeight = 72
       object Gauge1: TGauge
         Left = 12
         Top = 25
@@ -360,6 +353,7 @@ object mainForm: TmainForm
     ShowSelRange = False
     TabOrder = 3
     TickMarks = tmBoth
+    OnChange = PhTrackBar1Change
     OnMouseUp = PhTrackBar1MouseUp
   end
   object ActionList1: TActionList

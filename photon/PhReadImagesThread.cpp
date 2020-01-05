@@ -9,6 +9,10 @@
 #include "PhFrames.h"
 #pragma package(smart_init)
 
+#define _MOSAIC_IMAGE_SIZE_     8000
+#define _MOSAIC_ITEM_MIN_SIZE_  32
+#define _MOSAIC_ITEM_MAX_SIZE_  256
+
 static awpImage* _awpFitImage(awpRect rect, awpImage* img)
 {
 	int W = rect.right - rect.left;
@@ -19,8 +23,6 @@ static awpImage* _awpFitImage(awpRect rect, awpImage* img)
 
 	awpImage* result = NULL;
 	awpCreateImage(&result, W, H, img->bChannels, AWP_BYTE);
-
-
 
 	if (result != NULL)
 	{
@@ -146,6 +148,12 @@ void __fastcall TPhJobThread::DoReadJob()
 {
 	TDIBImage* dib = new TDIBImage();
 
+    int imgCount =  floor(sqrt((float)this->m_items->Count) + 0.5);
+    m_tmbWidth = _MOSAIC_IMAGE_SIZE_ / imgCount;
+    if (m_tmbWidth > 256)
+        m_tmbWidth = 256;
+    m_tmbHeight = m_tmbWidth;
+
 	awpRect rect;
 	rect.left = 0;
 	rect.top = 0;
@@ -177,13 +185,9 @@ void __fastcall TPhJobThread::DoReadJob()
 				item->width = tmp->sSizeX;
 				item->height = tmp->sSizeY;
 				awpImage* fit = _awpFitImage(rect, tmp);
-				//item->image = new TDIBImage();
                 item->img = fit;
-				//TDIBImage* dibItemImage = dynamic_cast<TDIBImage* >(item->image);
-				//dibItemImage->SetAWPImage(fit);
 				if (fit != NULL)
 				{
-					//_AWP_SAFE_RELEASE_(fit)
 					num++;
                 }
                 _AWP_SAFE_RELEASE_(tmp)
@@ -201,7 +205,7 @@ void __fastcall TPhJobThread::DoReadJob()
 	 }
 	delete dib;
     if (!Terminated)
-		this->DoMosaic();
+		DoMosaic();
 }
 void __fastcall TPhJobThread::DoDeleteJob()
 {
@@ -424,6 +428,7 @@ void __fastcall TPhJobThread::DoConvertJob()
 }
 void __fastcall TPhJobThread::DoProcessJob()
 {
+    // todo with image processor.
 }
 void __fastcall TPhJobThread::BeforeDestruction(void)
 {
@@ -440,23 +445,17 @@ void __fastcall TPhJobThread::DoMosaic()
    int imgHeight = m_tmbHeight*imgCount;
    awpImage* result = NULL;
    awpCreateImage(&result, imgWidth, imgHeight, 3, AWP_BYTE);
+   //awpCreateImage(&result, _MOSAIC_IMAGE_SIZE_, _MOSAIC_IMAGE_SIZE_, 3, AWP_BYTE);
    for (int i = 0; i < m_items->Count; i++)
    {
 		SFrameItem* item = (SFrameItem*)(m_items->Items[i]);
-		//TDIBImage* dibItemImage = dynamic_cast<TDIBImage* >(item->image);
-		//if (dibItemImage != NULL)
-		{
-			awpImage* img = item->img;
-			//dibItemImage->GetAWPImage(&img);
-			if (img != NULL)
-			{
-				 awpPoint p;
-				 p.Y = (i / imgCount)*m_tmbHeight;
-				 p.X = (i % imgCount)*m_tmbWidth;
-				 awpPasteRect(img, result, p);
-				//_AWP_SAFE_RELEASE_(img)
-			}
-		}
+        if (item->img != NULL)
+        {
+             awpPoint p;
+             p.Y = (i / imgCount)*m_tmbHeight;
+             p.X = (i % imgCount)*m_tmbWidth;
+             awpPasteRect(item->img, result, p);
+        }
    }
     _AWP_SAFE_RELEASE_(m_mosaic)
 	awpCopyImage(result, &m_mosaic);
