@@ -18,6 +18,7 @@
 #pragma link "PhSelectRectTool"
 #pragma link "PhFrames"
 #pragma link "PhTrackBar"
+#pragma link "PhRulerTool"
 #pragma resource "*.dfm"
 TmainForm *mainForm;
 //---------------------------------------------------------------------------
@@ -174,13 +175,13 @@ void __fastcall TmainForm::toolSelectRectActionUpdate(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::toolLenzActionExecute(TObject *Sender)
 {
-      PhImage1->SelectPhTool(PhLenzTool1);
+	  PhImage1->SelectPhTool(PhLenzTool1);
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::toolLenzActionUpdate(TObject *Sender)
 {
 	toolLenzAction->Enabled = !PhImage1->Empty;
-    toolLenzAction->Checked =  dynamic_cast< TPhLenzTool*>(PhImage1->PhTool) != NULL;
+	toolLenzAction->Checked =  dynamic_cast< TPhLenzTool*>(PhImage1->PhTool) != NULL;
 }
 //---------------------------------------------------------------------------
 void __fastcall TmainForm::viewZoomInActionExecute(TObject *Sender)
@@ -736,6 +737,20 @@ void __fastcall TmainForm::PhTrackBar1MouseUp(TObject *Sender, TMouseButton Butt
 void __fastcall TmainForm::PhTrackBar1Change(TObject *Sender)
 {
     PhImage1->Frames->GoFrame(PhTrackBar1->Position);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::toolRulerActionExecute(TObject *Sender)
+{
+	 PhImage1->SelectPhTool(PhRulerTool1);
+}
+//---------------------------------------------------------------------------
+
+void __fastcall TmainForm::toolRulerActionUpdate(TObject *Sender)
+{
+	toolRulerAction->Enabled = !PhImage1->Empty;
+	toolRulerAction->Checked =  dynamic_cast< TPhRulerTool*>(PhImage1->PhTool) != NULL;
+
 }
 //---------------------------------------------------------------------------
 

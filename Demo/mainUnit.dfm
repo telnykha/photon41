@@ -44,6 +44,7 @@ object mainForm: TmainForm
     Top = 0
     Width = 700
     Height = 355
+    AutoMosaic = True
     ThumbWidht = 128
     ThumbHeight = 128
     SlideShowInterval = 500
@@ -603,6 +604,12 @@ object mainForm: TmainForm
       Caption = 'New Instance'
       OnExecute = fileNewInstanceActionExecute
     end
+    object toolRulerAction: TAction
+      Category = 'Tools'
+      Caption = 'Ruler Tool'
+      OnExecute = toolRulerActionExecute
+      OnUpdate = toolRulerActionUpdate
+    end
   end
   object MainMenu1: TMainMenu
     Left = 24
@@ -669,6 +676,9 @@ object mainForm: TmainForm
       end
       object LenzTool1: TMenuItem
         Action = toolLenzAction
+      end
+      object RulerTool1: TMenuItem
+        Action = toolRulerAction
       end
     end
     object Image1: TMenuItem
@@ -830,5 +840,10 @@ object mainForm: TmainForm
     PhImage = PhImage1
     Left = 624
     Top = 232
+  end
+  object PhRulerTool1: TPhRulerTool
+    PhImage = PhImage1
+    Left = 624
+    Top = 288
   end
 end

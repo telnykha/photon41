@@ -24,6 +24,7 @@
 #include "PhSelectRectTool.h"
 #include <Vcl.Samples.Gauges.hpp>
 #include "PhTrackBar.h"
+#include "PhRulerTool.h"
 //---------------------------------------------------------------------------
 class TmainForm : public TForm
 {
@@ -154,6 +155,9 @@ __published:	// IDE-managed Components
 	TGauge *Gauge1;
 	TLabel *Label1;
 	TPhTrackBar *PhTrackBar1;
+	TPhRulerTool *PhRulerTool1;
+	TAction *toolRulerAction;
+	TMenuItem *RulerTool1;
 	void __fastcall fileOpenActionExecute(TObject *Sender);
 	void __fastcall fileSaveActionExecute(TObject *Sender);
 	void __fastcall fileSaveActionUpdate(TObject *Sender);
@@ -248,6 +252,8 @@ __published:	// IDE-managed Components
 	void __fastcall PhTrackBar1MouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift,
           int X, int Y);
 	void __fastcall PhTrackBar1Change(TObject *Sender);
+	void __fastcall toolRulerActionExecute(TObject *Sender);
+	void __fastcall toolRulerActionUpdate(TObject *Sender);
 
 private:	// User declarations
 	int m_UserChoise;
