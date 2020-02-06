@@ -254,6 +254,7 @@ __published:	// IDE-managed Components
 	void __fastcall PhTrackBar1Change(TObject *Sender);
 	void __fastcall toolRulerActionExecute(TObject *Sender);
 	void __fastcall toolRulerActionUpdate(TObject *Sender);
+	void __fastcall PhImage1Paint(TObject *Sender);
 
 private:	// User declarations
 	int m_UserChoise;

@@ -51,6 +51,7 @@ object mainForm: TmainForm
     Align = alClient
     ParentColor = False
     PopupMenu = PopupMenu1
+    OnPaint = PhImage1Paint
     AfterOpen = PhImage1AfterOpen
     OnScaleChange = PhImage1ScaleChange
     OnChange = PhImage1Change

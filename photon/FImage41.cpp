@@ -898,7 +898,7 @@ void                        TPhImage::SetSelRect(TRect r)
 */
 void __fastcall TPhImage::Paint(void)
 {
-	if (m_Bitmap != NULL)
+	if (!m_Bitmap->Empty)
 	{
 	   Graphics::TBitmap *bm = new Graphics::TBitmap();
 	   bm->Width  = Width;
@@ -924,7 +924,7 @@ void __fastcall TPhImage::Paint(void)
 	   }
 
 	   src_r = GetInternalVisibleArea();
-       TDIBImage* dib = dynamic_cast<TDIBImage*>(m_Bitmap);
+	   TDIBImage* dib = dynamic_cast<TDIBImage*>(m_Bitmap);
 	   unsigned char* pDIB = dib->OpenPixels();
 
 	   ::SetStretchBltMode(bm->Canvas->Handle, HALFTONE);
