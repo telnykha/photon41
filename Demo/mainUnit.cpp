@@ -754,3 +754,4 @@ void __fastcall TmainForm::toolRulerActionUpdate(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 
+

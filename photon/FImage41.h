@@ -39,6 +39,7 @@ friend class TPhImageTool;
 friend class TPhSelRectTool;
 friend class TPhFrames;
 private:
+	TNotifyEvent                m_Paint;
 	TNotifyEvent                m_BeforeOpen;
 	TNotifyEvent                m_AfterOpen;
 	TNotifyEvent                m_ScaleChange;
@@ -249,11 +250,12 @@ __published:
 	__property OnMouseMove;
 	__property OnMouseUp;
     __property OnMouseWheel;
-    __property OnResize;
+	__property OnResize;
 
     // собственные события
-    __property TNotifyEvent     BeforeOpen = {read = m_BeforeOpen, write = m_BeforeOpen};
-    __property TNotifyEvent     AfterOpen  = {read = m_AfterOpen, write = m_AfterOpen};
+	__property TNotifyEvent     OnPaint = {read = m_Paint, write = m_Paint};
+	__property TNotifyEvent     BeforeOpen = {read = m_BeforeOpen, write = m_BeforeOpen};
+	__property TNotifyEvent     AfterOpen  = {read = m_AfterOpen, write = m_AfterOpen};
     __property TNotifyEvent     OnScaleChange = {read = m_ScaleChange, write = m_ScaleChange};
     __property TNotifyEvent     OnPane = {read = m_PosChange, write = m_PosChange};
     __property TNotifyEvent     OnChange = {read = m_Change, write = m_Change};

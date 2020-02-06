@@ -50,6 +50,7 @@ __fastcall TPhImage::TPhImage(TComponent* Owner)
 	Width   = 100;
 	Height  = 100;
 	m_FileName  = "";
+    m_Paint = NULL;
 	m_BeforeOpen = NULL;
 	m_AfterOpen  = NULL;
 	m_PosChange  = NULL;
@@ -951,6 +952,10 @@ void __fastcall TPhImage::Paint(void)
 	   Canvas->CopyMode = cmSrcCopy;
 	   Canvas->Draw(0,0,bm);
 	   delete bm;
+	}
+	else if (m_Paint != NULL)
+	{
+		m_Paint(this);
 	}
 	else
 	{
