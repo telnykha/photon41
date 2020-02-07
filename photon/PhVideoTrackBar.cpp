@@ -35,7 +35,7 @@ void __fastcall TPhVideoTrackBar::Resize(void)
 void __fastcall TPhVideoTrackBar::Paint(void)
 {
 	TRect rect = this->ClientRect;
-	Canvas->Brush->Color = clBlack;
+	Canvas->Brush->Color = 0x00333333;
 
 	Canvas->FillRect(rect);
 	TColor oldBrushColor = this->Canvas->Brush->Color;
@@ -51,8 +51,8 @@ void __fastcall TPhVideoTrackBar::Paint(void)
 
 	oldBrushColor = this->Canvas->Brush->Color;
 	oldPenColor = this->Canvas->Pen->Color;
-	this->Canvas->Brush->Color = clRed;
-	this->Canvas->Pen->Color = clRed;
+	this->Canvas->Brush->Color = clWhite;
+	this->Canvas->Pen->Color = clWhite;
 	TRect rect1 = rect;
 	rect1.right = rect.Width()*m_pos / m_duration;
 	this->Canvas->Rectangle(rect1);
@@ -62,7 +62,7 @@ void __fastcall TPhVideoTrackBar::Paint(void)
 	rect2.Top -= 4;
 	rect2.bottom += 4;
 	this->Canvas->Ellipse(rect2);
-	this->Canvas->Pen->Color = clMaroon;
+	this->Canvas->Pen->Color = clWhite;
 	this->Canvas->Pen->Width = 3;
 	this->Canvas->Ellipse(rect2);
 	this->Canvas->Pen->Width = 1;

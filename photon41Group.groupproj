@@ -18,9 +18,6 @@
         <Projects Include="photon\photon.cbproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="C:\Users\Alex A.Telnykh\Documents\Embarcadero\Studio\Projects\trackbar_test\Project4.cbproj">
-            <Dependencies/>
-        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -74,23 +71,14 @@
     <Target Name="photon:Make">
         <MSBuild Projects="photon\photon.cbproj" Targets="Make"/>
     </Target>
-    <Target Name="Project4">
-        <MSBuild Projects="C:\Users\Alex A.Telnykh\Documents\Embarcadero\Studio\Projects\trackbar_test\Project4.cbproj"/>
-    </Target>
-    <Target Name="Project4:Clean">
-        <MSBuild Projects="C:\Users\Alex A.Telnykh\Documents\Embarcadero\Studio\Projects\trackbar_test\Project4.cbproj" Targets="Clean"/>
-    </Target>
-    <Target Name="Project4:Make">
-        <MSBuild Projects="C:\Users\Alex A.Telnykh\Documents\Embarcadero\Studio\Projects\trackbar_test\Project4.cbproj" Targets="Make"/>
-    </Target>
     <Target Name="Build">
-        <CallTarget Targets="awpipl2b;awplflibb;photon41;PhotonDemo;photon;Project4"/>
+        <CallTarget Targets="awpipl2b;awplflibb;photon41;PhotonDemo;photon"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="awpipl2b:Clean;awplflibb:Clean;photon41:Clean;PhotonDemo:Clean;photon:Clean;Project4:Clean"/>
+        <CallTarget Targets="awpipl2b:Clean;awplflibb:Clean;photon41:Clean;PhotonDemo:Clean;photon:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="awpipl2b:Make;awplflibb:Make;photon41:Make;PhotonDemo:Make;photon:Make;Project4:Make"/>
+        <CallTarget Targets="awpipl2b:Make;awplflibb:Make;photon41:Make;PhotonDemo:Make;photon:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
