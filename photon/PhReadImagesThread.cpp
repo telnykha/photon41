@@ -9,9 +9,9 @@
 #include "PhFrames.h"
 #pragma package(smart_init)
 
-#define _MOSAIC_IMAGE_SIZE_     8000
-#define _MOSAIC_ITEM_MIN_SIZE_  32
-#define _MOSAIC_ITEM_MAX_SIZE_  256
+//#define _MOSAIC_IMAGE_SIZE_     8000
+//#define _MOSAIC_ITEM_MIN_SIZE_  32
+//#define _MOSAIC_ITEM_MAX_SIZE_  256
 
 static awpImage* _awpFitImage(awpRect rect, awpImage* img)
 {
@@ -94,8 +94,6 @@ __fastcall  TPhJobThread::TPhJobThread(TList* names, const LPWSTR lpwFolderName,
 {
 	m_reason = reason;
 	m_FolderName = lpwFolderName;
-	m_tmbWidth  = 128;
-	m_tmbHeight = 128;
 	m_mosaic 	= NULL;
 	m_targetFormat = jpegFormat;
 	m_keepSource = true;
@@ -149,10 +147,10 @@ void __fastcall TPhJobThread::DoReadJob()
 	TDIBImage* dib = new TDIBImage();
 
     int imgCount =  floor(sqrt((float)this->m_items->Count) + 0.5);
-    m_tmbWidth = _MOSAIC_IMAGE_SIZE_ / imgCount;
-    if (m_tmbWidth > 256)
-        m_tmbWidth = 256;
-    m_tmbHeight = m_tmbWidth;
+	//m_tmbWidth = _MOSAIC_IMAGE_SIZE_ / imgCount;
+//	if (m_tmbWidth > 256)
+//        m_tmbWidth = 256;
+//    m_tmbHeight = m_tmbWidth;
 
 	awpRect rect;
 	rect.left = 0;
@@ -449,7 +447,7 @@ void __fastcall TPhJobThread::DoMosaic()
    for (int i = 0; i < m_items->Count; i++)
    {
 		SFrameItem* item = (SFrameItem*)(m_items->Items[i]);
-        if (item->img != NULL)
+		if (item->img != NULL)
         {
              awpPoint p;
              p.Y = (i / imgCount)*m_tmbHeight;
