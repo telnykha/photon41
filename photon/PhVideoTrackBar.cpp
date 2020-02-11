@@ -21,10 +21,11 @@ static inline void ValidCtrCheck(TPhVideoTrackBar *)
 __fastcall TPhVideoTrackBar::TPhVideoTrackBar(TComponent* Owner)
 	: TCustomControl(Owner)
 {
-	this->Align   = alTop;
+	this->Align   = alClient;
 	this->Height  = 24;
 	m_pos = 7200000;
 	m_duration = 14400000;
+    m_Change = 0;
 }
 
 void __fastcall TPhVideoTrackBar::Resize(void)
@@ -51,8 +52,8 @@ void __fastcall TPhVideoTrackBar::Paint(void)
 
 	oldBrushColor = this->Canvas->Brush->Color;
 	oldPenColor = this->Canvas->Pen->Color;
-	this->Canvas->Brush->Color = clWhite;
-	this->Canvas->Pen->Color = clWhite;
+	this->Canvas->Brush->Color = clRed;
+	this->Canvas->Pen->Color = clRed;
 	TRect rect1 = rect;
 	rect1.right = rect.Width()*m_pos / m_duration;
 	this->Canvas->Rectangle(rect1);
@@ -81,7 +82,7 @@ void __fastcall     TPhVideoTrackBar::MouseMove( TShiftState Shift, Integer X, I
 	{
 		TRect rect = this->ClientRect;
 		rect.Inflate(INFLATE_X,INFLATE_Y);
-		m_pos = X*m_duration / rect.Width();
+		pos = X*m_duration / rect.Width();
 		Paint();
 	}
 	TCustomControl::MouseMove(Shift,X,Y);
@@ -92,12 +93,32 @@ void __fastcall     TPhVideoTrackBar::MouseUp(TMouseButton Button,  TShiftState 
    {
 		TRect rect = this->ClientRect;
 		rect.Inflate(INFLATE_X,INFLATE_Y);
-		m_pos = X*m_duration / rect.Width();
+		pos = X*m_duration / rect.Width();
 		Paint();
    }
    m_mouse_down = false;
    TCustomControl::MouseUp(Button, Shift,X,Y);
 }
+
+void __fastcall TPhVideoTrackBar::SetPos(double value)
+{
+	if (value < 0 )
+		m_pos = 0;
+	if (value > m_duration)
+		m_pos = m_duration;
+	m_pos = value;
+    Paint();
+	if (m_Change != NULL)
+		m_Change(this);
+}
+void __fastcall TPhVideoTrackBar::SetDuration(double value)
+{
+	if (value < 0)
+		return;
+	m_duration = value;
+	pos = 0;
+}
+
 
 
 //---------------------------------------------------------------------------
