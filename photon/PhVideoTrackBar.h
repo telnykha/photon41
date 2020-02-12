@@ -12,12 +12,14 @@ class PACKAGE TPhVideoTrackBar : public TCustomControl
 private:
 	double m_pos;
 	double m_duration;
-    bool   m_mouse_down;
+	bool   m_mouse_down;
+	int    m_progress;
 protected:
 	TNotifyEvent                m_Change;
 
 	void __fastcall SetPos(double value);
 	void __fastcall SetDuration(double value);
+	void __fastcall SetProgress(int value);
 
 	virtual void __fastcall     Paint(void);
 	DYNAMIC void __fastcall     Resize(void);
@@ -30,7 +32,11 @@ public:
 
 	__property double pos = {read = m_pos, write = SetPos};
 	__property double duration = {read = m_duration, write = SetDuration};
+	__property int progress = {read = m_progress, write = SetProgress};
 __published:
+
+    __property Enabled;
+
 	__property TNotifyEvent     OnChange = {read = m_Change, write = m_Change};
 	__property OnMouseDown;
 	__property OnMouseMove;

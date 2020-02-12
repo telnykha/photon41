@@ -9,9 +9,6 @@
 #include "PhFrames.h"
 #pragma package(smart_init)
 
-//#define _MOSAIC_IMAGE_SIZE_     8000
-//#define _MOSAIC_ITEM_MIN_SIZE_  32
-//#define _MOSAIC_ITEM_MAX_SIZE_  256
 
 static awpImage* _awpFitImage(awpRect rect, awpImage* img)
 {
@@ -147,10 +144,6 @@ void __fastcall TPhJobThread::DoReadJob()
 	TDIBImage* dib = new TDIBImage();
 
     int imgCount =  floor(sqrt((float)this->m_items->Count) + 0.5);
-	//m_tmbWidth = _MOSAIC_IMAGE_SIZE_ / imgCount;
-//	if (m_tmbWidth > 256)
-//        m_tmbWidth = 256;
-//    m_tmbHeight = m_tmbWidth;
 
 	awpRect rect;
 	rect.left = 0;

@@ -47,8 +47,22 @@ void __fastcall TPhVideoTrackBar::Paint(void)
 	rect.Inflate(INFLATE_X,INFLATE_Y);
 	this->Canvas->Rectangle(rect);
 
+	TRect prog_rect = rect;
+	prog_rect.right = 0.01*m_progress*rect.Width();
+
+
 	this->Canvas->Brush->Color = oldBrushColor;
 	this->Canvas->Pen->Color = oldPenColor;
+
+	this->Canvas->Brush->Color = clSilver;
+	this->Canvas->Pen->Color = clSilver;
+
+	this->Canvas->Rectangle(prog_rect);
+
+	this->Canvas->Brush->Color = oldBrushColor;
+	this->Canvas->Pen->Color = oldPenColor;
+
+
 
 	oldBrushColor = this->Canvas->Brush->Color;
 	oldPenColor = this->Canvas->Pen->Color;
@@ -62,7 +76,9 @@ void __fastcall TPhVideoTrackBar::Paint(void)
 	rect2.Right = rect2.Left + 12;
 	rect2.Top -= 4;
 	rect2.bottom += 4;
-	this->Canvas->Ellipse(rect2);
+	if (this->Enabled) {
+		this->Canvas->Ellipse(rect2);
+	}
 	this->Canvas->Pen->Color = clWhite;
 	this->Canvas->Pen->Width = 3;
 	this->Canvas->Ellipse(rect2);
@@ -73,7 +89,10 @@ void __fastcall TPhVideoTrackBar::Paint(void)
 
 void __fastcall     TPhVideoTrackBar::MouseDown(TMouseButton Button,  TShiftState Shift, Integer X, Integer Y)
 {
-   m_mouse_down = true;
+   if (this->Enabled)
+   {
+	   m_mouse_down = true;
+   }
    TCustomControl::MouseDown(Button, Shift,X,Y);
 }
 void __fastcall     TPhVideoTrackBar::MouseMove( TShiftState Shift, Integer X, Integer Y)
@@ -117,7 +136,17 @@ void __fastcall TPhVideoTrackBar::SetDuration(double value)
 		return;
 	m_duration = value;
 	pos = 0;
+
 }
+
+void __fastcall TPhVideoTrackBar::SetProgress(int value)
+{
+	if (value < 0 || value > 100)
+		return;
+	m_progress = value;
+    Paint();
+}
+
 
 
 
