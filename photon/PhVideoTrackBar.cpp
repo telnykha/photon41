@@ -23,8 +23,8 @@ __fastcall TPhVideoTrackBar::TPhVideoTrackBar(TComponent* Owner)
 {
 	this->Align   = alClient;
 	this->Height  = 24;
-	m_pos = 7200000;
-	m_duration = 14400000;
+	m_pos = 0;
+	m_duration = 0;
     m_Change = 0;
 }
 
@@ -35,6 +35,7 @@ void __fastcall TPhVideoTrackBar::Resize(void)
 }
 void __fastcall TPhVideoTrackBar::Paint(void)
 {
+
 	TRect rect = this->ClientRect;
 	Canvas->Brush->Color = 0x00333333;
 
@@ -63,28 +64,30 @@ void __fastcall TPhVideoTrackBar::Paint(void)
 	this->Canvas->Pen->Color = oldPenColor;
 
 
-
-	oldBrushColor = this->Canvas->Brush->Color;
-	oldPenColor = this->Canvas->Pen->Color;
-	this->Canvas->Brush->Color = clRed;
-	this->Canvas->Pen->Color = clRed;
-	TRect rect1 = rect;
-	rect1.right = rect.Width()*m_pos / m_duration;
-	this->Canvas->Rectangle(rect1);
-	TRect rect2 = rect;
-	rect2.Left  = rect.Width()*m_pos / m_duration;
-	rect2.Right = rect2.Left + 12;
-	rect2.Top -= 4;
-	rect2.bottom += 4;
-	if (this->Enabled) {
+	 if (m_duration > 0)
+	 {
+		oldBrushColor = this->Canvas->Brush->Color;
+		oldPenColor = this->Canvas->Pen->Color;
+		this->Canvas->Brush->Color = clRed;
+		this->Canvas->Pen->Color = clRed;
+		TRect rect1 = rect;
+		rect1.right = rect.Width()*m_pos / m_duration;
+		this->Canvas->Rectangle(rect1);
+		TRect rect2 = rect;
+		rect2.Left  = rect.Width()*m_pos / m_duration;
+		rect2.Right = rect2.Left + 12;
+		rect2.Top -= 4;
+		rect2.bottom += 4;
+		if (this->Enabled) {
+			this->Canvas->Ellipse(rect2);
+		}
+		this->Canvas->Pen->Color = clWhite;
+		this->Canvas->Pen->Width = 3;
 		this->Canvas->Ellipse(rect2);
-	}
-	this->Canvas->Pen->Color = clWhite;
-	this->Canvas->Pen->Width = 3;
-	this->Canvas->Ellipse(rect2);
-	this->Canvas->Pen->Width = 1;
-	this->Canvas->Brush->Color = oldBrushColor;
-	this->Canvas->Pen->Color = oldPenColor;
+		this->Canvas->Pen->Width = 1;
+		this->Canvas->Brush->Color = oldBrushColor;
+		this->Canvas->Pen->Color = oldPenColor;
+	 }
 }
 
 void __fastcall     TPhVideoTrackBar::MouseDown(TMouseButton Button,  TShiftState Shift, Integer X, Integer Y)
