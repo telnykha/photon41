@@ -423,9 +423,10 @@ void __fastcall TPhJobThread::DoProcessJob()
 }
 void __fastcall TPhJobThread::BeforeDestruction(void)
 {
-   if (m_FihishEvent)
-	m_FihishEvent(this, m_reason, this->m_cancel);
 }
+
+
+
 void __fastcall TPhJobThread::DoMosaic()
 {
 	 if (this->m_items == NULL)
@@ -436,7 +437,6 @@ void __fastcall TPhJobThread::DoMosaic()
    int imgHeight = m_tmbHeight*imgCount;
    awpImage* result = NULL;
    awpCreateImage(&result, imgWidth, imgHeight, 3, AWP_BYTE);
-   //awpCreateImage(&result, _MOSAIC_IMAGE_SIZE_, _MOSAIC_IMAGE_SIZE_, 3, AWP_BYTE);
    for (int i = 0; i < m_items->Count; i++)
    {
 		SFrameItem* item = (SFrameItem*)(m_items->Items[i]);

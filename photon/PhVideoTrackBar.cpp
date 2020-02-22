@@ -80,10 +80,10 @@ void __fastcall TPhVideoTrackBar::Paint(void)
 		rect2.bottom += 4;
 		if (this->Enabled) {
 			this->Canvas->Ellipse(rect2);
+			this->Canvas->Pen->Color = clWhite;
+			this->Canvas->Pen->Width = 3;
+			this->Canvas->Ellipse(rect2);
 		}
-		this->Canvas->Pen->Color = clWhite;
-		this->Canvas->Pen->Width = 3;
-		this->Canvas->Ellipse(rect2);
 		this->Canvas->Pen->Width = 1;
 		this->Canvas->Brush->Color = oldBrushColor;
 		this->Canvas->Pen->Color = oldPenColor;
@@ -124,13 +124,14 @@ void __fastcall     TPhVideoTrackBar::MouseUp(TMouseButton Button,  TShiftState 
 
 void __fastcall TPhVideoTrackBar::SetPos(double value)
 {
+
 	if (value < 0 )
 		m_pos = 0;
 	if (value > m_duration)
 		m_pos = m_duration;
 	m_pos = value;
     Paint();
-	if (m_Change != NULL)
+	if (Enabled && m_Change != NULL)
 		m_Change(this);
 }
 void __fastcall TPhVideoTrackBar::SetDuration(double value)
@@ -147,10 +148,14 @@ void __fastcall TPhVideoTrackBar::SetProgress(int value)
 	if (value < 0 || value > 100)
 		return;
 	m_progress = value;
-    Paint();
+	Paint();
 }
 
-
+void __fastcall TPhVideoTrackBar::SetEnabled(Boolean Value)
+{
+	TCustomControl::SetEnabled(Value);
+	Paint();
+}
 
 
 //---------------------------------------------------------------------------

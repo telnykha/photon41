@@ -156,10 +156,10 @@ int __fastcall TPhFrames::GetCount()
 void __fastcall TPhFrames::OnTerminateHelper(TObject *Sender)
 {
 #ifdef _DEBUG
-	if (m_pReader != NULL && !m_pReader->Canceled)
-	    ShowMessage("Job done.");
-    else
-        ShowMessage("Job canceled.");
+//	if (m_pReader != NULL && !m_pReader->Canceled)
+//		ShowMessage("Job done.");
+//    else
+//        ShowMessage("Job canceled.");
 #endif
 	if (m_pReader != NULL && !m_pReader->Canceled)
     {
@@ -171,6 +171,10 @@ void __fastcall TPhFrames::OnTerminateHelper(TObject *Sender)
 		m_pDisplay->Bitmap->Assign(img);
 		m_pDisplay->Paint();
 	   }
+	   if (m_pDisplay->OnFinish != NULL)
+	   {
+		   m_pDisplay->OnFinish(this, m_pReader->reason, false);
+	   }
 	}
 
 	if (m_pReader != NULL && m_pReader->Canceled)
@@ -178,6 +182,7 @@ void __fastcall TPhFrames::OnTerminateHelper(TObject *Sender)
 		if (m_pDisplay->OnCancel)
             m_pDisplay->OnCancel(this);
 	}
+
 
 	if (m_items->Count == 0)
 	{

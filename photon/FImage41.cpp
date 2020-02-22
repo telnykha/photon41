@@ -1344,9 +1344,9 @@ void __fastcall 	TPhImage::DblClick(void)
    if (GetKeyState(VK_LSHIFT) < 0)
    {
        if (Mosaic && this->m_idx >= 0 && this->m_idx < this->Frames->Count)
-       {
-            Mosaic = false;
-            Frames->GoFrame(m_idx);
+	   {
+			Frames->GoFrame(m_idx);
+			Mosaic = false;
        }
        else
             Mosaic = true;
@@ -1567,10 +1567,15 @@ void            __fastcall TPhImage::DrawSelectedItems(Graphics::TBitmap* bm, in
 
 			rect.init(x,y,x+m_tWidth,y+m_tHeight);
 			rect1 = GetScreenRect(rect);
-			cnv->Pen->Width = 2;
+			cnv->Pen->Width = 4;
 			cnv->Pen->Color = clRed;
+
+			cnv->Rectangle(rect1);
+			rect1.Inflate(-16,-16);
+			cnv->Rectangle(rect1);
+
 			// draw dots
-			const int num = 16;
+ /*			const int num = 16;
 			int _w = rect1.Width();
 			int _h = rect1.Height();
 			double _dx = (double)_w / num;
@@ -1586,7 +1591,7 @@ void            __fastcall TPhImage::DrawSelectedItems(Graphics::TBitmap* bm, in
 				   y2 = y1 + 2;
 				   cnv->Rectangle(x1,y1,x2,y2);
 				}
-			}
+			} */
 		}
 	}
 

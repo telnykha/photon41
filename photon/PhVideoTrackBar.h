@@ -17,6 +17,8 @@ private:
 protected:
 	TNotifyEvent                m_Change;
 
+	virtual void __fastcall SetEnabled(Boolean Value);
+
 	void __fastcall SetPos(double value);
 	void __fastcall SetDuration(double value);
 	void __fastcall SetProgress(int value);

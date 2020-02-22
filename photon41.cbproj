@@ -210,6 +210,7 @@
         <PackageImport Include="rtl.bpi">
             <BuildOrder>1</BuildOrder>
         </PackageImport>
+        <None Include="todo.txt"/>
         <PackageImport Include="vcl.bpi">
             <BuildOrder>5</BuildOrder>
         </PackageImport>
