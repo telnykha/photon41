@@ -262,8 +262,8 @@ void __fastcall TPhJobThread::DoMoveJob()
 				continue;
 			c++;
 
-			AnsiString strSrcFile = item->strFileName;
-			AnsiString strDstFile = m_FolderName;
+			UnicodeString strSrcFile = item->strFileName;
+			UnicodeString strDstFile = m_FolderName;
 			strDstFile += ExtractFileName(strSrcFile);
 			if (!CopyFile(strSrcFile.c_str(), strDstFile.c_str(), false))
 			{
@@ -283,6 +283,16 @@ void __fastcall TPhJobThread::DoMoveJob()
 	 }
 	 this->DoMosaic();
 }
+
+void __fastcall TPhJobThread::CopyFileHelper(UnicodeString src, UnicodeString dst)
+{
+	if (src == dst)
+	{
+	   //	switch()
+	}
+}
+
+
 void __fastcall TPhJobThread::DoCopyJob()
 {
 	int num_selected = this->GetNumSelectedItems();
@@ -309,9 +319,18 @@ void __fastcall TPhJobThread::DoCopyJob()
 				continue;
 			c++;
 
-			AnsiString strSrcFile = item->strFileName;
-			AnsiString strDstFile = m_FolderName;
+			UnicodeString strSrcFile = item->strFileName;
+			UnicodeString strDstFile = m_FolderName;
 			strDstFile += ExtractFileName(strSrcFile);
+
+			UnicodeString _src = ExtractFileName(strSrcFile);
+			UnicodeString _dst = ExtractFileName(strDstFile);
+
+			if (_src == _dst)
+			{
+                 ShowMessage("QQ");
+			}
+			else
 			if (!CopyFile(strSrcFile.c_str(), strDstFile.c_str(), false))
 			{
 				//todo: add error status

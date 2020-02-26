@@ -37,10 +37,13 @@ private:
 	int       		m_tmbHeight;
 	EPhImageFormats m_targetFormat;
 	bool            m_keepSource;
+
 protected:
 	virtual void __fastcall BeforeDestruction(void);
 	int __fastcall  GetNumSelectedItems();
 	void __fastcall DoMosaic();
+
+	void __fastcall CopyFileHelper(UnicodeString src, UnicodeString dst);
 
 	void __fastcall DoReadJob();
 	void __fastcall DoCopyJob();

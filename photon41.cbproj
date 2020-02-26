@@ -101,6 +101,7 @@
     <PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Defines>HAVE_JPEG;$(Defines)</Defines>
+        <_TCHARMapping>wchar_t</_TCHARMapping>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <Defines>NDEBUG;$(Defines)</Defines>
