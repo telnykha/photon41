@@ -37,7 +37,7 @@ private:
 	int       		m_tmbHeight;
 	EPhImageFormats m_targetFormat;
 	bool            m_keepSource;
-
+	EPhCopyActioin  m_action;
 protected:
 	virtual void __fastcall BeforeDestruction(void);
 	int __fastcall  GetNumSelectedItems();
@@ -56,6 +56,7 @@ protected:
 public:
 	__fastcall  TPhJobThread(TList* names, const LPWSTR lpwFolderName, EPhJobReason reason = copyJob);
 	__property  EPhJobReason reason = {read = m_reason};
+	__property  EPhCopyActioin action = {read = m_action, write = m_action};
 	__property awpImage* Mosaic = {read = m_mosaic};
 	__property int tmbWidth 	= {read = m_tmbWidth, write = m_tmbWidth};
 	__property int tmbHeight    = {read = m_tmbHeight, write = m_tmbHeight};

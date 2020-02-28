@@ -1619,7 +1619,8 @@ void __fastcall     TPhImage::Copy(const LPWSTR lpwFolderName)
         {
 			UnicodeString strSrcFile = FileName;
 			UnicodeString strDstFile = lpwFolderName;
-            strDstFile += ExtractFileName(strSrcFile);
+			strDstFile += ExtractFileName(strSrcFile);
+
 			if (!CopyFile(strSrcFile.c_str(), strDstFile.c_str(), false))
             {
                 ShowMessage(L"Cannot copy files to target folder: " + FolderName);

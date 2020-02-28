@@ -94,6 +94,7 @@ __fastcall  TPhJobThread::TPhJobThread(TList* names, const LPWSTR lpwFolderName,
 	m_mosaic 	= NULL;
 	m_targetFormat = jpegFormat;
 	m_keepSource = true;
+	m_action = copyReplace;
 }
 
 int __fastcall TPhJobThread::GetNumSelectedItems()
@@ -283,13 +284,37 @@ void __fastcall TPhJobThread::DoMoveJob()
 	 }
 	 this->DoMosaic();
 }
-
+UnicodeString CreateNewFileName(UnicodeString str)
+{
+	UnicodeString result = str;
+	return str;
+}
 void __fastcall TPhJobThread::CopyFileHelper(UnicodeString src, UnicodeString dst)
 {
-	if (src == dst)
+	UnicodeString _src = ExtractFileName(src);
+	UnicodeString _dst = ExtractFileName(dst);
+
+	if (_src == _dst)
 	{
-	   //	switch()
+		switch(m_action)
+		{
+			case copySkip:
+				return;
+			break;
+			case copyReplace:
+				CopyFile(src.c_str(), dst.c_str(), false);
+			break;
+			case copyNewName:
+			{
+			   //
+			   UnicodeString new_dst = CreateNewFileName(dst);
+			   CopyFile(src.c_str(), dst.c_str(), false);
+			}
+			break;
+		}
 	}
+	else
+		CopyFile(src.c_str(), dst.c_str(), false);
 }
 
 
@@ -323,14 +348,6 @@ void __fastcall TPhJobThread::DoCopyJob()
 			UnicodeString strDstFile = m_FolderName;
 			strDstFile += ExtractFileName(strSrcFile);
 
-			UnicodeString _src = ExtractFileName(strSrcFile);
-			UnicodeString _dst = ExtractFileName(strDstFile);
-
-			if (_src == _dst)
-			{
-                 ShowMessage("QQ");
-			}
-			else
 			if (!CopyFile(strSrcFile.c_str(), strDstFile.c_str(), false))
 			{
 				//todo: add error status

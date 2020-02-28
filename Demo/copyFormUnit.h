@@ -31,6 +31,8 @@ __published:
 private:
 public:
 	virtual __fastcall TcopyForm(TComponent* AOwner);
+
+	bool __fastcall GetCopyPath(UnicodeString& str);
 };
 //----------------------------------------------------------------------------
 extern PACKAGE TcopyForm *copyForm;

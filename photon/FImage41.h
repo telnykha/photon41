@@ -228,7 +228,7 @@ __published:
 	__property int ThumbWidht      	   = {read  = m_tWidth,  write = m_tWidth};
 	__property int ThumbHeight     	   = {read = m_tHeight, write = m_tHeight};
 	__property  unsigned  SlideShowInterval = {read = GetSlideShowInterval, write = SetSlideShowInterval};
-	__property  EPhCopyActioin  opyAction       = {read = m_copyAction, write = m_copyAction};
+	__property  EPhCopyActioin  CopyAction       = {read = m_copyAction, write = m_copyAction};
 
    // наследуемые свойства
 	__property Align;

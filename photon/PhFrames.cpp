@@ -241,6 +241,7 @@ bool __fastcall TPhFrames::CopySelected(const LPWSTR lpDirName)
 	}
 
 	m_pReader =  new TPhJobThread (m_items, lpDirName, copyJob);
+	m_pReader->action = m_pDisplay->CopyAction;
 	m_pReader->FreeOnTerminate = true;
 	m_pReader->OnTerminate = OnTerminateHelper;
 	m_pReader->OnFinish = m_pDisplay->OnFinish;
@@ -260,6 +261,7 @@ bool __fastcall TPhFrames::MoveSelected(const LPWSTR lpDirName)
 	}
 
 	m_pReader =  new TPhJobThread (m_items, lpDirName, moveJob);
+    m_pReader->action = m_pDisplay->CopyAction;
 	m_pReader->tmbWidth  = m_pDisplay->ThumbWidht;
 	m_pReader->tmbHeight = m_pDisplay->ThumbHeight;
 	m_pReader->FreeOnTerminate = true;
