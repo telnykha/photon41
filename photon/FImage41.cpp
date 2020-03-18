@@ -1621,8 +1621,8 @@ void __fastcall     TPhImage::Copy(const LPWSTR lpwFolderName)
 			UnicodeString strDstFile = lpwFolderName;
 			strDstFile += ExtractFileName(strSrcFile);
 
-			if (!CopyFile(strSrcFile.c_str(), strDstFile.c_str(), false))
-            {
+			if (!CopyFile2(strSrcFile.c_str(), strDstFile.c_str(), false))
+			{
                 ShowMessage(L"Cannot copy files to target folder: " + FolderName);
             }
         }
@@ -1646,9 +1646,9 @@ void __fastcall     TPhImage::Move(const LPWSTR lpwFolderName)
 			UnicodeString strSrcFile = FileName;
 			UnicodeString strDstFile = lpwFolderName;
             strDstFile += ExtractFileName(strSrcFile);
-			if (!CopyFile(strSrcFile.c_str(), strDstFile.c_str(), false))
+			if (!CopyFile2(strSrcFile.c_str(), strDstFile.c_str(), false))
             {
-                ShowMessage(L"Cannot copy files to target folder: " + FolderName);
+				ShowMessage(L"Cannot copy files to target folder: " + FolderName);
             }
             DeleteFile(strSrcFile);
             Close();
