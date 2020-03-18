@@ -103,10 +103,10 @@
         <VerInfo_Locale>1033</VerInfo_Locale>
         <Debugger_DebugSourcePath>C:\_alt\VideoA2\VideoA\VideoAnalytics\awpipl2\src\;C:\_alt\VideoA2\VideoA\VideoAnalytics\jpeg-6b\src\;$(Debugger_DebugSourcePath)</Debugger_DebugSourcePath>
         <Debugger_CWD>C:\Users\ALT\Pictures</Debugger_CWD>
-        <LinkPackageStatics>photon41.lib</LinkPackageStatics>
+        <LinkPackageStatics>rtl.lib;vcl.lib;photon41.lib;vclx.lib;VclSmp.lib</LinkPackageStatics>
         <BT_BuildType>Debug</BT_BuildType>
-        <LinkPackageImports>rtl.bpi;vcl.bpi;vclx.bpi;VclSmp.bpi</LinkPackageImports>
         <AppDPIAwarenessMode>PerMonitor</AppDPIAwarenessMode>
+        <UsePackages>false</UsePackages>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2)'!=''">
         <Defines>NDEBUG;$(Defines)</Defines>
