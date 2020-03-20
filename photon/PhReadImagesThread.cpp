@@ -266,7 +266,7 @@ void __fastcall TPhJobThread::DoMoveJob()
 			UnicodeString strSrcFile = item->strFileName;
 			UnicodeString strDstFile = m_FolderName;
 			strDstFile += ExtractFileName(strSrcFile);
-			if (!CopyFile2(strSrcFile.c_str(), strDstFile.c_str(), false))
+			if (CopyFile2(strSrcFile.c_str(), strDstFile.c_str(), false) != S_OK)
 			{
 				//todo: add error status
 //                ShowMessage(L"Cannot copy files to target folder: " + FolderName);
@@ -348,7 +348,7 @@ void __fastcall TPhJobThread::DoCopyJob()
 			UnicodeString strDstFile = m_FolderName;
 			strDstFile += ExtractFileName(strSrcFile);
 
-			if (!CopyFile2(strSrcFile.c_str(), strDstFile.c_str(), false))
+			if (CopyFile2(strSrcFile.c_str(), strDstFile.c_str(), false) != S_OK)
 			{
 				//todo: add error status
 //                ShowMessage(L"Cannot copy files to target folder: " + FolderName);

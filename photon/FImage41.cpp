@@ -6,6 +6,7 @@
 #include "DIBImage41.h"
 #include "ExportRaster.h"
 #include "PhImageTool.h"
+#include "PhUtils.h"
 #pragma hdrstop
 #pragma package(smart_init)
 
@@ -1606,29 +1607,48 @@ void __fastcall TPhImage::Delete()
 
 void __fastcall     TPhImage::Copy(const LPWSTR lpwFolderName)
 {
-    SlideShow = false;
+	SlideShow = false;
     UnicodeString FolderName = lpwFolderName;
     if (DirectoryExists(FolderName))
     {
-        if (Frames->Count > 1)
-        {
+        if (Mosaic && Frames->Count > 1)
+		{
             if (!Frames->CopySelected(lpwFolderName))
                 ShowMessage(L"Cannot copy files to target folder: " + FolderName);
         }
         else
-        {
+		{
 			UnicodeString strSrcFile = FileName;
 			UnicodeString strDstFile = lpwFolderName;
 			strDstFile += ExtractFileName(strSrcFile);
-
-			if (!CopyFile2(strSrcFile.c_str(), strDstFile.c_str(), false))
+			bool skipFile = false;
+			//strDstFile = MakeNewFileName(strDstFile);
+			if (FileExists(strDstFile))
 			{
-                ShowMessage(L"Cannot copy files to target folder: " + FolderName);
-            }
-        }
-    }
-    else
-        ShowMessage(L"Target folder does not exists.");
+				switch(this->m_copyAction)
+				{
+					case copySkip:
+						skipFile = true;
+					break;
+					case copyReplace:
+						skipFile = false;
+					break;
+					case copyNewName:
+					   strDstFile = MakeNewFileName(strDstFile);
+					break;
+				}
+			}
+
+			if (skipFile)
+				return;
+			if (CopyFile2(strSrcFile.c_str(), strDstFile.c_str(), false) != S_OK)
+			{
+				ShowMessage(L"Cannot copy files to target folder: " + FolderName);
+			}
+		}
+	}
+	else
+		ShowMessage(L"Target folder does not exists.");
 }
 void __fastcall     TPhImage::Move(const LPWSTR lpwFolderName)
 {
@@ -1646,7 +1666,7 @@ void __fastcall     TPhImage::Move(const LPWSTR lpwFolderName)
 			UnicodeString strSrcFile = FileName;
 			UnicodeString strDstFile = lpwFolderName;
             strDstFile += ExtractFileName(strSrcFile);
-			if (!CopyFile2(strSrcFile.c_str(), strDstFile.c_str(), false))
+			if (CopyFile2(strSrcFile.c_str(), strDstFile.c_str(), false) != S_OK)
             {
 				ShowMessage(L"Cannot copy files to target folder: " + FolderName);
             }
