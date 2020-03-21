@@ -3,6 +3,7 @@
 #define PhFramesH
 #include <System.Classes.hpp>
 #include "awpipl.h"
+#include "PhUtils.h"
 //---------------------------------------------------------------------------
 #define _FRAME_MIN_COUNT_ 3
 typedef enum {jpegFormat, pngFormat, tiffFormat, tgaFormat, bmpFormat, awpFormat, ppmFormat} EPhImageFormats;

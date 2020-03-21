@@ -1608,42 +1608,19 @@ void __fastcall TPhImage::Delete()
 void __fastcall     TPhImage::Copy(const LPWSTR lpwFolderName)
 {
 	SlideShow = false;
-    UnicodeString FolderName = lpwFolderName;
+	UnicodeString FolderName = lpwFolderName;
     if (DirectoryExists(FolderName))
     {
         if (Mosaic && Frames->Count > 1)
 		{
-            if (!Frames->CopySelected(lpwFolderName))
+			if (!Frames->CopySelected(lpwFolderName))
                 ShowMessage(L"Cannot copy files to target folder: " + FolderName);
         }
-        else
+		else
 		{
-			UnicodeString strSrcFile = FileName;
-			UnicodeString strDstFile = lpwFolderName;
-			strDstFile += ExtractFileName(strSrcFile);
-			bool skipFile = false;
-			//strDstFile = MakeNewFileName(strDstFile);
-			if (FileExists(strDstFile))
+			if (!PhCopyFile(FileName, FolderName,m_copyAction))
 			{
-				switch(this->m_copyAction)
-				{
-					case copySkip:
-						skipFile = true;
-					break;
-					case copyReplace:
-						skipFile = false;
-					break;
-					case copyNewName:
-					   strDstFile = MakeNewFileName(strDstFile);
-					break;
-				}
-			}
-
-			if (skipFile)
-				return;
-			if (CopyFile2(strSrcFile.c_str(), strDstFile.c_str(), false) != S_OK)
-			{
-				ShowMessage(L"Cannot copy files to target folder: " + FolderName);
+			  ShowMessage(L"Cannot copy files to target folder: " + FolderName);
 			}
 		}
 	}
@@ -1658,7 +1635,7 @@ void __fastcall     TPhImage::Move(const LPWSTR lpwFolderName)
     {
         if (Frames->Count > 1)
         {
-            if (!Frames->MoveSelected(lpwFolderName))
+			if (!Frames->MoveSelected(lpwFolderName))
                 ShowMessage(L"Cannot move files to target folder: " + FolderName);
         }
         else

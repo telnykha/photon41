@@ -46,7 +46,6 @@ UnicodeString MakeNewFileName(UnicodeString strFileName)
 	  if (pos2 != 0)
 	  {
 		 UnicodeString str = result.SubString(pos2+2, pos1-pos2-2);
-		 //ShowMessage(str);
 		 int value = StrToInt(str);
 		 do
 		 {
@@ -60,6 +59,38 @@ UnicodeString MakeNewFileName(UnicodeString strFileName)
 	}
 	else
 	   result = _makeName(1, strFileName);
+	return result;
+}
+
+
+bool PhCopyFile(UnicodeString strFileName, UnicodeString strFolder, EPhCopyActioin action)
+{
+	bool result = true;
+
+	UnicodeString strSrcFile = strFileName;
+	UnicodeString strDstFile = strFolder;
+
+	strDstFile += ExtractFileName(strSrcFile);
+	bool skipFile = false;
+	if (FileExists(strDstFile))
+	{
+		switch(action)
+		{
+			case copySkip:
+				skipFile = true;
+			break;
+			case copyReplace:
+				skipFile = false;
+			break;
+			case copyNewName:
+			   strDstFile = MakeNewFileName(strDstFile);
+			break;
+		}
+	}
+
+	if (skipFile)
+		return result;
+	result = CopyFile2(strSrcFile.c_str(), strDstFile.c_str(), false) == S_OK;
 	return result;
 }
 

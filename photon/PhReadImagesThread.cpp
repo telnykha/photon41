@@ -346,12 +346,19 @@ void __fastcall TPhJobThread::DoCopyJob()
 
 			UnicodeString strSrcFile = item->strFileName;
 			UnicodeString strDstFile = m_FolderName;
+			/*
 			strDstFile += ExtractFileName(strSrcFile);
 
 			if (CopyFile2(strSrcFile.c_str(), strDstFile.c_str(), false) != S_OK)
 			{
 				//todo: add error status
 //                ShowMessage(L"Cannot copy files to target folder: " + FolderName);
+			}
+			*/
+			if (!PhCopyFile(strSrcFile, strDstFile, m_action))
+			{
+				//todo: add error status
+				//ShowMessage(L"Cannot copy files to target folder: " + FolderName);
 			}
 
 		}
