@@ -43,8 +43,6 @@ protected:
 	int __fastcall  GetNumSelectedItems();
 	void __fastcall DoMosaic();
 
-	void __fastcall CopyFileHelper(UnicodeString src, UnicodeString dst);
-
 	void __fastcall DoReadJob();
 	void __fastcall DoCopyJob();
 	void __fastcall DoMoveJob();

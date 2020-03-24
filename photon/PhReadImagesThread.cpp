@@ -265,12 +265,10 @@ void __fastcall TPhJobThread::DoMoveJob()
 
 			UnicodeString strSrcFile = item->strFileName;
 			UnicodeString strDstFile = m_FolderName;
-			strDstFile += ExtractFileName(strSrcFile);
-			if (CopyFile2(strSrcFile.c_str(), strDstFile.c_str(), false) != S_OK)
+			if (!PhCopyFile(strSrcFile, strDstFile, m_action))
 			{
 				//todo: add error status
-//                ShowMessage(L"Cannot copy files to target folder: " + FolderName);
-				continue;
+				//ShowMessage(L"Cannot copy files to target folder: " + FolderName);
 			}
 			DeleteFile(item->strFileName);
 			m_items->Delete(i);
@@ -282,41 +280,8 @@ void __fastcall TPhJobThread::DoMoveJob()
 			continue;
 		}
 	 }
-	 this->DoMosaic();
+	 DoMosaic();
 }
-UnicodeString CreateNewFileName(UnicodeString str)
-{
-	UnicodeString result = str;
-	return str;
-}
-void __fastcall TPhJobThread::CopyFileHelper(UnicodeString src, UnicodeString dst)
-{
-	UnicodeString _src = ExtractFileName(src);
-	UnicodeString _dst = ExtractFileName(dst);
-
-	if (_src == _dst)
-	{
-		switch(m_action)
-		{
-			case copySkip:
-				return;
-			break;
-			case copyReplace:
-				CopyFile2(src.c_str(), dst.c_str(), false);
-			break;
-			case copyNewName:
-			{
-			   //
-			   UnicodeString new_dst = CreateNewFileName(dst);
-			   CopyFile2(src.c_str(), dst.c_str(), false);
-			}
-			break;
-		}
-	}
-	else
-		CopyFile2(src.c_str(), dst.c_str(), false);
-}
-
 
 void __fastcall TPhJobThread::DoCopyJob()
 {
@@ -346,15 +311,6 @@ void __fastcall TPhJobThread::DoCopyJob()
 
 			UnicodeString strSrcFile = item->strFileName;
 			UnicodeString strDstFile = m_FolderName;
-			/*
-			strDstFile += ExtractFileName(strSrcFile);
-
-			if (CopyFile2(strSrcFile.c_str(), strDstFile.c_str(), false) != S_OK)
-			{
-				//todo: add error status
-//                ShowMessage(L"Cannot copy files to target folder: " + FolderName);
-			}
-			*/
 			if (!PhCopyFile(strSrcFile, strDstFile, m_action))
 			{
 				//todo: add error status

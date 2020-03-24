@@ -39,6 +39,7 @@ static UnicodeString _makeName(int value, UnicodeString str)
 UnicodeString MakeNewFileName(UnicodeString strFileName)
 {
 	UnicodeString result = strFileName;
+	int value = 0;
 	int pos1 = result.Pos(L").");
 	if (pos1 != 0)
 	{
@@ -46,19 +47,25 @@ UnicodeString MakeNewFileName(UnicodeString strFileName)
 	  if (pos2 != 0)
 	  {
 		 UnicodeString str = result.SubString(pos2+2, pos1-pos2-2);
-		 int value = StrToInt(str);
-		 do
+		 try
 		 {
-			value++;
-			result = _makeName(value, strFileName);
-			if (!FileExists(result, true))
-				break;
+			 value = StrToInt(str);
 		 }
-		 while(true);
+		 catch(EConvertError& e)
+		 {
+			value = 0;
+		 }
 	  }
 	}
-	else
-	   result = _makeName(1, strFileName);
+	//------------
+	 do
+	 {
+		value++;
+		result = _makeName(value, strFileName);
+		if (!FileExists(result, true))
+			break;
+	 }
+	 while(true);
 	return result;
 }
 
