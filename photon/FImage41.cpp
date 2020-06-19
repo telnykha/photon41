@@ -944,19 +944,15 @@ void __fastcall TPhImage::Paint(void)
 		  SRCCOPY);
 
 		DrawSelRect(bm);
-        DrawSelectedItems(bm, m_xx, m_yy);
+		DrawSelectedItems(bm, m_xx, m_yy);
         // todo: add drawing
         if (PhTool != NULL)
-          PhTool->Draw(bm->Canvas);
+		  PhTool->Draw(bm->Canvas);
 
 	   dib->ClosePixels();
 	   Canvas->CopyMode = cmSrcCopy;
 	   Canvas->Draw(0,0,bm);
 	   delete bm;
-	}
-	else if (m_Paint != NULL)
-	{
-		m_Paint(this);
 	}
 	else
 	{
@@ -964,6 +960,12 @@ void __fastcall TPhImage::Paint(void)
 		this->Canvas->Brush->Color = clBlack;
 		this->Canvas->FillRect(this->ClientRect);
 		this->Canvas->Brush->Color = oldColor;
+	}
+
+
+	if (m_Paint != NULL)
+	{
+		m_Paint(this);
 	}
 }
 
