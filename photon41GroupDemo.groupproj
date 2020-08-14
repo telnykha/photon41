@@ -15,6 +15,12 @@
         <Projects Include="Demo\PhotonDemo.cbproj">
             <Dependencies>photon41.cbproj</Dependencies>
         </Projects>
+        <Projects Include="dll\photondll.cbproj">
+            <Dependencies>photon41.cbproj</Dependencies>
+        </Projects>
+        <Projects Include="..\..\Media Tools\GLTest\GLTest.cbproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -59,14 +65,32 @@
     <Target Name="PhotonDemo:Make" DependsOnTargets="photon41:Make">
         <MSBuild Projects="Demo\PhotonDemo.cbproj" Targets="Make"/>
     </Target>
+    <Target Name="photondll" DependsOnTargets="photon41">
+        <MSBuild Projects="dll\photondll.cbproj"/>
+    </Target>
+    <Target Name="photondll:Clean" DependsOnTargets="photon41:Clean">
+        <MSBuild Projects="dll\photondll.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="photondll:Make" DependsOnTargets="photon41:Make">
+        <MSBuild Projects="dll\photondll.cbproj" Targets="Make"/>
+    </Target>
+    <Target Name="GLTest">
+        <MSBuild Projects="..\..\Media Tools\GLTest\GLTest.cbproj"/>
+    </Target>
+    <Target Name="GLTest:Clean">
+        <MSBuild Projects="..\..\Media Tools\GLTest\GLTest.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="GLTest:Make">
+        <MSBuild Projects="..\..\Media Tools\GLTest\GLTest.cbproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="awpipl2b;awplflibb;photon41;PhotonDemo"/>
+        <CallTarget Targets="awpipl2b;awplflibb;photon41;PhotonDemo;photondll;GLTest"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="awpipl2b:Clean;awplflibb:Clean;photon41:Clean;PhotonDemo:Clean"/>
+        <CallTarget Targets="awpipl2b:Clean;awplflibb:Clean;photon41:Clean;PhotonDemo:Clean;photondll:Clean;GLTest:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="awpipl2b:Make;awplflibb:Make;photon41:Make;PhotonDemo:Make"/>
+        <CallTarget Targets="awpipl2b:Make;awplflibb:Make;photon41:Make;PhotonDemo:Make;photondll:Make;GLTest:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>

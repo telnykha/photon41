@@ -12,6 +12,9 @@
         <Projects Include="photon41.cbproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="dll\photondll.cbproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -47,14 +50,23 @@
     <Target Name="photon41:Make">
         <MSBuild Projects="photon41.cbproj" Targets="Make"/>
     </Target>
+    <Target Name="photondll">
+        <MSBuild Projects="dll\photondll.cbproj"/>
+    </Target>
+    <Target Name="photondll:Clean">
+        <MSBuild Projects="dll\photondll.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="photondll:Make">
+        <MSBuild Projects="dll\photondll.cbproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="awpipl2b;awplflibb;photon41"/>
+        <CallTarget Targets="awpipl2b;awplflibb;photon41;photondll"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="awpipl2b:Clean;awplflibb:Clean;photon41:Clean"/>
+        <CallTarget Targets="awpipl2b:Clean;awplflibb:Clean;photon41:Clean;photondll:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="awpipl2b:Make;awplflibb:Make;photon41:Make"/>
+        <CallTarget Targets="awpipl2b:Make;awplflibb:Make;photon41:Make;photondll:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
