@@ -8,8 +8,8 @@
 #include <Vcl.Themes.hpp>
 USEFORM("resizeFormUnit.cpp", resizeForm);
 USEFORM("rotateFormUnit.cpp", rotateForm);
-USEFORM("copyFormUnit.cpp", copyForm);
 USEFORM("convertFormUnit.cpp", convertForm);
+USEFORM("copyFormUnit.cpp", copyForm);
 USEFORM("mainUnit.cpp", mainForm);
 //---------------------------------------------------------------------------
 int WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)

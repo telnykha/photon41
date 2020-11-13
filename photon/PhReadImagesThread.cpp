@@ -431,7 +431,7 @@ void __fastcall TPhJobThread::DoMosaic()
 	 if (this->m_items == NULL)
 		return;
 
-   int imgCount =  floor(sqrt((float)this->m_items->Count) + 0.5);
+   int imgCount =  ceil(sqrt((float)this->m_items->Count) + 0.5);
    int imgWidth  = m_tmbWidth*imgCount;
    int imgHeight = m_tmbHeight*imgCount;
    awpImage* result = NULL;

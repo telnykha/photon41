@@ -15,10 +15,10 @@ class TFramesList : public TList
 public:
 virtual void __fastcall Notify(void * Ptr, TListNotification Action)
 {
-    if (Action == lnDeleted)
+	if (Action == lnDeleted)
     {
 		SFrameItem* item = (SFrameItem*)Ptr;
-        _AWP_SAFE_RELEASE_(item->img)
+		_AWP_SAFE_RELEASE_(item->img)
 		delete item;
     }
 }
@@ -52,7 +52,8 @@ bool TPhFrames::Init(TStrings* names)
     {
       SFrameItem* item = new SFrameItem();
       item->strFileName = names->Strings[i];
-      item->selected = false;
+	  item->selected = false;
+      item->img = NULL;
       m_items->Add(item);
     }
 
