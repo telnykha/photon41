@@ -163,8 +163,8 @@ public:
 
 	// Data scale
 	void __fastcall             ActualSize();
-	void __fastcall             ZoomIn();
-	void __fastcall             ZoomOut();
+	void __fastcall             ZoomIn(int x = 0, int y = 0);
+	void __fastcall             ZoomOut(int x = 0, int y = 0);
 	void __fastcall         	ZoomToRect(const TRect Rect);
 	void __fastcall             ZoomTo(int ZoomFactor);
 

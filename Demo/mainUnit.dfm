@@ -45,8 +45,8 @@ object mainForm: TmainForm
     Width = 700
     Height = 355
     AutoMosaic = True
-    ThumbWidht = 320
-    ThumbHeight = 240
+    ThumbWidht = 32
+    ThumbHeight = 32
     SlideShowInterval = 500
     Align = alClient
     ParentColor = False

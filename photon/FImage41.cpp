@@ -395,7 +395,7 @@ void __fastcall TPhImage::ActualSize()
                от текущего значения todo:
     Comments:
 */
-void __fastcall TPhImage::ZoomIn()
+void __fastcall TPhImage::ZoomIn(int x, int y)
 {
    if ( Empty || m_Scale > MAX_ZOOM - ZOOM_STEP )
       return;
@@ -403,11 +403,19 @@ void __fastcall TPhImage::ZoomIn()
    // Сохраним центр видимой области
    _VISIBLE_CENTER_
 
+ /*  if (x > 0 && y > 0)
+   {
+	  int _x =  GetImageX( x );
+	  int _y =  GetImageY( y );
+	  Cx = _x > 0 ? _x: 0;
+	  Cy = _y > 0 ? m_Bitmap->Height - _y : 0;
+   }*/
+
    m_Scale = RoundTo( m_Scale + ZOOM_STEP, -2 );
 
    // Сместим угол относительно центра
    if ( m_Bitmap->Width * m_Scale > Width )
-      m_StartPoint.x = Cx - Width / (2*m_Scale);
+	  m_StartPoint.x = Cx - Width / (2*m_Scale);
    else
       m_StartPoint.x = 0;
 
@@ -450,12 +458,20 @@ void __fastcall TPhImage::ZoomIn()
     Purpose:
     Comments:
 */
-void __fastcall TPhImage::ZoomOut()
+void __fastcall TPhImage::ZoomOut(int x, int y)
 {
    if (Empty || m_Scale < MIN_ZOOM + ZOOM_STEP)
       return;
 
-    _VISIBLE_CENTER_
+	_VISIBLE_CENTER_
+
+/*   if (x > 0 && y > 0)
+   {
+	  int _x =  GetImageX( x );
+	  int _y =  GetImageY( y );
+	  Cx = _x > 0 ? _x: 0;
+	  Cy = _y > 0 ? m_Bitmap->Height - _y : 0;
+   }*/
 
    m_Scale = RoundTo( m_Scale - ZOOM_STEP, -2 );
    // Сместим угол относительно центра
@@ -1351,8 +1367,8 @@ void __fastcall 	TPhImage::DblClick(void)
 			Frames->GoFrame(m_idx);
 			Mosaic = false;
        }
-       else
-            Mosaic = true;
+	   else
+			Mosaic = true;
    }
 
   TCustomControl::DblClick();
@@ -1362,11 +1378,11 @@ bool __fastcall TPhImage::DoMouseWheel(System::Classes::TShiftState Shift, int W
 {
 	if (WheelDelta > 0)
     {
-    	ZoomIn();
-    }
-    else
-    {
-    	ZoomOut();
+		ZoomIn(MousePos.x, MousePos.y);
+	}
+	else
+	{
+		ZoomOut(MousePos.x, MousePos.y);
     }
     return true;
 }
@@ -1679,8 +1695,9 @@ void __fastcall TPhImage::SetImageData(int w, int h, int c, unsigned char* data)
     TDIBImage* dib = dynamic_cast<TDIBImage*>(m_Bitmap);
     if (dib != NULL)
     {
-        dib->SetAWPImage(&img);
-        BestFit();
+		dib->SetAWPImage(&img);
+        Paint();
+		//BestFit();
     }
 }
 

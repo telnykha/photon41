@@ -55,8 +55,8 @@
         <ILINK_GenerateImportLibrary>true</ILINK_GenerateImportLibrary>
         <_TCHARMapping>wchar_t</_TCHARMapping>
         <Multithreaded>true</Multithreaded>
-        <IncludePath>photon\;$(PHOTON41)\include;$(AWP)\include;$(LF)\include;$(IncludePath)</IncludePath>
-        <ILINK_LibraryPath>photon\;$(PHOTON41)\lib\;$(AWP)\lib;$(ILINK_LibraryPath)</ILINK_LibraryPath>
+        <IncludePath>photon\;$(PHOTON41)\photon\include;$(AWP)\include;$(LF)\include;$(IncludePath)</IncludePath>
+        <ILINK_LibraryPath>photon\;$(PHOTON41)\photon\lib\;$(AWP)\lib;$(ILINK_LibraryPath)</ILINK_LibraryPath>
         <SanitizedProjectName>photon41</SanitizedProjectName>
         <VerInfo_Locale>1049</VerInfo_Locale>
         <VerInfo_Keys>CompanyName=;FileDescription=$(MSBuildProjectName);FileVersion=4.1.1.33;InternalName=;LegalCopyright=;LegalTrademarks=;OriginalFilename=;ProgramID=com.embarcadero.$(MSBuildProjectName);ProductName=$(MSBuildProjectName);ProductVersion=1.0.0.0;Comments=</VerInfo_Keys>
@@ -68,6 +68,7 @@
         <VerInfo_MinorVer>1</VerInfo_MinorVer>
         <VerInfo_Release>1</VerInfo_Release>
         <VerInfo_Build>33</VerInfo_Build>
+        <ILINK_GenerateDRC>True</ILINK_GenerateDRC>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win32)'!=''">
         <PackageImports>appanalytics;bcbsmp;bindcomp;bindcompfmx;bindcompvcl;bindengine;CustomIPTransport;dbrtl;dsnap;fmx;fmxase;fmxdae;fmxobj;IndyCore;IndyProtocols;IndySystem;rtl;svn;tethering;vcl;vclactnband;vcldb;vcldsnap;vclie;vclimg;VclSmp;vcltouch;vclwinx;vclx;xmlrtl;$(PackageImports)</PackageImports>
@@ -108,9 +109,6 @@
     </PropertyGroup>
     <PropertyGroup Condition="'$(Cfg_2_Win32)'!=''">
         <VerInfo_Locale>1033</VerInfo_Locale>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Cfg_2)'!='' And '$(FileToCompile)'=='photon\FImage41.cpp'">
-        <_TCHARMapping>wchar_t</_TCHARMapping>
     </PropertyGroup>
     <ItemGroup>
         <None Include="doc\description.txt"/>
@@ -156,8 +154,7 @@
         </CppCompile>
         <CppCompile Include="photon\FImage41.cpp">
             <DependentOn>photon\FImage41.h</DependentOn>
-            <BuildOrder>10</BuildOrder>
-            <OptionOverrides>true</OptionOverrides>
+            <BuildOrder>29</BuildOrder>
         </CppCompile>
         <CppCompile Include="photon\ImportRaster.cpp">
             <DependentOn>photon\ImportRaster.h</DependentOn>
@@ -248,7 +245,8 @@
                     <Source Name="MainSource">photon41.cpp</Source>
                 </Source>
                 <Excluded_Packages>
-                    <Excluded_Packages Name="C:\_alt\_proj\photon\photon41\photon\lib\photon41.bpl">photon41</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\bcboffice2k260.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>
+                    <Excluded_Packages Name="$(BDSBIN)\bcbofficexp260.bpl">Embarcadero C++Builder Office XP Servers Package</Excluded_Packages>
                 </Excluded_Packages>
             </CPlusPlusBuilder.Personality>
             <Platforms>
@@ -307,6 +305,12 @@
                 </DeployFile>
                 <DeployFile Condition="'$(DynamicRTL)'=='true' And '$(Multithreaded)'=='true'" LocalName="$(BDS)\bin64\cc64260mt.dll" Class="DependencyModule">
                     <Platform Name="Win64">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="photon\lib\photon41.tds" Configuration="Debug" Class="DebugSymbols">
+                    <Platform Name="Win32">
+                        <RemoteName>photon41.tds</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
