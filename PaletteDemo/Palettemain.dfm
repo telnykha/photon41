@@ -1,0 +1,51 @@
+object Form9: TForm9
+  Left = 0
+  Top = 0
+  Caption = 'Form9'
+  ClientHeight = 340
+  ClientWidth = 527
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -11
+  Font.Name = 'Tahoma'
+  Font.Style = []
+  OldCreateOrder = False
+  PixelsPerInch = 96
+  TextHeight = 13
+  object Splitter1: TSplitter
+    Left = 524
+    Top = 0
+    Height = 340
+    Align = alRight
+    ExplicitLeft = 422
+    ExplicitTop = -3
+  end
+  object PhPalette1: TPhPalette
+    AlignWithMargins = True
+    Left = 3
+    Top = 3
+    Width = 102
+    Height = 334
+    Align = alLeft
+    Color = clNavy
+    TextColor = clAqua
+    MaxValue = 4095.000000000000000000
+    TicksVisible = True
+  end
+  object PhImage1: TPhImage
+    AlignWithMargins = True
+    Left = 111
+    Top = 3
+    Width = 410
+    Height = 334
+    AutoMosaic = True
+    ThumbWidht = 128
+    ThumbHeight = 128
+    SlideShowInterval = 500
+    Align = alClient
+    ParentColor = False
+    ExplicitLeft = 120
+    ExplicitWidth = 401
+  end
+end

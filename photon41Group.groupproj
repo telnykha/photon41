@@ -15,6 +15,9 @@
         <Projects Include="dll\photondll.cbproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="PaletteDemo\PaletteDemo.cbproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -59,14 +62,23 @@
     <Target Name="photondll:Make">
         <MSBuild Projects="dll\photondll.cbproj" Targets="Make"/>
     </Target>
+    <Target Name="PaletteDemo">
+        <MSBuild Projects="PaletteDemo\PaletteDemo.cbproj"/>
+    </Target>
+    <Target Name="PaletteDemo:Clean">
+        <MSBuild Projects="PaletteDemo\PaletteDemo.cbproj" Targets="Clean"/>
+    </Target>
+    <Target Name="PaletteDemo:Make">
+        <MSBuild Projects="PaletteDemo\PaletteDemo.cbproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="awpipl2b;awplflibb;photon41;photondll"/>
+        <CallTarget Targets="awpipl2b;awplflibb;photon41;photondll;PaletteDemo"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="awpipl2b:Clean;awplflibb:Clean;photon41:Clean;photondll:Clean"/>
+        <CallTarget Targets="awpipl2b:Clean;awplflibb:Clean;photon41:Clean;photondll:Clean;PaletteDemo:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="awpipl2b:Make;awplflibb:Make;photon41:Make;photondll:Make"/>
+        <CallTarget Targets="awpipl2b:Make;awplflibb:Make;photon41:Make;photondll:Make;PaletteDemo:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
 </Project>
