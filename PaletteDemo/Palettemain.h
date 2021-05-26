@@ -17,6 +17,8 @@ __published:	// IDE-managed Components
 	TPhPalette *PhPalette1;
 	TPhImage *PhImage1;
 	TSplitter *Splitter1;
+	TPhPalette *PhPalette2;
+	TPhPalette *PhPalette3;
 private:	// User declarations
 public:		// User declarations
 	__fastcall TForm9(TComponent* Owner);
