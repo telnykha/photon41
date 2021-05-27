@@ -16,7 +16,8 @@ public:
     __fastcall TPhTrackBar(TComponent* Owner);
 __published:
     __property OnMouseUp;
-    __property OnMouseMove;
+	__property OnMouseMove;
+    __property OnMouseDown;
 };
 //---------------------------------------------------------------------------
 #endif
