@@ -848,7 +848,10 @@ void __fastcall 	TPhImage::ClearSelection()
     {
         delete this->m_SelectedBitmap;
         this->m_SelectedBitmap = NULL;
-    }
+	}
+	if (this->m_Selection) {
+		this->m_Selection(this);
+	}
     Paint();
 }
 
@@ -903,7 +906,10 @@ void                        TPhImage::SetSelRect(TRect r)
             }
             _AWP_SAFE_RELEASE_(src)
         }
-     }
+	 }
+	if (this->m_Selection) {
+		this->m_Selection(this);
+	}
      this->Paint();
 }
 

@@ -45,8 +45,8 @@ object mainForm: TmainForm
     Width = 700
     Height = 355
     AutoMosaic = True
-    ThumbWidht = 32
-    ThumbHeight = 32
+    ThumbWidht = 128
+    ThumbHeight = 96
     SlideShowInterval = 500
     Align = alClient
     ParentColor = False
@@ -356,7 +356,6 @@ object mainForm: TmainForm
     TabOrder = 3
     TickMarks = tmBoth
     OnChange = PhTrackBar1Change
-    OnMouseUp = PhTrackBar1MouseUp
   end
   object ActionList1: TActionList
     Left = 24

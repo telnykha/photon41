@@ -46,14 +46,15 @@ private:
 	TNotifyEvent                m_ScaleChange;
 	TNotifyEvent                m_PosChange;
 	TNotifyEvent                m_Change;
-    TNotifyEvent                m_Mosaic;
+	TNotifyEvent                m_Mosaic;
+	TNotifyEvent                m_Selection;
 	TNotifyEvent            	m_ToolChange;
     TPhProgressEvent  			m_OnProgress;
     TNotifyEvent       			m_OnStart;
     TPhJobEvent		       		m_OnFinish;
 	TNotifyEvent       			m_OnCancel;
     TPhFrameEvent               m_OnFrame;
-    TPhFrameDataEvent           m_OnFrameData;
+	TPhFrameDataEvent           m_OnFrameData;
 protected:
     TTimer*                     m_Timer;
 	TList*                  	m_ph_tools;
@@ -257,6 +258,7 @@ __published:
 
     // собственные события
 	__property TNotifyEvent     OnPaint = {read = m_Paint, write = m_Paint};
+	__property TNotifyEvent     OnSelection = {read = m_Selection, write = m_Selection};
 	__property TNotifyEvent     BeforeOpen = {read = m_BeforeOpen, write = m_BeforeOpen};
 	__property TNotifyEvent     AfterOpen  = {read = m_AfterOpen, write = m_AfterOpen};
     __property TNotifyEvent     OnScaleChange = {read = m_ScaleChange, write = m_ScaleChange};
