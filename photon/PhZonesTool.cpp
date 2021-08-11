@@ -71,9 +71,7 @@ bool   TPhZonesTool::_is_near_vertex(int X, int Y, int& idx1, int& idx2)
 
    if (m_pImage == NULL)
 		return res;
- //  if (m_selected == -1) {
- //	   return res;
- //  }
+
 
    TPoint p = m_pImage->GetImagePoint(X, Y);
 
@@ -188,8 +186,8 @@ void __fastcall TPhZonesTool::SetVertex(int x, int y, bool update)
    TPoint p = m_pImage->GetImagePoint(x, y);
    if (item)
    {
-	 TLFZone* z = item;//new TLFZone(*item);
-	 if (z == NULL || (z->GetZoneType() == ZTRect /*&& m_mode == TMRect*/))
+	 TLFZone* z = item;
+	 if (z == NULL || (z->GetZoneType() == ZTRect))
 	 {
 		 TRect rect = this->GetBoundsRect(z);
 		 if (m_sv == 0)
@@ -242,11 +240,9 @@ void __fastcall TPhZonesTool::SetVertex(int x, int y, bool update)
 		   p1.Y = 100.0*p.y /(double) m_pImage->Bitmap->Height;
            z->GetContour()->SetPoint(m_sv, p1);
 		  }
-	 //item->SetZone(z, update);
 	 if (this->m_OnChangeRoi) {
 		 this->OnChangeRoi(this, m_si, update);
 	 }
-	// delete z;
    }
 }
 TRect __fastcall TPhZonesTool::GetBoundsRect(TLFZone* zone)
