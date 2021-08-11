@@ -1281,12 +1281,12 @@ bool __fastcall TPhImage::GetEmpty() const
 {
     try
     {
-       if (m_Bitmap != NULL)
-           return m_Bitmap->Empty;
+	   if (m_Bitmap != NULL)
+		   return m_Bitmap->Empty;
        else
-           return true;
+		   return true;
     }
-    catch (...)
+	catch (...)
     {
        return true;
     }
@@ -1722,21 +1722,29 @@ bool __fastcall   TPhImage::GetSelectedImage(awpImage** img)
     if (dib == NULL)
         return false;
     dib->GetAWPImage(img);
-    return *img != NULL;
+	return *img != NULL;
 }
 
 bool __fastcall TPhImage::SetAwpImage(awpImage* img)
 {
-    TDIBImage* dib = dynamic_cast<TDIBImage*>(m_Bitmap);
-    if (dib == NULL)
-        return false;
-    if (dib != NULL)
-    {
-        dib->SetAWPImage(img);
-        BestFit();
-    }
-    return true;
+	TDIBImage* dib = dynamic_cast<TDIBImage*>(m_Bitmap);
+	if (dib == NULL)
+		return false;
+	if (dib != NULL)
+	{
+		dib->SetAWPImage(img);
+		BestFit();
+	}
+	return true;
 }
+TGraphic* __fastcall TPhImage::GetBitmap()
+{
+   if (m_Bitmap != NULL)
+	   return m_Bitmap;
+   else
+       return NULL;
+}
+
 //---------------------------------------------------------------------------
 namespace Fimage41
 {

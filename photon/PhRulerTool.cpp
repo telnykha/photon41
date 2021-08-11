@@ -9,7 +9,10 @@ __fastcall TPhRulerTool::TPhRulerTool(TComponent* Owner): TPhImageTool(Owner)
 {
    this->m_sp.X = 0;
    this->m_sp.y = 0;
+   this->m_ep.X = 0;
+   this->m_ep.y = 0;
    this->m_down = false;
+   m_strToolName = L"RULER";
 }
 __fastcall TPhRulerTool::~TPhRulerTool()
 {
@@ -37,6 +40,7 @@ void TPhRulerTool::Draw(TCanvas* Canvas)
    c->Ellipse(_sp.x-delta, _sp.y - delta, _sp.x + delta, _sp.y + delta);
    c->Ellipse(_ep.x-delta, _ep.y - delta, _ep.x + delta, _ep.y + delta);
 
+   c->TextOutW(_ep.x + 10, _ep.y - 10, FormatFloat("####.##", Length));
    c->Pen->Style = style;
    c->Pen->Color = color;
    c->Pen->Mode = mode;
@@ -44,7 +48,9 @@ void TPhRulerTool::Draw(TCanvas* Canvas)
 void TPhRulerTool::MouseDown(int X, int Y, TMouseButton Button)
 {
    if (m_pImage == NULL)
-        return;
+		return;
+   if (Button != mbLeft)
+		return;
    int _x = m_pImage->GetImageX(X);
    int _y = m_pImage->GetImageY(Y);
    if (_x >= 0 && _y >= 0)
@@ -58,7 +64,9 @@ void TPhRulerTool::MouseDown(int X, int Y, TMouseButton Button)
 void TPhRulerTool::MouseUp(int X, int Y, TMouseButton Button)
 {
    if (m_pImage == NULL)
-        return;
+		return;
+   if (Button != mbLeft)
+		return;
    if (this->m_down == true)
    {
 	   int _x = m_pImage->GetImageX(X);

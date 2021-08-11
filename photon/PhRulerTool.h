@@ -21,7 +21,7 @@ public:
     virtual void MouseMove(int X, int Y, TShiftState Shift);
 	virtual void Reset();
 
-	__property double Lendth = {read = GetLenght};
+	__property double Length = {read = GetLenght};
 	__property TPoint StartPoint = {read = m_sp};
     __property TPoint EndPoint   = {read = m_ep};
 };

@@ -136,7 +136,7 @@ protected:
 	void __fastcall             RemovePhTool(TPhImageTool* tool);
 	TPhImageTool* __fastcall    GetSelectedTool();
     TGraphic* __fastcall   		GetSelectedBitmap();
-
+	TGraphic* __fastcall   		GetBitmap();
     void __fastcall DoDeleteImage();
 public:
 	__fastcall                  TPhImage(TComponent* Owner);
@@ -202,30 +202,30 @@ public:
     bool __fastcall             GetAwpImage(awpImage** img);
     bool __fastcall             SetAwpImage(awpImage* img);
 
-    bool __fastcall             GetSelectedImage(awpImage** img);
+	bool __fastcall             GetSelectedImage(awpImage** img);
 
 	// Public properties
 	__property  UnicodeString   FileName = {read = m_FileName, write = m_FileName};
-    __property  TPhFrames*      Frames = {read = m_Frames};
-	__property  TGraphic*       Bitmap = {read = m_Bitmap, write = SetImage};
+	__property  TPhFrames*      Frames = {read = m_Frames};
+	__property  TGraphic*       Bitmap = {read = GetBitmap, write = SetImage};
 	__property  TGraphic*       SelectedBitmap = {read = GetSelectedBitmap};
 
 	__property  bool            Modified = {read = GetModified};
 	__property  bool            Empty = {read = GetEmpty, write = SetEmpty};
-    __property  bool            SlideShow = {read = GetSlideShow, write = SetSlideShow};
-    __property  bool            Mosaic = {read = GetMosaic, write = SetMosaic};
+	__property  bool            SlideShow = {read = GetSlideShow, write = SetSlideShow};
+	__property  bool            Mosaic = {read = GetMosaic, write = SetMosaic};
 
 	__property float            Scale = {read = GetScale};
 	__property TPoint           Corner = {read = GetCorner};
 	__property TRect            VisibleArea = {read = GetVisibleArea};
-    __property int              MosaicSelected = {read = m_idx, write = SetMosaicSelected};
+	__property int              MosaicSelected = {read = m_idx, write = SetMosaicSelected};
 
-    // inherited properties
-    __property Canvas;
+	// inherited properties
+	__property Canvas;
 	__property TPhImageTool*   PhTool = {read = GetSelectedTool};
 __published:
    //
-    __property bool AutoMosaic         = {read = m_autoMosaic, write = m_autoMosaic};
+	__property bool AutoMosaic         = {read = m_autoMosaic, write = m_autoMosaic};
 	__property int ThumbWidht      	   = {read  = m_tWidth,  write = m_tWidth};
 	__property int ThumbHeight     	   = {read = m_tHeight, write = m_tHeight};
 	__property  unsigned  SlideShowInterval = {read = GetSlideShowInterval, write = SetSlideShowInterval};
