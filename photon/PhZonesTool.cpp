@@ -46,12 +46,12 @@ __fastcall TPhZonesTool::TPhZonesTool(TComponent* Owner) : TPhImageTool(Owner)
 	m_selected = -1;
 	m_newZone = NULL;
 	m_OnAddRoi = NULL;
+	m_CanAddZone = false;
 }
 __fastcall TPhZonesTool::~TPhZonesTool()
 {
 
 }
-
 
 awp2DPoint __fastcall TPhZonesTool::Get2DPoint(int X, int Y)
 {
@@ -89,7 +89,7 @@ bool   TPhZonesTool::_is_near_vertex(int X, int Y, int& idx1, int& idx2)
 					for (int j = 0; j < 4; j++)
 					{
 						TPoint vertex = GetRectPoint(j, rect);
-						if  (_2D_Dist(vertex.x, vertex.y, p.x, p.y) < 4)//
+						if  (_2D_Dist(vertex.x, vertex.y, p.x, p.y) < 10)//
 						{
 						   res = true;
 						   idx1 = i;
@@ -480,10 +480,11 @@ void TPhZonesTool::MouseDown(int X, int Y, TMouseButton Button)
 	  {
 		  m_si = idx1;
 		  m_sv = idx2;
+          m_down = true;
 	  }
 	  else
 	  {
-		if (m_mode == ZTRect)
+		if (m_mode == ZTRect && this->m_CanAddZone)
 		{
 			// new rect
 			m_newZone = new TLFZone(ZTRect);
@@ -494,21 +495,23 @@ void TPhZonesTool::MouseDown(int X, int Y, TMouseButton Button)
 			  x2 = 100.*p.x / (double)m_pImage->Bitmap->Width;
 			  y2 = 100.*p.y /(double)m_pImage->Bitmap->Height;
 
-              m_newZone->GetRect()->SetVertexes(x1, x2, y1, y2);
+			  m_newZone->GetRect()->SetVertexes(x1, x2, y1, y2);
+               m_down = true;
 		}
-		else if (m_mode == ZTCircle)
+		else if (m_mode == ZTCircle && this->m_CanAddZone)
 		{
 		  m_newZone = new TLFZone(ZTCircle);
 		  awp2DPoint p2d = this->Get2DPoint(X,Y);
 		  m_newZone->GetLineSegmnet()->SetStart(p2d);
+		   m_down = true;
 		}
-		else if (m_mode == ZTContour && m_newZone == NULL)
+		else if (m_mode == ZTContour && m_newZone == NULL && this->m_CanAddZone)
 		{
 		   m_newZone = new TLFZone(ZTContour);
+			m_down = true;
 		}
 
 	  }
-	  m_down = true;
    }
 }
 void TPhZonesTool::MouseUp(int X, int Y, TMouseButton Button)

@@ -16,6 +16,7 @@ private:
 	int  m_si; // selected index
 	int  m_sv; // selectes vertex
 	int  m_selected;
+    bool m_CanAddZone;
 	TLFZone* m_newZone;
     TEZoneTypes m_mode;
 	TPhAddRoiEvent      m_OnAddRoi;
