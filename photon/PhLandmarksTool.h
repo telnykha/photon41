@@ -11,11 +11,12 @@ private:
 	bool   m_down;
 	TLFDBLandmarks m_db;
 	TLFLandmarkFile* m_file;
-    int    m_selected;
+	int    m_selected;
 protected:
 	bool __fastcall IsNearPoint(int x, int y, int& idx);
 	bool __fastcall GetConnected();
 	TLFDBLandmarks* __fastcall GetDatabase();
+	TNotifyEvent 		m_OnChange;
 public:
 	__fastcall TPhLandmarksTool(TComponent* Owner);
    virtual __fastcall ~TPhLandmarksTool();
@@ -33,5 +34,8 @@ public:
 
 	__property bool Connected = {read = GetConnected};
 	__property TLFDBLandmarks* db = {read = GetDatabase};
+	__property int Selected = {read = m_selected};
+__published:
+	__property TNotifyEvent OnChange = {read = m_OnChange, write= m_OnChange};
 };
 #endif

@@ -97,7 +97,7 @@ bool PhCopyFile(UnicodeString strFileName, UnicodeString strFolder, EPhCopyActio
 
 	if (skipFile)
 		return result;
-	result = CopyFile2(strSrcFile.c_str(), strDstFile.c_str(), false) == S_OK;
+	result = CopyFile(strSrcFile.c_str(), strDstFile.c_str(), false) == S_OK;
 	return result;
 }
 
