@@ -16,6 +16,7 @@ __fastcall TPhLandmarksTool::TPhLandmarksTool(TComponent* Owner): TPhImageTool(O
     m_file = NULL;
 	m_strToolName = L"LANDMARKS";
 	m_selected = -1;
+	m_OnChange = NULL;
 }
 __fastcall TPhLandmarksTool::~TPhLandmarksTool()
 {
@@ -66,6 +67,9 @@ void TPhLandmarksTool::MouseDown(int X, int Y, TMouseButton Button)
 }
 void TPhLandmarksTool::MouseUp(int X, int Y, TMouseButton Button)
 {
+	  if (m_down && this->m_OnChange) {
+		 this->OnChange(this);
+	  }
 	  m_down = false;
 	  m_selected = -1;
 }
@@ -80,7 +84,8 @@ void TPhLandmarksTool::MouseMove(int X, int Y, TShiftState Shift)
 		_p.X = 100.*p.x / m_pImage->Bitmap->Width;
 		_p.Y = 100.*p.y / m_pImage->Bitmap->Height;
 
-	    ll->SetPoint(_p);
+		ll->SetPoint(_p);
+		ll->SetStatus(0.5);
 		m_pImage->Paint();
 	}
 	else if (true)

@@ -125,7 +125,33 @@ protected:
 	DYNAMIC bool  __fastcall    DoMouseWheelUp(System::Classes::TShiftState Shift, const System::Types::TPoint &MousePos);
 	DYNAMIC bool  __fastcall    DoMouseWheelDown(TShiftState Shift, const TPoint &MousePos);
 	DYNAMIC bool __fastcall 	DoMouseWheel(System::Classes::TShiftState Shift, int WheelDelta, const System::Types::TPoint &MousePos);
+	MESSAGE void __fastcall 	WMGetDlgCode(TWMNoParams &Message);
 
+  //	BEGIN_MESSAGE_MAP
+  //		VCL_MESSAGE_HANDLER(WM_GETDLGCODE, TWMNoParams, WMGetDlgCode);
+  //	END_MESSAGE_MAP  ;
+
+
+/*
+namespace MyButton
+{
+	class TButton : public Vcl::Stdctrls::TButton
+	{
+	protected:
+	MESSAGE void __fastcall WMGetDlgCode(TWMNoParams &Message)
+	{
+		Message.Result = DLGC_WANTARROWS;
+	}
+
+	BEGIN_MESSAGE_MAP
+		VCL_MESSAGE_HANDLER(WM_GETDLGCODE, TWMNoParams, WMGetDlgCode);
+	END_MESSAGE_MAP(Vcl::Stdctrls::TButton);
+	};
+}
+#define TButton MyButton::TButton
+
+class TForm1 : public TForm // дальше все без изменений, твоя форма не трогается...
+*/
 	// Keyboard
 	DYNAMIC void __fastcall     KeyDown(Word &Key, Classes::TShiftState Shift);
 	void __fastcall             DlgMessage(TWMGetDlgCode &Message);
@@ -137,7 +163,12 @@ protected:
 	TPhImageTool* __fastcall    GetSelectedTool();
     TGraphic* __fastcall   		GetSelectedBitmap();
 	TGraphic* __fastcall   		GetBitmap();
-    void __fastcall DoDeleteImage();
+	void __fastcall DoDeleteImage();
+
+	BEGIN_MESSAGE_MAP
+		VCL_MESSAGE_HANDLER(WM_GETDLGCODE, TWMNoParams, WMGetDlgCode)
+	END_MESSAGE_MAP(TCustomControl)
+
 public:
 	__fastcall                  TPhImage(TComponent* Owner);
 	__fastcall                  TPhImage(HWND Parent);
@@ -195,7 +226,7 @@ public:
     //image operations
     void __fastcall 			Delete();
     void __fastcall             Copy(const LPWSTR lpwFolderName);
-    void __fastcall             Move(const LPWSTR lpwFolderName);
+	void __fastcall             Move(const LPWSTR lpwFolderName);
 
     void __fastcall             SetImageData(int w, int h, int c, unsigned char* data);
 
@@ -203,7 +234,7 @@ public:
     bool __fastcall             SetAwpImage(awpImage* img);
 
 	bool __fastcall             GetSelectedImage(awpImage** img);
-
+	void __fastcall             HookKey(Word &Key, Classes::TShiftState Shift);
 	// Public properties
 	__property  UnicodeString   FileName = {read = m_FileName, write = m_FileName};
 	__property  TPhFrames*      Frames = {read = m_Frames};

@@ -19,6 +19,7 @@
 #pragma link "PhFrames"
 #pragma link "PhTrackBar"
 #pragma link "PhRulerTool"
+#pragma link "awplflibb.lib"
 #pragma resource "*.dfm"
 TmainForm *mainForm;
 //---------------------------------------------------------------------------
