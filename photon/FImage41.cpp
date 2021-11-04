@@ -1307,7 +1307,15 @@ void __fastcall  TPhImage::SetEmpty(bool value)
 //---------------------------------------------------------------------------
 void __fastcall TPhImage::DlgMessage( TWMGetDlgCode &Message )
 {
-    Message.Result = DLGC_WANTARROWS;
+	Message.Result = DLGC_WANTARROWS;
+}
+void __fastcall             TPhImage::HookKey(Word &Key, Classes::TShiftState Shift)
+{
+	KeyDown(Key, Shift);
+}
+void __fastcall 	TPhImage::WMGetDlgCode(TWMNoParams &Message)
+{
+		Message.Result |= DLGC_WANTARROWS;
 }
 //---------------------------------------------------------------------------
 void __fastcall TPhImage::KeyDown(Word &Key, Classes::TShiftState Shift)

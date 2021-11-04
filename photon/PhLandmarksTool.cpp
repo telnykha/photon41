@@ -13,10 +13,12 @@ static double _2D_Dist(double x1,double y1,double x2,double y2)
 
 __fastcall TPhLandmarksTool::TPhLandmarksTool(TComponent* Owner): TPhImageTool(Owner)
 {
-    m_file = NULL;
+	m_file = NULL;
 	m_strToolName = L"LANDMARKS";
 	m_selected = -1;
 	m_OnChange = NULL;
+
+    m_skin = 0;
 }
 __fastcall TPhLandmarksTool::~TPhLandmarksTool()
 {
@@ -50,7 +52,42 @@ void TPhLandmarksTool::Draw(TCanvas* Canvas)
 		   cnv->TextOutW(p.x, p.y - 30, ll->ClassName());
 		   r.init(xx - 8, yy-8,xx+8, yy+8 );
 		   rr= m_pImage->GetScreenRect(r);
-		   cnv->Ellipse(rr);
+		   if (m_skin == 0) {
+			   cnv->Ellipse(rr);
+		   }
+		   else if (m_skin == 1)
+		   {
+			   cnv->Brush->Style = bsClear;
+			   cnv->Ellipse(rr);
+		   }
+		   else
+		   {
+			   cnv->Brush->Style = bsClear;
+			   cnv->Ellipse(rr);
+			   TPoint p1,p2;
+			   p1.x = (r.Right + r.Left) / 2;
+			   p1.y = (r.top + r.Bottom) / 2;
+
+			   p2.x = p1.x - 16;
+			   p2.y = p1.y;
+			   TPoint p3 = m_pImage->GetScreenPoint(p2.x, p2.y);
+			   cnv->MoveTo(p3.x, p3.y);
+			   p2.x = p1.x + 16;
+			   p2.y = p1.y;
+			   p3 = m_pImage->GetScreenPoint(p2.x, p2.y);
+			   cnv->LineTo(p3.x, p3.y);
+
+			   p2.x = p1.x;
+			   p2.y = p1.y -16;
+			   p3 = m_pImage->GetScreenPoint(p2.x, p2.y);
+			   cnv->MoveTo(p3.x, p3.y);
+			   p2.x = p1.x;
+			   p2.y = p1.y+16;
+			   p3 = m_pImage->GetScreenPoint(p2.x, p2.y);
+			   cnv->LineTo(p3.x, p3.y);
+
+		   }
+
 		   cnv->Brush->Style = bsClear;
 		   r.init(xx - 48, yy-48,xx+48, yy+48 );
 		   rr= m_pImage->GetScreenRect(r);
@@ -154,6 +191,13 @@ bool __fastcall TPhLandmarksTool::IsNearPoint(int x, int y, int& idx)
    }
    return false;
 }
+
+void __fastcall TPhLandmarksTool::SetSkin(const int value)
+{
+	m_skin = value;
+	m_pImage->Paint();
+}
+
 
 //-------------------------------------------------------------------------
 namespace Phlandmarkstool

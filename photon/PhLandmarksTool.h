@@ -12,9 +12,12 @@ private:
 	TLFDBLandmarks m_db;
 	TLFLandmarkFile* m_file;
 	int    m_selected;
+
+	int    m_skin;
 protected:
 	bool __fastcall IsNearPoint(int x, int y, int& idx);
 	bool __fastcall GetConnected();
+	void __fastcall SetSkin(const int value);
 	TLFDBLandmarks* __fastcall GetDatabase();
 	TNotifyEvent 		m_OnChange;
 public:
@@ -35,6 +38,7 @@ public:
 	__property bool Connected = {read = GetConnected};
 	__property TLFDBLandmarks* db = {read = GetDatabase};
 	__property int Selected = {read = m_selected};
+	__property int Skin = {read = m_skin, write = SetSkin};
 __published:
 	__property TNotifyEvent OnChange = {read = m_OnChange, write= m_OnChange};
 };
