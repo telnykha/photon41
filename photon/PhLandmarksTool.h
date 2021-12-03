@@ -13,6 +13,7 @@ private:
 	TLFDBLandmarks m_db;
 	TLFLandmarkFile* m_file;
 	int    m_selected;
+
 	int    m_skin;
 protected:
 	bool __fastcall IsNearPoint(int x, int y, int& idx);

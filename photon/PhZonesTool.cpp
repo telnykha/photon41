@@ -240,9 +240,9 @@ void __fastcall TPhZonesTool::SetVertex(int x, int y, bool update)
 		   p1.Y = 100.0*p.y /(double) m_pImage->Bitmap->Height;
            z->GetContour()->SetPoint(m_sv, p1);
 		  }
-	 if (this->m_OnChangeRoi) {
-		 this->OnChangeRoi(this, m_si, update);
-	 }
+ //	 if (update && this->m_OnChangeRoi) {
+ //		 this->OnChangeRoi(this, m_si, update);
+ //	 }
    }
 }
 TRect __fastcall TPhZonesTool::GetBoundsRect(TLFZone* zone)
@@ -559,7 +559,6 @@ void TPhZonesTool::MouseUp(int X, int Y, TMouseButton Button)
 	  else
 	  {
 		// process vertex
-		//m_descriptor.SaveXML(m_strName.c_str());
 		 if (this->m_OnChangeRoi) {
 			 this->OnChangeRoi(this, m_si, true);
 		 }

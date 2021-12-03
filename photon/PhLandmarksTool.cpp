@@ -17,6 +17,7 @@ __fastcall TPhLandmarksTool::TPhLandmarksTool(TComponent* Owner): TPhPaneTool(Ow
 	m_strToolName = L"LANDMARKS";
 	m_selected = -1;
 	m_OnChange = NULL;
+
     m_skin = 0;
 }
 __fastcall TPhLandmarksTool::~TPhLandmarksTool()
