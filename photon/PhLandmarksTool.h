@@ -4,8 +4,9 @@
 #define PhLandmarksToolH
 //---------------------------------------------------------------------------
 #include "PhImageTool.h"
+#include "PhPaneTool.h"
 #include "_LF.h"
-class PACKAGE TPhLandmarksTool : public TPhImageTool
+class PACKAGE TPhLandmarksTool : public TPhPaneTool
 {
 private:
 	bool   m_down;

@@ -11,7 +11,7 @@ static double _2D_Dist(double x1,double y1,double x2,double y2)
   return sqrt((x1-x2)*(x1-x2) + (y1-y2)*(y1-y2));
 }
 
-__fastcall TPhLandmarksTool::TPhLandmarksTool(TComponent* Owner): TPhImageTool(Owner)
+__fastcall TPhLandmarksTool::TPhLandmarksTool(TComponent* Owner): TPhPaneTool(Owner)
 {
 	m_file = NULL;
 	m_strToolName = L"LANDMARKS";
@@ -43,12 +43,14 @@ void TPhLandmarksTool::Draw(TCanvas* Canvas)
 
 		   TPoint p = m_pImage->GetScreenPoint(xx, yy);
 
+		   TPoint pt = m_pImage->GetScreenPoint(xx+48, yy-48);
+
 		   TRect r;
 		   TRect rr;
 
 		   cnv->Brush->Color = ll->Color();
 		   cnv->Pen->Color = ll->Color();
-		   cnv->TextOutW(p.x, p.y - 30, ll->ClassName());
+		   cnv->TextOutW(pt.x, pt.y, ll->ClassName());
 		   r.init(xx - 8, yy-8,xx+8, yy+8 );
 		   rr= m_pImage->GetScreenRect(r);
 		   if (m_skin == 0) {
@@ -100,6 +102,8 @@ void TPhLandmarksTool::MouseDown(int X, int Y, TMouseButton Button)
    {
 		m_down = true;
    }
+   else
+	  TPhPaneTool::MouseDown(X, Y, Button);
 }
 void TPhLandmarksTool::MouseUp(int X, int Y, TMouseButton Button)
 {
@@ -108,6 +112,7 @@ void TPhLandmarksTool::MouseUp(int X, int Y, TMouseButton Button)
 	  }
 	  m_down = false;
 	  m_selected = -1;
+	  TPhPaneTool::MouseUp(X, Y, Button);
 }
 void TPhLandmarksTool::MouseMove(int X, int Y, TShiftState Shift)
 {
@@ -130,7 +135,7 @@ void TPhLandmarksTool::MouseMove(int X, int Y, TShiftState Shift)
 			m_pImage->Cursor = crHandPoint;
 		else
 			m_pImage->Cursor = crArrow;
-
+		TPhPaneTool::MouseMove(X, Y, Shift);
 	}
 }
 void TPhLandmarksTool::Reset()
